@@ -11,10 +11,16 @@ poison ivy, and jungle grass in a few sizes.  All of these are spawned as
 normal nodes and can be collected and used in any recipes that depend on the 
 old mods.
 
-Spawning of plandts is sensitive to the amount of available light.  Flowers, 
+Spawning of plants is sensitive to the amount of available light.  Flowers, 
 cotton, and waterlilies only spawn when there at least a signficant amount of 
 light.  Seaweed will grow only in dimly-lit areas.  Jungle grass and poison ivy 
 also grow in the daytime, but require less light than flowers.
+
+All plants use perlin noise to keep where they grow under control - no more 
+random spread of plants!  In addition, the density of the plants in any region 
+they appear in has been fixed and brought under control.
+
+Poison ivy is found sparsely among junglegrass, but will not grow near flowers.
 
 ------------------------------------------------------------------------------
 
