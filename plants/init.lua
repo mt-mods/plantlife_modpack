@@ -129,7 +129,7 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, dont_grow_nodes)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes)
 	minetest.register_abm({
 		nodenames = { gplant },
 		interval = gdelay,
@@ -140,18 +140,18 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, dont_gr
 			local n_top = minetest.env:get_node(p_top)
 			local n_bot = minetest.env:get_node(p_bot)
 
-			dbg("abm triggered for "..gplant.." on "..n_bot.name.." at "..dump(pos).." -- checking if its in "..dump(dont_grow_nodes))
-			if string.find(dump(dont_grow_nodes), n_bot.name) == nil and n_top.name == "air" then
-			dbg("It wasn't, and it has air above it.")
+			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air"
+				and (n_bot.name == "default:dirt_with_grass" 
+					or n_bot.name == "default:sand" 
+					or n_bot.name == "default:desert_sand")
+			then
 				-- corner case for changing short junglegrass to dry shrub in desert
 				if (n_bot.name == dry_early_node) and (gplant == "junglegrass:short") then
 					gresult = "default:dry_shrub"
-					dbg("Want to change "..gplant.." to "..gresult)
 				end
 
 				-- corner case for wall-climbing poison ivy
 				if gplant == "poisonivy:climbing" then
-					dbg("Want to grow "..gplant)
 					local walldir=plant_valid_wall(p_top)
 					if walldir ~= nil then
 						dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
@@ -247,7 +247,7 @@ if enable_flowers then
 			}
 		})
 
-		spawn_on_surfaces(delay, "flowers:flower_"..flower, radius, chance, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff)
+		spawn_on_surfaces(delay, "flowers:flower_"..flower, radius, chance, "default:dirt_with_grass", {"group:flower", "group:poisonivy"}, flowers_seed_diff)
 	end
 
 	minetest.register_node(":flowers:flower_waterlily", {
@@ -386,7 +386,7 @@ if enable_junglegrass then
 	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/10, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
 
 	for i in ipairs(grasses_list) do
-		grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:cactus", "default:papyrus"})
+		grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
 	end		
 end
 
@@ -441,8 +441,8 @@ if enable_poisonivy then
 	})
 
 	spawn_on_surfaces(spawn_delay, "poisonivy:seedling", 10 , spawn_chance/10, "default:dirt_with_grass", {"group:poisonivy","group:flower"}, poisonivy_seed_diff, 7)
-	grow_plants(spawn_delay, grow_chance, "poisonivy:seedling", "poisonivy:sproutling")
-	grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing")
+	grow_plants(spawn_delay, grow_chance,   "poisonivy:seedling", "poisonivy:sproutling", nil, {"default:dirt_with_grass"})
+	grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil)
 end
 
 print(loadstr..")")
