@@ -18,7 +18,7 @@ local enable_flowers = true
 local enable_junglegrass = true
 local enable_poisonivy = true
 
-local plantlife_debug = true
+local plantlife_debug = false
 
 local plantlife_seed_diff = 123
 local perlin_octaves = 3

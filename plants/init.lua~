@@ -25,12 +25,12 @@ local perlin_octaves = 3
 local perlin_persistence = 0.2
 local perlin_scale = 25
 
-local plantlife_limit = 0.6 -- lower = more abundant
+local plantlife_limit = 0.6 -- compared against perlin noise.  lower = more abundant
 
-local spawn_delay = 20 -- 2000
-local spawn_chance = 2 -- 100
-local grow_delay = 10 -- 1000
-local grow_chance = 2 -- 10
+local spawn_delay = 2000 -- 2000
+local spawn_chance = 100 -- 100
+local grow_delay = 1000 -- 1000
+local grow_chance = 10 -- 10
 
 -- Stuff from here on down shouldn't need to be edited.
 
@@ -109,8 +109,8 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 			if ( noise > plantlife_limit ) and (n_top.name == "air") and is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
 				if (minetest.env:find_node_near(p_top, sradius, savoid) == nil )
---				   and (n_light >= lightmin)
---				   and (n_light <= lightmax)
+				   and (n_light >= lightmin)
+				   and (n_light <= lightmax)
 				and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount
 				then
 					local walldir = plant_valid_wall(p_top)
@@ -143,7 +143,7 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, dont_gr
 			dbg("abm triggered for "..gplant.." on "..n_bot.name.." at "..dump(pos).." -- checking if its in "..dump(dont_grow_nodes))
 			if string.find(dump(dont_grow_nodes), n_bot.name) == nil and n_top.name == "air" then
 			dbg("It wasn't, and it has air above it.")
-				-- corner case for changing short junglegrass to dry shrub
+				-- corner case for changing short junglegrass to dry shrub in desert
 				if (n_bot.name == dry_early_node) and (gplant == "junglegrass:short") then
 					gresult = "default:dry_shrub"
 					dbg("Want to change "..gplant.." to "..gresult)
