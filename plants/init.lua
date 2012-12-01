@@ -91,6 +91,7 @@ end
 -- The spawning ABM
 
 spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount)
+	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
 	if nneighbors == nil then nneighbors = ssurface end
