@@ -17,7 +17,8 @@ The first of these, spawn_on_surfaces() is defined with quite a large number
 of variables:
 
 spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface,
-		    savoid, seed_diff, lightmin, lightmax, nneighbors, ocount)
+		    savoid, seed_diff, lightmin, lightmax, nneighbors,
+		    ocount, facedir)
 
 The first several of these are all required, and are from the last version of
 the flowers mod, so this part of the API should be the same as before.
@@ -63,6 +64,8 @@ nneighbors: Table with a list of neighboring nodes, passed to the ABM as the
 ocount:     There must be at least this many of the above neighbors around the
 	    node the plant is about to spawn on for it to happen.  Defaults to
 	    0.
+facedir:    The value passed to the param2 variable when adding the plant node
+	    to the map.  Defaults to 0 if left out or set to nil.
 
 -----
 The second function, grow_plants() is defined like so:
@@ -89,6 +92,9 @@ grow_nodes:	 This node must be under the plant in order for it to grow at
 		 {"default:dirt_with_grass","default:sand"}.  This is so that
 		 the plant can be manually placed on something like a flower
 		 pot or something without it growing and eventually dieing.
+facedir:	 Same as with spawning a plant.  If supplied, this value is
+		 passed to the param2 variable when changing the plant.  If nil
+		 or left out, no new param2 value is applied.
 
 -----
 plant_valid_wall() expects only a single parameter, "pos", which is a table

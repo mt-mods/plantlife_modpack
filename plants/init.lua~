@@ -90,7 +90,8 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount)
+spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir)
+	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
 	if nneighbors == nil then nneighbors = ssurface end
@@ -119,7 +120,7 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 						minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
 					else
 						dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
-						minetest.env:add_node(p_top, { name = splant })
+						minetest.env:add_node(p_top, { name = splant, param2 = facedir })
 					end
 				end
 			end
@@ -129,7 +130,7 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir)
 	minetest.register_abm({
 		nodenames = { gplant },
 		interval = gdelay,
@@ -160,7 +161,7 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 
 				elseif gresult ~= nil then
 					dbg("Grow: "..gplant.." -> "..gresult.." at ("..dump(pos)..")")
-					minetest.env:add_node(pos, { name = gresult })
+					minetest.env:add_node(pos, { name = gresult, param2 = facedir })
 				else
 					dbg("Die: "..gplant.." at ("..dump(pos)..")")
 					minetest.env:remove_node(pos)

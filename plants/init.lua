@@ -90,7 +90,7 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount)
+spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
@@ -120,7 +120,7 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 						minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
 					else
 						dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
-						minetest.env:add_node(p_top, { name = splant })
+						minetest.env:add_node(p_top, { name = splant, param2 = facedir })
 					end
 				end
 			end
@@ -130,7 +130,7 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir)
 	minetest.register_abm({
 		nodenames = { gplant },
 		interval = gdelay,
@@ -161,7 +161,11 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 
 				elseif gresult ~= nil then
 					dbg("Grow: "..gplant.." -> "..gresult.." at ("..dump(pos)..")")
-					minetest.env:add_node(pos, { name = gresult })
+					if facedir == nil then
+						minetest.env:add_node(pos, { name = gresult })
+					else
+						minetest.env:add_node(pos, { name = gresult, param2 = facedir })
+					end
 				else
 					dbg("Die: "..gplant.." at ("..dump(pos)..")")
 					minetest.env:remove_node(pos)
@@ -288,9 +292,9 @@ if enable_flowers then
 	})
 
 	spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 15  , spawn_chance*3, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:dirt_with_grass"}, 0)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 1)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 6)
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:dirt_with_grass"}, 0, 1)
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 1, 1)
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 6, 1)
 
 
 	minetest.register_craftitem(":flowers:flower_pot", {
