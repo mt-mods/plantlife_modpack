@@ -65,7 +65,7 @@ ocount:     There must be at least this many of the above neighbors around the
 	    node the plant is about to spawn on for it to happen.  Defaults to
 	    0.
 facedir:    The value passed to the param2 variable when adding the plant node
-	    to the map.  Defaults to 0 if left out or set to nil.
+	    to the map.  Defaults to 0.
 
 -----
 The second function, grow_plants() is defined like so:

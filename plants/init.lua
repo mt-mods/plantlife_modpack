@@ -25,7 +25,7 @@ local perlin_octaves = 3
 local perlin_persistence = 0.2
 local perlin_scale = 25
 
-local plantlife_limit = 0.6 -- compared against perlin noise.  lower = more abundant
+local plantlife_limit = 0.5 -- compared against perlin noise.  lower = more abundant
 
 local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
@@ -112,7 +112,7 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 				if (minetest.env:find_node_near(p_top, sradius, savoid) == nil )
 				   and (n_light >= lightmin)
 				   and (n_light <= lightmax)
-				and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount
+				and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
 				then
 					local walldir = plant_valid_wall(p_top)
 					if splant == "poisonivy:seedling" and walldir ~= nil then
@@ -141,15 +141,7 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 			local n_top = minetest.env:get_node(p_top)
 			local n_bot = minetest.env:get_node(p_bot)
 
-			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air"
-				and (n_bot.name == "default:dirt_with_grass" 
-					or n_bot.name == "default:sand" 
-					or n_bot.name == "default:desert_sand")
-			then
-				-- corner case for changing short junglegrass to dry shrub in desert
-				if (n_bot.name == dry_early_node) and (gplant == "junglegrass:short") then
-					gresult = "default:dry_shrub"
-				end
+			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
 
 				-- corner case for wall-climbing poison ivy
 				if gplant == "poisonivy:climbing" then
@@ -159,16 +151,22 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 						minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
 					end
 
+				-- corner case for changing short junglegrass to dry shrub in desert
+				elseif n_bot.name == dry_early_node and gplant == "junglegrass:short" then
+					dbg("Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
+					minetest.env:add_node(pos, { name = "default:dry_shrub" })
+
+				elseif gresult == nil then
+					dbg("Die: "..gplant.." at ("..dump(pos)..")")
+					minetest.env:remove_node(pos)
+
 				elseif gresult ~= nil then
-					dbg("Grow: "..gplant.." -> "..gresult.." at ("..dump(pos)..")")
+					dbg("Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
 					if facedir == nil then
 						minetest.env:add_node(pos, { name = gresult })
 					else
 						minetest.env:add_node(pos, { name = gresult, param2 = facedir })
 					end
-				else
-					dbg("Die: "..gplant.." at ("..dump(pos)..")")
-					minetest.env:remove_node(pos)
 				end
 			end
 		end
@@ -291,10 +289,11 @@ if enable_flowers then
 		},	
 	})
 
-	spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 15  , spawn_chance*3, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:dirt_with_grass"}, 0, 1)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 1, 1)
-	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4, 10, {"default:water_source"}   , 6, 1)
+	spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 10  , spawn_chance*3, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10, nil, {"default:dirt_with_grass"}, nil, nil,10)
+
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:dirt_with_grass"},   0,   1)
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   1,   1)
+	spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  ,  0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   6,   1)
 
 
 	minetest.register_craftitem(":flowers:flower_pot", {
@@ -385,10 +384,10 @@ if enable_junglegrass then
 		},
 	})
 
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/50, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/50, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/10, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/10, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*2, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
 
 	for i in ipairs(grasses_list) do
 		grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
