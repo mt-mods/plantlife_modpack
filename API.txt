@@ -19,6 +19,9 @@ of variables:
 spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface,
 		    savoid, seed_diff, lightmin, lightmax, nneighbors, ocount)
 
+The first several of these are all required, and are from the last version of
+the flowers mod, so this part of the API should be the same as before.
+
 sdelay:     The value passed to the ABM's interval parameter, usually in the
 	    1000-3000 range.
 splant:     The node name of the item to spawn (e.g. "flowers:flower_rose").
@@ -38,21 +41,28 @@ ssurface:   Table with the names of the nodes on which to spawn the plant in
 	    when to execute the ABM.
 savoid:     Table with a list of groups and/or node names to avoid when
 	    spawning the plant, such as {"group:flowers","default:tree"}.
+
+From here down are several optional parameters.  You can use as many as you
+need, but you must specify them in order (so if you want lightmax, you need
+lightmin and seed_diff also, but not the rest).
+
 seed_diff:  The perlin seed difference value passed to the
 	    minetest.env:get_perlin() function.  Used along with the global
 	    perlin controls below to create the "biome" in which the plants
 	    will spawn.  Usually a value of somewhere in the 10 to 100 range
-	    is good.
+	    is good.  Defaults to 0 if not provided
 lightmin:   Minimum amount of light necessary to make a plant spawn.  Defaults
-	    to zero.
+	    to 0.
 lightmax:   Maximum amount of light present to allow a plant to spawn. 
 	    Defaults to the engine's MAX_LIGHT value of 14.
 nneighbors: Table with a list of neighboring nodes, passed to the ABM as the
 	    "neighbors" parameter, indicating what needs to be next to the 
 	    node the plant is about to spawn on, such as
-	    {"default:stone","default:water_source"}.
+	    {"default:stone","default:water_source"}.  Defaults to the value
+	    of ssurface if not provided.
 ocount:     There must be at least this many of the above neighbors around the
-	    node the plant is about to spawn on for it to happen.
+	    node the plant is about to spawn on for it to happen.  Defaults to
+	    0.
 
 -----
 The second function, grow_plants() is defined like so:
