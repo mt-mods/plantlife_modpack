@@ -4,7 +4,7 @@ This document briefly describes the Plantlife API.
 Functions
 =========
 
-There are five main functions defined by this mod:
+There are five main functions defined by the main "plants" mod:
 
 spawn_on_surfaces()
 grow_plants()
@@ -120,13 +120,6 @@ followed by the supplied string, via the print() function.
 Global Settings
 ===============
 
-These first three allow you to turn the various classes of plants on or off.
-By default, all three are "true", thus turning all three classes on.
-
-	enable_flowers = true
-	enable_junglegrass = true
-	enable_poisonivy = true
-
 Enable this if you want the mod to spam your console with debug info :-)
 
 	plantlife_debug = false
@@ -148,23 +141,31 @@ and more abundant plants.
 
 	plantlife_limit = 0.6
 
-These two control the basic ABM settings for spawning plants - spawn_delay 
-is used as the 'interval' parameter and controls how often to run the ABM (in
-in-game tenths of seconds), while spawn_chance is used for the ABM's "chance"
-parameter, and is basically how likely the ABM is to actually execute
-(a 1:(1/chance) probability).
-
-	spawn_delay = 2000
-	spawn_chance = 100
-
-These next two control the same two settings used by the growing ABM.
-
-	grow_delay = 1000
-	grow_chance = 10
-
-These three are pretty obvious :-)
+These three are pretty obvious.  Basically they control the shape and 
+distribution of the biomes in which the various plants will appear.
 
 	flowers_seed_diff = plantlife_seed_diff
 	junglegrass_seed_diff = plantlife_seed_diff + 10
 	poisonivy_seed_diff = plantlife_seed_diff + 10
+
+==============
+Local settings
+==============
+
+Each of the three components of this modpack has an init.lua file, as usual,
+and at the top of those files are four variables that affect how and when the
+ABMs are run.  In each one, the spawn_delay value is used as the 'interval'
+parameter and controls how often to run the ABM (in in-game tenths of
+seconds), while spawn_chance is used for the ABM's "chance" parameter, and is
+basically how likely the ABM is to actually execute (a 1 to (1/chance)
+probability).
+
+	spawn_delay = 2000
+	spawn_chance = 100
+
+The other two in each init.lua file control the same two settings used by the
+growing ABM.
+
+	grow_delay = 1000
+	grow_chance = 10
 
