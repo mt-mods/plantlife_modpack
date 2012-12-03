@@ -25,7 +25,7 @@ local perlin_octaves = 3
 local perlin_persistence = 0.2
 local perlin_scale = 25
 
-local plantlife_limit = 0.6 -- compared against perlin noise.  lower = more abundant
+local plantlife_limit = 0.5 -- compared against perlin noise.  lower = more abundant
 
 local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
@@ -384,10 +384,10 @@ if enable_junglegrass then
 		},
 	})
 
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/50, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/50, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/10, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance/10, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*2, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+	spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
 
 	for i in ipairs(grasses_list) do
 		grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})

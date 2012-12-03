@@ -66,6 +66,8 @@ ocount:     There must be at least this many of the above neighbors around the
 	    0.
 facedir:    The value passed to the param2 variable when adding the plant node
 	    to the map.  Defaults to 0.
+depthmax:   If a node spawns on top of a water source, the water must be at
+	    most this deep.  Defaults to 1 node.
 
 -----
 The second function, grow_plants() is defined like so:
