@@ -4,7 +4,7 @@ This document briefly describes the Plantlife API.
 Functions
 =========
 
-There are five main functions defined by the main "plants" mod:
+There are five main functions defined by the main "plants_lib" mod:
 
 spawn_on_surfaces()
 grow_plants()
