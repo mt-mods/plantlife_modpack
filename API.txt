@@ -72,8 +72,9 @@ depthmax:   If a node spawns on top of a water source, the water must be at
 -----
 The second function, grow_plants() is defined like so:
 
-grow_plants = function(gdelay, gchance, gplant, gresult,
-	      dry_early_node, grow_nodes)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node,
+		grow_nodes, facedir, need_wall, grow_vertically, height_limit,
+		ground_nodes)
 
 gdelay:          Passed as the ABM "interval" parameter, as with spawning.
 gchance:         Passed as the ABM "chance" parameter.
@@ -97,6 +98,19 @@ grow_nodes:	 This node must be under the plant in order for it to grow at
 facedir:	 Same as with spawning a plant.  If supplied, this value is
 		 passed to the param2 variable when changing the plant.  If nil
 		 or left out, no new param2 value is applied.
+need_wall:	 Set this to true if you the plant needs to grow against a
+		 wall.  Defaults to false.
+grow_vertically: Set this to true if the plant needs to grow vertically, as in
+		 climbing poison ivy.  Defaults to false.
+height_limit:	 Just how tall can a vertically-growing plant go?  Set this
+		 accordingly.  The mod will search straight down from the
+		 position being spawned at to find a ground node, below.
+		 Defaults to 62000 (unlimited).
+ground_nodes:	 What nodes should be treated as "the ground" below a
+		 vertically-growing plant.  Usually this will be the same as
+		 the grow_nodes table, but might also include, for example,
+		 water or some other surrounding material.  Defaults to 
+		 "default:dirt_with_grass".
 
 -----
 plant_valid_wall() expects only a single parameter, "pos", which is a table

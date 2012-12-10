@@ -90,7 +90,11 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir, need_wall, grow_vertically, height_limit, ground_nodes)
+	if need_wall ~= true then need_wall = false end
+	if grow_vertically ~= true then grow_vertically = false end
+	if height_limit == nil then height_limit = 62000 end
+	if ground_node == nil then ground_nodes = { "default:dirt_with_grass" } end
 	minetest.register_abm({
 		nodenames = { gplant },
 		interval = gdelay,
@@ -100,15 +104,21 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 			local p_bot = {x=pos.x, y=pos.y-1, z=pos.z}
 			local n_top = minetest.env:get_node(p_top)
 			local n_bot = minetest.env:get_node(p_bot)
+			local groundnode = minetest.env:get_node({x=pos.x, y=pos.y-height_limit, z=pos.z})
 
 			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
-
-				-- corner case for wall-climbing poison ivy
-				if gplant == "poisonivy:climbing" then
-					local walldir=plant_valid_wall(p_top)
-					if walldir ~= nil then
-						dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
-						minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
+				if grow_vertically then
+					if find_first_node(pos, height_limit, ground_nodes) ~= nil then
+						if need_wall then
+							local walldir=plant_valid_wall(p_top)
+							if walldir ~= nil then
+								dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
+								minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
+							end
+						else
+							dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
+							minetest.env:add_node(p_top, { name = gplant })
+						end
 					end
 
 				-- corner case for changing short junglegrass to dry shrub in desert
@@ -154,6 +164,19 @@ plant_valid_wall = function(wallpos)
 
 	return walldir
 end
+
+-- Function to search straight down from (pos) to find first node in match list.
+
+find_first_node = function(pos, height_limit, nodelist)
+	for i = 1, height_limit do
+		n = minetest.env:get_node({x=pos.x, y=pos.y-i, z=pos.z})
+		if string.find(dump(nodelist),n.name) ~= nil then
+			return n.name
+		end
+	end
+	return nil
+end
+
 
 local enstr = ""
 

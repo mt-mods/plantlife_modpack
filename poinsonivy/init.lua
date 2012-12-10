@@ -63,7 +63,9 @@ minetest.register_node(':poisonivy:climbing', {
 })
 
 spawn_on_surfaces(spawn_delay, "poisonivy:seedling", 10 , spawn_chance/10, "default:dirt_with_grass", {"group:poisonivy","group:flower"}, poisonivy_seed_diff, 7)
+
 grow_plants(spawn_delay, grow_chance,   "poisonivy:seedling", "poisonivy:sproutling", nil, {"default:dirt_with_grass"})
-grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil)
+
+grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil                        ,nil,true,true,nil,{"default:dirt_with_grass"})
 
 enabled_poisonivy = true
