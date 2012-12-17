@@ -76,4 +76,3 @@ for i in ipairs(grasses_list) do
 	grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
 end
 
-enabled_junglegrass = true

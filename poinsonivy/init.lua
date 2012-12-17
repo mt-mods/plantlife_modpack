@@ -68,4 +68,3 @@ grow_plants(spawn_delay, grow_chance,   "poisonivy:seedling", "poisonivy:sproutl
 
 grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil                        ,nil,true,true,nil,{"default:dirt_with_grass"})
 
-enabled_poisonivy = true

@@ -177,13 +177,5 @@ find_first_node = function(pos, height_limit, nodelist)
 	return nil
 end
 
+print("[Plantlife] Loaded!")
 
-local enstr = ""
-
-if enabled_flowers then enstr = enstr.." flowers" end
-if enabled_junglegrass then enstr = enstr.." junglegrass" end
-if enabled_poisonivy then enstr = enstr.." poisonivy" end
-
-if enstr == "" then enstr = "...er...nothing!" end
-
-print("[Plantlife] Loaded (enabled"..enstr..")")

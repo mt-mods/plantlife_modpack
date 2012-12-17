@@ -1,4 +1,4 @@
--- This module supplies flowers for the plantlife modpack
+-- This file supplies flowers for the plantlife modpack
 
 local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
@@ -136,4 +136,3 @@ minetest.register_craft({
     }
 })
 
-enabled_flowers = true
