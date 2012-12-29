@@ -14,11 +14,12 @@ dbg()
 
 -----
 The first of these, spawn_on_surfaces() is defined with quite a large number
-of variables:
+of variables.  All of the variables below, if specified at all, must be
+specified exactly in the order given here.
 
 spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface,
 		    savoid, seed_diff, lightmin, lightmax, nneighbors,
-		    ocount, facedir)
+		    ocount, facedir, depthmax, altitudemin, altitudemax)
 
 The first several of these are all required, and are from the last version of
 the flowers mod, so this part of the API should be the same as before.
@@ -68,6 +69,9 @@ facedir:    The value passed to the param2 variable when adding the plant node
 	    to the map.  Defaults to 0.
 depthmax:   If a node spawns on top of a water source, the water must be at
 	    most this deep.  Defaults to 1 node.
+altitudemin: Items must be at this altitude or higher to spawn at all.
+	     Defaults to -31000.
+altitudemax: But no higher than this altitude.  Defaults to +31000.
 
 -----
 The second function, grow_plants() is defined like so:

@@ -12,7 +12,7 @@
 
 -- Various settings - most of these probably won't need to be changed
 
-local plantlife_debug = false  -- ...unless you want the modpack to spam the console ;-)
+local plantlife_debug = true  -- ...unless you want the modpack to spam the console ;-)
 
 local plantlife_seed_diff = 123
 local perlin_octaves = 3
@@ -45,13 +45,15 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax)
+spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
 	if nneighbors == nil then nneighbors = ssurface end
 	if ocount == nil then ocount = 0 end
 	if depthmax == nil then depthmax = 1 end
+	if altmin == nil then altmin = -31000 end
+	if altmax == nil then altmax = 31000 end
 	minetest.register_abm({
 		nodenames = { ssurface },
 		interval = sdelay,
@@ -62,26 +64,28 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 			local n_top = minetest.env:get_node(p_top)
 			local perlin = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale )
 			local noise = perlin:get2d({x=p_top.x, y=p_top.z})
-			if ( noise > plantlife_limit ) and (n_top.name == "air") and is_node_loaded(p_top) then
+			if noise > plantlife_limit and n_top.name == "air" and is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
-				if (minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil )
-				   and (n_light >= lightmin)
-				   and (n_light <= lightmax)
-				and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
-				then
-					local walldir = plant_valid_wall(p_top)
-					if splant == "poisonivy:seedling" and walldir ~= nil then
-						dbg("Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
-						minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
-					else
-						local deepnode = minetest.env:get_node({ x = pos.x, y = pos.y-depthmax-1, z = pos.z }).name
-						if (ssurface ~= "default:water_source")
-							or (ssurface == "default:water_source"
-							and deepnode ~= "default:water_source") then
-							dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
-							minetest.env:add_node(p_top, { name = splant, param2 = facedir })
+				if minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil
+				  and n_light >= lightmin
+				  and n_light <= lightmax
+				  and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
+				  and pos.y >= altmin
+				  and pos.y <= altmax
+					then
+						local walldir = plant_valid_wall(p_top)
+						if splant == "poisonivy:seedling" and walldir ~= nil then
+							dbg("Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
+							minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
+						else
+							local deepnode = minetest.env:get_node({ x = pos.x, y = pos.y-depthmax-1, z = pos.z }).name
+							if (ssurface ~= "default:water_source")
+								or (ssurface == "default:water_source"
+								and deepnode ~= "default:water_source") then
+								dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
+								minetest.env:add_node(p_top, { name = splant, param2 = facedir })
+							end
 						end
-					end
 				end
 			end
 		end
