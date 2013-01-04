@@ -12,18 +12,15 @@
 
 -- Various settings - most of these probably won't need to be changed
 
-local plantlife_debug = true  -- ...unless you want the modpack to spam the console ;-)
+plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
-local plantlife_seed_diff = 123
+local plantlife_debug = false  -- ...unless you want the modpack to spam the console ;-)
+
 local perlin_octaves = 3
-local perlin_persistence = 0.2
-local perlin_scale = 25
+local perlin_persistence = 0.6
+local perlin_scale = 100
 
 local plantlife_limit = 0.1 -- compared against perlin noise.  lower = more abundant
-
-local flowers_seed_diff = plantlife_seed_diff
-local junglegrass_seed_diff = plantlife_seed_diff + 10
-local poisonivy_seed_diff = plantlife_seed_diff + 10
 
 -- Local functions
 

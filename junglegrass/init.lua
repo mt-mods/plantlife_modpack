@@ -4,6 +4,7 @@ local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
 local grow_delay = 1000 -- 1000
 local grow_chance = 10 -- 10
+local junglegrass_seed_diff = plantlife_seed_diff
 
 local grasses_list = {
         {"junglegrass:shortest","junglegrass:short" },
