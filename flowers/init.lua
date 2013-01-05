@@ -4,7 +4,7 @@ local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
 local grow_delay = 1000 -- 1000
 local grow_chance = 10 -- 10
-local flowers_seed_diff = plantlife_seed_diff
+local flowers_seed_diff = plantlife_seed_diff+20
 
 local flowers_list = {
 	{ "Rose",		"rose", 		spawn_delay,	10,	spawn_chance	, 10},
