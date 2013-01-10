@@ -1,20 +1,13 @@
--- Plantlife mod by Vanessa Ezekowitz
--- 2012-11-29
+-- Plantlife library mod by Vanessa Ezekowitz
+-- 2013-01-00
 --
--- This mod combines all of the functionality from poison ivy,
--- flowers, and jungle grass.  If you have any of these, you no
--- longer need them.
---
--- License:
---	CC-BY-SA for most textures, except flowers
---	WTFPL for the flowers textures
---	WTFPL for all code and everything else
+-- License:  WTFPL
 
 -- Various settings - most of these probably won't need to be changed
 
 plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
-local plantlife_debug = false  -- ...unless you want the modpack to spam the console ;-)
+local plantlife_debug = true  -- ...unless you want the modpack to spam the console ;-)
 
 local perlin_octaves = 3
 local perlin_persistence = 0.6
@@ -42,15 +35,18 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax)
+spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax, sbiome, sbiomesize, sbiomecount)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
 	if nneighbors == nil then nneighbors = ssurface end
-	if ocount == nil then ocount = 0 end
+	if ocount == nil then ocount = -1 end
 	if depthmax == nil then depthmax = 1 end
 	if altmin == nil then altmin = -31000 end
 	if altmax == nil then altmax = 31000 end
+	if sbiome == nil then sbiome = "" end
+	if sbiomesize == nil then sbiomesize = 0 end
+	if sbiomecount == nil then sbiomecount = 1 end
 	minetest.register_abm({
 		nodenames = { ssurface },
 		interval = sdelay,
@@ -66,7 +62,12 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 				if minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil
 				  and n_light >= lightmin
 				  and n_light <= lightmax
-				  and table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
+				  and 
+					(table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
+					  or ocount == -1)
+				  and 
+					(table.getn(minetest.env:find_nodes_in_area({x=pos.x-sbiomesize, y=pos.y-1, z=pos.z-sbiomesize}, {x=pos.x+sbiomesize, y=pos.y+1, z=pos.z+sbiomesize}, sbiome)) >= sbiomecount
+					  or sbiome == "")
 				  and pos.y >= altmin
 				  and pos.y <= altmax
 					then
@@ -91,7 +92,7 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir, need_wall, grow_vertically, height_limit, ground_nodes)
+grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir, need_wall, grow_vertically, height_limit, ground_nodes, grow_function, seed_diff)
 	if need_wall ~= true then need_wall = false end
 	if grow_vertically ~= true then grow_vertically = false end
 	if height_limit == nil then height_limit = 62000 end
@@ -106,39 +107,46 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 			local n_top = minetest.env:get_node(p_top)
 			local n_bot = minetest.env:get_node(p_bot)
 			local groundnode = minetest.env:get_node({x=pos.x, y=pos.y-height_limit, z=pos.z})
-
-			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
-				if grow_vertically then
-					if find_first_node(pos, height_limit, ground_nodes) ~= nil then
-						if need_wall then
-							local walldir=plant_valid_wall(p_top)
-							if walldir ~= nil then
-								dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
-								minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
+			if grow_function == nil then
+				if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
+					if grow_vertically then
+						if find_first_node(pos, height_limit, ground_nodes) ~= nil then
+							if need_wall then
+								local walldir=plant_valid_wall(p_top)
+								if walldir ~= nil then
+									dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
+									minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
+								end
+							else
+								dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
+								minetest.env:add_node(p_top, { name = gplant })
 							end
+						end
+
+					-- corner case for changing short junglegrass to dry shrub in desert
+					elseif n_bot.name == dry_early_node and gplant == "junglegrass:short" then
+						dbg("Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
+						minetest.env:add_node(pos, { name = "default:dry_shrub" })
+
+					elseif gresult == nil then
+						dbg("Die: "..gplant.." at ("..dump(pos)..")")
+						minetest.env:remove_node(pos)
+
+					elseif gresult ~= nil then
+						dbg("Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
+						if facedir == nil then
+							minetest.env:add_node(pos, { name = gresult })
 						else
-							dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
-							minetest.env:add_node(p_top, { name = gplant })
+							minetest.env:add_node(pos, { name = gresult, param2 = facedir })
 						end
 					end
-
-				-- corner case for changing short junglegrass to dry shrub in desert
-				elseif n_bot.name == dry_early_node and gplant == "junglegrass:short" then
-					dbg("Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
-					minetest.env:add_node(pos, { name = "default:dry_shrub" })
-
-				elseif gresult == nil then
-					dbg("Die: "..gplant.." at ("..dump(pos)..")")
-					minetest.env:remove_node(pos)
-
-				elseif gresult ~= nil then
-					dbg("Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
-					if facedir == nil then
-						minetest.env:add_node(pos, { name = gresult })
-					else
-						minetest.env:add_node(pos, { name = gresult, param2 = facedir })
-					end
 				end
+			else
+				if seed_diff == nil then seed_diff = 0 end
+				local perlin = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale )
+				local noise = perlin:get2d({x=pos.x, y=pos.z})
+				dbg("Want to execute "..grow_function.."("..dump(pos)..","..noise..")")
+				assert(loadstring(grow_function.."("..dump(pos)..","..noise..")"))()
 			end
 		end
 	})
