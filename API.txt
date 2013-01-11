@@ -88,6 +88,10 @@ sbiomesize:			How large of an area to check for the above node.
 					Defaults to 0.
 sbiomecount:		How many of the above nodes must be within that radius.
 					Defaults to 1.
+airradius:			How large of an area to check for air around the target.
+					Defaults to 0 (only check the target).
+aircount:			How many of the surrounding nodes need to be air for the
+					above check to return true.  Defaults to 1.
 
 By default, if a biome node, size, and count are not defined, the biome
 checking is disabled.  Same holds true for the nneighbors bit above that.

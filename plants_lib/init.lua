@@ -35,7 +35,7 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax, sbiome, sbiomesize, sbiomecount)
+spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax, sbiome, sbiomesize, sbiomecount, airsize, aircount)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
@@ -47,6 +47,8 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 	if sbiome == nil then sbiome = "" end
 	if sbiomesize == nil then sbiomesize = 0 end
 	if sbiomecount == nil then sbiomecount = 1 end
+	if airsize == nil then airsize = 0 end
+	if aircount == nil then aircount = 1 end
 	minetest.register_abm({
 		nodenames = { ssurface },
 		interval = sdelay,
@@ -57,17 +59,16 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 			local n_top = minetest.env:get_node(p_top)
 			local perlin = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale )
 			local noise = perlin:get2d({x=p_top.x, y=p_top.z})
-			if noise > plantlife_limit and n_top.name == "air" and is_node_loaded(p_top) then
+			if noise > plantlife_limit and is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
 				if minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil
 				  and n_light >= lightmin
 				  and n_light <= lightmax
-				  and 
-					(table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
+				  and (table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, nneighbors)) > ocount 
 					  or ocount == -1)
-				  and 
-					(table.getn(minetest.env:find_nodes_in_area({x=pos.x-sbiomesize, y=pos.y-1, z=pos.z-sbiomesize}, {x=pos.x+sbiomesize, y=pos.y+1, z=pos.z+sbiomesize}, sbiome)) >= sbiomecount
+				  and (table.getn(minetest.env:find_nodes_in_area({x=pos.x-sbiomesize, y=pos.y-1, z=pos.z-sbiomesize}, {x=pos.x+sbiomesize, y=pos.y+1, z=pos.z+sbiomesize}, sbiome)) >= sbiomecount
 					  or sbiome == "")
+				  and table.getn(minetest.env:find_nodes_in_area({x=p_top.x-airsize, y=p_top.y, z=p_top.z-airsize}, {x=p_top.x+airsize, y=p_top.y, z=p_top.z+airsize}, "air")) >= aircount
 				  and pos.y >= altmin
 				  and pos.y <= altmax
 					then
