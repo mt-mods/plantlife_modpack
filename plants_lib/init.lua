@@ -2,6 +2,10 @@
 -- 2013-01-00
 --
 -- License:  WTFPL
+--
+-- I got the temperature map idea from "hmmmm", values used for it came from
+--
+
 
 -- Various settings - most of these probably won't need to be changed
 
@@ -12,6 +16,11 @@ local plantlife_debug = true  -- ...unless you want the modpack to spam the cons
 local perlin_octaves = 3
 local perlin_persistence = 0.6
 local perlin_scale = 100
+
+local temperature_seeddiff = 112
+local temperature_octaves = 3
+local temperature_persistence = 0.5
+local temperature_scale = 150
 
 local plantlife_limit = 0.1 -- compared against perlin noise.  lower = more abundant
 
@@ -35,7 +44,29 @@ end
 
 -- The spawning ABM
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir, depthmax, altmin, altmax, sbiome, sbiomesize, sbiomecount, airsize, aircount)
+spawn_on_surfaces = function(
+						sdelay,
+						splant,
+						sradius,
+						schance,
+						ssurface,
+						savoid,
+						seed_diff,
+						lightmin,
+						lightmax,
+						nneighbors,
+						ocount,
+						facedir,
+						depthmax,
+						altmin,
+						altmax,
+						sbiome,
+						sbiomesize,
+						sbiomecount,
+						airsize,
+						aircount,
+						tempmin,
+						tempmax)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
@@ -49,6 +80,8 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 	if sbiomecount == nil then sbiomecount = 1 end
 	if airsize == nil then airsize = 0 end
 	if aircount == nil then aircount = 1 end
+	if tempmin == nil then tempmin = -2 end
+	if tempmax == nil then tempmax = 2 end
 	minetest.register_abm({
 		nodenames = { ssurface },
 		interval = sdelay,
@@ -57,9 +90,14 @@ spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface, savoid,
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }	
 			local n_top = minetest.env:get_node(p_top)
-			local perlin = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale )
-			local noise = perlin:get2d({x=p_top.x, y=p_top.z})
-			if noise > plantlife_limit and is_node_loaded(p_top) then
+			local perlin1 = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+			local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+			if noise1 > plantlife_limit 
+			  and noise2 >= tempmin
+			  and noise2 <= tempmax
+			  and is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
 				if minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil
 				  and n_light >= lightmin
@@ -93,7 +131,20 @@ end
 
 -- The growing ABM
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_nodes, facedir, need_wall, grow_vertically, height_limit, ground_nodes, grow_function, seed_diff)
+grow_plants = function(
+					gdelay,
+					gchance,
+					gplant,
+					gresult,
+					dry_early_node,
+					grow_nodes,
+					facedir,
+					need_wall,
+					grow_vertically,
+					height_limit,
+					ground_nodes,
+					grow_function,
+					seed_diff)
 	if need_wall ~= true then need_wall = false end
 	if grow_vertically ~= true then grow_vertically = false end
 	if height_limit == nil then height_limit = 62000 end
@@ -144,10 +195,12 @@ grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node, grow_no
 				end
 			else
 				if seed_diff == nil then seed_diff = 0 end
-				local perlin = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale )
-				local noise = perlin:get2d({x=pos.x, y=pos.z})
-				dbg("Want to execute "..grow_function.."("..dump(pos)..","..noise..")")
-				assert(loadstring(grow_function.."("..dump(pos)..","..noise..")"))()
+				local perlin1 = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+				local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+				local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+				local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+				dbg("Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
+				assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
 			end
 		end
 	})

@@ -18,8 +18,8 @@ of variables.  All of the variables below, if specified at all, must be
 specified exactly in the order given here.  This function has no return value.
 
 spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface,
-		    savoid, seed_diff, lightmin, lightmax, nneighbors,
-		    ocount, facedir, depthmax, altitudemin, altitudemax)
+		    savoid, seed_diff, lightmin, lightmax, nneighbors, ocount,
+			facedir, depthmax, altitudemin, altitudemax, tempmin, tempmax)
 
 The first several of these are all required, and are from the last version of
 the flowers mod, so this part of the API should be the same as before.
@@ -52,9 +52,9 @@ From here down are several optional parameters.  You can use as many as you
 need, but you must specify them in order (so if you want lightmax, you need
 lightmin and seed_diff also, but not the rest).
 
-seed_diff:			The perlin seed difference value passed to the
+seed_diff:			The Perlin seed difference value passed to the
 					minetest.env:get_perlin() function.  Used along with the
-					global perlin controls below to create the "biome" in
+					global Perlin controls below to create the "biome" in
 					which the plants will spawn.  Usually a value of somewhere
 					in the 10 to 100 range is good.  Defaults to 0 if not
 					provided.
@@ -92,6 +92,10 @@ airradius:			How large of an area to check for air around the target.
 					Defaults to 0 (only check the target).
 aircount:			How many of the surrounding nodes need to be air for the
 					above check to return true.  Defaults to 1.
+tempmin:			Minimum 2d Perlin value (which has a floating point range of
+					-1 to +1) needed in the temperature map for the desired
+					plant to spawn.  Defaults to -1 if not supplied.
+tempmax:			Maximum temperature.  Defaults to +1.
 
 By default, if a biome node, size, and count are not defined, the biome
 checking is disabled.  Same holds true for the nneighbors bit above that.
@@ -151,7 +155,7 @@ grow_function:		Execute the named function (which must be supplied as just
 					position of the node to be "grown" (in the usual table
 					format), and the Perlin noise value at the location in
 					question.
-seed_diff:			The perlin seed diff to be use to calculate the noise 
+seed_diff:			The Perlin seed diff to be use to calculate the noise 
 					value given to the above grow_function.  Should be the
 					same as the seed diff used when first spawning the plant
 					that's being grown.
@@ -182,10 +186,10 @@ Enable this if you want the mod to spam your console with debug info :-)
 
 	plantlife_debug = false
 
-The mod uses perlin noise to create "biomes" of the various plants.  Aside
+The mod uses Perlin noise to create "biomes" of the various plants.  Aside
 from plantlife_seed_diff (see below), these values are the ones plugged 
 directly into the minetest.env:get_perlin() function.  For more information on
-how perlin noise is generated, you will need to search the web, as these
+how Perlin noise is generated, you will need to search the web, as these
 default values were arrived at through trial and error.
 
 	plantlife_seed_diff = 123
@@ -193,7 +197,7 @@ default values were arrived at through trial and error.
 	perlin_persistence = 0.2
 	perlin_scale = 25
 
-This value is compared against the output of the above perlin noise function
+This value is compared against the output of the above Perlin noise function
 to decide when to actually place a plant.  Smaller numbers mean larger biomes
 and more abundant plants.
 
@@ -226,4 +230,39 @@ growing ABM.
 
 	grow_delay = 1000
 	grow_chance = 10
+
+===================
+Temperature Mapping
+===================
+
+This mod uses Perlin noise to establish a rough temperature map, with values
+taken from Splizard's Snow Biomes mod so that the two will be compatible,
+since that mod appears to be the standard now.
+
+The way Perlin values are used by this mod, in keeping with the snow mod's 
+apparent methods, larger values returned by the Perlin function represent
+*colder* temperatures.  In this mod, the following table gives a rough
+approximation of how temperature maps to these values, normalized to
+0.53 = 0 °C and +1.0 = -25 °C.
+
+Perlin		Approx. Temperature
+-1.0		 81 °C	( 178 °F)
+-0.75		 68 °C	( 155 °F)
+-0.56		 58 °C	( 136 °F)
+-0.5		 55 °C	( 131 °F)
+-0.25		 41 °C	( 107 °F)
+-0.18		 38 °C	( 100 °F)
+ 0			 28 °C	(  83 °F)
+ 0.13		 21 °C	(  70 °F)
+ 0.25		 15 °C	(  59 °F)
+ 0.5		  2 °C	(  35 °F)
+ 0.53		  0 °C	(  32 °F)
+ 0.75		-12 °C	(  11 °F)
+ 0.86		-18 °C	(   0 °F)
+ 1.0		-25 °C	(- 13 °F)
+
+Included in this table are even 0.25 steps in Perlin values along with some
+common temperatures on both the Centigrade and Fahrenheit scales.  Note that
+unless you're trying to model the Moon or perhaps Mercury in your mods/maps, 
+you probably won't need to bother with Perlin values of less than -0.56 or so.
 
