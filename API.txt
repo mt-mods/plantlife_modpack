@@ -113,11 +113,52 @@ checking is disabled.  Same holds true for the nneighbors bit above that.
 
 -----
 
-XXXXXXXXXX  FIX ME FIX ME FIX ME
-XXXXXXXXXX
-XXXXXXXXXX  Document the mapgen-based spawning function
-XXXXXXXXXX
-XXXXXXXXXX  FIX ME FIX ME FIX ME
+To register a plant to be spawned at mapgen time rather than via an ABM, call
+this function:
+
+plantslib:register_generate_plant(biome)
+
+Where "biome" is a table containing about a dozen variables:
+
+biome = {
+	surface = "string",	-- [*] what nodes to spawn on
+	avoid =	{table},	-- [*] what nodes to avoid when spawning
+	radius = num,		-- [*] how much distance to leave between
+				       objects
+	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0.
+	neighbors = {table},	-- table of what ground nodes must be right
+				   next to and at the same elevation as the
+				   node to be spawned on.  Defaults to the
+				   value of the "surface" string.
+	ncount = num,		-- how many of the above nodes must be nearby
+				   (at least this many).
+	depth = num,		-- how deep/thick of a layer the spawned-on
+				   node must be (typically used for water).
+				   Defaults to 62000 (unlimited).
+	min_elevation = num,	-- minimum elevation in meters/nodes.
+				   Defaults to -31000 (unlimited).
+	max_elevation = num,	-- maximum elevation.  Defaults to +31000
+				   (unlimited)
+	near_nodes = {table},	-- what nodes must be in the general vicinity
+				   of the object being spawned.
+	near_nodes_size = num,	-- how wide of a search area to look for 
+				   the nodes in that list.
+	near_nodes_count = num,	-- how many of those nodes must be in the
+			           area
+	temp_min = num,		-- minimum perlin temperature value needed to
+				   spawn an object (=hottest allowable temp.)
+	temp_max = num,		-- maximum perlin temperature value (=coldest)
+	exec_funct = "string",	-- [**] name of the function to use to
+					actually build the object.
+}
+
+[*] These entries are required for the spawn code to work.  Everything else
+    is optional.  Unless explicitly stated, all unused/unsupplied parameters
+    default to nil and will not affect the results of the code.
+
+[**] A string indicating the name of the function that should be called if a
+     suitable spawn location has been found.  This function will be passed a
+     single parameter, pos, indicating where the object should be placed.
 
 -----
 
