@@ -72,6 +72,8 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 			  and noise1 > plantlife_limit
 			  and noise2 >= biome.temp_min
 			  and noise2 <= biome.temp_max
+			  and (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
+			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
 			  then
 				table.insert(in_biome_nodes, pos)
 				num_in_biome_nodes = num_in_biome_nodes + 1
@@ -84,13 +86,9 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 			local pos = in_biome_nodes[i]
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			if minetest.env:find_node_near(p_top, biome.radius + math.random(-1.5,1.5), biome.avoid) == nil then
-				if (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
-				    and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
-				    then
-					print("Call function: "..biome.exec_funct.."("..dump(pos)..")")
-					minetest.log("verbose", "Call function: "..biome.exec_funct.."("..dump(pos)..")")
-					assert(loadstring(biome.exec_funct.."("..dump(pos)..")"))()
-				end
+				print("Call function: "..biome.exec_funct.."("..dump(pos)..")")
+				minetest.log("verbose", "Call function: "..biome.exec_funct.."("..dump(pos)..")")
+				assert(loadstring(biome.exec_funct.."("..dump(pos)..")"))()
 			end
 		end
 	end
