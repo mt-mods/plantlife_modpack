@@ -44,24 +44,9 @@ end
 
 function plantslib:search_for_surfaces(minp, maxp, biome)
 	return function(minp, maxp, blockseed)
-		print("Started checking generated mapblock...")
-		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
-		local surfacenodes = {}
-		local numsurfacenodes = 0
-		for i in ipairs(searchnodes) do
-			local pos = searchnodes[i]
-			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-			if minetest.env:get_node(p_top).name == "air" then
-				table.insert(surfacenodes, pos)
-				numsurfacenodes = numsurfacenodes + 1
-			end
-		end
-		
-		print("Found "..numsurfacenodes.." surface nodes in map block {"..dump(minp)..":"..dump(maxp).."} to check.")
 
 		if biome.seed_diff == nil then biome.seed_diff = 0 end
 		if biome.neighbors == nil then biome.neighbors = biome.surface end
-		if biome.ncount == nil then biome.ncount = -1 end
 		if biome.min_elevation == nil then biome.min_elevation = -31000 end
 		if biome.max_elevation == nil then biome.max_elevation = 31000 end
 		if biome.near_nodes_size == nil then biome.near_nodes_size = 0 end
@@ -69,28 +54,44 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 		if biome.temp_min == nil then biome.temp_min = -1 end
 		if biome.temp_max == nil then biome.temp_max = 1 end
 
-		for i in ipairs(surfacenodes) do
-			local pos = surfacenodes[i]
-			local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+		print("Started checking generated mapblock volume...")
+		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
+		local in_biome_nodes = {}
+		local num_in_biome_nodes = 0
+		for i in ipairs(searchnodes) do
+			local pos = searchnodes[i]
+			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			local perlin1 = minetest.env:get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 			local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
-			if minetest.env:find_node_near(p_top, biome.radius + math.random(-1.5,1.5), biome.avoid) == nil
+			if (biome.depth == nil or minetest.env:get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
+			  and minetest.env:get_node(p_top).name == "air" 
+			  and pos.y >= biome.min_elevation
+			  and pos.y <= biome.max_elevation
 			  and noise1 > plantlife_limit
 			  and noise2 >= biome.temp_min
 			  and noise2 <= biome.temp_max
-			  and (biome.ncount == -1 or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
+			  then
+				table.insert(in_biome_nodes, pos)
+				num_in_biome_nodes = num_in_biome_nodes + 1
+			end
+		end
+		
+		print("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
+
+		for i in ipairs(in_biome_nodes) do
+			local pos = in_biome_nodes[i]
+			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+			if minetest.env:find_node_near(p_top, biome.radius + math.random(-1.5,1.5), biome.avoid) == nil
+			  and (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
 			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
-			  and pos.y >= biome.min_elevation
-			  and pos.y <= biome.max_elevation
-			  and (biome.water_depth == nil or minetest.env:get_node({ x = pos.x, y = pos.y-biome.water_depth-1, z = pos.z }).name ~= "default:water_source")
-			  then 
+			  then
+				print("Call function: "..biome.exec_funct.."("..dump(pos)..")")
 				minetest.log("verbose", "Call function: "..biome.exec_funct.."("..dump(pos)..")")
 				assert(loadstring(biome.exec_funct.."("..dump(pos)..")"))()
 			end
 		end
-		print("Finished checking generated mapblock.")
 	end
 end
 
