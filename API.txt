@@ -121,35 +121,43 @@ plantslib:register_generate_plant(biome)
 Where "biome" is a table containing about a dozen variables:
 
 biome = {
-	surface = "string",	-- [*] what nodes to spawn on
-	avoid =	{table},	-- [*] what nodes to avoid when spawning
+	surface = "string",	-- [*] what nodes to spawn on.
+	avoid =	{table},	-- [*] what nodes to avoid when spawning.
 	radius = num,		-- [*] how much distance to leave between
-				       objects
-	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0.
-	neighbors = {table},	-- table of what ground nodes must be right
-				   next to and at the same elevation as the
-				   node to be spawned on.  Defaults to the
-				   value of the "surface" string.
-	ncount = num,		-- how many of the above nodes must be nearby
-				   (at least this many).
+				       the object to be added and the objects
+				       to be avoided.
+	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0, 
+				   which causes the function to inherit the
+				   global value of 329.
+	neighbors = {table},	-- What ground nodes must be right next to and
+				   at the same elevation as the node to be
+				   spawned on.  Defaults to the value of the
+				   "surface" string.
+	ncount = num,		-- at least this many of the above nodes must
+				   be next to the node to spawn on.  Any value
+				   greater than 8 will probably cause the code
+				   to never spawn anything.  Defaults to 0.
 	depth = num,		-- how deep/thick of a layer the spawned-on
-				   node must be (typically used for water).
-				   Defaults to 62000 (unlimited).
+				   node must be.  Typically used for water.
+				   Defaults to unlimited.
 	min_elevation = num,	-- minimum elevation in meters/nodes.
 				   Defaults to -31000 (unlimited).
 	max_elevation = num,	-- maximum elevation.  Defaults to +31000
-				   (unlimited)
+				   (unlimited).
 	near_nodes = {table},	-- what nodes must be in the general vicinity
 				   of the object being spawned.
 	near_nodes_size = num,	-- how wide of a search area to look for 
 				   the nodes in that list.
-	near_nodes_count = num,	-- how many of those nodes must be in the
-			           area
+	near_nodes_count = num,	-- at least this many of those nodes must be
+				   in the area.
 	temp_min = num,		-- minimum perlin temperature value needed to
-				   spawn an object (=hottest allowable temp.)
-	temp_max = num,		-- maximum perlin temperature value (=coldest)
+				   spawn an object (represents the hottest
+				   allowable temperature).
+	temp_max = num,		-- maximum perlin temperature value (coldest
+				   allowable temperature).
 	exec_funct = "string",	-- [**] name of the function to use to
-					actually build the object.
+					actually build the object if the code
+					decides it is time to do so.
 }
 
 [*] These entries are required for the spawn code to work.  Everything else
