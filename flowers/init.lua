@@ -2,9 +2,7 @@
 
 local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
-local grow_delay = 1000 -- 1000
-local grow_chance = 10 -- 10
-local flowers_seed_diff = plantlife_seed_diff+20
+local flowers_seed_diff = plantslib.plantlife_seed_diff+20
 
 local flowers_list = {
 	{ "Rose",		"rose", 		spawn_delay,	10,	spawn_chance	, 10},
@@ -66,7 +64,7 @@ for i in ipairs(flowers_list) do
 		}
 	})
 
-	spawn_on_surfaces(delay, "flowers:flower_"..flower, radius, chance, "default:dirt_with_grass", {"group:flower", "group:poisonivy"}, flowers_seed_diff)
+	plantslib:spawn_on_surfaces(delay, "flowers:flower_"..flower, radius, chance, "default:dirt_with_grass", {"group:flower", "group:poisonivy"}, flowers_seed_diff)
 end
 
 minetest.register_node(":flowers:flower_waterlily", {
@@ -105,11 +103,11 @@ minetest.register_node(":flowers:flower_seaweed", {
 	},	
 })
 
-spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 3,   spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10, nil, nil,                         nil, nil, 4)
+plantslib:spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 3,   spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10, nil, nil,                         nil, nil, 4)
 
-spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:dirt_with_grass"},   0,   1)
-spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   1,   1)
-spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   6,   1)
+plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:dirt_with_grass"},   0,   1)
+plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   1,   1)
+plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   6,   1)
 
 
 minetest.register_craftitem(":flowers:flower_pot", {

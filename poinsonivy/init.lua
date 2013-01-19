@@ -4,7 +4,7 @@ local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
 local grow_delay = 1000 -- 1000
 local grow_chance = 10 -- 10
-local poisonivy_seed_diff = plantlife_seed_diff + 10
+local poisonivy_seed_diff = plantslib.plantlife_seed_diff + 10
 
 local verticals_list = {
 	"default:dirt",
@@ -63,9 +63,8 @@ minetest.register_node(':poisonivy:climbing', {
 	},
 })
 
-spawn_on_surfaces(spawn_delay, "poisonivy:seedling", 10 , spawn_chance/10, "default:dirt_with_grass", {"group:poisonivy","group:flower"}, poisonivy_seed_diff, 7)
+plantslib:spawn_on_surfaces(spawn_delay, "poisonivy:seedling", 10 , spawn_chance/10, "default:dirt_with_grass", {"group:poisonivy","group:flower"}, poisonivy_seed_diff, 7)
 
-grow_plants(spawn_delay, grow_chance,   "poisonivy:seedling", "poisonivy:sproutling", nil, {"default:dirt_with_grass"})
-
-grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil                        ,nil,true,true,nil,{"default:dirt_with_grass"})
+plantslib:grow_plants(spawn_delay, grow_chance,   "poisonivy:seedling", "poisonivy:sproutling", nil, {"default:dirt_with_grass"})
+plantslib:grow_plants(spawn_delay, grow_chance*2, "poisonivy:climbing", nil,                    nil, nil                        ,nil,true,true,nil,{"default:dirt_with_grass"})
 

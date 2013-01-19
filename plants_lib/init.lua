@@ -1,17 +1,17 @@
 -- Plantlife library mod by Vanessa Ezekowitz
--- 2013-01-00
+-- 2013-01-18
 --
 -- License:  WTFPL
 --
 -- I got the temperature map idea from "hmmmm", values used for it came from
+-- Splizard's snow mod.
 --
-
 
 -- Various settings - most of these probably won't need to be changed
 
-plantlife_seed_diff = 329	-- needs to be global so other mods can see it
+plantslib = {}
 
-local plantlife_debug = true  -- ...unless you want the modpack to spam the console ;-)
+plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
 local perlin_octaves = 3
 local perlin_persistence = 0.6
@@ -28,13 +28,7 @@ local plantlife_limit = 0.1 -- compared against perlin noise.  lower = more abun
 
 math.randomseed(os.time())
 
-local dbg = function(s)
-	if plantlife_debug then
-		print("[Plantlife] " .. s)
-	end
-end
-
-local is_node_loaded = function(node_pos)
+function plantslib:is_node_loaded(node_pos)
 	n = minetest.env:get_node_or_nil(node_pos)
 	if (n == nil) or (n.name == "ignore") then
 		return false
@@ -42,31 +36,89 @@ local is_node_loaded = function(node_pos)
 	return true
 end
 
+-- Spawn plants using the map generator
+
+function plantslib:register_generate_plant(biome)
+		minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biome))
+end
+
+function plantslib:search_for_surfaces(minp, maxp, biome)
+	return function(minp, maxp, blockseed)
+		print("Started checking generated mapblock...")
+		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
+		local surfacenodes = {}
+		local numsurfacenodes = 0
+		for i in ipairs(searchnodes) do
+			local pos = searchnodes[i]
+			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+			if minetest.env:get_node(p_top).name == "air" then
+				table.insert(surfacenodes, pos)
+				numsurfacenodes = numsurfacenodes + 1
+			end
+		end
+		
+		print("Found "..numsurfacenodes.." surface nodes in map block {"..dump(minp)..":"..dump(maxp).."} to check.")
+
+		if biome.seed_diff == nil then biome.seed_diff = 0 end
+		if biome.neighbors == nil then biome.neighbors = biome.surface end
+		if biome.ncount == nil then biome.ncount = -1 end
+		if biome.min_elevation == nil then biome.min_elevation = -31000 end
+		if biome.max_elevation == nil then biome.max_elevation = 31000 end
+		if biome.near_nodes_size == nil then biome.near_nodes_size = 0 end
+		if biome.near_nodes_count == nil then biome.near_nodes_count = 1 end
+		if biome.temp_min == nil then biome.temp_min = -1 end
+		if biome.temp_max == nil then biome.temp_max = 1 end
+
+		for i in ipairs(surfacenodes) do
+			local pos = surfacenodes[i]
+			local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+			local perlin1 = minetest.env:get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+			local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+			if minetest.env:find_node_near(p_top, biome.radius + math.random(-1.5,1.5), biome.avoid) == nil
+			  and noise1 > plantlife_limit
+			  and noise2 >= biome.temp_min
+			  and noise2 <= biome.temp_max
+			  and (biome.ncount == -1 or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
+			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
+			  and pos.y >= biome.min_elevation
+			  and pos.y <= biome.max_elevation
+			  and (biome.water_depth == nil or minetest.env:get_node({ x = pos.x, y = pos.y-biome.water_depth-1, z = pos.z }).name ~= "default:water_source")
+			  then 
+				minetest.log("verbose", "Call function: "..biome.exec_funct.."("..dump(pos)..")")
+				assert(loadstring(biome.exec_funct.."("..dump(pos)..")"))()
+			end
+		end
+		print("Finished checking generated mapblock.")
+	end
+end
+
 -- The spawning ABM
 
-spawn_on_surfaces = function(
-						sdelay,
-						splant,
-						sradius,
-						schance,
-						ssurface,
-						savoid,
-						seed_diff,
-						lightmin,
-						lightmax,
-						nneighbors,
-						ocount,
-						facedir,
-						depthmax,
-						altmin,
-						altmax,
-						sbiome,
-						sbiomesize,
-						sbiomecount,
-						airsize,
-						aircount,
-						tempmin,
-						tempmax)
+function plantslib:spawn_on_surfaces(
+		sdelay,
+		splant,
+		sradius,
+		schance,
+		ssurface,
+		savoid,
+		seed_diff,
+		lightmin,
+		lightmax,
+		nneighbors,
+		ocount,
+		facedir,
+		depthmax,
+		altmin,
+		altmax,
+		sbiome,
+		sbiomesize,
+		sbiomecount,
+		airsize,
+		aircount,
+		tempmin,
+		tempmax)
 	if seed_diff == nil then seed_diff = 0 end
 	if lightmin == nil then lightmin = 0 end
 	if lightmax == nil then lightmax = LIGHT_MAX end
@@ -97,7 +149,7 @@ spawn_on_surfaces = function(
 			if noise1 > plantlife_limit 
 			  and noise2 >= tempmin
 			  and noise2 <= tempmax
-			  and is_node_loaded(p_top) then
+			  and plantslib:is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
 				if minetest.env:find_node_near(p_top, sradius + math.random(-1.5,2), savoid) == nil
 				  and n_light >= lightmin
@@ -110,16 +162,16 @@ spawn_on_surfaces = function(
 				  and pos.y >= altmin
 				  and pos.y <= altmax
 					then
-						local walldir = plant_valid_wall(p_top)
+						local walldir = plantslib:plant_valid_wall(p_top)
 						if splant == "poisonivy:seedling" and walldir ~= nil then
-							dbg("Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
+							minetest.log("verbose", "Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
 							minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
 						else
 							local deepnode = minetest.env:get_node({ x = pos.x, y = pos.y-depthmax-1, z = pos.z }).name
 							if (ssurface ~= "default:water_source")
 								or (ssurface == "default:water_source"
 								and deepnode ~= "default:water_source") then
-								dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
+								minetest.log("verbose", "Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
 								minetest.env:add_node(p_top, { name = splant, param2 = facedir })
 							end
 						end
@@ -131,20 +183,20 @@ end
 
 -- The growing ABM
 
-grow_plants = function(
-					gdelay,
-					gchance,
-					gplant,
-					gresult,
-					dry_early_node,
-					grow_nodes,
-					facedir,
-					need_wall,
-					grow_vertically,
-					height_limit,
-					ground_nodes,
-					grow_function,
-					seed_diff)
+function plantslib:grow_plants(
+		gdelay,
+		gchance,
+		gplant,
+		gresult,
+		dry_early_node,
+		grow_nodes,
+		facedir,
+		need_wall,
+		grow_vertically,
+		height_limit,
+		ground_nodes,
+		grow_function,
+		seed_diff)
 	if need_wall ~= true then need_wall = false end
 	if grow_vertically ~= true then grow_vertically = false end
 	if height_limit == nil then height_limit = 62000 end
@@ -162,30 +214,30 @@ grow_plants = function(
 			if grow_function == nil then
 				if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
 					if grow_vertically then
-						if find_first_node(pos, height_limit, ground_nodes) ~= nil then
+						if plantslib:find_first_node(pos, height_limit, ground_nodes) ~= nil then
 							if need_wall then
-								local walldir=plant_valid_wall(p_top)
+								local walldir=plantslib:plant_valid_wall(p_top)
 								if walldir ~= nil then
-									dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
+									minetest.log("verbose", "Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
 									minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
 								end
 							else
-								dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
+								minetest.log("verbose", "Grow: "..gplant.." upwards to ("..dump(p_top)..")")
 								minetest.env:add_node(p_top, { name = gplant })
 							end
 						end
 
 					-- corner case for changing short junglegrass to dry shrub in desert
 					elseif n_bot.name == dry_early_node and gplant == "junglegrass:short" then
-						dbg("Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
+						minetest.log("verbose", "Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
 						minetest.env:add_node(pos, { name = "default:dry_shrub" })
 
 					elseif gresult == nil then
-						dbg("Die: "..gplant.." at ("..dump(pos)..")")
+						minetest.log("verbose", "Die: "..gplant.." at ("..dump(pos)..")")
 						minetest.env:remove_node(pos)
 
 					elseif gresult ~= nil then
-						dbg("Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
+						minetest.log("verbose", "Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
 						if facedir == nil then
 							minetest.env:add_node(pos, { name = gresult })
 						else
@@ -199,7 +251,7 @@ grow_plants = function(
 				local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
 				local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 				local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
-				dbg("Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
+				minetest.log("verbose", "Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
 				assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
 			end
 		end
@@ -209,7 +261,7 @@ end
 -- function to decide if a node has a wall that's in verticals_list{}
 -- returns wall direction of valid node, or nil if invalid.
 
-plant_valid_wall = function(wallpos)
+function plantslib:plant_valid_wall(wallpos)
 	local walldir = nil
 	local verts = dump(verticals_list)
 
@@ -230,7 +282,7 @@ end
 
 -- Function to search straight down from (pos) to find first node in match list.
 
-find_first_node = function(pos, height_limit, nodelist)
+function plantslib:find_first_node(pos, height_limit, nodelist)
 	for i = 1, height_limit do
 		n = minetest.env:get_node({x=pos.x, y=pos.y-i, z=pos.z})
 		if string.find(dump(nodelist),n.name) ~= nil then

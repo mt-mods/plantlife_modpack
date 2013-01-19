@@ -4,7 +4,7 @@ local spawn_delay = 2000 -- 2000
 local spawn_chance = 100 -- 100
 local grow_delay = 1000 -- 1000
 local grow_chance = 10 -- 10
-local junglegrass_seed_diff = plantlife_seed_diff
+local junglegrass_seed_diff = plantslib.plantlife_seed_diff
 
 local grasses_list = {
         {"junglegrass:shortest","junglegrass:short" },
@@ -68,12 +68,12 @@ minetest.register_node(':junglegrass:shortest', {
 	},
 })
 
-spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*2, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*2, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
 
 for i in ipairs(grasses_list) do
-	grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
+	plantslib:grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
 end
 
