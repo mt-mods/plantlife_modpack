@@ -128,6 +128,9 @@ biome = {
 	avoid_radius = num,	-- [*] how much distance to leave between
 				       the object to be added and the objects
 				       to be avoided.
+	rarity = num,		-- how rare should this tree be in its biome?
+				   Larger values more rare, determined by
+				   math.random(1,100) > this
 	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0, 
 				   which causes the function to inherit the
 				   global value of 329.

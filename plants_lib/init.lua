@@ -74,6 +74,7 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 			  and noise2 >= biome.temp_max
 			  and (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
 			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
+			  and math.random(1,100) > biome.rarity
 			  then
 				table.insert(in_biome_nodes, pos)
 				num_in_biome_nodes = num_in_biome_nodes + 1
