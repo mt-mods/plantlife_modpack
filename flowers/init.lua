@@ -135,3 +135,12 @@ minetest.register_craft({
     }
 })
 
+minetest.register_craft({
+	output = "wool:white 2",
+	recipe = {
+		{'', '', ''},
+		{'flowers:cotton', 'flowers:cotton', ''},
+		{'flowers:cotton', 'flowers:cotton', ''},
+	}
+})
+
