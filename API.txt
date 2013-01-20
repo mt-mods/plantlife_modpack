@@ -114,16 +114,18 @@ checking is disabled.  Same holds true for the nneighbors bit above that.
 -----
 
 To register a plant to be spawned at mapgen time rather than via an ABM, call
-this function:
+this function with two parameters:  a table with the biome information, and
+a string or table describing what to execute if the engine finds a suitable
+node (see below):
 
-plantslib:register_generate_plant(biome)
+plantslib:register_generate_plant(biome, function_or_treedef)
 
 Where "biome" is a table containing about a dozen variables:
 
 biome = {
 	surface = "string",	-- [*] what nodes to spawn on.
-	avoid =	{table},	-- [*] what nodes to avoid when spawning.
-	radius = num,		-- [*] how much distance to leave between
+	avoid_nodes = {table},	-- [*] what nodes to avoid when spawning.
+	avoid_radius = num,	-- [*] how much distance to leave between
 				       the object to be added and the objects
 				       to be avoided.
 	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0, 
@@ -155,18 +157,22 @@ biome = {
 				   allowable temperature).
 	temp_max = num,		-- maximum perlin temperature value (coldest
 				   allowable temperature).
-	exec_funct = "string",	-- [**] name of the function to use to
-					actually build the object if the code
-					decides it is time to do so.
+
 }
 
 [*] These entries are required for the spawn code to work.  Everything else
     is optional.  Unless explicitly stated, all unused/unsupplied parameters
     default to nil and will not affect the results of the code.
 
-[**] A string indicating the name of the function that should be called if a
-     suitable spawn location has been found.  This function will be passed a
-     single parameter, pos, indicating where the object should be placed.
+Regarding function_or_treedef, this must either be a string indicating the
+name of the function that should be called if a suitable spawn location has
+been found, OR a table with an L-Systems tree definition.
+
+If you specify a string with a function name, that function will be passed a
+single position parameter (in the usual table format), indicating where the
+object should be placed.  If you specified an L-Systems tree definition, then
+that definition will be passed directly to the spawn_tree() function along
+with the position to spawn the tree on.
 
 -----
 
