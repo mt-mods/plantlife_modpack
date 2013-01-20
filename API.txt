@@ -184,7 +184,7 @@ defined like so:
 
 grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node,
 	grow_nodes, facedir, need_wall, grow_vertically, height_limit,
-	ground_nodes, grow_function)
+	ground_nodes, grow_function, seed_diff)
 
 gdelay:		Passed as the ABM "interval" parameter, as with spawning.
 gchance:	Passed as the ABM "chance" parameter.
@@ -221,21 +221,20 @@ ground_nodes:	What nodes should be treated as "the ground" below a
 		as the grow_nodes table, but might also include, for
 		example, water or some other surrounding material.
 		Defaults to "default:dirt_with_grass".
-grow_function:	Execute the named function (which must be supplied as just
-		the name of the function as a string) when growing this
-		node, rather than using the method provided by the default
-		growing code.  Note that if this is specified, only the
-		gdelay, gchance, and gplant variables will be used, the
-		rest will be ignored by the growing ABM.  You can still
-		read them from within the function if you need to.  The
-		function will be passed two parameters in order:  The
-		position of the node to be "grown" (in the usual table
-		format), and the Perlin noise value at the location in
-		question.
-seed_diff:	The Perlin seed diff to be use to calculate the noise 
-		value given to the above grow_function.  Should be the
-		same as the seed diff used when first spawning the plant
-		that's being grown.
+grow_function:	String indicating what function to use to grow the plant, if
+		any, or a table with an L-Systems tree model, or nil.  If it's
+		nil,  If it's nil, a regular plant will be inserted in place 
+		of the one being grown, per the above variables.  If it's a
+		string, the function named therein is executed and passed a
+		parameter for the current position, followed by the "can grow
+		here" and temperature map Perlin values at that location.  If
+		it's a table, the tree described by that table is spawned at
+		the current position.  In both cases, all parameters from
+		gresult to ground_nodes are ignored.
+seed_diff:	The Perlin seed diff to be use to calculate the first noise 
+		value given to the above grow_function.  Should be the same as
+		the seed diff used when first spawning the plant that's being
+		grown.
 
 -----
 

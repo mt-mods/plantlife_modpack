@@ -258,8 +258,14 @@ function plantslib:grow_plants(
 				local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
 				local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 				local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
-				minetest.log("verbose", "Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
-				assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
+				if type(grow_function) == "table" then
+					minetest.log("verbose", "Grow sapling into tree at "..dump(pos))
+					minetest.env:remove_node(pos)
+					minetest.env:spawn_tree(pos, grow_function)
+				else
+					minetest.log("verbose", "Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
+					assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
+				end
 			end
 		end
 	})
