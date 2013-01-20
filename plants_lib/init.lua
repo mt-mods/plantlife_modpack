@@ -38,11 +38,11 @@ end
 
 -- Spawn plants using the map generator
 
-function plantslib:register_generate_plant(biome)
-		minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biome))
+function plantslib:register_generate_plant(biome, funct_or_model)
+		minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model))
 end
 
-function plantslib:search_for_surfaces(minp, maxp, biome)
+function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 	return function(minp, maxp, blockseed)
 
 		if biome.seed_diff == nil then biome.seed_diff = 0 end
@@ -51,8 +51,8 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 		if biome.max_elevation == nil then biome.max_elevation = 31000 end
 		if biome.near_nodes_size == nil then biome.near_nodes_size = 0 end
 		if biome.near_nodes_count == nil then biome.near_nodes_count = 1 end
-		if biome.temp_min == nil then biome.temp_min = -1 end
-		if biome.temp_max == nil then biome.temp_max = 1 end
+		if biome.temp_min == nil then biome.temp_min = 1 end
+		if biome.temp_max == nil then biome.temp_max = -1 end
 
 		print("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
@@ -70,8 +70,8 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 			  and pos.y >= biome.min_elevation
 			  and pos.y <= biome.max_elevation
 			  and noise1 > plantlife_limit
-			  and noise2 >= biome.temp_min
-			  and noise2 <= biome.temp_max
+			  and noise2 <= biome.temp_min
+			  and noise2 >= biome.temp_max
 			  and (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
 			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-1, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+1, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
 			  then
@@ -85,10 +85,15 @@ function plantslib:search_for_surfaces(minp, maxp, biome)
 		for i in ipairs(in_biome_nodes) do
 			local pos = in_biome_nodes[i]
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-			if minetest.env:find_node_near(p_top, biome.radius + math.random(-1.5,1.5), biome.avoid) == nil then
-				print("Call function: "..biome.exec_funct.."("..dump(pos)..")")
-				minetest.log("verbose", "Call function: "..biome.exec_funct.."("..dump(pos)..")")
-				assert(loadstring(biome.exec_funct.."("..dump(pos)..")"))()
+			if minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) == nil then
+				if type(funct_or_model) == "table" then
+					print("Spawn tree at {"..dump(pos).."}")
+					minetest.env:spawn_tree(pos, funct_or_model)
+				else
+					print("Call function: "..funct_or_model.."("..dump(pos)..")")
+					minetest.log("verbose", "Call function: "..funct_or_model.."("..dump(pos)..")")
+					assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
+				end
 			end
 		end
 	end
