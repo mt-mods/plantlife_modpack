@@ -61,7 +61,7 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 		if biome.temp_max == nil then biome.temp_max = -1 end
 		if biome.rarity == nil then biome.rarity = 50 end
 
-		print("Started checking generated mapblock volume...")
+		dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
 		local in_biome_nodes = {}
 		local num_in_biome_nodes = 0
@@ -88,17 +88,17 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 			end
 		end
 		
-		print("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
+		dbg("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
 
 		for i in ipairs(in_biome_nodes) do
 			local pos = in_biome_nodes[i]
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			if minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) == nil then
 				if type(funct_or_model) == "table" then
-					print("Spawn tree at {"..dump(pos).."}")
+					dbg("Spawn tree at {"..dump(pos).."}")
 					minetest.env:spawn_tree(pos, funct_or_model)
 				else
-					print("Call function: "..funct_or_model.."("..dump(pos)..")")
+					dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
 					dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
 					assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
 				end
