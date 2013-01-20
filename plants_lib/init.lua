@@ -11,6 +11,8 @@
 
 plantslib = {}
 
+local DEBUG = false --... except if you want to spam the console with debugging info :-)
+
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
 local perlin_octaves = 3
@@ -22,7 +24,7 @@ local temperature_octaves = 3
 local temperature_persistence = 0.5
 local temperature_scale = 150
 
-local plantlife_limit = 0.1 -- compared against perlin noise.  lower = more abundant
+local plantlife_limit = 0.1
 
 -- Local functions
 
@@ -34,6 +36,10 @@ function plantslib:is_node_loaded(node_pos)
 		return false
 	end
 	return true
+end
+
+function dbg(msg)
+	if DEBUG then minetest.log("verbose", msg) end
 end
 
 -- Spawn plants using the map generator
@@ -93,7 +99,7 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 					minetest.env:spawn_tree(pos, funct_or_model)
 				else
 					print("Call function: "..funct_or_model.."("..dump(pos)..")")
-					minetest.log("verbose", "Call function: "..funct_or_model.."("..dump(pos)..")")
+					dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
 					assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
 				end
 			end
@@ -171,14 +177,14 @@ function plantslib:spawn_on_surfaces(
 					then
 						local walldir = plantslib:plant_valid_wall(p_top)
 						if splant == "poisonivy:seedling" and walldir ~= nil then
-							minetest.log("verbose", "Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
+							dbg("Spawn: poisonivy:climbing at "..dump(p_top).." on "..ssurface)
 							minetest.env:add_node(p_top, { name = "poisonivy:climbing", param2 = walldir })
 						else
 							local deepnode = minetest.env:get_node({ x = pos.x, y = pos.y-depthmax-1, z = pos.z }).name
 							if (ssurface ~= "default:water_source")
 								or (ssurface == "default:water_source"
 								and deepnode ~= "default:water_source") then
-								minetest.log("verbose", "Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
+								dbg("Spawn: "..splant.." at "..dump(p_top).." on "..ssurface)
 								minetest.env:add_node(p_top, { name = splant, param2 = facedir })
 							end
 						end
@@ -225,26 +231,26 @@ function plantslib:grow_plants(
 							if need_wall then
 								local walldir=plantslib:plant_valid_wall(p_top)
 								if walldir ~= nil then
-									minetest.log("verbose", "Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
+									dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..") on wall "..walldir)
 									minetest.env:add_node(p_top, { name = gplant, param2 = walldir })
 								end
 							else
-								minetest.log("verbose", "Grow: "..gplant.." upwards to ("..dump(p_top)..")")
+								dbg("Grow: "..gplant.." upwards to ("..dump(p_top)..")")
 								minetest.env:add_node(p_top, { name = gplant })
 							end
 						end
 
 					-- corner case for changing short junglegrass to dry shrub in desert
 					elseif n_bot.name == dry_early_node and gplant == "junglegrass:short" then
-						minetest.log("verbose", "Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
+						dbg("Die: "..gplant.." becomes default:dry_shrub at ("..dump(pos)..")")
 						minetest.env:add_node(pos, { name = "default:dry_shrub" })
 
 					elseif gresult == nil then
-						minetest.log("verbose", "Die: "..gplant.." at ("..dump(pos)..")")
+						dbg("Die: "..gplant.." at ("..dump(pos)..")")
 						minetest.env:remove_node(pos)
 
 					elseif gresult ~= nil then
-						minetest.log("verbose", "Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
+						dbg("Grow: "..gplant.." becomes "..gresult.." at ("..dump(pos)..")")
 						if facedir == nil then
 							minetest.env:add_node(pos, { name = gresult })
 						else
@@ -259,11 +265,11 @@ function plantslib:grow_plants(
 				local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 				local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
 				if type(grow_function) == "table" then
-					minetest.log("verbose", "Grow sapling into tree at "..dump(pos))
+					dbg("Grow sapling into tree at "..dump(pos))
 					minetest.env:remove_node(pos)
 					minetest.env:spawn_tree(pos, grow_function)
 				else
-					minetest.log("verbose", "Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
+					dbg("Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
 					assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
 				end
 			end
