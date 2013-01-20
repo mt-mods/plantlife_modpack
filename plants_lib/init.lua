@@ -213,7 +213,7 @@ function plantslib:grow_plants(
 	if need_wall ~= true then need_wall = false end
 	if grow_vertically ~= true then grow_vertically = false end
 	if height_limit == nil then height_limit = 62000 end
-	if ground_node == nil then ground_nodes = { "default:dirt_with_grass" } end
+	if ground_nodes == nil then ground_nodes = { "default:dirt_with_grass" } end
 	minetest.register_abm({
 		nodenames = { gplant },
 		interval = gdelay,
@@ -223,9 +223,9 @@ function plantslib:grow_plants(
 			local p_bot = {x=pos.x, y=pos.y-1, z=pos.z}
 			local n_top = minetest.env:get_node(p_top)
 			local n_bot = minetest.env:get_node(p_bot)
-			local groundnode = minetest.env:get_node({x=pos.x, y=pos.y-height_limit, z=pos.z})
-			if grow_function == nil then
-				if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
+			local root_node = minetest.env:get_node({x=pos.x, y=pos.y-height_limit, z=pos.z})
+			if string.find(dump(grow_nodes), n_bot.name) ~= nil and n_top.name == "air" then
+				if grow_function == nil then
 					if grow_vertically then
 						if plantslib:find_first_node(pos, height_limit, ground_nodes) ~= nil then
 							if need_wall then
@@ -257,20 +257,20 @@ function plantslib:grow_plants(
 							minetest.env:add_node(pos, { name = gresult, param2 = facedir })
 						end
 					end
-				end
-			else
-				if seed_diff == nil then seed_diff = 0 end
-				local perlin1 = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-				local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
-				local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
-				local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
-				if type(grow_function) == "table" then
-					dbg("Grow sapling into tree at "..dump(pos))
-					minetest.env:remove_node(pos)
-					minetest.env:spawn_tree(pos, grow_function)
 				else
-					dbg("Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
-					assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
+					if seed_diff == nil then seed_diff = 0 end
+					local perlin1 = minetest.env:get_perlin(seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+					local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+					local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+					local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+					if type(grow_function) == "table" then
+						dbg("Grow sapling into tree at "..dump(pos))
+						minetest.env:remove_node(pos)
+						minetest.env:spawn_tree(pos, grow_function)
+					else
+						dbg("Call function: "..grow_function.."("..dump(pos)..","..noise1..","..noise2..")")
+						assert(loadstring(grow_function.."("..dump(pos)..","..noise1..","..noise2..")"))()
+					end
 				end
 			end
 		end

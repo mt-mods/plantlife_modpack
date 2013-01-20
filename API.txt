@@ -198,13 +198,12 @@ gresult:	Name of the node into which the above should transform
 dry_early_node:	This value is ignored except for jungle grass, where it
 		indicates which node the grass must be on in order for it
 		to turn from "short" to default:dry_shrub.
-grow_nodes:	This node must be under the plant in order for it to grow
-		at all.  Normally this should be the same as the list of 
+grow_nodes:	One of these nodes must be under the plant in order for it to
+		grow at all.  Normally this should be the same as the list of 
 		surfaces passed to the spawning ABM as the "nodenames"
-		parameter, such as {"default:dirt_with_grass",
-		"default:sand"}.  This is so that the plant can be
-		manually placed on something like a flower pot or
-		something without it growing and eventually dieing.
+		parameter.  This is so that the plant can be manually placed
+		on something like a flower pot or something without it growing
+		and eventually dieing.  Defaults to "default:dirt_with_grass".
 facedir:	Same as with spawning a plant.  If supplied, this value is
 		passed to the param2 variable when changing the plant.  If
 		nil or left out, no new param2 value is applied.
@@ -229,8 +228,9 @@ grow_function:	String indicating what function to use to grow the plant, if
 		parameter for the current position, followed by the "can grow
 		here" and temperature map Perlin values at that location.  If
 		it's a table, the tree described by that table is spawned at
-		the current position.  In both cases, all parameters from
-		gresult to ground_nodes are ignored.
+		the current position.  In both string and table cases, all
+		parameters from gresult to ground_nodes, except for
+		grow_nodes, are ignored.
 seed_diff:	The Perlin seed diff to be use to calculate the first noise 
 		value given to the above grow_function.  Should be the same as
 		the seed diff used when first spawning the plant that's being
