@@ -53,6 +53,7 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 		if biome.near_nodes_count == nil then biome.near_nodes_count = 1 end
 		if biome.temp_min == nil then biome.temp_min = 1 end
 		if biome.temp_max == nil then biome.temp_max = -1 end
+		if biome.rarity == nil then biome.rarity = 50 end
 
 		print("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
