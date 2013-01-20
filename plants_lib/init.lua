@@ -11,7 +11,7 @@
 
 plantslib = {}
 
-local DEBUG = true --... except if you want to spam the console with debugging info :-)
+local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
