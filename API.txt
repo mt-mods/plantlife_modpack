@@ -152,12 +152,11 @@ biome = {
 				   the nodes in that list.
 	near_nodes_count = num,	-- at least this many of those nodes must be
 				   in the area.
-	temp_min = num,		-- minimum perlin temperature value needed to
-				   spawn an object (represents the hottest
-				   allowable temperature).
-	temp_max = num,		-- maximum perlin temperature value (coldest
-				   allowable temperature).
-
+	temp_min = num,		-- coldest allowable temperature for a plant
+				   to spawn (that is, the highest Perlin
+				   temperature map value).
+	temp_max = num,		-- warmest allowable temperature to spawn a
+				   plant (lowest Perlin temperature value).
 }
 
 [*] These entries are required for the spawn code to work.  Everything else
