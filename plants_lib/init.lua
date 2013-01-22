@@ -63,6 +63,7 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 		if biome.temp_min == nil then biome.temp_min = 1 end
 		if biome.temp_max == nil then biome.temp_max = -1 end
 		if biome.rarity == nil then biome.rarity = 50 end
+		if biome.max_count == nil then biome.max_count = 5 end
 
 		plantslib:dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
@@ -91,19 +92,32 @@ function plantslib:search_for_surfaces(minp, maxp, biome, funct_or_model)
 			end
 		end
 		
-		plantslib:dbg("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
-
-		for i in ipairs(in_biome_nodes) do
-			local pos = in_biome_nodes[i]
-			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-			if minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) == nil then
-				if type(funct_or_model) == "table" then
-					plantslib:dbg("Spawn tree at {"..dump(pos).."}")
-					minetest.env:spawn_tree(pos, funct_or_model)
-				else
-					plantslib:dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
-					plantslib:dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
-					assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
+		if num_in_biome_nodes > 0 then
+			plantslib:dbg("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
+			for i = 1,biome.max_count do
+				local tries = 0
+				local spawned = false
+				while tries < 2 and not planted do
+					local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
+					local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+					if minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) == nil then
+						spawned = true
+						if type(funct_or_model) == "table" then
+							plantslib:dbg("Spawn tree at {"..dump(pos).."}")
+							minetest.env:spawn_tree(pos, funct_or_model)
+						else
+							plantslib:dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
+							plantslib:dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
+							assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
+						end
+					else
+						tries = tries + 1
+						spawned = false
+						plantslib:dbg("Couldn't spawn a tree at {"..dump(pos).."} -- trying again elsewhere")
+					end
+				end
+				if tries == 2 and spawned == false then
+					plantslib:dbg("Unable to spawn that tree.  Giving up on it.")
 				end
 			end
 		end
