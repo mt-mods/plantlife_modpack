@@ -6,19 +6,6 @@ local grow_delay = 1000 -- 1000
 local grow_chance = 10 -- 10
 local poisonivy_seed_diff = plantslib.plantlife_seed_diff + 10
 
-local verticals_list = {
-	"default:dirt",
-	"default:dirt_with_grass",
-	"default:stone",
-	"default:cobble",
-	"default:mossycobble",
-	"default:brick",
-	"default:tree",
-	"default:jungletree",
-	"default:coal",
-	"default:iron"
-}
-
 minetest.register_node(':poisonivy:seedling', {
 	description = "Poison ivy (seedling)",
 	drawtype = 'plantlike',

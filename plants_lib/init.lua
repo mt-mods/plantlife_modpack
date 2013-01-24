@@ -298,6 +298,19 @@ end
 -- function to decide if a node has a wall that's in verticals_list{}
 -- returns wall direction of valid node, or nil if invalid.
 
+local verticals_list = {
+	"default:dirt",
+	"default:dirt_with_grass",
+	"default:stone",
+	"default:cobble",
+	"default:mossycobble",
+	"default:brick",
+	"default:tree",
+	"default:jungletree",
+	"default:coal",
+	"default:iron"
+}
+
 function plantslib:plant_valid_wall(wallpos)
 	local walldir = nil
 	local verts = dump(verticals_list)
