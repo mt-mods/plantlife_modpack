@@ -1,6 +1,6 @@
 This document briefly describes the Plantlife API.
 
-Last revision: 2013-01-18
+Last revision: 2013-01-25
 
 =========
 Functions
@@ -22,91 +22,206 @@ at any time.  See init.lua for more.
 
 -----
 
-The first of these, spawn_on_surfaces() is defined with quite a large number
-of variables.  All of the variables below, if specified at all, must be
-specified exactly in the order given here.  This function has no return value.
+The first function is an ABM-based spawner function originally created as
+part of Ironzorg's flowers mod.  It has since been largely extended and
+expanded.  There are two ways to call this function.  Either via the legacy
+method like that which was used in the Flowers mod:
 
-spawn_on_surfaces = function(sdelay, splant, sradius, schance, ssurface,
-	savoid, seed_diff, lightmin, lightmax, nneighbors, ocount, facedir,
-	depthmax, altitudemin, altitudemax, sbiome, sbiomesize, sbiomecount, 
-	airsize, aircount, tempmin, tempmax)
+spawn_on_surfaces(sdelay, splant, sradius, schance, ssurface, savoid)
 
-The first several of these are all required, and are from the last version of
-the flowers mod, so this part of the API should be the same as before.
+Or, you can specify the various options with a single table as the parameter:
 
-sdelay:		The value passed to the ABM's interval parameter, in seconds.
-splant:		The node name of the item to spawn (e.g.
-		"flowers:flower_rose").  Note that if the plant is
-		"poisonivy:seedling", and it's next to a wall at spawn
-		time, it automatically becomes the wall-climbing variety.
-		A plant will of course only be spawned if the node about
-		to be replaced is air.
-sradius:	Don't spawn within this many nodes of the avoid items
-		mentioned below.
-schance:	The value passed to the ABM's chance parameter, normally
-		in the 10-100 range (1-in-X chance of operating on a given
-		node, e.g. 1-in-10).
-ssurface:	Table with the names of the nodes on which to spawn the
-		plant in question, such as {"default:sand",
-		"default:dirt_with_grass"}.  It is not recommended to put
-		"default:dirt" or "default:stone" into this table if you
-		can do without it, as this will cause the engine to
-		process potentially large numbers of such nodes when
-		deciding when to execute the ABM and where it should
-		operate.
-savoid:		Table with a list of groups and/or node names to avoid
-		when spawning the plant, such as {"group:flowers",
-		"default:tree"}.
+spawn_on_surfaces({table of options})
 
-From here down are several optional parameters.  You can use as many as you
-need, but you must specify them in order.  To keep the default values for
-those parameters you don't wish to alter, set them to nil in your function
-call.
+When used with the legacy interface, you must specify the parameters exactly
+in order, with the first five being mandatory and the last one being optional:
 
-seed_diff:	The Perlin seed difference value passed to the
-		minetest.env:get_perlin() function.  Used along with the
-		global Perlin controls below to create the "biome" in
-		which the plants will spawn.  Usually a value of somewhere
-		in the 10 to 100 range is good.  Defaults to 0 if not
-		provided.
-lightmin:	Minimum amount of light necessary to make a plant spawn.
-		Defaults to 0.
-lightmax:	Maximum amount of light present to allow a plant to spawn. 
-		Defaults to the engine's MAX_LIGHT value of 14.
-nneighbors:	Table with a list of neighboring nodes, passed to the ABM
-		as the "neighbors" parameter, indicating what needs to be
-		next to the node the plant is about to spawn on, such as
-		{"default:stone","default:water_source"}.  Defaults to the
-		value of ssurface if not provided.
-ocount:		There must be at least this many of the above neighbors in
-		the eight spaces immediately surrounding the node the
-		plant is about to spawn on for it to happen.  Defaults to
-		0.
-facedir:	The value passed to the param2 variable when adding the
-		plant node to the map.  Defaults to 0.
-depthmax:	If a node spawns on top of a water source, the water must
-		be at most this deep.  Defaults to 1 node.
-altitudemin:	Items must be at this altitude or higher to spawn at all.
-		Defaults to -31000.
-altitudemax:	But no higher than this altitude.  Defaults to +31000.
-sbiome:		List of nodes that must be somewhere in the vicinity in
-		order for the plant to spawn.  Typically this would be 
-		something like "default:water_source" or "default:sand".
-		Defaults to the value of ssurface if not provided.
-sbiomesize:	How large of an area to check for the above node.
-		Specifically, this checks a cuboid area centered on the
-		node to be spawned on, 3 tall and this wide/long.
-		Defaults to 0.
-sbiomecount:	How many of the above nodes must be within that radius.
-		Defaults to 1.
-airradius:	How large of an area to check for air around the target.
-		Defaults to 0 (only check the target).
-aircount:	How many of the surrounding nodes need to be air for the
-		above check to return true.  Defaults to 1.
-tempmin:	Minimum 2d Perlin value (which has a floating point range of
-		-1 to +1) needed in the temperature map for the desired
-		plant to spawn.  Defaults to -1 if not supplied.
-tempmax:	Maximum temperature.  Defaults to +1.
+	sdelay:		The value passed to the ABM's interval parameter, in
+			seconds.
+	splant:		The node name of the item to spawn (e.g.
+			"flowers:flower_rose").  Note that if the plant is
+			"poisonivy:seedling", and it's next to a wall at spawn
+			time, it automatically becomes the wall-climbing
+			variety. A plant will of course only be spawned if the
+			node about to be replaced is air.
+	sradius:	Don't spawn within this many nodes of the avoid items
+			mentioned below.  If set to nil, this check is
+			skipped.
+	schance:	The value passed to the ABM's chance parameter,
+			normally in the 10-100 range (1-in-X chance of
+			operating on a given node, e.g. 1-in-10).
+	ssurface:	String with the name of the node on which to spawn
+			the plant in question, such as "default:sand" or
+			"default:dirt_with_grass".  It is not recommended to
+			put air, stone, or plain dirt here if you can use some
+			other node, as doing so will cause the engine to
+			process potentially large numbers of such nodes when
+			deciding when to execute the ABM and where it should
+			operate.
+	savoid:		Table with a list of groups and/or node names to avoid
+			when spawning the plant, such as {"group:flowers",
+			"default:tree"}.  If not specified, this defaults to
+			the value of splant.
+
+When passed a table as the argument, and thus using the modern calling method,
+you must pass at least four arguments as regular keyed entries in the table,
+in any order:
+
+plants_lib: spawn_on_surfaces({
+	spawn_plants = {table},	-- List of plants to spawn with this ABM call.
+				-- The program will choose one of these at
+				-- random each time the ABM executes.  The
+				-- more nodes you can pack into this parameter
+				-- to avoid making too many calls to this
+				-- function, the lower the CPU load will
+				-- likely be.
+	spawn_delay = number,	-- same as sdelay
+	spawn_chance = number,	-- same as schance
+	spawn_surfaces = {table} -- List of node names on which the plants
+				-- should be spawned.  As with the single-
+				-- node "ssurface" option in the legacy API,
+				-- you should not put stone, air, etc. here.
+
+				-- From here down are several optional
+				-- parameters.
+
+	avoid_nodes = {table},	-- same meaning as savoid, above
+	avoid_radius = num,	-- same as sradius
+	seed_diff = num		-- The Perlin seed difference value passed to
+				-- the minetest.env:get_perlin() function.
+				-- Used along with the global Perlin controls
+				-- below to create the "biome" in which the
+				-- plants will spawn.  Defaults to 0 if not
+				-- provided.
+	light_min = num,	-- Minimum amount of light necessary to make a
+				-- plant spawn.  Defaults to 0.
+	light_max = num,	-- Maximum amount of light needed to spawn. 
+				-- Defaults to the engine's MAX_LIGHT value of
+				-- 14.
+	neighbors = {table},	-- List of neighboring nodes that need to be
+				-- immediately next to the node the plant is
+				-- about to spawn on. Can also be a string
+				-- with a single node name.  It is both passed
+				-- to the ABM as the "neighbors" parameter,
+				-- and is used to manually check the 
+				-- adjacent nodes.  It only takes one of these
+				-- for the spawn routine to mark the target as
+				-- spawnable.  Defaults to nil (ignored).
+	ncount = num,		-- There must be at least this many of the
+				-- above neighbors in the eight spaces
+				-- immediately surrounding the node the plant
+				-- is about to spawn on for it to happen.  If
+				-- not provided, this check is disabled.
+	facedir = num,		-- The value passed to the param2 variable
+				-- when adding the node to the map.  Defaults
+				-- to 0.  Be sure that the value you use here
+				-- (and the range thereof) is appropriate for
+				-- the type of node you're spawning.
+	random_facedir = {table}, -- If set, the table should contain two
+				-- values. If they're both provided, the
+				-- spawned plant will be given a random
+				-- facedir value in the range specified by
+				-- these two numbers.  Overrides the facedir
+				-- parameter above, if it exists.  Use {0,3}
+				-- if you want the full range for wallmounted
+				-- nodes, or {2,5} for most everything else,
+				-- or any other pair of numbers in the 0 to 5 
+				-- range, as appropriate for the node you want
+				-- to spawn.
+	verticals_list = {table} -- List of nodes that should be considered to
+				-- be natural walls.
+	alt_wallnode = "string", -- If specified, this node will be 
+				-- substituted in place of the plant(s)
+				-- defined by spawn_plants above, if the spawn
+				-- target has one or more adjacent walls.  In
+				-- such a case, the two above facedir
+				-- parameters will be ignored.
+	depth_max = num,	-- If the object spawns on top of a water
+				-- source, the water must be at most this
+				-- deep.  Defaults to 1 node.
+	min_elevation = num,	-- Surface must be at this altitude or higher
+				-- to spawn at all.  Defaults to -31000...
+	max_elevation = num,	-- ...but must be no higher than this
+				-- altitude.  Defaults to +31000.
+	near_nodes = {table},	-- List of nodes that must be somewhere in the
+				-- vicinity in order for the plant to spawn.
+				-- Can also be a string with a single node
+				-- name.  If not provided, this check is
+				-- disabled.
+	near_nodes_size = num,	-- How large of an area to check for the above
+				-- node.  Specifically, this checks a flat
+				-- horizontal area centered on the node to be
+				-- spawned on.  Defaults to 0, but is ignored
+				-- if the above near_nodes value is not set.
+	near_nodes_vertical = num, -- Used with the size value above, this
+				-- extends the vertical range of the near 
+				-- nodes search.  Basically, this turns the
+				-- flat region described above into a cuboid
+				-- region.  The area to be checked will extend
+				-- this high AND this low above/below the
+				-- target node, centered thereon.  Defaults to
+				-- 1 (check only the layer above, the layer
+				-- at, and the layer below the target node),
+				-- but is ignored if near_nodes is not set.
+	near_nodes_count = num,	-- How many of the above nodes must be within
+				-- that radius.	Defaults to 1 but is ignored
+				-- if near_nodes isn't set.  Bear in mind that
+				-- the total area to be checked is equal to
+				-- (near_nodes_size^2)*near_nodes_vertical*2.
+				-- so for example, if size is 10 and vertical
+				-- is 4 then the area is (10^2)*8 = 800 nodes
+				-- in size, so you'll want to make sure you
+				-- specify a value appropriate for the amount
+				-- in question.
+	air_size = num,		-- How large of an area to check for air
+				-- above and around the target.  If omitted,
+				-- only the space above the target is checked.
+				-- This does not check for air at the sides or
+				-- below the target.
+	air_count = num,	-- How many of the surrounding nodes need to
+				-- be air for the above check to return true.
+				-- If omitted, only the space above the target
+				-- is checked.
+	plantlife_limit = num,	-- The value compared against the generic
+				-- "plants can grow here" Perlin noise layer.
+				-- Smaller numbers result in more abundant
+				-- plants.  Range of -1 to +1, with values in 
+				-- the range of about 0 to 0.5 being most
+				-- useful.  Defaults to 0.1.
+	temp_min = num,		-- Minimum temperature needed for the desired
+				-- object to spawn.  This is a 2d Perlin
+				-- value, which has an inverted range of +1 to
+				-- -1.  Larger values represent *colder*
+				-- temperatures, so this value is actually the
+				-- upper end of the desired Perlin range.  See
+				-- the temperature map section at the bottom
+				-- of this document for details on how these
+				-- values work.  Defaults to +1 (unlimited
+				-- coldness).
+	temp_max = num,		-- Maximum temperature/lower end of the Perlin
+				-- range.  Defaults to -1 (unlimited heat).
+	spawn_on_side = bool,	-- Set this to true to spawn the node on one
+				-- side of the target node rather than the
+				-- top.  The code will search for an airspace
+				-- to the side of the target, then spawn the
+				-- plant at the first one found.  The above
+				-- facedir and random_facedir parameters are
+				-- ignored in this case.  If the above
+				-- parameters for selecting generic wall nodes
+				-- are provided, this option is ignored.
+				-- Important note: the facedir values assigned
+				-- by this option only make sense with
+				-- wallmounted nodes (nodes which don't use
+				-- facedir won't be affected).
+	spawn_on_bottom = bool,	-- If set to true, spawn the object below the
+				-- target node instead of above it.  The above
+				-- spawn_on_side variable takes precedence
+				-- over this one if both happen to be true.
+				-- When using this option with the random
+				-- facedir function above, the values given to
+				-- the facedir parameter are for regular
+				-- nodes, not wallmounted.
+})
 
 By default, if a biome node, size, and count are not defined, the biome
 checking is disabled.  Same holds true for the nneighbors bit above that.
@@ -120,7 +235,7 @@ node (see below):
 
 plantslib:register_generate_plant(biome, function_or_treedef)
 
-Where "biome" is a table containing about a dozen variables:
+Where "biome" is a table containing about a dozen variables.
 
 biome = {
 	surface = "string",	-- [*] what nodes to spawn on.
@@ -153,13 +268,23 @@ biome = {
 				   of the object being spawned.
 	near_nodes_size = num,	-- how wide of a search area to look for 
 				   the nodes in that list.
+	near_nodes_vertical = num, -- How high/low of an area to search from
+				-- the target node.
 	near_nodes_count = num,	-- at least this many of those nodes must be
 				   in the area.
+	plantlife_limit = num,	-- The value compared against the generic
+				-- "plants can grow here" Perlin noise layer.
+				-- Smaller numbers result in more abundant
+				-- plants.  Range of -1 to +1, with values in 
+				-- the range of about 0 to 0.5 being most
+				-- useful.  Defaults to 0.1.
 	temp_min = num,		-- coldest allowable temperature for a plant
 				   to spawn (that is, the highest Perlin
 				   temperature map value).
 	temp_max = num,		-- warmest allowable temperature to spawn a
 				   plant (lowest Perlin temperature value).
+	verticals_list = {table}, -- Same as with the spawn_on_surfaces
+				-- function.
 }
 
 [*] These entries are required for the spawn code to work.  Everything else
@@ -179,82 +304,120 @@ with the position to spawn the tree on.
 -----
 
 The third function, grow_plants() is used to turn the spawned nodes above
-into something else over time.  This function has no return value, and is
-defined like so:
+into something else over time.  This function has no return value, and accepts
+a table as the only parameter:
 
-grow_plants = function(gdelay, gchance, gplant, gresult, dry_early_node,
-	grow_nodes, facedir, need_wall, grow_vertically, height_limit,
-	ground_nodes, grow_function, seed_diff)
+grow_plants({list of options})
 
-gdelay:		Passed as the ABM "interval" parameter, as with spawning.
-gchance:	Passed as the ABM "chance" parameter.
-gplant:		Name of the node being grown.  This value is passed as the 
-		only item in the table given to the ABM as the nodenames
-		parameter, so it is the plants themselves that are the ABM
-		trigger, rather than the ground they spawned on.  A plant
-		will only grow if the node above it is air.
-gresult:	Name of the node into which the above should transform
-		when the ABM executes.
-dry_early_node:	This value is ignored except for jungle grass, where it
-		indicates which node the grass must be on in order for it
-		to turn from "short" to default:dry_shrub.
-grow_nodes:	One of these nodes must be under the plant in order for it to
-		grow at all.  Normally this should be the same as the list of 
-		surfaces passed to the spawning ABM as the "nodenames"
-		parameter.  This is so that the plant can be manually placed
-		on something like a flower pot or something without it growing
-		and eventually dieing.  Defaults to "default:dirt_with_grass".
-facedir:	Same as with spawning a plant.  If supplied, this value is
-		passed to the param2 variable when changing the plant.  If
-		nil or left out, no new param2 value is applied.
-need_wall:	Set this to true if you the plant needs to grow against a
-		wall.  Defaults to false.
-grow_vertically: Set this to true if the plant needs to grow vertically, as
-		in climbing poison ivy.  Defaults to false.
-height_limit:	Just how tall can a vertically-growing plant go?  Set this
-		accordingly.  The mod will search straight down from the
-		position being spawned at to find a ground node, set via the
-		parameter below. Defaults to 62000 (unlimited).
-ground_nodes:	What nodes should be treated as "the ground" below a
-		vertically-growing plant.  Usually this will be the same
-		as the grow_nodes table, but might also include, for
-		example, water or some other surrounding material.
-		Defaults to "default:dirt_with_grass".
-grow_function:	String indicating what function to use to grow the plant, if
-		any, or a table with an L-Systems tree model, or nil.  If it's
-		nil,  If it's nil, a regular plant will be inserted in place 
-		of the one being grown, per the above variables.  If it's a
-		string, the function named therein is executed and passed a
-		parameter for the current position, followed by the "can grow
-		here" and temperature map Perlin values at that location.  If
-		it's a table, the tree described by that table is spawned at
-		the current position.  In both string and table cases, all
-		parameters from gresult to ground_nodes, except for
-		grow_nodes, are ignored.
-seed_diff:	The Perlin seed diff to be use to calculate the first noise 
-		value given to the above grow_function.  Should be the same as
-		the seed diff used when first spawning the plant that's being
-		grown.
+These are defined like so:
+
+plants_lib:grow_plants({
+
+	grow_plant = "string",	-- Name of the node to be grown into something
+				-- else.  This value is passed to the ABM as
+				-- the "nodenames" parameter, so it is the
+				-- plants themselves that are the ABM trigger,
+				-- rather than the ground they spawned on.  A
+				-- plant will only grow if the node above it
+				-- is air.  Can also be a table, but note that
+				-- all nodes referenced therein will be grown
+				-- into the same object.
+	grow_delay = num,	-- Passed as the ABM "interval" parameter, as
+				-- with spawning.
+	grow_chance = num,	-- Passed as the ABM "chance" parameter.
+	grow_result = "string",	-- Name of the node into which the grow_plant
+				-- node(s) should transform when the ABM
+				-- executes.
+	dry_early_node = "string" -- This value is ignored except for jungle
+				-- grass (a corner case needed by that mod),
+				-- where it indicates which node the grass
+				-- must be on in order for it to turn from
+				-- the short size to "default:dry_shrub"
+				-- instead of the medium size.
+	grow_nodes = {table},	-- One of these nodes must be under the plant
+				-- in order for it to grow at all.  Normally
+				-- this should be the same as the list of 
+				-- surfaces passed to the spawning ABM as the
+				-- "nodenames" parameter.  This is so that the
+				-- plant can be manually placed on something
+				-- like a flower pot or something without it
+				-- growing and eventually dieing.  Defaults to
+				-- "default:dirt_with_grass".
+	facedir = num,		-- Same as with spawning a plant.
+	need_wall = bool,	-- Set this to true if you the plant needs to
+				-- grow against a wall.  Defaults to false.
+	verticals_list = {table}, -- List of nodes that should be considered
+				-- to be wall surfaces when growing the plant
+				-- vertically.  If not provided, the walls
+				-- check is skipped.
+	grow_vertically = bool,	-- Set this to true if the plant needs to grow
+				-- vertically, as in climbing poison ivy.
+				-- Defaults to false.
+	height_limit = num,	-- Set this to limit how tall the desired node
+				-- can grow.  The mod will search straight
+				-- down from the position being spawned at to
+				-- find a ground node, set via the parameter
+				-- below. Defaults to 5 nodes.
+	ground_nodes = {table},	-- What nodes should be treated as "the
+				-- ground" below a vertically-growing plant.
+				-- Usually this should be the same as the
+				-- grow_nodes table, but might also include,
+				-- for example, water or some other
+				-- surrounding material.  Defaults to
+				-- "default:dirt_with_grass".
+	grow_function = something, -- [*] see below.
+	seed_diff = num,	-- [*] see below.
+})
+
+
+[*] grow_function can take one of three possible settings:  it can be nil (or
+    not provided), a string, or a table.
+
+    If it is not provided or it's set to nil, all of the regular growing code
+    is executed normally.  The value of seed_diff, if any, is ignored in this
+    case.
+
+    If this value is set to a simple string, this is treated as the name of
+    the function to use to grow the plant.  In this case, all of the usual
+    growing code is executeed, but then instead of a plant being simply added
+    to the world, grow_result is ignored and the named function is executed
+    and passed a few parmeters: 
+
+	somefunction(pos, perlin1, perlin2)
+
+	These values represent the current position (the usual table), the
+	Perlin noise value for that spot in the generic "plants can grow here"
+	map for the seed_diff value above, the Perlin value for that same spot
+	from the temperature map, and the detected neighboring wall face, if
+	there was one (or nil if not).  If seed_diff is not provided, it
+	defaults to 0.
+
+    If this variable is instead set to a table, it is treated an an L-Systems
+    tree definition.  All of the growing code is executed in the usual manner,
+    then the tree described by that definition is spawned at the current
+    position instead, and grow_result is ignored.
 
 -----
 
-Of the few helper functions, plant_valid_wall() expects only a single
-parameter, "pos", which is the usual table indicating the coordinates around
-which to search for adjacent walls.  This function returns the location of the
-first wall found as a facedir value, or nil if there are no adjacent walls.
+Of the few helper functions, plantslib:find_adjacent_wall() expects a position
+parameter and a table with the list of nodes that should be considered as
+walls.  The code will search around the given position for a neighboring wall,
+returning the first one it finds as a facedir value, or nil if there are no
+adjacent walls.
 
 -----
 
-is_node_loaded() is defined in exactly the same manner (that is, "node_pos" is
-a set of coordinates), and acts as a wrapper for the
+plantslib:is_node_loaded() is defined in exactly the same manner (that is,
+"node_pos" is a set of coordinates), and acts as a wrapper for the
 minetest.env:get_node_or_nil(node_pos) function.  Returns true if the node in
 question is already loaded, or false if not.
 
 -----
 
-dbg() is a simple debug output function which takes one string parameter.  It
-just checks if plantlife_debug is true and outputs the phrase "[Plantlife] "
-followed by the supplied string, via the print() function.
+plantslib:dbg() is a simple debug output function which takes one string
+parameter.  It just checks if DEBUG is true and outputs the phrase
+"[Plantlife] " followed by the supplied string, via the print() function, if
+so.
 
 
 ===============

@@ -1,27 +1,25 @@
 -- This file supplies flowers for the plantlife modpack
+-- Last revision:  2013-01-24
 
-local spawn_delay = 2000 -- 2000
-local spawn_chance = 100 -- 100
-local flowers_seed_diff = plantslib.plantlife_seed_diff+20
+local SPAWN_DELAY = 1000
+local SPAWN_CHANCE = 200
+local flowers_seed_diff = 349
 
 local flowers_list = {
-	{ "Rose",		"rose", 		spawn_delay,	10,	spawn_chance	, 10},
-	{ "Tulip",		"tulip",		spawn_delay,	10,	spawn_chance	, 10},
-	{ "Yellow Dandelion",	"dandelion_yellow",	spawn_delay,	10,	spawn_chance*2	, 10},
-	{ "White Dandelion",	"dandelion_white",	spawn_delay,	10,	spawn_chance*2	, 10},
-	{ "Blue Geranium",	"geranium",		spawn_delay,	10,	spawn_chance	, 10},
-	{ "Viola",		"viola",		spawn_delay,	10,	spawn_chance	, 10},
-	{ "Cotton Plant",	"cotton",		spawn_delay,	10,	spawn_chance*2	, 10},
+	{ "Rose",		"rose"},
+	{ "Tulip",		"tulip"},
+	{ "Yellow Dandelion",	"dandelion_yellow"},
+	{ "White Dandelion",	"dandelion_white"},
+	{ "Blue Geranium",	"geranium"},
+	{ "Viola",		"viola"},
+	{ "Cotton Plant",	"cotton"},
 }
 
 for i in ipairs(flowers_list) do
 	local flowerdesc = flowers_list[i][1]
 	local flower     = flowers_list[i][2]
-	local delay      = flowers_list[i][3]
-	local radius     = flowers_list[i][4]
-	local chance     = flowers_list[i][5]
 
-	minetest.register_node(":flowers:flower_"..flower, {
+	minetest.register_node("flowers:flower_"..flower, {
 		description = flowerdesc,
 		drawtype = "plantlike",
 		tiles = { "flower_"..flower..".png" },
@@ -38,7 +36,7 @@ for i in ipairs(flowers_list) do
 		},	
 	})
 
-	minetest.register_node(":flowers:flower_"..flower.."_pot", {
+	minetest.register_node("flowers:flower_"..flower.."_pot", {
 		description = flowerdesc.." in a pot",
 		drawtype = "plantlike",
 		tiles = { "flower_"..flower.."_pot.png" },
@@ -63,29 +61,100 @@ for i in ipairs(flowers_list) do
 			"flowers:flower_"..flower
 		}
 	})
-
-	plantslib:spawn_on_surfaces(delay, "flowers:flower_"..flower, radius, chance, "default:dirt_with_grass", {"group:flower", "group:poisonivy"}, flowers_seed_diff)
 end
 
-minetest.register_node(":flowers:flower_waterlily", {
+minetest.register_node("flowers:flower_waterlily", {
 	description = "Waterlily",
-	drawtype = "raillike",
+	drawtype = "nodebox",
 	tiles = { "flower_waterlily.png" },
 	inventory_image = "flower_waterlily.png",
 	wield_image  = "flower_waterlily.png",
 	sunlight_propagates = true,
 	paramtype = "light",
-	paramtype2 = "wallmounted",
+	paramtype2 = "facedir",
 	walkable = false,
 	groups = { snappy = 3,flammable=2,flower=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
-	},	
+	},
+	node_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
+	},
 })
 
-minetest.register_node(":flowers:flower_seaweed", {
+minetest.register_node("flowers:flower_waterlily_225", {
+	description = "Waterlily",
+	drawtype = "nodebox",
+	tiles = { "flower_waterlily_22.5.png" },
+	inventory_image = "flower_waterlily.png",
+	wield_image  = "flower_waterlily.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	walkable = false,
+	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
+	},
+	node_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
+	},
+	drop = "flowers:flower_waterlily"
+})
+
+minetest.register_node("flowers:flower_waterlily_45", {
+	description = "Waterlily",
+	drawtype = "raillike",
+	tiles = { "flower_waterlily_45.png" },
+	inventory_image = "flower_waterlily.png",
+	wield_image  = "flower_waterlily.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	walkable = false,
+	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
+	},
+	node_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
+	},
+	drop = "flowers:flower_waterlily"
+})
+
+minetest.register_node("flowers:flower_waterlily_675", {
+	description = "Waterlily",
+	drawtype = "nodebox",
+	tiles = { "flower_waterlily_67.5.png" },
+	inventory_image = "flower_waterlily.png",
+	wield_image  = "flower_waterlily.png",
+	sunlight_propagates = true,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	walkable = false,
+	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
+	},
+	node_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
+	},
+	drop = "flowers:flower_waterlily"
+})
+
+minetest.register_node("flowers:flower_seaweed", {
 	description = "Seaweed",
 	drawtype = "signlike",
 	tiles = { "flower_seaweed.png" },
@@ -103,12 +172,99 @@ minetest.register_node(":flowers:flower_seaweed", {
 	},	
 })
 
-plantslib:spawn_on_surfaces(spawn_delay/2, "flowers:flower_waterlily", 3,   spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff, 10, nil, nil,                         nil, nil, 4)
+-- spawn ABM registrations
 
-plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:water_source"   , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:dirt_with_grass"},   0,   1)
-plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:dirt_with_grass", {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   1,   1)
-plantslib:spawn_on_surfaces(spawn_delay*2, "flowers:flower_seaweed"  , 0.1, spawn_chance*2, "default:stone"          , {"group:flower"}, flowers_seed_diff,  4,  10, {"default:water_source"}   ,   6,   1)
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY,
+	spawn_plants = {
+		"flowers:flower_rose",
+		"flowers:flower_tulip",
+		"flowers:flower_geranium",
+		"flowers:flower_viola",
+	},
+	avoid_radius = 10,
+	spawn_chance = SPAWN_CHANCE*2,
+	spawn_surfaces = {"default:dirt_with_grass"},
+	avoid_nodes = {"group:flower", "group:poisonivy"},
+	seed_diff = flowers_seed_diff,
+	light_min = 9
+})
 
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY,
+	spawn_plants = {
+		"flowers:flower_dandelion_yellow",
+		"flowers:flower_dandelion_white",
+		"flowers:flower_cotton",
+	},
+	avoid_radius = 7,
+	spawn_chance = SPAWN_CHANCE,
+	spawn_surfaces = {"default:dirt_with_grass"},
+	avoid_nodes = {"group:flower", "group:poisonivy"},
+	seed_diff = flowers_seed_diff,
+	light_min = 9
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY/2,
+	spawn_plants = {
+		"flowers:flower_waterlily",
+		"flowers:flower_waterlily_225",
+		"flowers:flower_waterlily_45",
+		"flowers:flower_waterlily_675"
+	},
+	avoid_radius = 2.5,
+	spawn_chance = SPAWN_CHANCE*4,
+	spawn_surfaces = {"default:water_source"},
+	avoid_nodes = {"group:flower"},
+	seed_diff = flowers_seed_diff,
+	light_min = 9,
+	depth_max = 2,
+	random_facedir = {2,5}
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY*2,
+	spawn_plants = {"flowers:flower_seaweed"},
+	spawn_chance = SPAWN_CHANCE*2,
+	spawn_surfaces = {"default:water_source"},
+	avoid_nodes = {"group:flower"},
+	seed_diff = flowers_seed_diff,
+	light_min = 4,
+	light_max = 10,
+	neighbors = {"default:dirt_with_grass"},
+	facedir = 1
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY*2,
+	spawn_plants = {"flowers:flower_seaweed"},
+	spawn_chance = SPAWN_CHANCE*2,
+	spawn_surfaces = {"default:dirt_with_grass"},
+	avoid_nodes = {"group:flower"},
+	seed_diff = flowers_seed_diff,
+	light_min = 4,
+	light_max = 10,
+	neighbors = {"default:water_source"},
+	ncount = 1,
+	facedir = 1
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY*2,
+	spawn_plants = {"flowers:flower_seaweed"},
+	spawn_chance = SPAWN_CHANCE*2,
+	spawn_surfaces = {"default:stone"},
+	avoid_nodes = {"group:flower"},
+	seed_diff = flowers_seed_diff,
+	light_min = 4,
+	light_max = 10,
+	neighbors = {"default:water_source"},
+	ncount = 6,
+	facedir = 1
+})
+
+-- crafting recipes!
 
 minetest.register_craftitem(":flowers:flower_pot", {
 	description = "Flower Pot",
@@ -124,23 +280,23 @@ minetest.register_craft( {
 })
 
 minetest.register_craftitem(":flowers:cotton", {
-    description = "Cotton",
-    image = "cotton.png",
+	description = "Cotton",
+	image = "cotton.png",
 })
 
 minetest.register_craft({
-    output = "flowers:cotton 3",
-    recipe ={
-	{"flowers:flower_cotton"},
-    }
+	output = "flowers:cotton 3",
+	recipe ={
+		{"flowers:flower_cotton"},
+	}
 })
 
 minetest.register_craft({
 	output = "wool:white 2",
 	recipe = {
-		{'', '', ''},
 		{'flowers:cotton', 'flowers:cotton', ''},
 		{'flowers:cotton', 'flowers:cotton', ''},
 	}
 })
 
+print("[Flowers] Loaded.")

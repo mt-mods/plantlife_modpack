@@ -1,10 +1,11 @@
 -- This file supplies jungle grass for the plantlife modpack
+-- Last revision:  2013-01-24
 
-local spawn_delay = 2000 -- 2000
-local spawn_chance = 100 -- 100
-local grow_delay = 1000 -- 1000
-local grow_chance = 10 -- 10
-local junglegrass_seed_diff = plantslib.plantlife_seed_diff
+local SPAWN_DELAY = 1000
+local SPAWN_CHANCE = 200
+local GROW_DELAY = 500
+local GROW_CHANCE = 30
+local junglegrass_seed_diff = 329
 
 local grasses_list = {
         {"junglegrass:shortest","junglegrass:short" },
@@ -13,7 +14,7 @@ local grasses_list = {
         {"default:junglegrass" , nil}
 }
 
-minetest.register_node(':junglegrass:medium', {
+minetest.register_node('junglegrass:medium', {
 	description = "Jungle Grass (medium height)",
 	drawtype = 'plantlike',
 	tile_images = { 'junglegrass_medium.png' },
@@ -32,7 +33,7 @@ minetest.register_node(':junglegrass:medium', {
 	},
 })
 
-minetest.register_node(':junglegrass:short', {
+minetest.register_node('junglegrass:short', {
 	description = "Jungle Grass (short)",
 	drawtype = 'plantlike',
 	tile_images = { 'junglegrass_short.png' },
@@ -50,7 +51,7 @@ minetest.register_node(':junglegrass:short', {
 	},
 })
 
-minetest.register_node(':junglegrass:shortest', {
+minetest.register_node('junglegrass:shortest', {
 	description = "Jungle Grass (very short)",
 	drawtype = 'plantlike',
 	tile_images = { 'junglegrass_shortest.png' },
@@ -68,12 +69,48 @@ minetest.register_node(':junglegrass:shortest', {
 	},
 })
 
-plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance, "default:dirt_with_grass", {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*2, "default:sand"           , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
-plantslib:spawn_on_surfaces(spawn_delay*2, "junglegrass:shortest", 4, spawn_chance*3, "default:desert_sand"    , {"group:junglegrass", "default:junglegrass", "default:dry_shrub"}, junglegrass_seed_diff, 5)
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY,
+	spawn_plants = {"junglegrass:shortest"},
+	avoid_radius = 4,
+	spawn_chance = SPAWN_CHANCE,
+	spawn_surfaces = {"default:dirt_with_grass", "default:cactus", "default:papyrus"},
+	avoid_nodes = {"group:junglegrass", "default:junglegrass", "default:dry_shrub"},
+	seed_diff = junglegrass_seed_diff,
+	light_min = 5
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY,
+	spawn_plants = {"junglegrass:shortest"},
+	avoid_radius = 4,
+	spawn_chance = SPAWN_CHANCE*2,
+	spawn_surfaces = {"default:sand"},
+	avoid_nodes = {"group:junglegrass", "default:junglegrass", "default:dry_shrub"},
+	seed_diff = junglegrass_seed_diff,
+	light_min = 5
+})
+
+plantslib:spawn_on_surfaces({
+	spawn_delay = SPAWN_DELAY,
+	spawn_plants = {"junglegrass:shortest"},
+	avoid_radius = 4,
+	spawn_chance = SPAWN_CHANCE*5,
+	spawn_surfaces = {"default:desert_sand"},
+	avoid_nodes = {"group:junglegrass", "default:junglegrass", "default:dry_shrub"},
+	seed_diff = junglegrass_seed_diff,
+	light_min = 5
+})
 
 for i in ipairs(grasses_list) do
-	plantslib:grow_plants(grow_delay, grow_chance/2, grasses_list[i][1], grasses_list[i][2], "default:desert_sand", {"default:dirt_with_grass", "default:sand", "default:desert_sand"})
+	plantslib:grow_plants({
+		grow_delay = GROW_DELAY,
+		grow_chance = GROW_CHANCE/2,
+		grow_plant = grasses_list[i][1],
+		grow_result = grasses_list[i][2],
+		dry_early_node = "default:desert_sand",
+		grow_nodes = {"default:dirt_with_grass", "default:sand", "default:desert_sand"}
+	})
 end
 
+print("[Junglegrass] Loaded.")
