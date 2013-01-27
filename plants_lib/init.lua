@@ -170,6 +170,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 	if biome.temp_max == nil then biome.temp_max = -1 end
 	if biome.plantlife_limit == nil then biome.plantlife_limit = 0.1 end
 	if biome.near_nodes_vertical == nil then biome.near_nodes_vertical = 1 end
+	if biome.facedir == nil then biome.facedir = 0 end
 
 	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 
@@ -219,7 +220,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 							plantslib:dbg("Chose entry number "..rnd.." of "..biome.spawn_plants_count)
 
 							if not biome.spawn_on_side and not biome.spawn_on_bottom then
-								local fdir = nil
+								local fdir = biome.facedir
 								if biome.random_facedir then
 									fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
 									plantslib:dbg("Gave it a random facedir: "..fdir)
@@ -236,7 +237,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 								end
 							elseif biome.spawn_on_bottom then
 								if minetest.env:get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
-									local fdir = nil
+									local fdir = biome.facedir
 									if biome.random_facedir then
 										fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
 										plantslib:dbg("Gave it a random facedir: "..fdir)
