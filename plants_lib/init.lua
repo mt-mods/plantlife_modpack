@@ -11,7 +11,7 @@
 
 plantslib = {}
 
-local DEBUG = false --... except if you want to spam the console with debugging info :-)
+local DEBUG = true --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
@@ -24,7 +24,10 @@ local temperature_octaves = 3
 local temperature_persistence = 0.5
 local temperature_scale = 150
 
-
+local humidity_seeddiff = 1234
+local humidity_octaves = 1
+local humidity_persistence = 0.5
+local humidity_scale = 150
 
 -- Local functions
 
@@ -47,14 +50,14 @@ end
 
 -- Spawn plants using the map generator
 
-function plantslib:register_generate_plant(biomedef, funct_or_model)
+function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 	plantslib:dbg("Registered mapgen spawner:")
 	plantslib:dbg(dump(biomedef))
 
-	minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model))
+	minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or_model))
 end
 
-function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
+function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or_model)
 	return function(minp, maxp, blockseed)
 
 		local biome = biomedef
@@ -71,6 +74,8 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
 		if biome.max_count == nil then biome.max_count = 5 end
 		if biome.plantlife_limit == nil then biome.plantlife_limit = 0.1 end
 		if biome.near_nodes_vertical == nil then biome.near_nodes_vertical = 1 end
+		if biome.humidity_min == nil then biome.humidity_min = 1 end
+		if biome.humidity_max == nil then biome.humidity_max = -1 end
 
 		plantslib:dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
@@ -81,8 +86,10 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			local perlin1 = minetest.env:get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 			local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+			local perlin3 = minetest.env:get_perlin(humidity_seeddiff, humidity_octaves, humidity_persistence, humidity_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+			local noise3 = perlin3:get2d({x=p_top.x, y=p_top.z})
 			if (biome.depth == nil or minetest.env:get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
 			  and minetest.env:get_node(p_top).name == "air" 
 			  and pos.y >= biome.min_elevation
@@ -90,6 +97,8 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
 			  and noise1 > biome.plantlife_limit
 			  and noise2 <= biome.temp_min
 			  and noise2 >= biome.temp_max
+			  and noise3 <= biome.humidity_min
+			  and noise3 >= biome.humidity_max
 			  and (biome.ncount == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
 			  and (biome.near_nodes == nil or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
 			  and math.random(1,100) > biome.rarity
@@ -109,9 +118,9 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
 				while tries < 2 and not spawned do
 					local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
 					local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-					if minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) == nil then
+					if not(biome.avoid_radius and biome.avoid_nodes) or not minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) then
 						spawned = true
-						if type(funct_or_model) == "table" then
+						if type(node_or_function_or_model) == "table" then
 							plantslib:dbg("Spawn tree at {"..dump(pos).."}")
 
 							--[[
@@ -124,10 +133,16 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, funct_or_model)
 							end
 							]]--
 
-							minetest.env:spawn_tree(pos, funct_or_model)
-						else
-							plantslib:dbg("Call function: "..funct_or_model.."("..dump(pos)..")")
-							assert(loadstring(funct_or_model.."("..dump(pos)..")"))()
+							minetest.env:spawn_tree(pos, node_or_function_or_model)
+
+						elseif type(node_or_function_or_model) == "string" then
+							if minetest.registered_nodes[node_or_function_or_model] == nil then
+								plantslib:dbg("Call function: "..node_or_function_or_model.."("..dump(pos)..")")
+								assert(loadstring(node_or_function_or_model.."("..dump(pos)..")"))()
+							else
+								plantslib:dbg("Add node: "..node_or_function_or_model.." at ("..dump(p_top)..")")
+								minetest.env:add_node(p_top, { name = node_or_function_or_model })
+							end
 						end
 					else
 						tries = tries + 1
@@ -168,6 +183,8 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 	if biome.max_elevation == nil then biome.max_elevation = 31000 end
 	if biome.temp_min == nil then biome.temp_min = 1 end
 	if biome.temp_max == nil then biome.temp_max = -1 end
+	if biome.humidity_min == nil then biome.humidity_min = 1 end
+	if biome.humidity_max == nil then biome.humidity_max = -1 end
 	if biome.plantlife_limit == nil then biome.plantlife_limit = 0.1 end
 	if biome.near_nodes_vertical == nil then biome.near_nodes_vertical = 1 end
 	if biome.facedir == nil then biome.facedir = 0 end
@@ -188,11 +205,15 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 			local n_top = minetest.env:get_node(p_top)
 			local perlin1 = minetest.env:get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 			local perlin2 = minetest.env:get_perlin(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
+			local perlin3 = minetest.env:get_perlin(humidity_seeddiff, humidity_octaves, humidity_persistence, humidity_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
+			local noise3 = perlin3:get2d({x=p_top.x, y=p_top.z})
 			if noise1 > biome.plantlife_limit 
 			  and noise2 <= biome.temp_min
 			  and noise2 >= biome.temp_max
+			  and noise3 <= biome.humidity_min
+			  and noise3 >= biome.humidity_max
 			  and plantslib:is_node_loaded(p_top) then
 				local n_light = minetest.env:get_node_light(p_top, nil)
 				if (not(biome.avoid_nodes and biome.avoid_radius) or minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes) == nil)
@@ -219,7 +240,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 							local plant_to_spawn = biome.spawn_plants[rnd]
 							plantslib:dbg("Chose entry number "..rnd.." of "..biome.spawn_plants_count)
 
-							if not biome.spawn_on_side and not biome.spawn_on_bottom then
+							if not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								local fdir = biome.facedir
 								if biome.random_facedir then
 									fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
@@ -229,6 +250,14 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 									plantslib:dbg("Spawn: "..plant_to_spawn.." on top of ("..dump(pos)..")")
 									minetest.env:add_node(p_top, { name = plant_to_spawn, param2 = fdir })
 								end
+							elseif biome.spawn_replace_node then
+								local fdir = biome.facedir
+								if biome.random_facedir then
+									fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
+									plantslib:dbg("Gave it a random facedir: "..fdir)
+								end
+								plantslib:dbg("Spawn: "..plant_to_spawn.." to replace "..minetest.env:get_node(pos).name.." at ("..dump(pos)..")")
+								minetest.env:add_node(pos, { name = plant_to_spawn, param2 = fdir })
 							elseif biome.spawn_on_side then
 								local onside = plantslib:find_open_side(pos)
 								if onside then 
