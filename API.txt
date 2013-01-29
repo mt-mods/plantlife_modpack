@@ -68,13 +68,7 @@ you must pass at least four arguments as regular keyed entries in the table,
 in any order:
 
 plants_lib: spawn_on_surfaces({
-	spawn_plants = {table},	-- List of plants to spawn with this ABM call.
-				-- The program will choose one of these at
-				-- random each time the ABM executes.  The
-				-- more nodes you can pack into this parameter
-				-- to avoid making too many calls to this
-				-- function, the lower the CPU load will
-				-- likely be.
+	spawn_plants = something, -- [*] String or table; see below.
 	spawn_delay = number,	-- same as sdelay
 	spawn_chance = number,	-- same as schance
 	spawn_surfaces = {table} -- List of node names on which the plants
@@ -233,6 +227,18 @@ plants_lib: spawn_on_surfaces({
 				-- the spawn_on_bottom and spawn_on_side
 				-- settings.
 })
+
+[*] spawn_plants must be either a table or a string.  If it's a table, the
+values therein are treated as a list of nodenames to pick from randomly on 
+each application of the ABM code. The more nodes you can pack into this
+parameter to avoid making too many calls to this function, the lower the CPU
+load will likely be.
+
+You can also specify a string containing the name of a function to execute.
+In this case, the function will be passed a single position parameter
+indicating where the function should place the desired object, and the checks
+for spawning on top vs. sides vs. bottom vs. replacing the target node will be
+skipped.
 
 By default, if a biome node, size, and count are not defined, the biome
 checking is disabled.  Same holds true for the nneighbors bit above that.

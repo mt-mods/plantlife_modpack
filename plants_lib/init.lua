@@ -11,7 +11,7 @@
 
 plantslib = {}
 
-local DEBUG = true --... except if you want to spam the console with debugging info :-)
+local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
@@ -240,7 +240,11 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 							local plant_to_spawn = biome.spawn_plants[rnd]
 							plantslib:dbg("Chose entry number "..rnd.." of "..biome.spawn_plants_count)
 
-							if not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
+							if type(spawn_plants) == "string" then
+								plantslib:dbg("Call function: "..spawn_plants.."("..dump(pos)..")")
+								assert(loadstring(spawn_plants.."("..dump(pos)..")"))()
+
+							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								local fdir = biome.facedir
 								if biome.random_facedir then
 									fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
@@ -250,6 +254,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 									plantslib:dbg("Spawn: "..plant_to_spawn.." on top of ("..dump(pos)..")")
 									minetest.env:add_node(p_top, { name = plant_to_spawn, param2 = fdir })
 								end
+
 							elseif biome.spawn_replace_node then
 								local fdir = biome.facedir
 								if biome.random_facedir then
@@ -258,12 +263,14 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 								end
 								plantslib:dbg("Spawn: "..plant_to_spawn.." to replace "..minetest.env:get_node(pos).name.." at ("..dump(pos)..")")
 								minetest.env:add_node(pos, { name = plant_to_spawn, param2 = fdir })
+
 							elseif biome.spawn_on_side then
 								local onside = plantslib:find_open_side(pos)
 								if onside then 
 									plantslib:dbg("Spawn: "..plant_to_spawn.." at side of ("..dump(pos).."), facedir "..onside.facedir.."")
 									minetest.env:add_node(onside.newpos, { name = plant_to_spawn, param2 = onside.facedir })
 								end
+
 							elseif biome.spawn_on_bottom then
 								if minetest.env:get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
 									local fdir = biome.facedir
