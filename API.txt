@@ -261,6 +261,10 @@ biome = {
 				-- biome? Larger values make objects more
 				-- rare, determined by
 				-- math.random(1,100) > this
+	max_count = num,	-- The absolutel maximum number of your object
+				-- that should be allowed to spwn in a 5x5x5
+				-- mapblock area (80x80x80 nodes).  Defaults
+				-- to 5.
 	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0, 
 				-- which causes the function to inherit the
 				-- global value of 329.
