@@ -451,6 +451,11 @@ just checks if DEBUG is true and outputs the phrase "[Plantlife] " followed by
 the supplied string, via the print() function, if so.
 
 
+=====
+There are other, internal helper functions that are not meant for use by other
+mods.  Don't rely on them, as they are subject to change without notice.
+
+
 ===============
 Global Settings
 ===============
