@@ -1,14 +1,11 @@
-This document briefly describes the Plantlife API.
+This document describes the Plantlife API.
 
-Last revision: 2013-01-25
+Last revision: 2013-01-30
+
 
 =========
 Functions
 =========
-
-All functions in plants lib are declared locally to avoid namespace collisions
-with other mods.  They are accessible via the "plantslib" method, e.g.
-plantslib:spawn_on_surfaces() and so forth.
 
 There are three main functions defined by the main "plants_lib" mod:
 
@@ -18,66 +15,63 @@ grow_plants()
 
 There are also several internal, helper functions that can be called if so
 desired, but they are not really intended for use by other mods and may change
-at any time.  See init.lua for more.
+at any time.  They are briefly described below these main functions, but see
+init.lua for details.
 
------
+All functions in plants lib are declared locally to avoid namespace collisions
+with other mods.  They are accessible via the "plantslib" method, e.g.
+plantslib:spawn_on_surfaces() and so forth.
+
+
+=====
+spawn_on_surfaces(options)
+spawn_on_surfaces(sdelay, splant, sradius, schance, ssurface, savoid)
 
 The first function is an ABM-based spawner function originally created as
 part of Ironzorg's flowers mod.  It has since been largely extended and
-expanded.  There are two ways to call this function.  Either via the legacy
-method like that which was used in the Flowers mod:
-
-spawn_on_surfaces(sdelay, splant, sradius, schance, ssurface, savoid)
-
-Or, you can specify the various options with a single table as the parameter:
-
-spawn_on_surfaces({table of options})
+expanded.  There are two ways to call this function:  You can either pass it 
+several individual string and number parameters to use the legacy interface,
+or you can pass a single table with all of your options spelled out nicely to
+use the current method.
 
 When used with the legacy interface, you must specify the parameters exactly
-in order, with the first five being mandatory and the last one being optional:
+in order, with the first five being mandatory (even if some are set to nil),
+and the last one being optional:
 
-	sdelay:		The value passed to the ABM's interval parameter, in
-			seconds.
-	splant:		The node name of the item to spawn (e.g.
-			"flowers:flower_rose").  Note that if the plant is
-			"poisonivy:seedling", and it's next to a wall at spawn
-			time, it automatically becomes the wall-climbing
-			variety. A plant will of course only be spawned if the
-			node about to be replaced is air.
-	sradius:	Don't spawn within this many nodes of the avoid items
-			mentioned below.  If set to nil, this check is
-			skipped.
-	schance:	The value passed to the ABM's chance parameter,
-			normally in the 10-100 range (1-in-X chance of
-			operating on a given node, e.g. 1-in-10).
-	ssurface:	String with the name of the node on which to spawn
-			the plant in question, such as "default:sand" or
-			"default:dirt_with_grass".  It is not recommended to
-			put air, stone, or plain dirt here if you can use some
-			other node, as doing so will cause the engine to
-			process potentially large numbers of such nodes when
-			deciding when to execute the ABM and where it should
-			operate.
-	savoid:		Table with a list of groups and/or node names to avoid
-			when spawning the plant, such as {"group:flowers",
-			"default:tree"}.  If not specified, this defaults to
-			the value of splant.
+sdelay:		The value passed to the ABM's interval parameter, in seconds.
+splant:		The node name of the item to spawn (e.g.
+		"flowers:flower_rose").  A plant will of course only be
+		spawned if the node about to be replaced is air.
+sradius:	Don't spawn within this many nodes of the avoid items
+		mentioned below.  If set to nil, this check is skipped.
+schance:	The value passed to the ABM's chance parameter, normally in
+		the 10-100 range (1-in-X chance of operating on a given node)
+ssurface:	String with the name of the node on which to spawn the plant
+		in question, such as "default:sand" or
+		"default:dirt_with_grass".  It is not recommended to put air,
+		stone, or plain dirt here if you can use some other node, as
+		doing so will cause the engine to process potentially large
+		numbers of such nodes when deciding when to execute the ABM
+		and where it should operate.
+savoid:		Table with a list of groups and/or node names to avoid when
+		spawning the plant, such as {"group:flowers", "default:tree"}.
 
 When passed a table as the argument, and thus using the modern calling method,
 you must pass at least four arguments as regular keyed entries in the table,
 in any order:
 
-plants_lib: spawn_on_surfaces({
+options={
 	spawn_plants = something, -- [*] String or table; see below.
-	spawn_delay = number,	-- same as sdelay
-	spawn_chance = number,	-- same as schance
+	spawn_delay = number,	-- same as sdelay, above.
+	spawn_chance = number,	-- same as schance, above.
 	spawn_surfaces = {table} -- List of node names on which the plants
 				-- should be spawned.  As with the single-
 				-- node "ssurface" option in the legacy API,
 				-- you should not put stone, air, etc. here.
 
-				-- From here down are several optional
-				-- parameters.
+	---- From here down are a number of optional parameters.  You will
+	---- most likely want to use at least some of these to limit how and
+	---- where your objects are spawned.
 
 	avoid_nodes = {table},	-- same meaning as savoid, above
 	avoid_radius = num,	-- same as sradius
@@ -226,7 +220,7 @@ plants_lib: spawn_on_surfaces({
 				-- replaced by the spawned object.  Overrides
 				-- the spawn_on_bottom and spawn_on_side
 				-- settings.
-})
+}
 
 [*] spawn_plants must be either a table or a string.  If it's a table, the
 values therein are treated as a list of nodenames to pick from randomly on 
@@ -243,50 +237,56 @@ skipped.
 By default, if a biome node, size, and count are not defined, the biome
 checking is disabled.  Same holds true for the nneighbors bit above that.
 
------
 
-To register a plant to be spawned at mapgen time rather than via an ABM, call
-this function with two parameters:  a table with the biome information, and
-a string or table describing what to execute if the engine finds a suitable
-node (see below):
-
+=====
 plantslib:register_generate_plant(biome, node_or_function_or_treedef)
 
-Where "biome" is a table containing about a dozen variables.
+To register an object to be spawned at mapgen time rather than via an ABM,
+call this function with two parameters:  a table with your object's biome
+information, and a string or table describing what to do if the engine finds a
+suitable node (see below).
+
+The biome table contains quite a number of options, though there are fewer 
+here than are available in the ABM-based spawner, as some stuff doesn't make
+sense at map-generation time.
 
 biome = {
-	surface = "string",	-- [*] what node to spawn on.
-	avoid_nodes = {table},	-- [*] what nodes to avoid when spawning.
-	avoid_radius = num,	-- [*] how much distance to leave between
-				--     the object to be added and the objects
-				--     to be avoided.  If this or the 
-				--     avoid_nodes value is nil or omitted,
-				--     this check is skipped.  Avoid using 
-				--     excessively large radii.
+	surface = "string",	-- What node to spawn on.  Must specify one
+				-- node, such as "default:dirt_with_grass".
+
+	---- Everything else is optional, but you'll definitely want to use
+	---- some of these other fields to limit where and under what
+	---- conditions the objects are spawned.
+	
+	avoid_nodes = {table},	-- List of nodes or groups to avoid when
+				-- spawning.
+	avoid_radius = num,	-- how much distance to leave between the
+				-- object to be added and the objects to be
+				-- avoided.  If this or the avoid_nodes value
+				-- is nil or omitted, this check is skipped.
+				-- Avoid using excessively large radii or you
+				-- will slow down the ABM.
 	rarity = num,		-- how rare should this object be in its
 				-- biome? Larger values make objects more
-				-- rare, determined by
-				-- math.random(1,100) > this
+				-- rare, via:  math.random(1,100) > this
 	max_count = num,	-- The absolute maximum number of your object
 				-- that should be allowed to spwn in a 5x5x5
 				-- mapblock area (80x80x80 nodes).  Defaults
 				-- to 5, but be sure you set this to some 
 				-- reasonable value depending on your object
-				-- and its size.
+				-- and its size if 5 is insufficient.
 	seed_diff = num,	-- perlin seed-diff value.  Defaults to 0, 
 				-- which causes the function to inherit the
 				-- global value of 329.
 	neighbors = {table},	-- What ground nodes must be right next to and
 				-- at the same elevation as the node to be
-				-- spawned on.  Defaults to the value of the
-				-- "surface" string.
+				-- spawned on.
 	ncount = num,		-- at least this many of the above nodes must
 				-- be next to the node to spawn on.  Any value
 				-- greater than 8 will probably cause the code
 				-- to never spawn anything.  Defaults to 0.
 	depth = num,		-- how deep/thick of a layer the spawned-on
 				-- node must be.  Typically used for water.
-				-- Defaults to unlimited.
 	min_elevation = num,	-- minimum elevation in meters/nodes.
 				-- Defaults to -31000 (unlimited).
 	max_elevation = num,	-- maximum elevation.  Defaults to +31000
@@ -314,10 +314,6 @@ biome = {
 				-- function.
 }
 
-[*] These entries are required for the spawn code to work.  Everything else
-    is optional.  Unless explicitly stated, all unused/unsupplied parameters
-    default to nil and will not affect the results of the code.
-
 Regarding node_or_function_or_treedef, this must either be table with an 
 L-Systems tree definition, or a string with a node or function name.
 
@@ -328,23 +324,22 @@ placed on top of the target position directly.
 If it wasn't a node, the code will assume you meant to specify a function
 name, in which case  that function will be passed a single position parameter
 (in the usual table format), indicating where the named function should place
-the object.
+the object.  It is called in the form of "somefunction(pos)", and behaves much
+like a typical callback.
 
-If you specified a table, the code assumed this table contains an L-Systems
+If you specified a table, the code assumes this table contains an L-Systems
 tree definition, then that definition will be passed directly to the
 spawn_tree() function along with the position to spawn the tree on.
 
------
+
+=====
+plantslib:grow_plants(options)
 
 The third function, grow_plants() is used to turn the spawned nodes above
 into something else over time.  This function has no return value, and accepts
-a table as the only parameter:
+a biome definition table as the only parameter.  These are defined like so:
 
-grow_plants({list of options})
-
-These are defined like so:
-
-plants_lib:grow_plants({
+options = {
 	grow_plant = "string",	-- Name of the node to be grown into something
 				-- else.  This value is passed to the ABM as
 				-- the "nodenames" parameter, so it is the
@@ -360,7 +355,10 @@ plants_lib:grow_plants({
 	grow_result = "string",	-- Name of the node into which the grow_plant
 				-- node(s) should transform when the ABM
 				-- executes.
-	dry_early_node = "string" -- This value is ignored except for jungle
+
+	---- Everything from here down is optional.
+
+	dry_early_node = "string", -- This value is ignored except for jungle
 				-- grass (a corner case needed by that mod),
 				-- where it indicates which node the grass
 				-- must be on in order for it to turn from
@@ -399,119 +397,103 @@ plants_lib:grow_plants({
 				-- "default:dirt_with_grass".
 	grow_function = something, -- [*] see below.
 	seed_diff = num,	-- [*] see below.
-})
-
+}
 
 [*] grow_function can take one of three possible settings:  it can be nil (or
     not provided), a string, or a table.
 
-    If it is not provided or it's set to nil, all of the regular growing code
-    is executed normally.  The value of seed_diff, if any, is ignored in this
-    case.
+If it is not provided or it's set to nil, all of the regular growing code is
+executed normally, the value of seed_diff, if any, is ignored, and the node to
+be placed is assumed to be specified in the grow_result variable.
 
-    If this value is set to a simple string, this is treated as the name of
-    the function to use to grow the plant.  In this case, all of the usual
-    growing code is executeed, but then instead of a plant being simply added
-    to the world, grow_result is ignored and the named function is executed
-    and passed a few parmeters: 
+If this value is set to a simple string, this is treated as the name of the
+function to use to grow the plant.  In this case, all of the usual growing
+code is executeed, but then instead of a plant being simply added to the
+world, grow_result is ignored and the named function is executed and passed a
+few parmeters in the following general form: 
 
 	somefunction(pos, perlin1, perlin2)
 
-	These values represent the current position (the usual table), the
-	Perlin noise value for that spot in the generic "plants can grow here"
-	map for the seed_diff value above, the Perlin value for that same spot
-	from the temperature map, and the detected neighboring wall face, if
-	there was one (or nil if not).  If seed_diff is not provided, it
-	defaults to 0.
+These values represent the current position (the usual table), the Perlin
+noise value for that spot in the generic "plants can grow here" map for the
+seed_diff value above, the Perlin value for that same spot from the
+temperature map, and the detected neighboring wall face, if there was one (or
+nil if not).  If seed_diff is not provided, it defaults to 0.
 
-    If this variable is instead set to a table, it is treated an an L-Systems
-    tree definition.  All of the growing code is executed in the usual manner,
-    then the tree described by that definition is spawned at the current
-    position instead, and grow_result is ignored.
+If this variable is instead set to a table, it is treated an an L-Systems tree
+definition.  All of the growing code is executed in the usual manner, then the
+tree described by that definition is spawned at the current position instead,
+and grow_result is ignored.
 
------
 
-Of the few helper functions, plantslib:find_adjacent_wall() expects a position
-parameter and a table with the list of nodes that should be considered as
-walls.  The code will search around the given position for a neighboring wall,
-returning the first one it finds as a facedir value, or nil if there are no
-adjacent walls.
+=====
+find_adjacent_wall(pos, verticals)
 
------
+Of the few helper functions, this one expects a position parameter and a table
+with the list of nodes that should be considered as walls.  The code will
+search around the given position for a neighboring wall, returning the first
+one it finds as a facedir value, or nil if there are no adjacent walls.
 
-plantslib:is_node_loaded() is defined in exactly the same manner (that is,
-"node_pos" is a set of coordinates), and acts as a wrapper for the
-minetest.env:get_node_or_nil(node_pos) function.  Returns true if the node in
+
+=====
+is_node_loaded(pos)
+
+This acts as a wrapper for the minetest.env:get_node_or_nil(node_pos)
+function and accepts a single position parameter.  Returns true if the node in
 question is already loaded, or false if not.
 
------
 
-plantslib:dbg() is a simple debug output function which takes one string
-parameter.  It just checks if DEBUG is true and outputs the phrase
-"[Plantlife] " followed by the supplied string, via the print() function, if
-so.
+=====
+dbg(string)
+
+This is a simple debug output function which takes one string parameter.  It
+just checks if DEBUG is true and outputs the phrase "[Plantlife] " followed by
+the supplied string, via the print() function, if so.
 
 
 ===============
 Global Settings
 ===============
 
-Enable this if you want the mod to spam your console with debug info :-)
+Set this to true if you want the mod to spam your console with debug info :-)
 
 	plantlife_debug = false
 
-The mod uses Perlin noise to create "biomes" of the various plants.  Aside
-from plantlife_seed_diff (see below), these values are the ones plugged 
-directly into the minetest.env:get_perlin() function.  For more information on
-how Perlin noise is generated, you will need to search the web, as these
-default values were arrived at through trial and error.
 
-	plantlife_seed_diff = 123
+======================
+Fertile Ground Mapping
+======================
+
+The mod uses Perlin noise to create "biomes" of the various plants, via the
+minetest.env:get_perlin() function.  At present, there are three layers of
+Perlin noise used.
+
+The first one is for a "fertile ground" layer, which I tend to refer to as the
+generic "stuff can potentially grow here" layer.  Its values are hard-coded:
+
+	plantslib.plantlife_seed_diff = 329
 	perlin_octaves = 3
-	perlin_persistence = 0.2
-	perlin_scale = 25
+	perlin_persistence = 0.6
+	perlin_scale = 100
 
-This value is compared against the output of the above Perlin noise function
-to decide when to actually place a plant.  Smaller numbers mean larger biomes
-and more abundant plants.
+For more information on how Perlin noise is generated, you will need to search
+the web, as these default values were from that which is used by minetest_game
+to spawn jungle grass at mapgen time, and I'm still learning how Perlin noise
+works.  ;-)
 
-	plantlife_limit = 0.6
-
-These three are pretty obvious.  Basically they control the shape and 
-distribution of the biomes in which the various plants will appear.
-
-	flowers_seed_diff = plantlife_seed_diff
-	junglegrass_seed_diff = plantlife_seed_diff + 10
-	poisonivy_seed_diff = plantlife_seed_diff + 10
-
-==============
-Local settings
-==============
-
-Each of the three components of this modpack has an init.lua file, as usual,
-and at the top of those files are four variables that affect how and when the
-ABMs are run.  In each one, the spawn_delay value is used as the 'interval'
-parameter and controls how often to run the ABM (in in-game tenths of
-seconds), while spawn_chance is used for the ABM's "chance" parameter, and is
-basically how likely the ABM is to actually execute (a 1 to (1/chance)
-probability).
-
-	spawn_delay = 2000
-	spawn_chance = 100
-
-The other two in each init.lua file control the same two settings used by the
-growing ABM.
-
-	grow_delay = 1000
-	grow_chance = 10
 
 ===================
 Temperature Mapping
 ===================
 
-This mod uses Perlin noise to establish a rough temperature map, with values
-taken from Splizard's Snow Biomes mod so that the two will be compatible,
-since that mod appears to be the standard now.
+The second Perlin layer is a temperature map, with values taken from
+SPlizard's Snow Biomes mod so that the two will be compatible, since that mod
+appears to be the standard now.  Those values are:
+
+	temperature_seeddiff = 112
+	temperature_octaves = 3
+	temperature_persistence = 0.5
+	temperature_scale = 150
 
 The way Perlin values are used by this mod, in keeping with the snow mod's 
 apparent methods, larger values returned by the Perlin function represent
@@ -540,15 +522,28 @@ common temperatures on both the Centigrade and Fahrenheit scales.  Note that
 unless you're trying to model the Moon or perhaps Mercury in your mods/maps, 
 you probably won't need to bother with Perlin values of less than -0.56 or so.
 
+
 ================
 Humidity Mapping
 ================
 
-Like the temperature map above, Perlin values can be tested to determine the
-approximate humidity of the *air* in the area.  This does not check for nearby
-water, just general humidity.
+Last but not least is a moisture/humidity map.  Like the temperature map
+above, Perlin values can be tested to determine the approximate humidity of
+the *air* in the area.
 
-A value of -1 equates to 100% humidity (basically, it should be a thick fog
+A value of -1 equates to 100% humidity (basically, it would be a thick fog
 if it could be seen),  a value of 0 is 50%, and a value of +1 is 0% (dry as a
 bone).
+
+This does not check for nearby water or desert area, just general air
+humidity, and that being the case, nearby ground does not affect the
+reported humidity of a region (because this isn't yet possible to calculate
+yet).
+
+The Perlin values use for this layer are:
+
+humidity_seeddiff = 1234
+humidity_octaves = 1
+humidity_persistence = 0.5
+humidity_scale = 150
 
