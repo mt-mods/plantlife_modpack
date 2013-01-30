@@ -64,7 +64,7 @@ options={
 	spawn_plants = something, -- [*] String or table; see below.
 	spawn_delay = number,	-- same as sdelay, above.
 	spawn_chance = number,	-- same as schance, above.
-	spawn_surfaces = {table} -- List of node names on which the plants
+	spawn_surfaces = {table}, -- List of node names on which the plants
 				-- should be spawned.  As with the single-
 				-- node "ssurface" option in the legacy API,
 				-- you should not put stone, air, etc. here.
@@ -75,7 +75,7 @@ options={
 
 	avoid_nodes = {table},	-- same meaning as savoid, above
 	avoid_radius = num,	-- same as sradius
-	seed_diff = num		-- The Perlin seed difference value passed to
+	seed_diff = num,	-- The Perlin seed difference value passed to
 				-- the minetest.env:get_perlin() function.
 				-- Used along with the global Perlin controls
 				-- below to create the "biome" in which the
@@ -116,8 +116,8 @@ options={
 				-- or any other pair of numbers in the 0 to 5 
 				-- range, as appropriate for the node you want
 				-- to spawn.
-	verticals_list = {table} -- List of nodes that should be considered to
-				-- be natural walls.
+	verticals_list = {table}, -- List of nodes that should be considered
+				-- to be natural walls.
 	alt_wallnode = "string", -- If specified, this node will be 
 				-- substituted in place of the plant(s)
 				-- defined by spawn_plants above, if the spawn
@@ -216,10 +216,10 @@ options={
 				-- facedir function above, the values given to
 				-- the facedir parameter are for regular
 				-- nodes, not wallmounted.
-	spawn_replace_node = bool -- If set to true, the target node itself is
-				-- replaced by the spawned object.  Overrides
-				-- the spawn_on_bottom and spawn_on_side
-				-- settings.
+	spawn_replace_node = bool, -- If set to true, the target node itself
+				-- is replaced by the spawned object.
+				-- Overrides the spawn_on_bottom and
+				-- spawn_on_side settings.
 }
 
 [*] spawn_plants must be either a table or a string.  If it's a table, the
