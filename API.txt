@@ -24,15 +24,15 @@ plantslib:spawn_on_surfaces() and so forth.
 
 
 =====
-spawn_on_surfaces(options)
+spawn_on_surfaces(biome)
 spawn_on_surfaces(sdelay, splant, sradius, schance, ssurface, savoid)
 
-The first function is an ABM-based spawner function originally created as
+This first function is an ABM-based spawner function originally created as
 part of Ironzorg's flowers mod.  It has since been largely extended and
 expanded.  There are two ways to call this function:  You can either pass it 
 several individual string and number parameters to use the legacy interface,
-or you can pass a single table with all of your options spelled out nicely to
-use the current method.
+or you can pass a single biome definition as a table, with all of your options
+spelled out nicely.  This is the preferred method.
 
 When used with the legacy interface, you must specify the parameters exactly
 in order, with the first five being mandatory (even if some are set to nil),
@@ -57,10 +57,10 @@ savoid:		Table with a list of groups and/or node names to avoid when
 		spawning the plant, such as {"group:flowers", "default:tree"}.
 
 When passed a table as the argument, and thus using the modern calling method,
-you must pass at least four arguments as regular keyed entries in the table,
-in any order:
+you must pass a number of arguments in the form of an ordinary keyed-value
+table.  Below is a list of everything supported by this function:
 
-options={
+biome = {
 	spawn_plants = something, -- [*] String or table; see below.
 	spawn_delay = number,	-- same as sdelay, above.
 	spawn_chance = number,	-- same as schance, above.
