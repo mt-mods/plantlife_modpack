@@ -24,10 +24,10 @@ local temperature_octaves = 3
 local temperature_persistence = 0.5
 local temperature_scale = 150
 
-local humidity_seeddiff = 1234
-local humidity_octaves = 1
+local humidity_seeddiff = 9130
+local humidity_octaves = 3
 local humidity_persistence = 0.5
-local humidity_scale = 150
+local humidity_scale = 250
 
 -- Local functions
 
@@ -89,7 +89,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			local perlin3 = minetest.env:get_perlin(humidity_seeddiff, humidity_octaves, humidity_persistence, humidity_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = perlin2:get2d({x=p_top.x, y=p_top.z})
-			local noise3 = perlin3:get2d({x=p_top.x, y=p_top.z})
+			local noise3 = perlin3:get2d({x=p_top.x+150, y=p_top.z+50})
 			if (biome.depth == nil or minetest.env:get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
 			  and minetest.env:get_node(p_top).name == "air" 
 			  and pos.y >= biome.min_elevation

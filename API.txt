@@ -534,21 +534,29 @@ Humidity Mapping
 
 Last but not least is a moisture/humidity map.  Like the temperature map
 above, Perlin values can be tested to determine the approximate humidity of
-the *air* in the area.
+the *air* in the area.  This humidity map is basically the perlin layer used
+for deserts.
 
-A value of -1 equates to 100% humidity (basically, it would be a thick fog
-if it could be seen),  a value of 0 is 50%, and a value of +1 is 0% (dry as a
-bone).
+A value of -1.0 is very moist (basically a thick fog, if it could be seen), a
+value of +0.4 represents the edge of a desert as usually seen in the game, and
+a value of +1.0 is as dry as a bone.
 
-This does not check for nearby water or desert area, just general air
-humidity, and that being the case, nearby ground does not affect the
-reported humidity of a region (because this isn't yet possible to calculate
-yet).
+This does not check for nearby water, just general air humidity, and that
+being the case, nearby ground does not affect the reported humidity of a
+region (because this isn't yet possible to calculate yet).  Use the near_nodes
+and avoid_nodes parameters and their related options to check for water and
+such.
 
 The Perlin values use for this layer are:
 
-humidity_seeddiff = 1234
-humidity_octaves = 1
-humidity_persistence = 0.5
-humidity_scale = 150
+	humidity_seeddiff = 9130
+	humidity_octaves = 3
+	humidity_persistence = 0.5
+	humidity_scale = 250
+
+And this particular one is mapped slightly differently from the others:
+
+	noise3 = perlin3:get2d({x=p_top.x+150, y=p_top.z+50})
+
+(Note the +150 and +50 offsets)
 
