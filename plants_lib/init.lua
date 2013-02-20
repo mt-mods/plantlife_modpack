@@ -133,7 +133,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							end
 							]]--
 
-							minetest.env:spawn_tree(pos, node_or_function_or_model)
+							plantslib:generate_tree(pos, node_or_function_or_model)
 
 						elseif type(node_or_function_or_model) == "string" then
 							if minetest.registered_nodes[node_or_function_or_model] == nil then
@@ -353,7 +353,7 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 	if growtype == "table" then
 		plantslib:dbg("Grow: spawn tree at "..dump(pos))
 		minetest.env:remove_node(pos)
-		minetest.env:spawn_tree(pos, grow_function)
+		plantslib:grow_tree(pos, grow_function)
 		return
 	elseif growtype == "string" then
 		local perlin1 = minetest.env:get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
@@ -416,6 +416,19 @@ function plantslib:find_open_side(pos)
 		return {newpos = { x=pos.x, y=pos.y, z=pos.z+1 }, facedir = 5}
 	end
 	return nil
+end
+
+-- spawn_tree() on generate is routed through here so that other mods can hook
+-- into it.
+
+function plantslib:generate_tree(pos, node_or_function_or_model)
+	minetest.env:spawn_tree(pos, node_or_function_or_model)
+end
+
+-- and this one's for the call used in the growing code
+
+function plantslib:grow_tree(pos, node_or_function_or_model)
+	minetest.env:spawn_tree(pos, node_or_function_or_model)
 end
 
 print("[Plantlife Library] Loaded")

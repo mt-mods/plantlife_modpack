@@ -22,6 +22,12 @@ All functions in plants lib are declared locally to avoid namespace collisions
 with other mods.  They are accessible via the "plantslib" method, e.g.
 plantslib:spawn_on_surfaces() and so forth.
 
+In the case of the growing code and the mapgen-based tree generator code, the
+usual spawn_tree() calls used therein are routed through
+plantslib:generate_tree() and plantslib:grow_tree(), which just directly call
+the spawn_tree() function anyway.  This way other mods can wedge into these 
+two calls by name, to execute something extra whenever a tree is spawned via
+this library.
 
 =====
 spawn_on_surfaces(biome)
