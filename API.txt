@@ -22,13 +22,6 @@ All functions in plants lib are declared locally to avoid namespace collisions
 with other mods.  They are accessible via the "plantslib" method, e.g.
 plantslib:spawn_on_surfaces() and so forth.
 
-In the case of the growing code and the mapgen-based tree generator code, the
-usual spawn_tree() calls used therein are routed through
-plantslib:generate_tree() and plantslib:grow_tree(), which just directly call
-the spawn_tree() function anyway.  This way other mods can wedge into these 
-two calls by name, to execute something extra whenever a tree is spawned via
-this library.
-
 =====
 spawn_on_surfaces(biome)
 spawn_on_surfaces(sdelay, splant, sradius, schance, ssurface, savoid)
@@ -455,6 +448,26 @@ dbg(string)
 This is a simple debug output function which takes one string parameter.  It
 just checks if DEBUG is true and outputs the phrase "[Plantlife] " followed by
 the supplied string, via the print() function, if so.
+
+=====
+plantslib:generate_tree(pos, treemodel)
+plantslib:grow_tree(pos, treemodel)
+
+In the case of the growing code and the mapgen-based tree generator code, 
+generating a tree is done via the above two calls, which in turn immediately
+call the usual spawn_tree() functions.  This rerouting exists as a way for
+other mods to hook into plants_lib's tree-growing functions in general,
+perhaps to execute something extra whenever a tree is spawned.
+
+plantslib:generate_tree(pos, treemodel) is called any time a
+tree is spawned at map generation time.  'pos' is the position of the block on
+which the tree is to be placed.  'treemodel' is the standard L-Systems tree
+definition table expected by the spawn_tree() function.  Refer to the 'trunk'
+field in that table to derive the name of the tree being spawned.
+
+plantslib:grow_tree(pos, treemodel) does the same sort of thing whenever a 
+tree is spawned within the abm-based growing code, for example when growing a
+sapling into a tree.
 
 
 =====
