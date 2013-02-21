@@ -15,8 +15,8 @@ local walls_list = {
 	"default:brick",
 	"default:tree",
 	"default:jungletree",
-	"default:coal",
-	"default:iron"
+	"default:stone_with_coal",
+	"default:stone_with_iron"
 },
 minetest.register_node('poisonivy:seedling', {
 	description = "Poison ivy (seedling)",
