@@ -47,9 +47,8 @@ Conflicts: This mod should not be installed alongside the original Flowers,
 Jungle Grass, or Poison Ivy mods.  If those exist, delete them, as this mod 
 supplies all of their functionality.
 
-Software Requirements: This mod was written for Minetest 0.4.4 or later, but it 
-should work on pretty much any old or recent 0.4.x version.  It will not work 
-with 0.3.x since that version does not support modding.
+Software Requirements: This mod required Minetest 0.4.4 from January 7, 2013 or 
+later.  It will NOT work with any prior version.
 
 ------------------------------------------------------------------------------
 
