@@ -250,13 +250,18 @@ here than are available in the ABM-based spawner, as some stuff doesn't make
 sense at map-generation time.
 
 biome = {
-	surface = "string",	-- What node to spawn on.  Must specify one
-				-- node, such as "default:dirt_with_grass".
+	surface = something,	-- What node(s).  May be a string such as
+				-- "default:dirt_with_grass" or a table with
+				-- multiple such entries.
 
 	---- Everything else is optional, but you'll definitely want to use
 	---- some of these other fields to limit where and under what
 	---- conditions the objects are spawned.
 	
+	below_nodes = {table},	-- List of nodes that must be below the target
+				-- node.  Useful in snow biomes to keep
+				-- objects from spawning in snow that's on the
+				-- wrong surface for that object.
 	avoid_nodes = {table},	-- List of nodes or groups to avoid when
 				-- spawning.
 	avoid_radius = num,	-- how much distance to leave between the
@@ -311,6 +316,22 @@ biome = {
 				-- plant (lowest Perlin temperature value).
 	verticals_list = {table}, -- Same as with the spawn_on_surfaces
 				-- function.
+	check_air = bool,	-- Flag to tell the mapgen code to check for
+				-- air above the spawn target.  Defaults to
+				-- true if not explicitly set to false.
+	delete_above = bool,	-- Flag to tell the mapgen code to delete the
+				-- two nodes directly above the spawn target
+				-- just before adding the plant or tree.
+				-- Useful when generating in snow biomes.
+				-- Defaults to false.
+	delete_above_surround = bool, -- Flag to tell the mapgen code to also
+				-- delete the four nodes surrounding the above
+				-- space, and the four nodes above those,
+				-- resulting in a two-node-deep cross-shaped
+				-- empty region above the spawn target.
+				-- Useful when adding trees to snow biomes.
+				-- Defaults to false.
+	spawn_replace_node = bool -- same as with the ABM spawner.
 }
 
 Regarding node_or_function_or_treedef, this must either be table with an 

@@ -81,6 +81,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 		if not biome.near_nodes_vertical then biome.near_nodes_vertical = 1 end
 		if not biome.humidity_min then biome.humidity_min = 1 end
 		if not biome.humidity_max then biome.humidity_max = -1 end
+		if biome.check_air ~= false then biome.check_air = true end
 
 		plantslib:dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
@@ -94,7 +95,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			local noise2 = plantslib.perlin_temperature:get2d({x=p_top.x, y=p_top.z})
 			local noise3 = plantslib.perlin_humidity:get2d({x=p_top.x+150, y=p_top.z+50})
 			if (not biome.depth or minetest.env:get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
-			  and minetest.env:get_node(p_top).name == "air" 
+			  and (not biome.check_air or (biome.check_air and minetest.env:get_node(p_top).name == "air"))
 			  and pos.y >= biome.min_elevation
 			  and pos.y <= biome.max_elevation
 			  and noise1 > biome.plantlife_limit
@@ -105,13 +106,14 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			  and (not biome.ncount or table.getn(minetest.env:find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
 			  and (not biome.near_nodes or table.getn(minetest.env:find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
 			  and math.random(1,100) > biome.rarity
+			  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.env:get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
 			  then
 				table.insert(in_biome_nodes, pos)
 				num_in_biome_nodes = num_in_biome_nodes + 1
 			end
 		end
 
-		plantslib:dbg("Found "..num_in_biome_nodes.." surface nodes of type "..biome.surface.." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
+		plantslib:dbg("Found "..num_in_biome_nodes.." surface nodes of type(s) "..dump(biome.surface).." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
 
 		if num_in_biome_nodes > 0 then
 			plantslib:dbg("Calculated maximum of "..math.min(biome.max_count*3, num_in_biome_nodes).." nodes to be checked in that list.")
@@ -120,9 +122,33 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 				local spawned = false
 				while tries < 2 and not spawned do
 					local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
+					if biome.spawn_replace_node then
+						pos.y = pos.y-1
+					end
 					local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 					if not(biome.avoid_radius and biome.avoid_nodes) or not minetest.env:find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) then
 						spawned = true
+						if biome.delete_above then
+							minetest.env:remove_node(p_top)
+							minetest.env:remove_node({x=p_top.x, y=p_top.y+1, z=p_top.z})
+						end
+
+						if biome.delete_above_surround then
+							minetest.env:remove_node({x=p_top.x-1, y=p_top.y, z=p_top.z})
+							minetest.env:remove_node({x=p_top.x+1, y=p_top.y, z=p_top.z})
+							minetest.env:remove_node({x=p_top.x,   y=p_top.y, z=p_top.z-1})
+							minetest.env:remove_node({x=p_top.x,   y=p_top.y, z=p_top.z+1})
+
+							minetest.env:remove_node({x=p_top.x-1, y=p_top.y+1, z=p_top.z})
+							minetest.env:remove_node({x=p_top.x+1, y=p_top.y+1, z=p_top.z})
+							minetest.env:remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z-1})
+							minetest.env:remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z+1})
+						end
+
+						if biome.spawn_replace_node then
+							minetest.env:remove_node(pos)
+						end
+
 						if type(node_or_function_or_model) == "table" then
 							plantslib:dbg("Spawn tree at {"..dump(pos).."}")
 							plantslib:generate_tree(pos, node_or_function_or_model)
