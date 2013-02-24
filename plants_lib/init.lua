@@ -372,7 +372,7 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 		plantslib:grow_tree(pos, grow_function)
 		return
 	elseif growtype == "string" then
-		local perlin1 = minetest.env:get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+		local perlin1 = minetest.env:get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
 		local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=p_top.x, y=p_top.z})
 		plantslib:dbg("Grow: call function "..grow_function.."("..dump(pos)..","..noise1..","..noise2..","..dump(walldir)..")")
