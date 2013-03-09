@@ -63,6 +63,24 @@ function plantslib:set_defaults(biome)
 	biome.humidity_max = biome.humidity_max or -1
 	biome.plantlife_limit = biome.plantlife_limit or 0.1
 	biome.near_nodes_vertical = biome.near_nodes_vertical or 1
+
+-- specific to on-generate
+
+	biome.neighbors = biome.neighbors or biome.surface
+	biome.near_nodes_size = biome.near_nodes_size or 0
+	biome.near_nodes_count = biome.near_nodes_count or 1
+	biome.rarity = biome.rarity or 50
+	biome.max_count = biome.max_count or 5
+
+	if biome.check_air ~= false then biome.check_air = true end
+
+-- specific to abm spawner
+	biome.seed_diff = biome.seed_diff or 0
+	biome.light_min = biome.light_min or 0
+	biome.light_max = biome.light_max or 15
+	biome.depth_max = biome.depth_max or 1
+	biome.facedir = biome.facedir or 0
+	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 end
 
 -- Spawn plants using the map generator
@@ -79,14 +97,6 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 
 		local biome = biomedef
 		plantslib:set_defaults(biome)
-
-		biome.neighbors = biome.neighbors or biome.surface
-		biome.near_nodes_size = biome.near_nodes_size or 0
-		biome.near_nodes_count = biome.near_nodes_count or 1
-		biome.rarity = biome.rarity or 50
-		biome.max_count = biome.max_count or 5
-
-		if biome.check_air ~= false then biome.check_air = true end
 
 		plantslib:dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.env:find_nodes_in_area(minp, maxp, biome.surface)
@@ -199,13 +209,6 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 	end
 
 	plantslib:set_defaults(biome)
-
-	biome.seed_diff = biome.seed_diff or 0
-	biome.light_min = biome.light_min or 0
-	biome.light_max = biome.light_max or 15
-	biome.depth_max = biome.depth_max or 1
-	biome.facedir = biome.facedir or 0
-	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 
 	plantslib:dbg("Registered spawning ABM:")
 	plantslib:dbg(dump(biome))
