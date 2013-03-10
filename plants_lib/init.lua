@@ -71,7 +71,6 @@ function plantslib:set_defaults(biome)
 	biome.near_nodes_count = biome.near_nodes_count or 1
 	biome.rarity = biome.rarity or 50
 	biome.max_count = biome.max_count or 5
-
 	if biome.check_air ~= false then biome.check_air = true end
 
 -- specific to abm spawner
@@ -80,7 +79,6 @@ function plantslib:set_defaults(biome)
 	biome.light_max = biome.light_max or 15
 	biome.depth_max = biome.depth_max or 1
 	biome.facedir = biome.facedir or 0
-	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 end
 
 -- Spawn plants using the map generator
@@ -209,6 +207,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 	end
 
 	plantslib:set_defaults(biome)
+	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 
 	plantslib:dbg("Registered spawning ABM:")
 	plantslib:dbg(dump(biome))
