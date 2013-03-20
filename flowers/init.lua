@@ -34,6 +34,7 @@ for i in ipairs(flowers_list) do
 			type = "fixed",
 			fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
 		},	
+		buildable_to = true,
 	})
 
 	minetest.register_node("flowers:flower_"..flower.."_pot", {
@@ -83,6 +84,7 @@ minetest.register_node("flowers:flower_waterlily", {
 		type = "fixed",
 		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
 	},
+	buildable_to = true,
 })
 
 minetest.register_node("flowers:flower_waterlily_225", {
@@ -105,7 +107,8 @@ minetest.register_node("flowers:flower_waterlily_225", {
 		type = "fixed",
 		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
 	},
-	drop = "flowers:flower_waterlily"
+	drop = "flowers:flower_waterlily",
+	buildable_to = true,
 })
 
 minetest.register_node("flowers:flower_waterlily_45", {
@@ -128,7 +131,8 @@ minetest.register_node("flowers:flower_waterlily_45", {
 		type = "fixed",
 		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
 	},
-	drop = "flowers:flower_waterlily"
+	drop = "flowers:flower_waterlily",
+	buildable_to = true,
 })
 
 minetest.register_node("flowers:flower_waterlily_675", {
@@ -151,7 +155,8 @@ minetest.register_node("flowers:flower_waterlily_675", {
 		type = "fixed",
 		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
 	},
-	drop = "flowers:flower_waterlily"
+	drop = "flowers:flower_waterlily",
+	buildable_to = true,
 })
 
 minetest.register_node("flowers:flower_seaweed", {
@@ -170,6 +175,7 @@ minetest.register_node("flowers:flower_seaweed", {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, -0.4, 0.5 },
 	},	
+	buildable_to = true,
 })
 
 -- spawn ABM registrations

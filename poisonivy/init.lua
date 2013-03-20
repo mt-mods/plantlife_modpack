@@ -29,6 +29,7 @@ minetest.register_node('poisonivy:seedling', {
 	walkable = false,
 	groups = { snappy = 3, poisonivy=1 },
 	sounds = default.node_sound_leaves_defaults(),
+	buildable_to = true,
 })
 
 minetest.register_node('poisonivy:sproutling', {
@@ -42,6 +43,7 @@ minetest.register_node('poisonivy:sproutling', {
 	walkable = false,
 	groups = { snappy = 3, poisonivy=1 },
 	sounds = default.node_sound_leaves_defaults(),
+	buildable_to = true,
 })
 
 minetest.register_node('poisonivy:climbing', {
@@ -60,6 +62,7 @@ minetest.register_node('poisonivy:climbing', {
 		type = "wallmounted",
 		--wall_side = = <default>
 	},
+	buildable_to = true,
 })
 
 plantslib:spawn_on_surfaces({

@@ -31,6 +31,7 @@ minetest.register_node('junglegrass:medium', {
 		type = "fixed",
 		fixed = {-0.4, -0.5, -0.4, 0.4, 0.5, 0.4},
 	},
+	buildable_to = true,
 })
 
 minetest.register_node('junglegrass:short', {
@@ -49,6 +50,7 @@ minetest.register_node('junglegrass:short', {
 		type = "fixed",
 		fixed = {-0.4, -0.5, -0.4, 0.4, 0.3, 0.4},
 	},
+	buildable_to = true,
 })
 
 minetest.register_node('junglegrass:shortest', {
@@ -67,6 +69,7 @@ minetest.register_node('junglegrass:shortest', {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0, 0.3},
 	},
+	buildable_to = true,
 })
 
 plantslib:spawn_on_surfaces({
