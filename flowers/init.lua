@@ -226,7 +226,7 @@ plantslib:spawn_on_surfaces({
 	seed_diff = flowers_seed_diff,
 	light_min = 9,
 	depth_max = 2,
-	random_facedir = {2,5}
+	random_facedir = {0,3}
 })
 
 plantslib:spawn_on_surfaces({

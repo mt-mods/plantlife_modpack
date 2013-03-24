@@ -265,7 +265,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 								assert(loadstring(spawn_plants.."("..dump(pos)..")"))()
 							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								if n_top.name == "air" then
-									plantslib:dbg("Spawn: "..plant_to_spawn.." on top of ("..dump(pos)..")")
+									plantslib:dbg("Spawn: "..plant_to_spawn.." on top of ("..dump(pos).."); facedir="..fdir)
 									minetest.env:add_node(p_top, { name = plant_to_spawn, param2 = fdir })
 								end
 							elseif biome.spawn_replace_node then
