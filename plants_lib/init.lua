@@ -11,7 +11,7 @@
 
 plantslib = {}
 
-local DEBUG = true --... except if you want to spam the console with debugging info :-)
+local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
@@ -170,7 +170,9 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 						elseif type(node_or_function_or_model) == "string" then
 							if not minetest.registered_nodes[node_or_function_or_model] then
 								plantslib:dbg("Call function: "..node_or_function_or_model.."("..dump(pos)..")")
+								local t2=os.clock()
 								assert(loadstring(node_or_function_or_model.."("..dump(pos)..")"))()
+								plantslib:dbg("Executed that function in ".. (os.clock()-t2)*1000 .."ms")
 							else
 								plantslib:dbg("Add node: "..node_or_function_or_model.." at ("..dump(p_top)..")")
 								minetest.env:add_node(p_top, { name = node_or_function_or_model })
