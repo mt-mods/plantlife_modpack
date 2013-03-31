@@ -11,7 +11,7 @@
 
 plantslib = {}
 
-local DEBUG = false --... except if you want to spam the console with debugging info :-)
+local DEBUG = true --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
@@ -92,7 +92,7 @@ end
 
 function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or_model)
 	return function(minp, maxp, blockseed)
-	        plantslib:dbg("Started this chunk at "..os.clock())
+		local t1=os.clock()
 
 		local biome = biomedef
 		plantslib:set_defaults(biome)
@@ -186,7 +186,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 				end
 			end
 		end
-                plantslib:dbg("Finished this chunk at "..os.clock())
+                plantslib:dbg("Evaluated/populated chunk in ".. (os.clock()-t1)*1000 .."ms")
 	end
 end
 
@@ -420,17 +420,17 @@ end
 -- into it.
 
 function plantslib:generate_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Started this tree at "..os.clock())
+	local t=os.clock()
 	minetest.env:spawn_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Finished at "..os.clock())
+	plantslib:dbg("Generated one tree in ".. (os.clock()-t)*1000 .."ms")
 end
 
 -- and this one's for the call used in the growing code
 
 function plantslib:grow_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Started this tree at "..os.clock())
+	local t=os.clock()
 	minetest.env:spawn_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Finished at "..os.clock())
+	plantslib:dbg("Generated one tree in ".. (os.clock()-t)*1000 .."ms")
 end
 
 
