@@ -7,7 +7,7 @@ local flowers_seed_diff = 329
 
 -- register cotton plant
 
-minetest.register_node("flowers:cotton_plant", {
+minetest.register_node(":flowers:cotton_plant", {
 	description = flowerdesc,
 	drawtype = "plantlike",
 	tiles = { "flowers_cotton_plant.png" },
@@ -31,7 +31,7 @@ minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_cotton_plan
 
 -- register the various rotations of waterlilies
 
-minetest.register_node("flowers:waterlily", {
+minetest.register_node(":flowers:waterlily", {
 	description = "Waterlily",
 	drawtype = "nodebox",
 	tiles = { "flowers_waterlily.png" },
@@ -54,7 +54,7 @@ minetest.register_node("flowers:waterlily", {
 	buildable_to = true,
 })
 
-minetest.register_node("flowers:waterlily_225", {
+minetest.register_node(":flowers:waterlily_225", {
 	description = "Waterlily",
 	drawtype = "nodebox",
 	tiles = { "flowers_waterlily_22.5.png" },
@@ -76,7 +76,7 @@ minetest.register_node("flowers:waterlily_225", {
 	buildable_to = true,
 })
 
-minetest.register_node("flowers:waterlily_45", {
+minetest.register_node(":flowers:waterlily_45", {
 	description = "Waterlily",
 	drawtype = "raillike",
 	tiles = { "flowers_waterlily_45.png" },
@@ -98,7 +98,7 @@ minetest.register_node("flowers:waterlily_45", {
 	buildable_to = true,
 })
 
-minetest.register_node("flowers:waterlily_675", {
+minetest.register_node(":flowers:waterlily_675", {
 	description = "Waterlily",
 	drawtype = "nodebox",
 	tiles = { "flowers_waterlily_67.5.png" },
@@ -120,7 +120,7 @@ minetest.register_node("flowers:waterlily_675", {
 	buildable_to = true,
 })
 
-minetest.register_node("flowers:seaweed", {
+minetest.register_node(":flowers:seaweed", {
 	description = "Seaweed",
 	drawtype = "signlike",
 	tiles = { "flowers_seaweed.png" },
@@ -155,7 +155,7 @@ for i in ipairs(flowers_list) do
 	local flowerdesc = flowers_list[i][1]
 	local flower     = flowers_list[i][2]
 	
-	minetest.register_node("flowers:potted_"..flower, {
+	minetest.register_node(":flowers:potted_"..flower, {
 		description = "Potted "..flowerdesc,
 		drawtype = "plantlike",
 		tiles = { "flowers_potted_"..flower..".png" },
@@ -182,26 +182,6 @@ for i in ipairs(flowers_list) do
 	})
 
 	minetest.register_alias("flowers:flower_"..flower.."_pot", "flowers:potted_"..flower)
-
-	minetest.register_node("flowers:"..flower, {
-		description = "Potted "..flowerdesc,
-		drawtype = "plantlike",
-		tiles = { "flowers_"..flower..".png" },
-		inventory_image = "flowers_"..flower..".png",
-		wield_image = "flowers_"..flower..".png",
-		sunlight_propagates = true,
-		paramtype = "light",
-		walkable = false,
-		groups = { snappy = 3,flammable=2 },
-		sounds = default.node_sound_leaves_defaults(),
-		selection_box = {
-			type = "fixed",
-			fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
-		},	
-	})
-
-	minetest.register_alias("flowers:flower_"..flower, "flowers:"..flower)
-
 end
 
 local extra_aliases = {
@@ -311,7 +291,7 @@ plantslib:spawn_on_surfaces({
 
 -- crafting recipes!
 
-minetest.register_craftitem("flowers:flower_pot", {
+minetest.register_craftitem(":flowers:flower_pot", {
 	description = "Flower Pot",
 	inventory_image = "flowers_flowerpot.png",
 })
@@ -326,7 +306,7 @@ minetest.register_craft( {
 
 minetest.register_alias("flowers:cotton", "flowers:cotton_wad")
 
-minetest.register_craftitem("flowers:cotton_wad", {
+minetest.register_craftitem(":flowers:cotton_wad", {
 	description = "Cotton wad",
 	image = "flowers_cotton_wad.png",
 })
