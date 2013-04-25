@@ -313,7 +313,7 @@ plantslib:spawn_on_surfaces({
 
 minetest.register_craftitem("flowers:flower_pot", {
 	description = "Flower Pot",
-	inventory_image = "flower_pot.png",
+	inventory_image = "flowers_flowerpot.png",
 })
 
 minetest.register_craft( {
