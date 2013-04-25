@@ -328,7 +328,7 @@ minetest.register_alias("flowers:cotton", "flowers:cotton_wad")
 
 minetest.register_craftitem("flowers:cotton_wad", {
 	description = "Cotton wad",
-	image = "cotton.png",
+	image = "flowers_cotton_wad.png",
 })
 
 minetest.register_craft({
