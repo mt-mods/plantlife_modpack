@@ -27,7 +27,7 @@ minetest.register_node('poisonivy:seedling', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora_block=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	buildable_to = true,
 })
@@ -41,7 +41,7 @@ minetest.register_node('poisonivy:sproutling', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora_block=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	buildable_to = true,
 })
@@ -56,7 +56,7 @@ minetest.register_node('poisonivy:climbing', {
 	paramtype = 'light',
 	paramtype2 = 'wallmounted',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora_block=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "wallmounted",
