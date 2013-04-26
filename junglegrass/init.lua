@@ -23,7 +23,7 @@ minetest.register_node('junglegrass:medium', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, flammable=2, junglegrass=1 },
+	groups = { snappy = 3, flammable=2, junglegrass=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'default:junglegrass',
 
@@ -43,7 +43,7 @@ minetest.register_node('junglegrass:short', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, flammable=2, junglegrass=1 },
+	groups = { snappy = 3, flammable=2, junglegrass=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'default:junglegrass',
 	selection_box = {
@@ -62,7 +62,7 @@ minetest.register_node('junglegrass:shortest', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, flammable=2, junglegrass=1 },
+	groups = { snappy = 3, flammable=2, junglegrass=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'default:junglegrass',
 	selection_box = {

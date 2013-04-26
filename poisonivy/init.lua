@@ -27,7 +27,7 @@ minetest.register_node('poisonivy:seedling', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	buildable_to = true,
 })
@@ -41,7 +41,7 @@ minetest.register_node('poisonivy:sproutling', {
 	sunlight_propagates = true,
 	paramtype = 'light',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	buildable_to = true,
 })
@@ -56,7 +56,7 @@ minetest.register_node('poisonivy:climbing', {
 	paramtype = 'light',
 	paramtype2 = 'wallmounted',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1 },
+	groups = { snappy = 3, poisonivy=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "wallmounted",
@@ -71,7 +71,7 @@ plantslib:spawn_on_surfaces({
 	avoid_radius = 10,
 	spawn_chance = SPAWN_CHANCE/10,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:poisonivy","group:flower"},
+	avoid_nodes = {"group:poisonivy", "group:flower", "group:flora"},
 	seed_diff = poisonivy_seed_diff,
 	light_min = 7,
 	alt_wallnode = "poisonivy:climbing",
