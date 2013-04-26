@@ -56,7 +56,7 @@ minetest.register_node('poisonivy:climbing', {
 	paramtype = 'light',
 	paramtype2 = 'wallmounted',
 	walkable = false,
-	groups = { snappy = 3, poisonivy=1, flora=1 },
+	groups = { snappy = 3, poisonivy=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "wallmounted",
