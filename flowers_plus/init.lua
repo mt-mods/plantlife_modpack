@@ -17,7 +17,7 @@ minetest.register_node(":flowers:cotton_plant", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
-	groups = { snappy = 3,flammable=2, flower=1, attached_node=1 },
+	groups = { snappy = 3,flammable=2, flower=1, flora=1, attached_node=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -41,7 +41,7 @@ minetest.register_node(":flowers:waterlily", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1 },
+	groups = { snappy = 3,flammable=2,flower=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -62,7 +62,7 @@ minetest.register_node(":flowers:waterlily_225", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	groups = { snappy = 3,flammable=2,flower=1, flora=1, not_in_creative_inventory=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -84,7 +84,7 @@ minetest.register_node(":flowers:waterlily_45", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	groups = { snappy = 3,flammable=2,flower=1, flora=1, not_in_creative_inventory=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -106,7 +106,7 @@ minetest.register_node(":flowers:waterlily_675", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
+	groups = { snappy = 3,flammable=2,flower=1, flora=1, not_in_creative_inventory=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -130,7 +130,7 @@ minetest.register_node(":flowers:seaweed", {
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1 },
+	groups = { snappy = 3,flammable=2,flower=1, flora=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -210,7 +210,7 @@ plantslib:spawn_on_surfaces({
 	avoid_radius = 10,
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower", "group:poisonivy"},
+	avoid_nodes = {"group:flower", "group:flora", "group:poisonivy"},
 	seed_diff = flowers_seed_diff,
 	light_min = 9
 })
@@ -225,7 +225,7 @@ plantslib:spawn_on_surfaces({
 	avoid_radius = 7,
 	spawn_chance = SPAWN_CHANCE,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower", "group:poisonivy"},
+	avoid_nodes = {"group:flower", "group:flora", "group:poisonivy"},
 	seed_diff = flowers_seed_diff,
 	light_min = 9
 })
@@ -241,7 +241,7 @@ plantslib:spawn_on_surfaces({
 	avoid_radius = 2.5,
 	spawn_chance = SPAWN_CHANCE*4,
 	spawn_surfaces = {"default:water_source"},
-	avoid_nodes = {"group:flower"},
+	avoid_nodes = {"group:flower", "group:flora" },
 	seed_diff = flowers_seed_diff,
 	light_min = 9,
 	depth_max = 2,
@@ -253,7 +253,7 @@ plantslib:spawn_on_surfaces({
 	spawn_plants = {"flowers:seaweed"},
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:water_source"},
-	avoid_nodes = {"group:flower"},
+	avoid_nodes = {"group:flower", "group:flora"},
 	seed_diff = flowers_seed_diff,
 	light_min = 4,
 	light_max = 10,
@@ -266,7 +266,7 @@ plantslib:spawn_on_surfaces({
 	spawn_plants = {"flowers:seaweed"},
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower"},
+	avoid_nodes = {"group:flower", "group:flora" },
 	seed_diff = flowers_seed_diff,
 	light_min = 4,
 	light_max = 10,
@@ -280,7 +280,7 @@ plantslib:spawn_on_surfaces({
 	spawn_plants = {"flowers:seaweed"},
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:stone"},
-	avoid_nodes = {"group:flower"},
+	avoid_nodes = {"group:flower", "group:flora" },
 	seed_diff = flowers_seed_diff,
 	light_min = 4,
 	light_max = 10,
