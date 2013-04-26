@@ -201,27 +201,7 @@ end
 
 plantslib:spawn_on_surfaces({
 	spawn_delay = SPAWN_DELAY,
-	spawn_plants = {
-		"flowers:rose",
-		"flowers:tulip",
-		"flowers:geranium",
-		"flowers:viola",
-	},
-	avoid_radius = 10,
-	spawn_chance = SPAWN_CHANCE*2,
-	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower", "group:flora", "group:poisonivy"},
-	seed_diff = flowers_seed_diff,
-	light_min = 9
-})
-
-plantslib:spawn_on_surfaces({
-	spawn_delay = SPAWN_DELAY,
-	spawn_plants = {
-		"flowers:dandelion_yellow",
-		"flowers:dandelion_white",
-		"flowers:cotton_plant",
-	},
+	spawn_plants = { "flowers:cotton_plant"},
 	avoid_radius = 7,
 	spawn_chance = SPAWN_CHANCE,
 	spawn_surfaces = {"default:dirt_with_grass"},
