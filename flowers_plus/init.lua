@@ -1,33 +1,21 @@
--- This file supplies a few additional flowers and some related crafts
+-- This file supplies a few additional plants and some related crafts
 -- for the plantlife modpack.  Last revision:  2013-04-24
 
 local SPAWN_DELAY = 1000
 local SPAWN_CHANCE = 200
 local flowers_seed_diff = 329
 
--- register cotton plant
+-- Cotton plants are now provided by the default "farming" mod.
+-- old cotton plants -> farming cotton stage 8
+-- cotton wads -> string (can be crafted into wool blocks)
+-- potted cotton plants -> potted white dandelions
 
-minetest.register_node(":flowers:cotton_plant", {
-	description = flowerdesc,
-	drawtype = "plantlike",
-	tiles = { "flowers_cotton_plant.png" },
-	inventory_image = "flowers_cotton_plant.png",
-	wield_image = "flowers_cotton_plant.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	buildable_to = true,
-	groups = { snappy = 3,flammable=2, flower=1, flora=1, attached_node=1 },
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},	
-	buildable_to = true,
-})
-
-minetest.register_alias("flowers:flower_cotton", "flowers:cotton_plant")
-minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_cotton_plant")
+minetest.register_alias("flowers:cotton_plant", "farming:cotton_8") 
+minetest.register_alias("flowers:flower_cotton", "farming:cotton_8")
+minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_dandelion_white")
+minetest.register_alias("flowers:potted_cotton_plant", "flowers:potted_dandelion_white")
+minetest.register_alias("flowers:cotton", "farming:string")
+minetest.register_alias("flowers:cotton_wad", "farming:string")
 
 -- register the various rotations of waterlilies
 
@@ -148,7 +136,6 @@ local flowers_list = {
 	{ "White Dandelion",	"dandelion_white"},
 	{ "Blue Geranium",	"geranium"},
 	{ "Viola",		"viola"},
-	{ "Cotton Plant",	"cotton_plant"},
 }
 
 for i in ipairs(flowers_list) do
@@ -271,28 +258,6 @@ minetest.register_craft( {
 	        { "default:clay_brick", "", "default:clay_brick" },
 	        { "", "default:clay_brick", "" }
 	},
-})
-
-minetest.register_alias("flowers:cotton", "flowers:cotton_wad")
-
-minetest.register_craftitem(":flowers:cotton_wad", {
-	description = "Cotton wad",
-	image = "flowers_cotton_wad.png",
-})
-
-minetest.register_craft({
-	output = "flowers:cotton_wad 3",
-	recipe ={
-		{"flowers:cotton_plant"},
-	}
-})
-
-minetest.register_craft({
-	output = "wool:white 2",
-	recipe = {
-		{'flowers:cotton_wad', 'flowers:cotton_wad', ''},
-		{'flowers:cotton_wad', 'flowers:cotton_wad', ''},
-	}
 })
 
 print("[Flowers] Loaded.")
