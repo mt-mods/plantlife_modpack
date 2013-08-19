@@ -5,108 +5,103 @@ local SPAWN_DELAY = 1000
 local SPAWN_CHANCE = 200
 local flowers_seed_diff = 329
 
--- Cotton plants are now provided by the default "farming" mod.
--- old cotton plants -> farming cotton stage 8
--- cotton wads -> string (can be crafted into wool blocks)
--- potted cotton plants -> potted white dandelions
-
-minetest.register_alias("flowers:cotton_plant", "farming:cotton_8") 
-minetest.register_alias("flowers:flower_cotton", "farming:cotton_8")
-minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_dandelion_white")
-minetest.register_alias("flowers:potted_cotton_plant", "flowers:potted_dandelion_white")
-minetest.register_alias("flowers:cotton", "farming:string")
-minetest.register_alias("flowers:cotton_wad", "farming:string")
-
 -- register the various rotations of waterlilies
 
-minetest.register_node(":flowers:waterlily", {
-	description = "Waterlily",
-	drawtype = "nodebox",
-	tiles = { "flowers_waterlily.png" },
-	inventory_image = "flowers_waterlily.png",
-	wield_image  = "flowers_waterlily.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1 },
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
-	},
-	node_box = {
-		type = "fixed",
-		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
-	},
-	buildable_to = true,
-})
+local lilies_list = {
+	{ nil, nil },
+	{ "225", "22.5" },
+	{ "45" , "45"   },
+	{ "675", "67.5" },
+}
 
-minetest.register_node(":flowers:waterlily_225", {
-	description = "Waterlily",
-	drawtype = "nodebox",
-	tiles = { "flowers_waterlily_22.5.png" },
-	sunlight_propagates = true,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
-	},
-	node_box = {
-		type = "fixed",
-		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
-	},
-	drop = "flowers:waterlily",
-	buildable_to = true,
-})
+for i in ipairs(lilies_list) do
+	local deg1 = ""
+	local deg2 = ""
+	local lily_groups = {snappy = 3,flammable=2,flower=1}
 
-minetest.register_node(":flowers:waterlily_45", {
-	description = "Waterlily",
-	drawtype = "raillike",
-	tiles = { "flowers_waterlily_45.png" },
-	sunlight_propagates = true,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
-	},
-	node_box = {
-		type = "fixed",
-		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
-	},
-	drop = "flowers:waterlily",
-	buildable_to = true,
-})
+	if lilies_list[i][1] ~= nil then
+		deg1 = "_"..lilies_list[i][1]
+		deg2 = "_"..lilies_list[i][2]
+		lily_groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 }
+	end
 
-minetest.register_node(":flowers:waterlily_675", {
-	description = "Waterlily",
-	drawtype = "nodebox",
-	tiles = { "flowers_waterlily_67.5.png" },
-	sunlight_propagates = true,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	walkable = false,
-	groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 },
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
-	},
-	node_box = {
-		type = "fixed",
-		fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
-	},
-	drop = "flowers:waterlily",
-	buildable_to = true,
-})
+	minetest.register_node(":flowers:waterlily"..deg1, {
+		description = "Waterlily",
+		drawtype = "nodebox",
+		tiles = { "flowers_waterlily"..deg2..".png" },
+		inventory_image = "flowers_waterlily.png",
+		wield_image  = "flowers_waterlily.png",
+		sunlight_propagates = true,
+		paramtype = "light",
+		paramtype2 = "facedir",
+		walkable = false,
+		groups = lily_groups,
+		sounds = default.node_sound_leaves_defaults(),
+		selection_box = {
+			type = "fixed",
+			fixed = { -0.4, -0.5, -0.4, 0.4, -0.45, 0.4 },
+		},
+		node_box = {
+			type = "fixed",
+			fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
+		},
+		buildable_to = true,
+
+		liquids_pointable = true,
+		drop = "flowers:waterlily",
+		on_place = function(itemstack, placer, pointed_thing)
+			local keys=placer:get_player_control()
+			local pt = pointed_thing
+
+			local place_pos = nil
+			local top_pos = {x=pt.under.x, y=pt.under.y+1, z=pt.under.z}
+			local under_node = minetest.get_node(pt.under)
+			local above_node = minetest.get_node(pt.above)
+			local top_node   = minetest.get_node(top_pos)
+
+			if plantslib:get_nodedef_field(under_node.name, "buildable_to") then
+				if under_node.name ~= "default:water_source" then
+					place_pos = pt.under
+				elseif top_node.name ~= "default:water_source" 
+				       and plantslib:get_nodedef_field(top_node.name, "buildable_to") then
+					place_pos = top_pos
+				else
+					return
+				end
+			elseif plantslib:get_nodedef_field(above_node.name, "buildable_to") then
+				place_pos = pt.above
+			end
+
+			if not plantslib:node_is_owned(place_pos, placer) then
+
+			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
+
+				if not keys["sneak"] then
+					local node = minetest.env:get_node(pt.under)
+					local waterlily = math.random(1,4)
+					if waterlily == 1 then
+						nodename = "flowers:waterlily"
+					elseif waterlily == 2 then
+						nodename = "flowers:waterlily_225"
+					elseif waterlily == 3 then
+						nodename = "flowers:waterlily_45"
+					elseif waterlily == 4 then
+						nodename = "flowers:waterlily_675"
+					end
+					minetest.add_node(place_pos, {name = nodename, param2 = math.random(0,3) })
+				else
+					local fdir = minetest.dir_to_facedir(placer:get_look_dir())
+					minetest.add_node(place_pos, {name = "flowers:waterlily", param2 = fdir})
+				end
+
+				if not plantslib.expect_infinite_stacks then
+					itemstack:take_item()
+				end
+				return itemstack
+			end
+		end,
+	})
+end
 
 minetest.register_node(":flowers:seaweed", {
 	description = "Seaweed",
@@ -259,5 +254,17 @@ minetest.register_craft( {
 	        { "", "default:clay_brick", "" }
 	},
 })
+
+-- Cotton plants are now provided by the default "farming" mod.
+-- old cotton plants -> farming cotton stage 8
+-- cotton wads -> string (can be crafted into wool blocks)
+-- potted cotton plants -> potted white dandelions
+
+minetest.register_alias("flowers:cotton_plant", "farming:cotton_8") 
+minetest.register_alias("flowers:flower_cotton", "farming:cotton_8")
+minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_dandelion_white")
+minetest.register_alias("flowers:potted_cotton_plant", "flowers:potted_dandelion_white")
+minetest.register_alias("flowers:cotton", "farming:string")
+minetest.register_alias("flowers:cotton_wad", "farming:string")
 
 print("[Flowers] Loaded.")
