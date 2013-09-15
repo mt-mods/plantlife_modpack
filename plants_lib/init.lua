@@ -142,8 +142,8 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 						pos.y = pos.y-1
 					end
 					local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-					if not(biome.avoid_radius and biome.avoid_nodes) or not minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,1.5), biome.avoid_nodes) then
-						spawned = true
+
+					if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes)) then
 						if biome.delete_above then
 							minetest.remove_node(p_top)
 							minetest.remove_node({x=p_top.x, y=p_top.y+1, z=p_top.z})
@@ -180,6 +180,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 								minetest.add_node(p_top, { name = node_or_function_or_model })
 							end
 						end
+						spawned = true
 					else
 						tries = tries + 1
 						plantslib:dbg("No room to spawn object at {"..dump(pos).."} -- trying again elsewhere")
@@ -237,7 +238,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 			  and noise3 >= biome.humidity_max
 			  and plantslib:is_node_loaded(p_top) then
 				local n_light = minetest.get_node_light(p_top, nil)
-				if (not(biome.avoid_nodes and biome.avoid_radius) or not minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes))
+				if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes))
 				  and n_light >= biome.light_min
 				  and n_light <= biome.light_max
 				  and (not(biome.neighbors and biome.ncount) or table.getn(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount )
