@@ -46,6 +46,14 @@ minetest.register_craft({
     },
 })
 
+minetest.register_craft({
+    output = 'bushes:berry_pie_raw 1',
+    recipe = {
+	{ 'bushes:sugar', 'default:junglegrass', 'bushes:sugar' },
+	{ 'farming_plus:strawberry_item', 'farming_plus:strawberry_item', 'farming_plus:strawberry_item' },
+    },
+})
+
 -- Cooked pie
 minetest.register_craftitem(":bushes:berry_pie_cooked", {
     description = "Cooked berry pie",
