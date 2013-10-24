@@ -84,7 +84,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	minetest.register_craft({
 		output = "bushes:basket_"..berry.." 1",
 		recipe = {
-		{ "bushes:berry_pie_cooked", "bushes:berry_pie_cooked", "bushes:berry_pie_cooked" },
+		{ "bushes:"..berry.."_pie_cooked", "bushes:"..berry.."_pie_cooked", "bushes:"..berry.."_pie_cooked" },
 		{ "", "bushes:basket_empty", "" },
 		},
 	})
