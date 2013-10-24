@@ -1,23 +1,15 @@
 -- Basket
-minetest.register_node(":bushes:basket_empty", {
-    description = "Basket",
-    tiles = {
-	"bushes_basket_empty_top.png",
-	"bushes_basket_bottom.png",
-	"bushes_basket_side.png"
-    },
-    groups = { dig_immediate = 3 },
-})
 
 minetest.register_craft({
-    output = ':bushes:basket_empty',
+    output = ":bushes:basket_empty",
     recipe = {
-	{ 'default:stick', 'default:stick', 'default:stick' },
-	{ '', 'default:stick', '' },
+	{ "default:stick", "default:stick", "default:stick" },
+	{ "", "default:stick", "" },
     },
 })
 
 -- Sugar
+
 minetest.register_craftitem(":bushes:sugar", {
     description = "Sugar",
     inventory_image = "bushes_sugar.png",
@@ -25,65 +17,92 @@ minetest.register_craftitem(":bushes:sugar", {
 })
 
 minetest.register_craft({
-    output = 'bushes:sugar 1',
+    output = "bushes:sugar 1",
     recipe = {
-	{ 'default:papyrus', 'default:papyrus' },
+	{ "default:papyrus", "default:papyrus" },
     },
 })
 
--- Raw pie
-minetest.register_craftitem(":bushes:berry_pie_raw", {
-    description = "Raw berry pie",
-    inventory_image = "bushes_berry_pie_raw.png",
-    on_use = minetest.item_eat(3),
+for i, berry in ipairs(bushes_classic.bushes) do
+	local desc = bushes_classic.bushes_descriptions[i]
+
+	minetest.register_craftitem(":bushes:"..berry.."_pie_raw", {
+		description = "Raw "..desc.." pie",
+		inventory_image = "bushes_"..berry.."_pie_raw.png",
+		on_use = minetest.item_eat(3),
+	})
+
+	if berry ~= "mixed_berry" then
+		minetest.register_craftitem(":bushes:"..berry, {
+			description = "Raw "..desc.." pie",
+			inventory_image = "bushes_"..berry..".png",
+			groups = {berry = 1},
+			on_use = minetest.item_eat(3),
+		})
+
+		minetest.register_craft({
+			output = "bushes:"..berry.."_pie_raw 1",
+			recipe = {
+			{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+			{ "bushes:"..berry, "bushes:"..berry, "bushes:"..berry },
+			},
+		})
+	end
+
+	-- Cooked pie
+
+	minetest.register_craftitem(":bushes:"..berry.."_pie_cooked", {
+		description = "Cooked "..desc.." pie",
+		inventory_image = "bushes_"..berry.."_pie_cooked.png",
+		on_use = minetest.item_eat(4),
+	})
+
+	minetest.register_craft({
+		type = "cooking",
+		output = "bushes:"..berry.."_pie_cooked",
+		recipe = "bushes:"..berry.."_pie_raw",
+		cooktime = 30,
+	})
+
+	-- slice of pie
+
+	minetest.register_craftitem(":bushes:"..berry.."_pie_slice", {
+		description = "Slice of "..desc.." pie",
+		inventory_image = "bushes_"..berry.."_pie_slice.png",
+		on_use = minetest.item_eat(1),
+	})
+
+	minetest.register_craft({
+		output = "bushes:"..berry.."_pie_slice 4",
+		recipe = {
+		{ "bushes:"..berry.."_pie_cooked" },
+		},
+	})
+
+	-- Basket with pies
+
+	minetest.register_craft({
+		output = "bushes:basket_"..berry.." 1",
+		recipe = {
+		{ "bushes:berry_pie_cooked", "bushes:berry_pie_cooked", "bushes:berry_pie_cooked" },
+		{ "", "bushes:basket_empty", "" },
+		},
+	})
+end
+
+minetest.register_craft({
+	output = "bushes:strawberry_pie_raw 1",
+	recipe = {
+	{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+	{ "farming_plus:strawberry_item", "farming_plus:strawberry_item", "farming_plus:strawberry_item" },
+	},
 })
 
 minetest.register_craft({
-    output = 'bushes:berry_pie_raw 1',
-    recipe = {
-	{ 'bushes:sugar', 'default:junglegrass', 'bushes:sugar' },
-	{ 'bushes:strawberry', 'bushes:strawberry', 'bushes:strawberry' },
-    },
-})
-
-minetest.register_craft({
-    output = 'bushes:berry_pie_raw 1',
-    recipe = {
-	{ 'bushes:sugar', 'default:junglegrass', 'bushes:sugar' },
-	{ 'farming_plus:strawberry_item', 'farming_plus:strawberry_item', 'farming_plus:strawberry_item' },
-    },
-})
-
--- Cooked pie
-minetest.register_craftitem(":bushes:berry_pie_cooked", {
-    description = "Cooked berry pie",
-    inventory_image = "bushes_berry_pie_cooked.png",
-    on_use = minetest.item_eat(4),
-})
-
-minetest.register_craft({
-    type = 'cooking',
-    output = 'bushes:berry_pie_cooked',
-    recipe = 'bushes:berry_pie_raw',
-    cooktime = 30,
-})
-
--- Basket with pies
-minetest.register_node(":bushes:basket_pies", {
-    description = "Basket with pies",
-    tiles = {
-	"bushes_basket_full_top.png",
-	"bushes_basket_bottom.png",
-	"bushes_basket_side.png"
-    },
-    on_use = minetest.item_eat(15),
-    groups = { dig_immediate = 3 },
-})
-
-minetest.register_craft({
-    output = 'bushes:basket_pies 1',
-    recipe = {
-	{ 'bushes:berry_pie_cooked', 'bushes:berry_pie_cooked', 'bushes:berry_pie_cooked' },
-	{ '', 'bushes:basket_empty', '' },
-    },
+	output = "bushes:mixed_berry_pie_raw 2",
+	recipe = {
+	{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+	{ "group:berry", "group:berry", "group:berry" },
+	{ "group:berry", "group:berry", "group:berry" },
+	},
 })

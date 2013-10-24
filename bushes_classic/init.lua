@@ -1,49 +1,36 @@
-local BUSHES = {
+-- Bushes classic mod originally by unknown
+-- now maintained by VanessaE
+--
+-- License:  WTFPL
+
+bushes_classic = {}
+
+bushes_classic.bushes = {
     "strawberry",
+	"blackberry",
+	"blueberry",
+	"raspberry",
+	"gooseberry",
+	"mixed_berry"
 }
 
-local BUSHES_DESCRIPTIONS = {
+bushes_classic.bushes_descriptions = {
     "Strawberry",
+	"Blackberry",
+	"Blueberry",
+	"Raspberry",
+	"Gooseberry",
+	"Mixed Berry"
 }
 
-local spawn_list = {}
+bushes_classic.spawn_list = {}
 
-for i, bush_name in ipairs(BUSHES) do
-	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
-		description = BUSHES_DESCRIPTIONS[i] .. " bush",
-		drawtype = "plantlike",
-		visual_scale = 1.3,
-		tiles = { "bushes_" .. bush_name .. "_bush.png" },
-		inventory_image = "bushes_" .. bush_name .. "_bush.png",
-		paramtype = "light",
-		sunlight_propagates = true,
-		walkable = false,
-		drop = 'bushes:' .. bush_name .. ' 4',
-		groups = { snappy = 3, bush = 1, flammable = 2},
-		sounds = default.node_sound_leaves_defaults(),
-	})
-
-	minetest.register_craftitem(":bushes:" .. bush_name, {
-		description = BUSHES_DESCRIPTIONS[i],
-		inventory_image = "bushes_" .. bush_name .. ".png",
-		stack_max = 99,
-		on_use = minetest.item_eat(1),
-	})
-
-	minetest.register_craft({
-		output = 'bushes:' .. bush_name .. '_bush',
-		recipe = {
-			{ 'bushes:' .. bush_name, 'bushes:' .. bush_name, 'bushes:' .. bush_name },
-			{ 'bushes:' .. bush_name, 'bushes:' .. bush_name, 'bushes:' .. bush_name },
-		}
-	})
-
-	table.insert(spawn_list, "bushes:"..bush_name.."_bush")
-end
+dofile(minetest.get_modpath('bushes_classic') .. '/cooking.lua')
+dofile(minetest.get_modpath('bushes_classic') .. '/nodes.lua')
 
 plantslib:spawn_on_surfaces({
 	spawn_delay = 3600,
-	spawn_plants = spawn_list,
+	spawn_plants = bushes_classic.spawn_list,
 	avoid_radius = 10,
 	spawn_chance = 100,
 	spawn_surfaces = {
@@ -53,7 +40,7 @@ plantslib:spawn_on_surfaces({
 		"woodsoils:grass_with_leaves_2"
 	},
 	avoid_nodes = {"group:bush"},
-	seed_diff = 545342534, -- guaranteed to be random :P
+	seed_diff = 545342534, -- chosen by a fair mashing of the keyboard - guaranteed to be random :P
 	plantlife_limit = -0.1,
 	light_min = 10,
 	temp_min = 0.15, -- approx 20C
@@ -62,6 +49,6 @@ plantslib:spawn_on_surfaces({
 	humidity_max = -1, -- 100% RH
 })
 
-dofile(minetest.get_modpath('bushes_classic') .. '/cooking.lua')
+minetest.register_alias("bushes:basket_pies", "bushes:basket_strawberry")
 
 print("[Bushes] Loaded.")
