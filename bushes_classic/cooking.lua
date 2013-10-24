@@ -1,7 +1,7 @@
 -- Basket
 
 minetest.register_craft({
-    output = ":bushes:basket_empty",
+    output = "bushes:basket_empty",
     recipe = {
 	{ "default:stick", "default:stick", "default:stick" },
 	{ "", "default:stick", "" },
