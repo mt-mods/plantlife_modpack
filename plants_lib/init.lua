@@ -11,6 +11,17 @@
 
 plantslib = {}
 
+plantslib.modpath = minetest.get_modpath("plants_lib")
+plantslib.intllib_modpath = minetest.get_modpath("intllib")
+
+local S
+if plantslib.intllib_modpath then
+    dofile(plantslib.intllib_modpath.."/intllib.lua")
+    S = intllib.Getter(minetest.get_current_modname())
+else
+    S = function ( s ) return s end
+end
+
 local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
