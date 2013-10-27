@@ -34,7 +34,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 	if berry ~= "mixed_berry" then
 		minetest.register_craftitem(":bushes:"..berry, {
-			description = "Raw "..desc.." pie",
+			description = desc,
 			inventory_image = "bushes_"..berry..".png",
 			groups = {berry = 1},
 			on_use = minetest.item_eat(3),
