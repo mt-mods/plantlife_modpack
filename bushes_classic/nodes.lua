@@ -118,11 +118,12 @@ end
 
 
 
--- regrow berries
+-- regrow berries (uses a base abm instead of plants_lib because of the use of metadata).
+
 minetest.register_abm({
 	nodenames = { "bushes:fruitless_bush" },
-	interval = 20,
-	chance = 2,
+	interval = 500,
+	chance = 10,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 
 			local meta = minetest.env:get_meta( pos );
@@ -133,9 +134,7 @@ minetest.register_abm({
                 end
 })
 
-
-
-
+-- Define the basket and bush nodes
 
 for i, bush_name in ipairs(bushes_classic.bushes) do
 
