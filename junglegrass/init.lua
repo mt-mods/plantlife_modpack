@@ -44,7 +44,7 @@ if not minetest.registered_nodes["default:junglegrass"] then
 	})
 else
 	new_junglegrass=clone_node("default:junglegrass")
-	new_junglegrass.groups = {snappy=3,flammable=2,flora=1,attached_node=1, junglegrass=1}
+	new_junglegrass.groups.junglegrass = 1
 	minetest.register_node(":default:junglegrass", new_junglegrass)
 end
 
