@@ -147,7 +147,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		"bushes_basket_bottom.png",
 		"bushes_basket_side.png"
 		},
-		on_use = minetest.item_eat(15),
+		on_use = minetest.item_eat(18),
 		groups = { dig_immediate = 3 },
 	})
 
