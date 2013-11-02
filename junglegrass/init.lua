@@ -14,15 +14,6 @@ local grasses_list = {
         {"default:junglegrass" , nil}
 }
 
-function clone_node(name)
-	node2={}
-	node=minetest.registered_nodes[name]
-	for k,v in pairs(node) do
-		node2[k]=v
-	end
-	return node2
-end
-
 if not minetest.registered_nodes["default:junglegrass"] then 
 	minetest.register_node(":default:junglegrass", {
 		description = "Jungle Grass",
@@ -43,7 +34,7 @@ if not minetest.registered_nodes["default:junglegrass"] then
 		},
 	})
 else
-	new_junglegrass=clone_node("default:junglegrass")
+	new_junglegrass=plantslib:clone_node("default:junglegrass")
 	new_junglegrass.groups.junglegrass = 1
 	minetest.register_node(":default:junglegrass", new_junglegrass)
 end
