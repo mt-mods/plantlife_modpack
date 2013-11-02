@@ -14,6 +14,40 @@ local grasses_list = {
         {"default:junglegrass" , nil}
 }
 
+function clone_node(name)
+	node2={}
+	node=minetest.registered_nodes[name]
+	for k,v in pairs(node) do
+		node2[k]=v
+	end
+	return node2
+end
+
+if not minetest.registered_nodes["default:junglegrass"] then 
+	minetest.register_node(":default:junglegrass", {
+		description = "Jungle Grass",
+		drawtype = "plantlike",
+		visual_scale = 1.3,
+		tiles = {"default_junglegrass.png"},
+		inventory_image = "default_junglegrass.png",
+		wield_image = "default_junglegrass.png",
+		paramtype = "light",
+		walkable = false,
+		buildable_to = true,
+		is_ground_content = true,
+		groups = {snappy=3,flammable=2,flora=1,attached_node=1, junglegrass=1},
+		sounds = default.node_sound_leaves_defaults(),
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
+		},
+	})
+else
+	new_junglegrass=clone_node("default:junglegrass")
+	new_junglegrass.groups = {snappy=3,flammable=2,flora=1,attached_node=1, junglegrass=1}
+	minetest.register_node(":default:junglegrass", new_junglegrass)
+end
+
 minetest.register_node('junglegrass:medium', {
 	description = "Jungle Grass (medium height)",
 	drawtype = 'plantlike',

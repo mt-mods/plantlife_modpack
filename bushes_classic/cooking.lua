@@ -43,7 +43,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 		minetest.register_craft({
 			output = "bushes:"..berry.."_pie_raw 1",
 			recipe = {
-			{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+			{ "bushes:sugar", "group:junglegrass", "bushes:sugar" },
 			{ "bushes:"..berry, "bushes:"..berry, "bushes:"..berry },
 			},
 		})
@@ -93,7 +93,7 @@ end
 minetest.register_craft({
 	output = "bushes:strawberry_pie_raw 1",
 	recipe = {
-	{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+	{ "bushes:sugar", "group:junglegrass", "bushes:sugar" },
 	{ "farming_plus:strawberry_item", "farming_plus:strawberry_item", "farming_plus:strawberry_item" },
 	},
 })
@@ -101,7 +101,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "bushes:mixed_berry_pie_raw 2",
 	recipe = {
-	{ "bushes:sugar", "default:junglegrass", "bushes:sugar" },
+	{ "bushes:sugar", "group:junglegrass", "bushes:sugar" },
 	{ "group:berry", "group:berry", "group:berry" },
 	{ "group:berry", "group:berry", "group:berry" },
 	},
