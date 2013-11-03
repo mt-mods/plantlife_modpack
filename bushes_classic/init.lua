@@ -37,7 +37,9 @@ plantslib:spawn_on_surfaces({
 		"default:dirt_with_grass",
 		"woodsoils:dirt_with_leaves_1",
 		"woodsoils:grass_with_leaves_1",
-		"woodsoils:grass_with_leaves_2"
+		"woodsoils:grass_with_leaves_2",
+		"farming:soil",
+		"farming:soil_wet"
 	},
 	avoid_nodes = {"group:bush"},
 	seed_diff = 545342534, -- chosen by a fair mashing of the keyboard - guaranteed to be random :P
