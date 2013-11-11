@@ -155,22 +155,40 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		groups = { dig_immediate = 3 },
 	})
 
+	local texture_top, texture_bottom
+
 	if bush_name == "mixed_berry" then
 		bush_name = "fruitless";
 		desc      = "currently fruitless";
+		texture_top = "bushes_fruitless_bush_top.png"
+		texture_bottom = "bushes_fruitless_bush_bottom.png"
+	else
+		texture_top = "bushes_bush_top.png"
+		texture_bottom = "bushes_bush_bottom.png"
 	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
 			description = desc.." Bush",
-			drawtype = "plantlike",
-			visual_scale = 1.3,
-			tiles = { "bushes_" .. bush_name .. "_bush.png" },
+			drawtype = "nodebox",
+			tiles = {texture_top, texture_bottom, "bushes_" .. bush_name .. "_bush.png"},
 			inventory_image = "bushes_" .. bush_name .. "_bush.png",
 			paramtype = "light",
 			sunlight_propagates = true,
 			walkable = false,
+			node_box = {
+				type = "fixed",
+				fixed = {
+					{-1/16,	-8/16,	-1/16,	1/16,	-6/16,	1/16},
+					{-4/16,	-6/16,	-4/16,	4/16,	5/16,	4/16},
+					{-5/16,	-5/16,	-5/16,	5/16,	3/16,	5/16},
+					{-6/16,	-4/16,	-6/16,	6/16,	2/16,	6/16},
+					{-6.5/16,	-3/16,	-6.5/16,	6.5/16,	-2/16,	6.5/16},
+					{-3/16,	5/16,	-3/16,	3/16,	6/16,	3/16},
+					{-2/16,	5/16,	-2/16,	2/16,	7/16,	2/16}
+				}
+			},
 
-			groups = { snappy = 3, bush = 1, flammable = 2},
+			groups = {snappy = 3, bush = 1, flammable = 2, attached_node=1},
 			sounds = default.node_sound_leaves_defaults(),
 			drop = "",
 			after_dig_node = function( pos, oldnode, oldmetadata, digger )
