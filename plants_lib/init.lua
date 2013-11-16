@@ -24,6 +24,13 @@ end
 
 local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
+function plantslib:dbg(msg)
+	if DEBUG then
+		print("[Plantlife] "..msg)
+		minetest.log("verbose", "[Plantlife] "..msg)
+	end
+end
+
 plantslib.plantlife_seed_diff = 329	-- needs to be global so other mods can see it
 
 local perlin_octaves = 3
@@ -39,6 +46,16 @@ local humidity_seeddiff = 9130
 local humidity_octaves = 3
 local humidity_persistence = 0.5
 local humidity_scale = 250
+
+local time_scale = 1
+local time_speed = tonumber(minetest.setting_get("time_speed"))
+
+if time_speed and time_speed > 0 then
+	time_scale = 72 / time_speed
+end
+
+plantslib:dbg("time_speed = "..dump(time_speed))
+plantslib:dbg("time_scale = 72 / time_speed = "..dump(time_scale))
 
 --PerlinNoise(seed, octaves, persistence, scale)
 
@@ -66,13 +83,6 @@ function plantslib:clone_node(name)
 		node2[k]=v
 	end
 	return node2
-end
-
-function plantslib:dbg(msg)
-	if DEBUG then
-		print("[Plantlife] "..msg)
-		minetest.log("verbose", "[Plantlife] "..msg)
-	end
 end
 
 function plantslib:set_defaults(biome)
@@ -232,6 +242,12 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 		biome = sd
 	end
 
+	if biome.spawn_delay*time_scale >= 1 then
+		biome.interval = biome.spawn_delay*time_scale
+	else
+		biome.interval = 1
+	end
+
 	plantslib:set_defaults(biome)
 	biome.spawn_plants_count = table.getn(biome.spawn_plants)
 
@@ -241,7 +257,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 
 	minetest.register_abm({
 		nodenames = biome.spawn_surfaces,
-		interval = biome.spawn_delay,
+		interval = biome.interval,
 		chance = biome.spawn_chance,
 		neighbors = biome.neighbors,
 		action = function(pos, node, active_object_count, active_object_count_wider)
@@ -333,9 +349,15 @@ function plantslib:grow_plants(opts)
 	plantslib:dbg("Registered growing ABM:")
 	plantslib:dbg(dump(options))
 
+	if options.grow_delay*time_scale >= 1 then
+		options.interval = options.grow_delay*time_scale
+	else
+		options.interval = 1
+	end
+
 	minetest.register_abm({
 		nodenames = { options.grow_plant },
-		interval = options.grow_delay,
+		interval = options.interval,
 		chance = options.grow_chance,
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local p_top = {x=pos.x, y=pos.y+1, z=pos.z}
