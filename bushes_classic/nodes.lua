@@ -167,6 +167,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 			tiles = { "bushes_" .. bush_name .. "_bush.png" },
 			inventory_image = "bushes_" .. bush_name .. "_bush.png",
 			paramtype = "light",
+			paramtype2 = 'waving',
 			sunlight_propagates = true,
 			walkable = false,
 
