@@ -21,6 +21,7 @@ local walls_list = {
 minetest.register_node('poisonivy:seedling', {
 	description = "Poison ivy (seedling)",
 	drawtype = 'plantlike',
+	waving = 1,
 	tile_images = { 'poisonivy_seedling.png' },
 	inventory_image = 'poisonivy_seedling.png',
 	wield_image = 'poisonivy_seedling.png',
@@ -35,6 +36,7 @@ minetest.register_node('poisonivy:seedling', {
 minetest.register_node('poisonivy:sproutling', {
 	description = "Poison ivy (sproutling)",
 	drawtype = 'plantlike',
+	waving = 1,
 	tile_images = { 'poisonivy_sproutling.png' },
 	inventory_image = 'poisonivy_sproutling.png',
 	wield_image = 'poisonivy_sproutling.png',
