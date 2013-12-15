@@ -69,7 +69,7 @@ local function dump_pos(pos)
 end
 
 function plantslib:is_node_loaded(node_pos)
-	n = minetest.get_node_or_nil(node_pos)
+	local n = minetest.get_node_or_nil(node_pos)
 	if (not n) or (n.name == "ignore") then
 		return false
 	end

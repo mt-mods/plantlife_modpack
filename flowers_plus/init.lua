@@ -269,7 +269,7 @@ local extra_aliases = {
 }
 
 for i in ipairs(extra_aliases) do
-	flower = extra_aliases[i]
+	local flower = extra_aliases[i]
 	minetest.register_alias("flowers:flower_"..flower, "flowers:"..flower)
 end
 
