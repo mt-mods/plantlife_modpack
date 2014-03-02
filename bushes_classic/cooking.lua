@@ -14,6 +14,7 @@ minetest.register_craftitem(":bushes:sugar", {
     description = "Sugar",
     inventory_image = "bushes_sugar.png",
     on_use = minetest.item_eat(1),
+	groups = {food_sugar=1}
 })
 
 minetest.register_craft({
@@ -44,7 +45,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 			minetest.register_craft({
 				output = "bushes:"..berry.."_pie_raw 1",
 				recipe = {
-				{ "bushes:sugar", "farming:flour", "bushes:sugar" },
+				{ "group:food_sugar", "farming:flour", "group:food_sugar" },
 				{ "group:"..berry, "group:"..berry, "group:"..berry },
 				},
 			})
@@ -52,7 +53,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 			minetest.register_craft({
 				output = "bushes:"..berry.."_pie_raw 1",
 				recipe = {
-				{ "bushes:sugar", "group:junglegrass", "bushes:sugar" },
+				{ "group:food_sugar", "group:junglegrass", "group:food_sugar" },
 				{ "group:"..berry, "group:"..berry, "group:"..berry },
 				},
 			})
@@ -113,7 +114,7 @@ if minetest.registered_nodes["farming:soil"] then
 	minetest.register_craft({
 		output = "bushes:mixed_berry_pie_raw 2",
 		recipe = {
-		{ "bushes:sugar", "farming:flour", "bushes:sugar" },
+		{ "group:food_sugar", "farming:flour", "group:food_sugar" },
 		{ "group:berry", "group:berry", "group:berry" },
 		{ "group:berry", "group:berry", "group:berry" },
 		},
@@ -122,7 +123,7 @@ else
 	minetest.register_craft({
 		output = "bushes:mixed_berry_pie_raw 2",
 		recipe = {
-		{ "bushes:sugar", "group:junglegrass", "bushes:sugar" },
+		{ "group:food_sugar", "group:junglegrass", "group:food_sugar" },
 		{ "group:berry", "group:berry", "group:berry" },
 		{ "group:berry", "group:berry", "group:berry" },
 		},
