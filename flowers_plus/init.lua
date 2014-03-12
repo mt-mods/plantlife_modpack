@@ -1,3 +1,12 @@
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if (minetest.get_modpath("intllib")) then
+  dofile(minetest.get_modpath("intllib").."/intllib.lua")
+  S = intllib.Getter(minetest.get_current_modname())
+else
+  S = function ( s ) return s end
+end
+
 -- This file supplies a few additional plants and some related crafts
 -- for the plantlife modpack.  Last revision:  2013-04-24
 
@@ -36,7 +45,7 @@ for i in ipairs(lilies_list) do
 	end
 
 	minetest.register_node(":flowers:waterlily"..deg1, {
-		description = "Waterlily",
+		description = S("Waterlily"),
 		drawtype = "nodebox",
 		tiles = { 
 			"flowers_waterlily"..deg2..".png",
@@ -136,7 +145,7 @@ for i in ipairs(algae_list) do
 	end
 	
 	minetest.register_node(":flowers:seaweed"..num, {
-		description = "Seaweed",
+		description = S("Seaweed"),
 		drawtype = "nodebox",
 		tiles = { 
 			"flowers_seaweed"..num..".png",
@@ -232,7 +241,7 @@ for i in ipairs(flowers_list) do
 	local flower     = flowers_list[i][2]
 	
 	minetest.register_node(":flowers:potted_"..flower, {
-		description = "Potted "..flowerdesc,
+		description = S("Potted "..flowerdesc),
 		drawtype = "plantlike",
 		tiles = { "flowers_potted_"..flower..".png" },
 		inventory_image = "flowers_potted_"..flower..".png",
@@ -442,7 +451,7 @@ plantslib:spawn_on_surfaces({
 -- crafting recipes!
 
 minetest.register_craftitem(":flowers:flower_pot", {
-	description = "Flower Pot",
+	description = S("Flower Pot"),
 	inventory_image = "flowers_flowerpot.png",
 })
 
