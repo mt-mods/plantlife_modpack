@@ -1,4 +1,11 @@
-
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if (minetest.get_modpath("intllib")) then
+  dofile(minetest.get_modpath("intllib").."/intllib.lua")
+  S = intllib.Getter(minetest.get_current_modname())
+else
+  S = function ( s ) return s end
+end
 
 
 plantlife_bushes = {}
@@ -145,7 +152,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 	local desc = bushes_classic.bushes_descriptions[i]
 
 	minetest.register_node(":bushes:basket_"..bush_name, {
-		description = "Basket with "..desc.." Pies",
+		description = S("Basket with "..desc.." Pies"),
 		tiles = {
 		"bushes_basket_"..bush_name.."_top.png",
 		"bushes_basket_bottom.png",
@@ -159,7 +166,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 
 	if bush_name == "mixed_berry" then
 		bush_name = "fruitless";
-		desc      = "currently fruitless";
+		desc      = S("currently fruitless");
 		texture_top = "bushes_fruitless_bush_top.png"
 		texture_bottom = "bushes_fruitless_bush_bottom.png"
 	else
@@ -168,7 +175,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
-			description = desc.." Bush",
+			description = S(desc.." Bush"),
 			drawtype = "nodebox",
 			tiles = {texture_top, texture_bottom, "bushes_" .. bush_name .. "_bush.png"},
 			inventory_image = "bushes_" .. bush_name .. "_bush.png",
@@ -207,7 +214,7 @@ end
 
 
 minetest.register_node(":bushes:basket_empty", {
-    description = "Basket",
+    description = S("Basket"),
     tiles = {
 	"bushes_basket_empty_top.png",
 	"bushes_basket_bottom.png",
