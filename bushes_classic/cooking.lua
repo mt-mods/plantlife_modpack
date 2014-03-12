@@ -1,3 +1,13 @@
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if (minetest.get_modpath("intllib")) then
+  dofile(minetest.get_modpath("intllib").."/intllib.lua")
+  S = intllib.Getter(minetest.get_current_modname())
+else
+  S = function ( s ) return s end
+end
+
+
 -- Basket
 
 minetest.register_craft({
@@ -11,7 +21,7 @@ minetest.register_craft({
 -- Sugar
 
 minetest.register_craftitem(":bushes:sugar", {
-    description = "Sugar",
+    description = S("Sugar"),
     inventory_image = "bushes_sugar.png",
     on_use = minetest.item_eat(1),
 	groups = {food_sugar=1}
@@ -28,14 +38,14 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	local desc = bushes_classic.bushes_descriptions[i]
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_raw", {
-		description = "Raw "..desc.." pie",
+		description = S("Raw "..desc.." pie"),
 		inventory_image = "bushes_"..berry.."_pie_raw.png",
 		on_use = minetest.item_eat(4),
 	})
 
 	if berry ~= "mixed_berry" then
 		minetest.register_craftitem(":bushes:"..berry, {
-			description = desc,
+			description = S(desc),
 			inventory_image = "bushes_"..berry..".png",
 			groups = {berry = 1, [berry] = 1},
 			on_use = minetest.item_eat(1),
@@ -63,7 +73,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	-- Cooked pie
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_cooked", {
-		description = "Cooked "..desc.." pie",
+		description = S("Cooked "..desc.." pie"),
 		inventory_image = "bushes_"..berry.."_pie_cooked.png",
 		on_use = minetest.item_eat(6),
 	})
@@ -78,7 +88,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	-- slice of pie
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_slice", {
-		description = "Slice of "..desc.." pie",
+		description = S("Slice of "..desc.." pie"),
 		inventory_image = "bushes_"..berry.."_pie_slice.png",
 		on_use = minetest.item_eat(1),
 	})
@@ -103,7 +113,7 @@ end
 
 if minetest.registered_nodes["farming_plus:strawberry"] then
 	minetest.register_craftitem(":farming_plus:strawberry_item", {
-		description = "Strawberry",
+		description = S("Strawberry"),
 		inventory_image = "farming_strawberry.png",
 		on_use = minetest.item_eat(2),
 		groups = {berry=1, strawberry=1}
