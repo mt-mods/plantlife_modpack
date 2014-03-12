@@ -1,6 +1,15 @@
 -- This file supplies poison ivy for the plantlife modpack
 -- Last revision:  2013-01-24
 
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if (minetest.get_modpath("intllib")) then
+  dofile(minetest.get_modpath("intllib").."/intllib.lua")
+  S = intllib.Getter(minetest.get_current_modname())
+else
+  S = function ( s ) return s end
+end
+
 local SPAWN_DELAY = 1000
 local SPAWN_CHANCE = 200
 local GROW_DELAY = 500
@@ -19,7 +28,7 @@ local walls_list = {
 	"default:stone_with_iron"
 },
 minetest.register_node('poisonivy:seedling', {
-	description = "Poison ivy (seedling)",
+	description = S("Poison ivy (seedling)"),
 	drawtype = 'plantlike',
 	waving = 1,
 	tile_images = { 'poisonivy_seedling.png' },
@@ -34,7 +43,7 @@ minetest.register_node('poisonivy:seedling', {
 })
 
 minetest.register_node('poisonivy:sproutling', {
-	description = "Poison ivy (sproutling)",
+	description = S("Poison ivy (sproutling)"),
 	drawtype = 'plantlike',
 	waving = 1,
 	tile_images = { 'poisonivy_sproutling.png' },
@@ -49,7 +58,7 @@ minetest.register_node('poisonivy:sproutling', {
 })
 
 minetest.register_node('poisonivy:climbing', {
-	description = "Poison ivy (climbing plant)",
+	description = S("Poison ivy (climbing plant)"),
 	drawtype = 'signlike',
 	tile_images = { 'poisonivy_climbing.png' },
 	inventory_image = 'poisonivy_climbing.png',
