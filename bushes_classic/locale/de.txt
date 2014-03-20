@@ -18,7 +18,7 @@ Blackberry Bush = Brombeerbusch
 Blueberry Bush = Blaubeerbusch
 Raspberry Bush = Himbeerbusch
 Gooseberry Bush = Stachelbeerbusch
-Mixed Berry Bush = Mixbeerenbusch
+Mixed Berry Bush = Beerenmixbusch
 Basket = Korb
 Sugar = Zucker
 Raw Strawberry pie = Rohe Erbeertorte
@@ -39,3 +39,5 @@ Slice of Blueberry pie = Blaubeertortenstueck
 Slice of Raspberry pie = Himbeertortenstueck
 Slice of Gooseberry pie = Stachelbeertortenstueck
 Slice of Mixed Berry pie = Beerenmixtortenstueck
+
+[Bushes] Loaded. = [Bushes] Geladen.
