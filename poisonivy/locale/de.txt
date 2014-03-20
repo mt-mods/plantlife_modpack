@@ -3,3 +3,5 @@
 Poison ivy (seedling) = Giftefeu (Saemling)
 Poison ivy (sproutling) = Giftefeu (Sproessling)
 Poison ivy (climbing plant) = Giftefeu (Kletterpflanze)
+
+[Poison Ivy] Loaded. = [Poison Ivy] Geladen.
