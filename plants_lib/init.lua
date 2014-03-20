@@ -534,4 +534,4 @@ function plantslib:get_nodedef_field(nodename, fieldname)
 end
 
 
-print("[Plantlife Library] Loaded")
+print(S("[Plantlife Library] Loaded"))
