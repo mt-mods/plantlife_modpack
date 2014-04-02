@@ -1,7 +1,7 @@
 # Translation by Xanthin
 
 Waterlily = Seerose
-Seaweed = Seegras
+Seaweed = Seetang
 Potted Rose = Eingetopfte Rose
 Potted Tulip = Eingetopfte Tulpe
 Potted Yellow Dandelion = Eingetopfter Loewenzahn
