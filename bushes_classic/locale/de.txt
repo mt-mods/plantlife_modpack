@@ -1,6 +1,6 @@
 # Translation by Xanthin
 
-Strawberry = Erbeere
+Strawberry = Erdbeere
 Blackberry = Brombeere
 Blueberry = Blaubeere
 Raspberry = Himbeere
@@ -21,7 +21,7 @@ Gooseberry Bush = Stachelbeerbusch
 Mixed Berry Bush = Beerenmixbusch
 Basket = Korb
 Sugar = Zucker
-Raw Strawberry pie = Rohe Erbeertorte
+Raw Strawberry pie = Rohe Erdbeertorte
 Raw Blackberry pie = Rohe Brombeertorte
 Raw Blueberry pie = Rohe Blaubeertorte
 Raw Raspberry pie = Rohe Himbeertorte
