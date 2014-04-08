@@ -269,7 +269,7 @@ biome = {
 				-- avoided.  If this or the avoid_nodes value
 				-- is nil or omitted, this check is skipped.
 				-- Avoid using excessively large radii or you
-				-- will slow down the ABM.
+				-- will slow down the map generator.
 	rarity = num,		-- how rare should this object be in its
 				-- biome? Larger values make objects more
 				-- rare, via:  math.random(1,100) > this
