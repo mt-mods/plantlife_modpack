@@ -10,7 +10,7 @@ Functions
 There are three main functions defined by the main "plants_lib" mod:
 
 spawn_on_surfaces()
-generate_on_surfaces()
+register_generate_plant()
 grow_plants()
 
 There are also several internal, helper functions that can be called if so
