@@ -274,7 +274,7 @@ biome = {
 				-- biome? Larger values make objects more
 				-- rare, via:  math.random(1,100) > this
 	max_count = num,	-- The absolute maximum number of your object
-				-- that should be allowed to spwn in a 5x5x5
+				-- that should be allowed to spawn in a 5x5x5
 				-- mapblock area (80x80x80 nodes).  Defaults
 				-- to 5, but be sure you set this to some 
 				-- reasonable value depending on your object
