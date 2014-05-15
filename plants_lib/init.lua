@@ -197,20 +197,24 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 
 						if type(node_or_function_or_model) == "table" then
 							plantslib:dbg("Spawn tree at {"..dump(pos).."}")
+							local t2=os.clock()
 							plantslib:generate_tree(pos, node_or_function_or_model)
-
-						elseif type(node_or_function_or_model) == "string" then
-							if not minetest.registered_nodes[node_or_function_or_model] then
-								plantslib:dbg("Call function: "..node_or_function_or_model.."("..dump_pos(pos)..")")
-								local t2=os.clock()
-								assert(loadstring(node_or_function_or_model.."("..dump_pos(pos)..")"))()
-								plantslib:dbg("Executed that function in ".. (os.clock()-t2)*1000 .."ms")
-							else
-								plantslib:dbg("Add node: "..node_or_function_or_model.." at ("..dump(p_top)..")")
-								minetest.add_node(p_top, { name = node_or_function_or_model })
-							end
+							plantslib:dbg("That tree took ".. (os.clock()-t2)*1000 .."ms to spawn.")
+							spawned = true
+						elseif type(node_or_function_or_model) == "string" and
+							minetest.registered_nodes[node_or_function_or_model] then
+							plantslib:dbg("Add node: "..node_or_function_or_model.." at ("..dump(p_top)..")")
+							minetest.add_node(p_top, { name = node_or_function_or_model })
+							spawned = true
+						elseif type(loadstring("return "..node_or_function_or_model)) == "function" then
+							plantslib:dbg("Call function: "..node_or_function_or_model.."("..dump_pos(pos)..")")
+							local t2=os.clock()
+							assert(loadstring(node_or_function_or_model.."("..dump_pos(pos)..")"))()
+							spawned = true
+							plantslib:dbg("Executed that function in ".. (os.clock()-t2)*1000 .."ms")
+						else
+							plantslib:dbg("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 						end
-						spawned = true
 					else
 						tries = tries + 1
 						plantslib:dbg("No room to spawn object at {"..dump(pos).."} -- trying again elsewhere")
