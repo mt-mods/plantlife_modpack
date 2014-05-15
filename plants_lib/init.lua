@@ -118,8 +118,6 @@ end
 
 function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or_model)
 	return function(minp, maxp, blockseed)
-		local t1=os.clock()
-
 		local biome = biomedef
 		plantslib:set_defaults(biome)
 
@@ -186,7 +184,6 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 						end
 
 						if type(node_or_function_or_model) == "table" then
-							local t2=os.clock()
 							plantslib:generate_tree(pos, node_or_function_or_model)
 							spawned = true
 						elseif type(node_or_function_or_model) == "string" and
@@ -194,7 +191,6 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							minetest.add_node(p_top, { name = node_or_function_or_model })
 							spawned = true
 						elseif type(loadstring("return "..node_or_function_or_model)) == "function" then
-							local t2=os.clock()
 							assert(loadstring(node_or_function_or_model.."("..dump_pos(pos)..")"))()
 							spawned = true
 						else
@@ -428,14 +424,12 @@ end
 -- into it.
 
 function plantslib:generate_tree(pos, node_or_function_or_model)
-	local t=os.clock()
 	minetest.spawn_tree(pos, node_or_function_or_model)
 end
 
 -- and this one's for the call used in the growing code
 
 function plantslib:grow_tree(pos, node_or_function_or_model)
-	local t=os.clock()
 	minetest.spawn_tree(pos, node_or_function_or_model)
 end
 
