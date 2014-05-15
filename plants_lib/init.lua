@@ -54,9 +54,6 @@ if time_speed and time_speed > 0 then
 	time_scale = 72 / time_speed
 end
 
-plantslib:dbg("time_speed = "..dump(time_speed))
-plantslib:dbg("time_scale = 72 / time_speed = "..dump(time_scale))
-
 --PerlinNoise(seed, octaves, persistence, scale)
 
 plantslib.perlin_temperature = PerlinNoise(temperature_seeddiff, temperature_octaves, temperature_persistence, temperature_scale)
@@ -116,9 +113,6 @@ end
 -- Spawn plants using the map generator
 
 function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
-	plantslib:dbg("Registered mapgen spawner:")
-	plantslib:dbg(dump(biomedef))
-
 	minetest.register_on_generated(plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or_model))
 end
 
@@ -129,7 +123,6 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 		local biome = biomedef
 		plantslib:set_defaults(biome)
 
-		plantslib:dbg("Started checking generated mapblock volume...")
 		local searchnodes = minetest.find_nodes_in_area(minp, maxp, biome.surface)
 		local in_biome_nodes = {}
 		local num_in_biome_nodes = 0
@@ -159,10 +152,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			end
 		end
 
-		plantslib:dbg("Found "..num_in_biome_nodes.." surface nodes of type(s) "..dump(biome.surface).." in 5x5x5 mapblock volume at {"..dump(minp)..":"..dump(maxp).."} to check.")
-
 		if num_in_biome_nodes > 0 then
-			plantslib:dbg("Calculated maximum of "..math.min(biome.max_count*3, num_in_biome_nodes).." nodes to be checked in that list.")
 			for i = 1, math.min(biome.max_count, num_in_biome_nodes) do
 				local tries = 0
 				local spawned = false
@@ -196,36 +186,26 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 						end
 
 						if type(node_or_function_or_model) == "table" then
-							plantslib:dbg("Spawn tree at {"..dump(pos).."}")
 							local t2=os.clock()
 							plantslib:generate_tree(pos, node_or_function_or_model)
-							plantslib:dbg("That tree took ".. (os.clock()-t2)*1000 .."ms to spawn.")
 							spawned = true
 						elseif type(node_or_function_or_model) == "string" and
 							minetest.registered_nodes[node_or_function_or_model] then
-							plantslib:dbg("Add node: "..node_or_function_or_model.." at ("..dump(p_top)..")")
 							minetest.add_node(p_top, { name = node_or_function_or_model })
 							spawned = true
 						elseif type(loadstring("return "..node_or_function_or_model)) == "function" then
-							plantslib:dbg("Call function: "..node_or_function_or_model.."("..dump_pos(pos)..")")
 							local t2=os.clock()
 							assert(loadstring(node_or_function_or_model.."("..dump_pos(pos)..")"))()
 							spawned = true
-							plantslib:dbg("Executed that function in ".. (os.clock()-t2)*1000 .."ms")
 						else
-							plantslib:dbg("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+							print("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 						end
 					else
 						tries = tries + 1
-						plantslib:dbg("No room to spawn object at {"..dump(pos).."} -- trying again elsewhere")
 					end
-				end
-				if tries == 2 then
-					plantslib:dbg("Unable to spawn that object.  Giving up on it.")
 				end
 			end
 		end
-                plantslib:dbg("Evaluated/populated chunk in ".. (os.clock()-t1)*1000 .."ms")
 	end
 end
 
@@ -254,10 +234,6 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 
 	plantslib:set_defaults(biome)
 	biome.spawn_plants_count = table.getn(biome.spawn_plants)
-
-	plantslib:dbg("Registered spawning ABM:")
-	plantslib:dbg(dump(biome))
-	plantslib:dbg("Number of trigger nodes in this ABM: "..biome.spawn_plants_count )
 
 	minetest.register_abm({
 		nodenames = biome.spawn_surfaces,
@@ -290,7 +266,6 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 					local walldir = plantslib:find_adjacent_wall(p_top, biome.verticals_list)
 					if biome.alt_wallnode and walldir then
 						if n_top.name == "air" then
-							plantslib:dbg("Spawn: "..biome.alt_wallnode.." on top of ("..dump(pos)..") against wall "..walldir)
 							minetest.add_node(p_top, { name = biome.alt_wallnode, param2 = walldir })
 						end
 					else
@@ -300,34 +275,26 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 						  then
 							local rnd = math.random(1, biome.spawn_plants_count)
 							local plant_to_spawn = biome.spawn_plants[rnd]
-							plantslib:dbg("Chose entry number "..rnd.." of "..biome.spawn_plants_count)
 							local fdir = biome.facedir
 							if biome.random_facedir then
 								fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
-								plantslib:dbg("Gave it a random facedir: "..fdir)
 							end
 							if type(spawn_plants) == "string" then
-								plantslib:dbg("Call function: "..spawn_plants.."("..dump_pos(pos)..")")
 								assert(loadstring(spawn_plants.."("..dump_pos(pos)..")"))()
 							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								if n_top.name == "air" then
-									plantslib:dbg("Spawn: "..plant_to_spawn.." on top of ("..dump(pos).."); facedir="..fdir)
 									minetest.add_node(p_top, { name = plant_to_spawn, param2 = fdir })
 								end
 							elseif biome.spawn_replace_node then
-						
-								plantslib:dbg("Spawn: "..plant_to_spawn.." to replace "..minetest.get_node(pos).name.." at ("..dump(pos)..")")
 								minetest.add_node(pos, { name = plant_to_spawn, param2 = fdir })
 
 							elseif biome.spawn_on_side then
 								local onside = plantslib:find_open_side(pos)
 								if onside then 
-									plantslib:dbg("Spawn: "..plant_to_spawn.." at side of ("..dump(pos).."), facedir "..onside.facedir.."")
 									minetest.add_node(onside.newpos, { name = plant_to_spawn, param2 = onside.facedir })
 								end
 							elseif biome.spawn_on_bottom then
 								if minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
-									plantslib:dbg("Spawn: "..plant_to_spawn.." on bottom of ("..dump(pos)..")")
 									minetest.add_node({x=pos.x, y=pos.y-1, z=pos.z}, { name = plant_to_spawn, param2 = fdir} )
 								end
 							end
@@ -349,9 +316,6 @@ function plantslib:grow_plants(opts)
 	options.ground_nodes = options.ground_nodes or { "default:dirt_with_grass" }
 	options.grow_nodes = options.grow_nodes or { "default:dirt_with_grass" }
 	options.seed_diff = options.seed_diff or 0
-
-	plantslib:dbg("Registered growing ABM:")
-	plantslib:dbg(dump(options))
 
 	if options.grow_delay*time_scale >= 1 then
 		options.interval = options.grow_delay*time_scale
@@ -378,17 +342,14 @@ function plantslib:grow_plants(opts)
 				-- corner case for changing short junglegrass
 				-- to dry shrub in desert
 				if n_bot.name == options.dry_early_node and options.grow_plant == "junglegrass:short" then
-					plantslib:dbg("Die: "..options.grow_plant.." becomes default:dry_shrub at ("..dump(pos)..")")
 					minetest.add_node(pos, { name = "default:dry_shrub" })
 
 				elseif options.grow_vertically and walldir then
 					if plantslib:search_downward(pos, options.height_limit, options.ground_nodes) then
-						plantslib:dbg("Grow "..options.grow_plant.." vertically to "..dump(p_top))
 						minetest.add_node(p_top, { name = options.grow_plant, param2 = walldir})
 					end
 
 				elseif not options.grow_result and not options.grow_function then
-					plantslib:dbg("Die: "..options.grow_plant.." at ("..dump(pos)..")")
 					minetest.remove_node(pos)
 
 				else
@@ -404,9 +365,7 @@ end
 
 function plantslib:replace_object(pos, replacement, grow_function, walldir, seeddiff)
 	local growtype = type(grow_function)
-	plantslib:dbg("replace_object called, growtype="..dump(grow_function))
 	if growtype == "table" then
-		plantslib:dbg("Grow: spawn tree at "..dump(pos))
 		minetest.remove_node(pos)
 		plantslib:grow_tree(pos, grow_function)
 		return
@@ -414,11 +373,9 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 		local perlin1 = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
 		local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
-		plantslib:dbg("Grow: call function "..grow_function.."("..dump_pos(pos)..","..noise1..","..noise2..","..dump(walldir)..")")
 		assert(loadstring(grow_function.."("..dump_pos(pos)..","..noise1..","..noise2..","..dump(walldir)..")"))()
 		return
 	elseif growtype == "nil" then
-		plantslib:dbg("Grow: place "..replacement.." at ("..dump(pos)..") on wall "..dump(walldir))
 		minetest.add_node(pos, { name = replacement, param2 = walldir})
 		return
 	elseif growtype ~= "nil" and growtype ~= "string" and growtype ~= "table" then
@@ -473,7 +430,6 @@ end
 function plantslib:generate_tree(pos, node_or_function_or_model)
 	local t=os.clock()
 	minetest.spawn_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Generated one tree in ".. (os.clock()-t)*1000 .."ms")
 end
 
 -- and this one's for the call used in the growing code
@@ -481,7 +437,6 @@ end
 function plantslib:grow_tree(pos, node_or_function_or_model)
 	local t=os.clock()
 	minetest.spawn_tree(pos, node_or_function_or_model)
-	plantslib:dbg("Generated one tree in ".. (os.clock()-t)*1000 .."ms")
 end
 
 -- check if a node is owned before allowing manual placement of a node
