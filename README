@@ -12,15 +12,15 @@ poison ivy, and fruit bushes, obviously. :-)  All of these are spawned as
 normal nodes and can be collected and used in any recipes that depend on the 
 old mods.
 
-Spawning of plants is sensitive to the amount of available light.  Flowers, 
-cotton, and waterlilies only spawn when there at least a signficant amount of 
-light.  Seaweed will grow only in dimly-lit areas.  Jungle grass and poison ivy 
-also grow in the daytime, but require less light than flowers.
+Spawning of plants is sensitive to the amount of available light.  Flowers,
+cotton, and waterlilies only spawn when there at least a signficant amount of
+light.  Seaweed will grow only in dimly-lit areas.  Poison ivy also grows only 
+in the daytime, but require less light than flowers.
 
-Growing of jungle grass and poison ivy will only occur for plants that are on 
-the same surface that is necessary for them to spawn on, so they won't grow if 
-placed on e.g. cobble or homedecor flower pot, etc.  This doesn't affect 
-wall-climbing poison ivy, since it uses a different growth pattern.
+Growing of poison ivy will only occur for plants that are on the same surface
+that is necessary for them to spawn on, so they won't grow if placed on e.g.
+cobble or homedecor flower pot, etc.  This doesn't affect wall-climbing poison
+ivy, since it uses a different growth pattern.
 
 All plants use multiple controls provided by plants_lib, to keep where they
 grow under control - no more random spread of plants!  In addition, the density
