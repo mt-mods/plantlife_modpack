@@ -123,9 +123,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 
 		local searchnodes = minetest.find_nodes_in_area(minp, maxp, biome.surface)
 		local in_biome_nodes = {}
-		local num_in_biome_nodes = 0
-		for i in ipairs(searchnodes) do
-			local pos = searchnodes[i]
+		for _ , pos in ipairs(searchnodes) do
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
@@ -146,9 +144,10 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
 			  then
 				table.insert(in_biome_nodes, pos)
-				num_in_biome_nodes = num_in_biome_nodes + 1
 			end
 		end
+
+		local num_in_biome_nodes = #in_biome_nodes
 
 		if num_in_biome_nodes > 0 then
 			for i = 1, math.min(biome.max_count, num_in_biome_nodes) do
