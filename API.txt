@@ -1,6 +1,6 @@
-This document describes the Plantlife API.
+This document describes the Plantlife mod API.
 
-Last revision: 2013-01-30
+Last revision: 2014-05-24
 
 
 =========
@@ -18,9 +18,9 @@ desired, but they are not really intended for use by other mods and may change
 at any time.  They are briefly described below these main functions, but see
 init.lua for details.
 
-All functions in plants lib are declared locally to avoid namespace collisions
-with other mods.  They are accessible via the "plantslib" method, e.g.
-plantslib:spawn_on_surfaces() and so forth.
+Most functions in plants lib are declared locally to avoid namespace
+collisions with other mods.  They are accessible via the "plantslib" method,
+e.g. plantslib:spawn_on_surfaces() and so forth.
 
 =====
 spawn_on_surfaces(biome)
@@ -337,19 +337,20 @@ biome = {
 Regarding node_or_function_or_treedef, this must either be table with an 
 L-Systems tree definition, or a string with a node or function name.
 
-If you specified a string, the code will attempt to determine, as needed, 
-whether that string specifies a node name.  If it does, that node will be
-placed on top of the target position directly.
-
-If it wasn't a node, the code will assume you meant to specify a function
-name, in which case  that function will be passed a single position parameter
-(in the usual table format), indicating where the named function should place
-the object.  It is called in the form of "somefunction(pos)", and behaves much
-like a typical callback.
+If you specified a string, the code will attempt to determine whether that
+string specifies a valid node name.  If it does, that node will be placed on
+top of the target position directly (unless one of the other mapgen options
+directs the code to do otherwise).
 
 If you specified a table, the code assumes this table contains an L-Systems
 tree definition, then that definition will be passed directly to the
 spawn_tree() function along with the position to spawn the tree on.
+
+You can also supply a function to be directly executed, which is given the
+current node position (the usual "pos" table format) as its sole argument.  It
+will be called in the form:
+
+	somefunction(pos)
 
 
 =====
