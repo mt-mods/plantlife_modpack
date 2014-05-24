@@ -189,8 +189,8 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							minetest.registered_nodes[node_or_function_or_model] then
 							minetest.add_node(p_top, { name = node_or_function_or_model })
 							spawned = true
-						elseif pcall(loadstring(("return type(%s) == \"function\" and %s(%s)"):
-							format(node_or_function_or_model, node_or_function_or_model, dump_pos(pos)))) then
+						elseif pcall(loadstring(("return %s(%s)"):
+							format(node_or_function_or_model, dump_pos(pos)))) then
 							spawned = true
 						else
 							print("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
