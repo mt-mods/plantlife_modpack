@@ -61,10 +61,6 @@ plantslib.perlin_humidity = PerlinNoise(humidity_seeddiff, humidity_octaves, hum
 
 -- Local functions
 
-local function dump_pos(pos)
-	return "{x="..pos.x..",y="..pos.y..",z="..pos.z.."}"
-end
-
 function plantslib:is_node_loaded(node_pos)
 	local n = minetest.get_node_or_nil(node_pos)
 	if (not n) or (n.name == "ignore") then
@@ -191,8 +187,11 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							minetest.registered_nodes[node_or_function_or_model] then
 							minetest.add_node(p_top, { name = node_or_function_or_model })
 							spawned = true
-						elseif objtype == "string" and pcall(loadstring(("return %s(%s)"):
-							format(node_or_function_or_model, dump_pos(pos)))) then
+						elseif objtype == "function" then
+							node_or_function_or_model(pos)
+							spawned = trueload
+						elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
+							format(node_or_function_or_model)),pos) then
 							spawned = true
 						else
 							print("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
@@ -277,7 +276,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 								fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
 							end
 							if type(spawn_plants) == "string" then
-								assert(loadstring(spawn_plants.."("..dump_pos(pos)..")"))()
+								assert(loadstring(spawn_plants.."(...)"))(pos)
 							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								if n_top.name == "air" then
 									minetest.add_node(p_top, { name = plant_to_spawn, param2 = fdir })
@@ -366,11 +365,17 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 		minetest.remove_node(pos)
 		plantslib:grow_tree(pos, grow_function)
 		return
+	elseif growtype == "function" then
+		local perlin1 = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
+		local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
+		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
+		grow_function(pos,noise1,noise2,walldir)
+		return
 	elseif growtype == "string" then
 		local perlin1 = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
 		local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
-		assert(loadstring(grow_function.."("..dump_pos(pos)..","..noise1..","..noise2..","..dump(walldir)..")"))()
+		assert(loadstring(grow_function.."(...)"))(pos,noise1,noise2,walldir)
 		return
 	elseif growtype == "nil" then
 		minetest.add_node(pos, { name = replacement, param2 = walldir})
