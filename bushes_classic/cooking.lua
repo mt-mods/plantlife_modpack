@@ -44,12 +44,26 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	})
 
 	if berry ~= "mixed_berry" then
-		minetest.register_craftitem(":bushes:"..berry, {
-			description = S(desc),
-			inventory_image = "bushes_"..berry..".png",
-			groups = {berry = 1, [berry] = 1},
-			on_use = minetest.item_eat(1),
-		})
+
+		if berry == "strawberry" and minetest.registered_nodes["farming_plus:strawberry"] then
+			-- Special case for strawberries, when farming_plus is in use. Use
+			-- the item from that mod, but redefine it so it has the right
+			-- groups and does't look so ugly!
+			minetest.register_craftitem(":farming_plus:strawberry_item", {
+				description = S("Strawberry"),
+				inventory_image = "bushes_"..berry..".png",
+				on_use = minetest.item_eat(2),
+				groups = {berry=1, strawberry=1}
+			})
+			minetest.register_alias("bushes:strawberry", "farming_plus:strawberry_item")
+		else
+			minetest.register_craftitem(":bushes:"..berry, {
+				description = desc,
+				inventory_image = "bushes_"..berry..".png",
+				groups = {berry = 1, [berry] = 1},
+				on_use = minetest.item_eat(1),
+			})
+		end
 
 		if minetest.registered_nodes["farming:soil"] then
 			minetest.register_craft({
@@ -108,15 +122,6 @@ for i, berry in ipairs(bushes_classic.bushes) do
 		{ "bushes:"..berry.."_pie_cooked", "bushes:"..berry.."_pie_cooked", "bushes:"..berry.."_pie_cooked" },
 		{ "", "bushes:basket_empty", "" },
 		},
-	})
-end
-
-if minetest.registered_nodes["farming_plus:strawberry"] then
-	minetest.register_craftitem(":farming_plus:strawberry_item", {
-		description = S("Strawberry"),
-		inventory_image = "farming_strawberry.png",
-		on_use = minetest.item_eat(2),
-		groups = {berry=1, strawberry=1}
 	})
 end
 
