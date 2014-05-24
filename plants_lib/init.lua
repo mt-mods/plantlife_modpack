@@ -182,7 +182,7 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							minetest.remove_node(pos)
 						end
 
-						objtype = type(node_or_function_or_model)
+						local objtype = type(node_or_function_or_model)
 
 						if objtype == "table" then
 							plantslib:generate_tree(pos, node_or_function_or_model)
