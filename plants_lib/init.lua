@@ -182,14 +182,16 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 							minetest.remove_node(pos)
 						end
 
-						if type(node_or_function_or_model) == "table" then
+						objtype = type(node_or_function_or_model)
+
+						if objtype == "table" then
 							plantslib:generate_tree(pos, node_or_function_or_model)
 							spawned = true
-						elseif type(node_or_function_or_model) == "string" and
+						elseif objtype == "string" and
 							minetest.registered_nodes[node_or_function_or_model] then
 							minetest.add_node(p_top, { name = node_or_function_or_model })
 							spawned = true
-						elseif pcall(loadstring(("return %s(%s)"):
+						elseif objtype == "string" and pcall(loadstring(("return %s(%s)"):
 							format(node_or_function_or_model, dump_pos(pos)))) then
 							spawned = true
 						else
