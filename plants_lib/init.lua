@@ -134,8 +134,8 @@ function plantslib:search_for_surfaces(minp, maxp, biomedef, node_or_function_or
 			  and noise2 >= biome.temp_max
 			  and noise3 <= biome.humidity_min
 			  and noise3 >= biome.humidity_max
-			  and (not biome.ncount or table.getn(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
-			  and (not biome.near_nodes or table.getn(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
+			  and (not biome.ncount or #(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
+			  and (not biome.near_nodes or #(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
 			  and math.random(1,100) > biome.rarity
 			  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
 			  then
@@ -229,7 +229,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 	end
 
 	plantslib:set_defaults(biome)
-	biome.spawn_plants_count = table.getn(biome.spawn_plants)
+	biome.spawn_plants_count = #(biome.spawn_plants)
 
 	minetest.register_abm({
 		nodenames = biome.spawn_surfaces,
@@ -253,9 +253,9 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 				if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes))
 				  and n_light >= biome.light_min
 				  and n_light <= biome.light_max
-				  and (not(biome.neighbors and biome.ncount) or table.getn(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount )
-				  and (not(biome.near_nodes and biome.near_nodes_count and biome.near_nodes_size) or table.getn(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
-				  and (not(biome.air_count and biome.air_size) or table.getn(minetest.find_nodes_in_area({x=p_top.x-biome.air_size, y=p_top.y, z=p_top.z-biome.air_size}, {x=p_top.x+biome.air_size, y=p_top.y, z=p_top.z+biome.air_size}, "air")) >= biome.air_count)
+				  and (not(biome.neighbors and biome.ncount) or #(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount )
+				  and (not(biome.near_nodes and biome.near_nodes_count and biome.near_nodes_size) or #(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
+				  and (not(biome.air_count and biome.air_size) or #(minetest.find_nodes_in_area({x=p_top.x-biome.air_size, y=p_top.y, z=p_top.z-biome.air_size}, {x=p_top.x+biome.air_size, y=p_top.y, z=p_top.z+biome.air_size}, "air")) >= biome.air_count)
 				  and pos.y >= biome.min_elevation
 				  and pos.y <= biome.max_elevation
 				  then
@@ -267,7 +267,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 					else
 						local currentsurface = minetest.get_node(pos).name
 						if currentsurface ~= "default:water_source"
-						  or (currentsurface == "default:water_source" and table.getn(minetest.find_nodes_in_area({x=pos.x, y=pos.y-biome.depth_max-1, z=pos.z}, {x=pos.x, y=pos.y, z=pos.z}, {"default:dirt", "default:dirt_with_grass", "default:sand"})) > 0 )
+						  or (currentsurface == "default:water_source" and #(minetest.find_nodes_in_area({x=pos.x, y=pos.y-biome.depth_max-1, z=pos.z}, {x=pos.x, y=pos.y, z=pos.z}, {"default:dirt", "default:dirt_with_grass", "default:sand"})) > 0 )
 						  then
 							local rnd = math.random(1, biome.spawn_plants_count)
 							local plant_to_spawn = biome.spawn_plants[rnd]
