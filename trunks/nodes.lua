@@ -75,7 +75,7 @@ minetest.register_node("trunks:moss", {
 -- MoSS & FuNGuS
 -----------------------------------------------------------------------------------------------
 minetest.register_node("trunks:moss_fungus", {
-	description = "Moss & Fungus",
+	description = "Moss with Fungus",
 	drawtype = "nodebox",--"signlike",
 	tiles = {"trunks_moss_fungus.png"},
 	inventory_image = "trunks_moss_fungus.png",
@@ -151,7 +151,7 @@ minetest.register_node("trunks:twigs_roof", {
 minetest.register_alias("woodstuff:twigs_roof_corner",	"trunks:twigs_roof_corner")
 
 minetest.register_node("trunks:twigs_roof_corner", {
-	description = "Twigs Roof Corner",
+	description = "Twigs Roof Corner 1",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

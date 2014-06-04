@@ -4,7 +4,7 @@
 
 
 minetest.register_node("youngtrees:bamboo", {
-	description = "youngtreeBamboo", 
+	description = "Young Bamboo Tree", 
  drawtype="nodebox",
  tiles = {"bamboo.png"},
  	inventory_image = "bamboo.png",
@@ -22,13 +22,14 @@ node_box = {
 },
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'trunks:twig_1'
 })
  
 
 
 
 minetest.register_node("youngtrees:youngtree2_middle",{
-	description = "youngtree2Middle", 
+	description = "Young Tree 2 (middle)", 
 	drawtype="nodebox",
 	 tiles = {"youngtree2branch.png"},
 	  	inventory_image = "youngtree2branch.png",
@@ -46,10 +47,11 @@ minetest.register_node("youngtrees:youngtree2_middle",{
 	},
 		groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'trunks:twig_1'
 })
 
 minetest.register_node("youngtrees:youngtree_top", {
-	description = "youngtreeTop",
+	description = "Young Tree (top)",
 	drawtype = "plantlike",
 	tiles = {"youngtree16xa.png"},
 	inventory_image = "youngtree16xa.png",
@@ -63,11 +65,12 @@ minetest.register_node("youngtrees:youngtree_top", {
 	},
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'trunks:twig_1'
 })
 
  
 minetest.register_node("youngtrees:youngtree_middle", {
-	description = "youngtreeMiddle",
+	description = "Young Tree (middle)",
 	drawtype = "plantlike",
 	tiles = {"youngtree16xb.png"},
 	inventory_image = "youngtree16xb.png",
@@ -81,12 +84,13 @@ minetest.register_node("youngtrees:youngtree_middle", {
 	},
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'trunks:twig_1'
 })
 
 
  
 minetest.register_node("youngtrees:youngtree_bottom", {
-	description = "youngtreeBottom",
+	description = "Young Tree (bottom)",
 	drawtype = "plantlike",
 	tiles = {"youngtree16xc.png"},
 	inventory_image = "youngtree16xc.png",
@@ -100,6 +104,7 @@ minetest.register_node("youngtrees:youngtree_bottom", {
 	},
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'trunks:twig_1'
 })
  
  

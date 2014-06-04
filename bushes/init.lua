@@ -8,11 +8,11 @@
   abstract_bushes = {} 
 
   minetest.register_node("bushes:youngtree2_bottom", {
-	description = "youngtree2Bottom", 
+	description = "Young Tree 2 (bottom)", 
  drawtype="nodebox",
- tiles = {"youngtree2trunk.png"},
- 	inventory_image = "youngtree2trunk.png",
-	wield_image = "youngtree2trunk.png", 
+ tiles = {"bushes_youngtree2trunk.png"},
+ 	inventory_image = "bushes_youngtree2trunk_inv.png",
+	wield_image = "bushes_youngtree2trunk_inv.png", 
 paramtype = "light",
 	walkable = false,
 	is_ground_content = true,
@@ -25,6 +25,7 @@ node_box = {
 },
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
+	drop = 'default:stick'
 })
   
   local BushBranchCenter 			= { {1,1}, {3,2} }
@@ -60,6 +61,7 @@ for i in pairs(BushBranchCenter) do
 			leaves=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
+		drop = 'default:stick 4'
 	})
 end
 
@@ -102,6 +104,7 @@ for i in pairs(BushBranchSide) do
 			leaves=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
+		drop = 'default:stick 3'
 	})
 end
 
@@ -112,7 +115,6 @@ for i in pairs(BushLeafNode) do
 		description = "Bush Leaves "..Num,
 		drawtype = "allfaces_optional",
 		tiles = {"bushes_leaves_"..Num..".png"},
-		inventory_image = "bushes_leaves_"..Num..".png",
 		paramtype = "light",
 		groups = {	-- MM: Should we add leafdecay?	
 			snappy=3,
