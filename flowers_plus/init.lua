@@ -94,7 +94,7 @@ for i in ipairs(lilies_list) do
 				place_pos = pt.above
 			end
 
-			if not plantslib:node_is_owned(place_pos, placer) then
+			if not minetest.is_protected(place_pos, placer:get_player_name()) then
 
 			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
 
@@ -194,7 +194,7 @@ for i in ipairs(algae_list) do
 				place_pos = pt.above
 			end
 
-			if not plantslib:node_is_owned(place_pos, placer) then
+			if not minetest.is_protected(place_pos, placer:get_player_name()) then
 
 			local nodename = "default:cobble" -- :D
 
