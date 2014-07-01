@@ -314,8 +314,8 @@ end
 
 plantslib:register_generate_plant({
     surface = {"default:water_source"},
-    max_count = lilypads_max_count,
-    rarity = lilypads_rarity,
+    max_count = lilies_max_count,
+    rarity = lilies_rarity,
     min_elevation = 1,
 	max_elevation = 40,
 	near_nodes = {"default:dirt_with_grass"},
