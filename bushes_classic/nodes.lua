@@ -164,11 +164,13 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 
 	local texture_top, texture_bottom
 
+	local groups = {snappy = 3, bush = 1, flammable = 2, attached_node=1}
 	if bush_name == "mixed_berry" then
 		bush_name = "fruitless";
 		desc      = S("currently fruitless");
 		texture_top = "bushes_fruitless_bush_top.png"
 		texture_bottom = "bushes_fruitless_bush_bottom.png"
+		groups.not_in_creative_inventory = 1
 	else
 		texture_top = "bushes_bush_top.png"
 		texture_bottom = "bushes_bush_bottom.png"
@@ -195,7 +197,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 				}
 			},
 
-			groups = {snappy = 3, bush = 1, flammable = 2, attached_node=1},
+			groups = groups,
 			sounds = default.node_sound_leaves_defaults(),
 			drop = "",
 			after_dig_node = function( pos, oldnode, oldmetadata, digger )
