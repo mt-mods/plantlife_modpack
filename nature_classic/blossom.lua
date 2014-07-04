@@ -25,6 +25,7 @@ minetest.register_node(":"..BLOSSOM_NODE, {
     groups = { snappy = 3, leafdecay = 3, flammable = 2 },
     sounds = default.node_sound_leaves_defaults(),
     drop = BLOSSOM_NODE,
+	waving = 1
 })
 
 minetest.register_craft({
