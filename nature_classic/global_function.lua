@@ -3,19 +3,19 @@ local NODE_YOUNG = "young"
 nature = {}
 
 local function set_young_node(pos)
-    local meta = minetest.env:get_meta(pos)
+    local meta = minetest.get_meta(pos)
 
     meta:set_string(NODE_YOUNG, "true")
     minetest.after(5,
 	function(pos)
-	    local meta = minetest.env:get_meta(pos)
+	    local meta = minetest.get_meta(pos)
 	    meta:set_string(NODE_YOUNG, "false")
 	end,
     pos)
 end
 
 local function is_not_young(pos)
-    local meta = minetest.env:get_meta(pos)
+    local meta = minetest.get_meta(pos)
 
     local young = meta:get_string(NODE_YOUNG)
     return young ~= "true"
@@ -23,12 +23,12 @@ end
 
 function nature:grow_node(pos, nodename)
     if pos ~= nil then
-	local light_enough = minetest.env:get_node_light(pos, nil)
+	local light_enough = minetest.get_node_light(pos, nil)
 		>= MINIMUM_GROWTH_LIGHT 
 
 	if is_not_young(pos) and light_enough then
-	    minetest.env:remove_node(pos)
-	    minetest.env:add_node(pos, { name = nodename })
+	    minetest.remove_node(pos)
+	    minetest.add_node(pos, { name = nodename })
 	    set_young_node(pos)
 
 	    minetest.log("info", nodename .. " has grown at " .. pos.x .. ","
@@ -38,6 +38,6 @@ function nature:grow_node(pos, nodename)
 end
 
 function nature:is_near_water(pos)
-    return minetest.env:find_node_near(pos, DISTANCE_FROM_WATER,
+    return minetest.find_node_near(pos, DISTANCE_FROM_WATER,
 	    { "default:water_source" }) ~= nil or DISTANCE_FROM_WATER == -1
 end

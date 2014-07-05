@@ -13,8 +13,8 @@ local function spawn_apple_under(pos)
 		y = pos.y - 1,
 		z = pos.z,
 	}
-    if minetest.env:get_node(below).name == "air" then
-		minetest.env:add_node(below, { name = "default:apple" })
+    if minetest.get_node(below).name == "air" then
+		minetest.add_node(below, { name = "default:apple" })
     end
 end
 
