@@ -1,10 +1,11 @@
 -- Blossom
 
 local BLOSSOM_CHANCE = 15
-local APPLE_CHANCE = 10
 local BLOSSOM_DELAY = 3600
-
 local BLOSSOM_NODE = "nature:blossom"
+
+local APPLE_CHANCE = 10
+local APPLE_SPREAD = 2
 
 local function spawn_apple_under(pos)
     local below = {
@@ -65,6 +66,8 @@ minetest.register_abm({
     chance = APPLE_CHANCE,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-		spawn_apple_under(pos)
+		if not minetest.find_node_near(pos, APPLE_SPREAD, { "default:apple" }) then
+			spawn_apple_under(pos)
+		end
     end
 })
