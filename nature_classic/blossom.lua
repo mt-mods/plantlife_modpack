@@ -41,7 +41,9 @@ minetest.register_abm({
     chance = BLOSSOM_CHANCE,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-		nature:grow_node(pos, BLOSSOM_NODE)
+		if nature:is_near_water(pos) then
+			nature:grow_node(pos, BLOSSOM_NODE)
+		end
     end
 })
 
