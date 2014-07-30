@@ -1,8 +1,18 @@
 -- Blossom
 
+local BLOSSOM_NODE = "nature:blossom"
+local BLOSSOM_LEAVES = "default:leaves"
+local BLOSSOM_TEXTURES = { "default_leaves.png^nature_blossom.png" }
+
+if minetest.get_modpath("moretrees") then
+	BLOSSOM_NODE = "moretrees:apple_blossoms"
+	BLOSSOM_LEAVES = "moretrees:apple_tree_leaves"
+	BLOSSOM_TEXTURES = { "moretrees_apple_tree_leaves.png^nature_blossom.png" }
+	minetest.register_alias("nature:blossom", "default:leaves")
+end
+
 local BLOSSOM_CHANCE = 15
 local BLOSSOM_DELAY = 3600
-local BLOSSOM_NODE = "nature:blossom"
 
 local APPLE_CHANCE = 10
 local APPLE_SPREAD = 2
@@ -19,13 +29,12 @@ local function spawn_apple_under(pos)
 end
 
 minetest.register_node(":"..BLOSSOM_NODE, {
-    description = "Blossom",
+    description = "Apple blossoms",
     drawtype = "allfaces_optional",
-    tiles = { "default_leaves.png^nature_blossom.png" },
+    tiles = BLOSSOM_TEXTURES,
     paramtype = "light",
     groups = { snappy = 3, leafdecay = 3, flammable = 2 },
     sounds = default.node_sound_leaves_defaults(),
-    drop = BLOSSOM_NODE,
 	waving = 1
 })
 
@@ -37,7 +46,7 @@ minetest.register_craft({
 
 -- Blossoming
 minetest.register_abm({
-    nodenames = { "default:leaves" },
+    nodenames = { BLOSSOM_LEAVES },
     interval = BLOSSOM_DELAY,
     chance = BLOSSOM_CHANCE,
 
@@ -55,7 +64,7 @@ minetest.register_abm({
     chance = BLOSSOM_CHANCE,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-		nature:grow_node(pos, "default:leaves")
+		nature:grow_node(pos, BLOSSOM_LEAVES)
     end
 })
 
