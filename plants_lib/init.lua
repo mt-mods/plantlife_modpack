@@ -69,15 +69,6 @@ function plantslib:is_node_loaded(node_pos)
 	return true
 end
 
-function plantslib:clone_node(name)
-	node2={}
-	node=minetest.registered_nodes[name]
-	for k,v in pairs(node) do
-		node2[k]=v
-	end
-	return node2
-end
-
 function plantslib:set_defaults(biome)
 	biome.seed_diff = biome.seed_diff or 0
 	biome.min_elevation = biome.min_elevation or -31000
