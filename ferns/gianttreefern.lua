@@ -371,9 +371,8 @@ plantslib:register_generate_plant({
     plantlife_limit = -0.9,
     --humidity_max = 0.39,--1.0,
     --humidity_min = 0.5,
-    --temp_max = -1,-- -1.2,-- -0.5, -- ~ 55 °C
-    --temp_min = -0.35,-- -0.07, -- ~ 25 °C
-	check_air = false,
+    --temp_max = -1,-- -1.2,-- -0.5, -- ~ 55C
+    --temp_min = -0.35,-- -0.07, -- ~ 25C
   },
   "abstract_ferns.grow_giant_tree_fern"
 )
@@ -401,7 +400,6 @@ plantslib:register_generate_plant({
     humidity_min = 1.0,
     temp_max = -1.0,
     temp_min = 1.0,
-	check_air = false,
   },
   "abstract_ferns.grow_giant_tree_fern"
 )

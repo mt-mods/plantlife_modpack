@@ -206,7 +206,6 @@ plantslib:register_generate_plant({
     rarity = 101 - 4,  --3,4
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
-	check_air = false,
   },
   "abstract_bushes.grow_bush"
 )		
@@ -252,7 +251,6 @@ plantslib:register_generate_plant({
     rarity = 101 - 4,  --3,4
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
-	check_air = false,
   },
   "abstract_bushes.grow_youngtree2"
 )	

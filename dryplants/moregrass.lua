@@ -29,7 +29,6 @@ plantslib:register_generate_plant({
     rarity = 101 - TALL_GRASS_RARITY,
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
-	check_air = false,
   },
   "abstract_dryplants.grow_grass"
 )

@@ -212,7 +212,6 @@ plantslib:register_generate_plant({
     humidity_min = 0.4,
     temp_max = -0.5,
     temp_min = 0.13,
-	check_air = false,
   },
   "abstract_ferns.grow_tree_fern"
 )
@@ -240,7 +239,6 @@ plantslib:register_generate_plant({
     humidity_min = 1.0,
     temp_max = -1.0,
     temp_min = 1.0,
-	check_air = false,
   },
   "abstract_ferns.grow_tree_fern"
 )

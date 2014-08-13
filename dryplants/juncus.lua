@@ -99,7 +99,6 @@ plantslib:register_generate_plant({
 	near_nodes_vertical = 1,
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
-	check_air = false,
   },
   "abstract_dryplants.grow_juncus"
 )
@@ -121,7 +120,6 @@ plantslib:register_generate_plant({
 	near_nodes_vertical = 1,
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
-	check_air = false,
   },
   "abstract_dryplants.grow_juncus"
 )
