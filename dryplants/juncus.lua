@@ -30,6 +30,7 @@ minetest.register_node("dryplants:juncus", {
 	tiles = {"dryplants_juncus_03.png"},
 	inventory_image = "dryplants_juncus_inv.png",
 	walkable = false,
+	buildable_to = true,
 	groups = {
 		snappy=3,
 		flammable=2,
@@ -64,6 +65,7 @@ minetest.register_node("dryplants:juncus_02", {
 	paramtype = "light",
 	tiles = {"dryplants_juncus_02.png"},
 	walkable = false,
+	buildable_to = true,
 	groups = {
 		snappy=3,
 		flammable=2,
