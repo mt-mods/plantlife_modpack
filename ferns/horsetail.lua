@@ -32,6 +32,7 @@ minetest.register_node("ferns:horsetail_01", {
 	tiles = {"ferns_horsetail_01.png"},
 	inventory_image = "ferns_horsetail_01.png",
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -45,6 +46,7 @@ minetest.register_node("ferns:horsetail_02", {
 	paramtype = "light",
 	tiles = {"ferns_horsetail_02.png"},
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1,not_in_creative_inventory=1},
 	drop = "ferns:horsetail_04",
 	sounds = default.node_sound_leaves_defaults(),
@@ -58,6 +60,7 @@ minetest.register_node("ferns:horsetail_03", {
 	paramtype = "light",
 	tiles = {"ferns_horsetail_03.png"},
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1,not_in_creative_inventory=1},
 	drop = "ferns:horsetail_04",
 	sounds = default.node_sound_leaves_defaults(),
@@ -73,6 +76,7 @@ minetest.register_node("ferns:horsetail_04", { -- the one in inventory
 	tiles = {"ferns_horsetail_04.png"},
 	inventory_image = "ferns_horsetail_04.png",
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
