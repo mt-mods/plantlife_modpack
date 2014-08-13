@@ -42,6 +42,7 @@ minetest.register_node("ferns:fern_03", {
 	--tiles = {"[combine:32x32:0,0=top_left.png:0,16=bottom_left.png:16,0=top_right.png:16,16=bottom_right.png"},
 	tiles = {"ferns_fern_big.png"},
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -61,6 +62,7 @@ minetest.register_node("ferns:fern_02", {
 	paramtype = "light",
 	tiles = {"ferns_fern_mid.png"},
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -82,6 +84,7 @@ minetest.register_node("ferns:fern_01", {
 	tiles = {"ferns_fern.png"},
 	inventory_image = "ferns_fern.png",
 	walkable = false,
+	buildable_to = true,
 	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
