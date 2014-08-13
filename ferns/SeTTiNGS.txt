@@ -29,7 +29,7 @@ Ferns_near_Ores = true				-- if there's a bunch of ferns there's ores nearby, th
 Ferns_in_Groups = false				-- this one is meant as a replacement of Ferns_near_Ores: ferns tend to generate in groups, less fps drop, no hint for nearby ores
 --
 --	Horsetails
-Horsetails_Spawning = true			-- horsetails will grow in already explored areas, over time, near water or gravel
+Horsetails_Spawning = false			-- horsetails will grow in already explored areas, over time, near water or gravel
 Horsetails_on_Grass = true			-- on dirt with grass and swamp (sumpf mod)
 Horsetails_on_Stony = true			-- on gravel, mossy cobble and silex (stoneage mod)
 --
