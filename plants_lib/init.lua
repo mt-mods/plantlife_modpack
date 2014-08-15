@@ -146,13 +146,14 @@ function plantslib:generate_block(minp, maxp, blockseed)
 
 		-- search the generated block for surfaces
 
-		plantslib.surface_nodes.blockhash = {}
+		local surface_nodes = {}
+		surface_nodes.blockhash = {}
 
 		for i = 1, #search_area do
 		local pos = search_area[i]
 			local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
 			if minetest.get_node(p_top).name == "air" then
-				plantslib.surface_nodes.blockhash[#plantslib.surface_nodes.blockhash + 1] = pos
+				surface_nodes.blockhash[#surface_nodes.blockhash + 1] = pos
 			end
 		end
 
@@ -167,8 +168,8 @@ function plantslib:generate_block(minp, maxp, blockseed)
 			local in_biome_nodes = {}
 			local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 
-			for i = 1, #plantslib.surface_nodes.blockhash do
-				local pos = plantslib.surface_nodes.blockhash[i]
+			for i = 1, #surface_nodes.blockhash do
+				local pos = surface_nodes.blockhash[i]
 				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 				local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
 				local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
@@ -254,7 +255,7 @@ function plantslib:generate_block(minp, maxp, blockseed)
 				end
 			end
 		end
-		plantslib.surface_nodes.blockhash = nil -- nuke the block cache after using it (prevent a mem leak).
+		surface_nodes.blockhash = nil -- nuke the block cache after using it (prevent a mem leak).
 	end
 end
 
