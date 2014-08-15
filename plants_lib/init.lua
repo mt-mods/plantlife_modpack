@@ -1,5 +1,4 @@
 -- Plantlife library mod by Vanessa Ezekowitz
--- last revision, 2014-05-15
 --
 -- License:  WTFPL
 --
