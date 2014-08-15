@@ -165,12 +165,12 @@ function plantslib:generate_block(minp, maxp, blockseed)
 			-- filter stage 1 - find nodes from the supplied surfaces that are within the current biome.
 
 			local in_biome_nodes = {}
+			local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 
 			for i = 1, #plantslib.surface_nodes.blockhash do
 				local pos = plantslib.surface_nodes.blockhash[i]
 				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-				local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-				local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
+				local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
 				local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
 				local noise3 = plantslib.perlin_humidity:get2d({x=pos.x+150, y=pos.z+50})
 				local biome_surfaces_string = dump(biome.surface)
@@ -294,8 +294,8 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }	
 			local n_top = minetest.get_node(p_top)
-			local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+			local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+			local noise1 = perlin_fertile_area:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = plantslib.perlin_temperature:get2d({x=p_top.x, y=p_top.z})
 			local noise3 = plantslib.perlin_humidity:get2d({x=p_top.x+150, y=p_top.z+50})
 			if noise1 > biome.plantlife_limit 
@@ -421,14 +421,14 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 		plantslib:grow_tree(pos, grow_function)
 		return
 	elseif growtype == "function" then
-		local perlin1 = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
-		local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
+		local perlin_fertile_area = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
+		local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
 		grow_function(pos,noise1,noise2,walldir)
 		return
 	elseif growtype == "string" then
-		local perlin1 = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
-		local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
+		local perlin_fertile_area = minetest.get_perlin(seeddiff, perlin_octaves, perlin_persistence, perlin_scale)
+		local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
 		assert(loadstring(grow_function.."(...)"))(pos,noise1,noise2,walldir)
 		return
@@ -521,11 +521,12 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 
 		local searchnodes = minetest.find_nodes_in_area(minp, maxp, biome.surface)
 		local in_biome_nodes = {}
+		local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+
 		for i = 1, #searchnodes do
 			local pos = searchnodes[i]
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-			local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
+			local noise1 = perlin_fertile_area:get2d({x=p_top.x, y=p_top.z})
 			local noise2 = plantslib.perlin_temperature:get2d({x=p_top.x, y=p_top.z})
 			local noise3 = plantslib.perlin_humidity:get2d({x=p_top.x+150, y=p_top.z+50})
 			if (not biome.depth or minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
