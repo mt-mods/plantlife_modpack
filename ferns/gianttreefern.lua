@@ -11,7 +11,7 @@
 -- lot of code, lot to load
 
 abstract_ferns.grow_giant_tree_fern = function(pos)
-	local size = math.random(12,16)
+	local size = math.random(12,16)	-- min of range must be >= 4
 	local pos_01 = {x = pos.x, y = pos.y + 1, z = pos.z}
 	
 	local leave_a_1 = {x = pos.x + 1, y = pos.y + size - 1, z = pos.z    }
@@ -38,10 +38,11 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 	or minetest.env:get_node(pos_01).name == "ferns:sapling_giant_tree_fern"
 	or minetest.env:get_node(pos_01).name == "default:junglegrass" then
 		
-		for i = 1, size-2 do
+		for i = 1, size-3 do
 			minetest.env:add_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
 		end
-		minetest.env:add_node({x = pos.x, y = pos.y + size - 1, z = pos.z}, {name="ferns:fern_trunk_big_top"})
+		minetest.env:add_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
+		minetest.env:add_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
 
 		-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
 		
@@ -96,9 +97,7 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 				end
 			end
 		end
-			
-		minetest.env:add_node({x = pos.x, y = pos.y + size - 1, z = pos.z    }, {name="ferns:tree_fern_leaves_giant"})
-		
+
 		-- bug fixes # 2 - doesn't really work, so disabled for now
 		--[[if minetest.env:get_node(leave_a_4).name == "ferns:tree_fern_leave_big_end"
 		and minetest.env:get_node(leave_a_3).name == "ferns:fern_trunk_big" then
