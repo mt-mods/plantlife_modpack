@@ -119,7 +119,7 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 	if type(node_or_function_or_model) == "string"
 	  and string.find(node_or_function_or_model, ":")
 	  and not minetest.registered_nodes[node_or_function_or_model] then
-		print("[Plants Lib] Warning: Ignored registration for undefined node: "..dump(node_or_function_or_model))
+		print("[Plants Lib] Warning: Ignored registration for undefined spawn node: "..dump(node_or_function_or_model))
 		return
 	end
 
@@ -136,14 +136,22 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
-			if not search_table(plantslib.surfaces_list, s) then
-				plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+			if s and minetest.registered_nodes[s] then
+				if not search_table(plantslib.surfaces_list, s) then
+					plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+				end
+			else
+				print("[Plants Lib] Warning: Ignored registration for undefined surface node: "..dump(s))
 			end
 		else
 			for i = 1, #biomedef.surface do
 				local s = biomedef.surface[i]
-				if not search_table(plantslib.surfaces_list, s) then
-					plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+				if s and minetest.registered_nodes[s] then
+					if not search_table(plantslib.surfaces_list, s) then
+						plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+					end
+				else
+					print("[Plants Lib] Warning: Ignored registration for undefined surface node: "..dump(s))
 				end
 			end
 		end
@@ -627,6 +635,7 @@ end
 print("[Plants Lib] Loaded")
 
 minetest.after(0, function()
-	print("[Plants Lib] Registered a total of "..#plantslib.actions_list.." actions and "..plantslib.total_legacy_calls.." legacy mapgen hooks.")
+	print("[Plants Lib] Registered a total of "..#plantslib.surfaces_list.." surface types to be evaluated,")
+	print("[Plants Lib] a total of "..#plantslib.actions_list.." actions, and "..plantslib.total_legacy_calls.." legacy mapgen hooks.")
 end)
 
