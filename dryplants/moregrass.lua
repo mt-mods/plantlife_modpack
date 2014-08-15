@@ -20,7 +20,6 @@ end
 plantslib:register_generate_plant({
     surface = {
 		"default:dirt_with_grass",
-		"dryplants:grass_short",
 		"stoneage:grass_with_silex",
 		"sumpf:peat",
 		"sumpf:sumpf"
