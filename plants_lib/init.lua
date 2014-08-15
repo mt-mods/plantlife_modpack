@@ -13,6 +13,8 @@ plantslib = {}
 plantslib.modpath = minetest.get_modpath("plants_lib")
 plantslib.intllib_modpath = minetest.get_modpath("intllib")
 
+plantslib.total_legacy_calls = 0
+
 local S
 if plantslib.intllib_modpath then
     dofile(plantslib.intllib_modpath.."/intllib.lua")
@@ -129,6 +131,7 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 	if biomedef.check_air == false then 
 		print("[Plants Lib] Warning: Registered legacy mapgen hook: "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
+		plantslib.total_legacy_calls = plantslib.total_legacy_calls + 1
 	else
 		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
 		local s = biomedef.surface
@@ -621,4 +624,9 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 	end
 end
 
-print(S("[Plantlife Library] Loaded"))
+print("[Plants Lib] Loaded")
+
+minetest.after(0, function()
+	print("[Plants Lib] Registered a total of "..#plantslib.actions_list.." actions and "..plantslib.total_legacy_calls.." legacy mapgen hooks.")
+end)
+
