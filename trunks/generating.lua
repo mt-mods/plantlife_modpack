@@ -174,7 +174,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_trunks.place_twig"
+  abstract_trunks.place_twig
 )
 end
 
@@ -191,7 +191,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_trunks.place_twig"
+  abstract_trunks.place_twig
 )
 end
 
@@ -355,7 +355,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_trunks.place_trunk"
+  abstract_trunks.place_trunk
 )
 
 -----------------------------------------------------------------------------------------------
@@ -391,7 +391,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_trunks.grow_moss_on_ground"
+  abstract_trunks.grow_moss_on_ground
 )
 end
 

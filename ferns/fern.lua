@@ -151,7 +151,7 @@ plantslib:register_generate_plant({ -- near trees (woodlands)
     temp_max = -0.5, -- 55 °C (too hot?)
     temp_min = 0.75, -- -12 °C
   },
-  "abstract_ferns.grow_fern"
+  abstract_ferns.grow_fern
 )
 end
 
@@ -177,7 +177,7 @@ plantslib:register_generate_plant({ -- near stone (mountains)
     temp_max = -0.5, -- 55 °C (too hot?)
     temp_min = 0.75, -- -12 °C
   },
-  "abstract_ferns.grow_fern"
+  abstract_ferns.grow_fern
 )
 end
 
@@ -214,7 +214,7 @@ plantslib:register_generate_plant({ -- near ores (potential mining sites)
     temp_max = -0.5, -- 55 °C (too hot?)
     temp_min = 0.75, -- -12 °C
   },
-  "abstract_ferns.grow_fern"
+  abstract_ferns.grow_fern
 )
 end
 
@@ -244,6 +244,6 @@ plantslib:register_generate_plant({
     temp_max = -0.5, -- 55 °C (too hot?)
     temp_min = 0.75, -- -12 °C
   },
-  "abstract_ferns.grow_fern"
+  abstract_ferns.grow_fern
 )
 end

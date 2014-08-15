@@ -122,6 +122,11 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 		return
 	end
 
+	if type(node_or_function_or_model) == "string"
+	  and not string.find(node_or_function_or_model, ":") then
+		print("[Plants Lib] Warning: registered function call using deprecated string method: "..dump(node_or_function_or_model))
+	end
+
 	if biomedef.check_air == false then 
 		print("[Plants Lib] Called legacy mapgen code for "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
@@ -249,7 +254,7 @@ function plantslib:generate_block(minp, maxp, blockseed)
 								spawned = true
 							elseif objtype == "function" then
 								node_or_function_or_model(pos)
-								spawned = trueload
+								spawned = true
 							elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
 								format(node_or_function_or_model)),pos) then
 								spawned = true

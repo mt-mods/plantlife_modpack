@@ -326,7 +326,7 @@ plantslib:register_generate_plant({
 	temp_max = -0.22,
     temp_min = 0.22,
   },
-  "flowers_plus.grow_waterlily"
+  flowers_plus.grow_waterlily
 )
 
 flowers_plus.grow_seaweed = function(pos)
@@ -346,7 +346,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "flowers_plus.grow_seaweed"
+  flowers_plus.grow_seaweed
 )
 
 -- seaweed at beaches
@@ -365,7 +365,7 @@ plantslib:register_generate_plant({
 	temp_max = -0.64, -- MM: more or less random values, just to make sure it's not everywhere
     temp_min = -0.22, -- MM: more or less random values, just to make sure it's not everywhere
   },
-  "flowers_plus.grow_seaweed"
+  flowers_plus.grow_seaweed
 )
 plantslib:register_generate_plant({
     surface = {"default:sand"},
@@ -381,7 +381,7 @@ plantslib:register_generate_plant({
 	temp_max = -0.64, -- MM: more or less random values, just to make sure it's not everywhere
     temp_min = -0.22, -- MM: more or less random values, just to make sure it's not everywhere
   },
-  "flowers_plus.grow_seaweed"
+  flowers_plus.grow_seaweed
 )
 -- spawn ABM registrations
 

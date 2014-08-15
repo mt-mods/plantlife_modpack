@@ -363,7 +363,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_reedmace"
+  abstract_dryplants.grow_reedmace
 )
 -- in water
 plantslib:register_generate_plant({
@@ -386,7 +386,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_reedmace_water"
+  abstract_dryplants.grow_reedmace_water
 )
 -- for oases & tropical beaches & tropical swamps
 plantslib:register_generate_plant({
@@ -406,5 +406,5 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_reedmace"
+  abstract_dryplants.grow_reedmace
 )

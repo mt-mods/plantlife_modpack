@@ -213,7 +213,7 @@ plantslib:register_generate_plant({
     temp_max = -0.5,
     temp_min = 0.13,
   },
-  "abstract_ferns.grow_tree_fern"
+  abstract_ferns.grow_tree_fern
 )
 end
 
@@ -240,6 +240,6 @@ plantslib:register_generate_plant({
     temp_max = -1.0,
     temp_min = 1.0,
   },
-  "abstract_ferns.grow_tree_fern"
+  abstract_ferns.grow_tree_fern
 )
 end

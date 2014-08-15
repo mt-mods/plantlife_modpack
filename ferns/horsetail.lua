@@ -151,7 +151,7 @@ plantslib:register_generate_plant({
     temp_max = -0.5, -- 55 °C
     temp_min = 0.53, -- 0 °C, dies back in winter
   },
-  "abstract_ferns.grow_horsetail"
+  abstract_ferns.grow_horsetail
 )
 end
 
@@ -173,6 +173,6 @@ plantslib:register_generate_plant({
     temp_max = -0.5, -- 55 °C
     temp_min = 0.53, -- 0 °C, dies back in winter
   },
-  "abstract_ferns.grow_horsetail"
+  abstract_ferns.grow_horsetail
 )
 end

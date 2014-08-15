@@ -334,7 +334,7 @@ plantslib:register_generate_plant({
     --temp_max = -1,-- -1.2,-- -0.5, -- ~ 55C
     --temp_min = -0.35,-- -0.07, -- ~ 25C
   },
-  "abstract_ferns.grow_giant_tree_fern"
+  abstract_ferns.grow_giant_tree_fern
 )
 end
 
@@ -361,6 +361,6 @@ plantslib:register_generate_plant({
     temp_max = -1.0,
     temp_min = 1.0,
   },
-  "abstract_ferns.grow_giant_tree_fern"
+  abstract_ferns.grow_giant_tree_fern
 )
 end

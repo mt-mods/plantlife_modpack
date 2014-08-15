@@ -22,5 +22,5 @@ plantslib:register_generate_plant({
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_grass_variation"
+  abstract_dryplants.grow_grass_variation
 )

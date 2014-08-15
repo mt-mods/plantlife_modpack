@@ -102,7 +102,7 @@ plantslib:register_generate_plant({
 	avoid_radius = 4,
     plantlife_limit = -0.3,
   },
-  "abstract_molehills.place_molehill"
+  abstract_molehills.place_molehill
 )
 
 -----------------------------------------------------------------------------------------------

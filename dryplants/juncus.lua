@@ -102,7 +102,7 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_juncus"
+  abstract_dryplants.grow_juncus
 )
 -- at dunes/beach
 plantslib:register_generate_plant({
@@ -123,5 +123,5 @@ plantslib:register_generate_plant({
 	near_nodes_count = 1,
     plantlife_limit = -0.9,
   },
-  "abstract_dryplants.grow_juncus"
+  abstract_dryplants.grow_juncus
 )

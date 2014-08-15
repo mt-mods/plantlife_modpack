@@ -207,7 +207,7 @@ plantslib:register_generate_plant({
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
   },
-  "abstract_bushes.grow_bush"
+  abstract_bushes.grow_bush
 )		
 
  abstract_bushes.grow_youngtree2 = function(pos)
@@ -252,7 +252,7 @@ plantslib:register_generate_plant({
     min_elevation = 1, -- above sea level
 	plantlife_limit = -0.9,
   },
-  "abstract_bushes.grow_youngtree2"
+  abstract_bushes.grow_youngtree2
 )	
 	 
 		--http://dev.minetest.net/Node_Drawtypes
