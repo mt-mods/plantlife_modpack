@@ -34,89 +34,89 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 	local leave_d_3 = {x = pos.x    , y = pos.y + size - 1, z = pos.z - 3}
 	local leave_d_4 = {x = pos.x    , y = pos.y + size - 2, z = pos.z - 4}
 	
-	if minetest.env:get_node(pos_01).name == "air"  -- instead of check_air = true,
-	or minetest.env:get_node(pos_01).name == "ferns:sapling_giant_tree_fern"
-	or minetest.env:get_node(pos_01).name == "default:junglegrass" then
+	if minetest.get_node(pos_01).name == "air"  -- instead of check_air = true,
+	or minetest.get_node(pos_01).name == "ferns:sapling_giant_tree_fern"
+	or minetest.get_node(pos_01).name == "default:junglegrass" then
 		
 		for i = 1, size-3 do
-			minetest.env:add_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
+			minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
 		end
-		minetest.env:add_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
-		minetest.env:add_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
+		minetest.set_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
+		minetest.set_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
 
 		-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
 		
-		if minetest.env:get_node(leave_a_1).name == "air" then	
-			minetest.env:add_node(leave_a_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.env:get_node(leave_a_2).name == "air" then
-				minetest.env:add_node(leave_a_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.env:get_node(leave_a_3).name == "air" then
-					minetest.env:add_node(leave_a_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.env:get_node(leave_a_4).name == "air" then
-						minetest.env:add_node(leave_a_4, {name="ferns:tree_fern_leave_big_end", param2=3})
+		if minetest.get_node(leave_a_1).name == "air" then	
+			minetest.set_node(leave_a_1, {name="ferns:tree_fern_leave_big"})
+			if minetest.get_node(leave_a_2).name == "air" then
+				minetest.set_node(leave_a_2, {name="ferns:tree_fern_leave_big"})
+				if minetest.get_node(leave_a_3).name == "air" then
+					minetest.set_node(leave_a_3, {name="ferns:tree_fern_leave_big"})
+					if minetest.get_node(leave_a_4).name == "air" then
+						minetest.set_node(leave_a_4, {name="ferns:tree_fern_leave_big_end", param2=3})
 					end
 				end
 			end
 		end
 		
-		if minetest.env:get_node(leave_b_1).name == "air" then
-			minetest.env:add_node(leave_b_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.env:get_node(leave_b_2).name == "air" then
-				minetest.env:add_node(leave_b_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.env:get_node(leave_b_3).name == "air" then
-					minetest.env:add_node(leave_b_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.env:get_node(leave_b_4).name == "air" then
-						minetest.env:add_node(leave_b_4, {name="ferns:tree_fern_leave_big_end", param2=1})
+		if minetest.get_node(leave_b_1).name == "air" then
+			minetest.set_node(leave_b_1, {name="ferns:tree_fern_leave_big"})
+			if minetest.get_node(leave_b_2).name == "air" then
+				minetest.set_node(leave_b_2, {name="ferns:tree_fern_leave_big"})
+				if minetest.get_node(leave_b_3).name == "air" then
+					minetest.set_node(leave_b_3, {name="ferns:tree_fern_leave_big"})
+					if minetest.get_node(leave_b_4).name == "air" then
+						minetest.set_node(leave_b_4, {name="ferns:tree_fern_leave_big_end", param2=1})
 					end
 				end
 			end
 		end
 		
-		if minetest.env:get_node(leave_c_1).name == "air" then
-			minetest.env:add_node(leave_c_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.env:get_node(leave_c_2).name == "air" then
-				minetest.env:add_node(leave_c_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.env:get_node(leave_c_3).name == "air" then
-					minetest.env:add_node(leave_c_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.env:get_node(leave_c_4).name == "air" then
-						minetest.env:add_node(leave_c_4, {name="ferns:tree_fern_leave_big_end", param2=2})
+		if minetest.get_node(leave_c_1).name == "air" then
+			minetest.set_node(leave_c_1, {name="ferns:tree_fern_leave_big"})
+			if minetest.get_node(leave_c_2).name == "air" then
+				minetest.set_node(leave_c_2, {name="ferns:tree_fern_leave_big"})
+				if minetest.get_node(leave_c_3).name == "air" then
+					minetest.set_node(leave_c_3, {name="ferns:tree_fern_leave_big"})
+					if minetest.get_node(leave_c_4).name == "air" then
+						minetest.set_node(leave_c_4, {name="ferns:tree_fern_leave_big_end", param2=2})
 					end
 				end
 			end
 		end
 			
-		if minetest.env:get_node(leave_d_1).name == "air" then
-			minetest.env:add_node(leave_d_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.env:get_node(leave_d_2).name == "air" then
-				minetest.env:add_node(leave_d_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.env:get_node(leave_d_3).name == "air" then
-					minetest.env:add_node(leave_d_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.env:get_node(leave_d_4).name == "air" then
-						minetest.env:add_node(leave_d_4, {name="ferns:tree_fern_leave_big_end", param2=0})
+		if minetest.get_node(leave_d_1).name == "air" then
+			minetest.set_node(leave_d_1, {name="ferns:tree_fern_leave_big"})
+			if minetest.get_node(leave_d_2).name == "air" then
+				minetest.set_node(leave_d_2, {name="ferns:tree_fern_leave_big"})
+				if minetest.get_node(leave_d_3).name == "air" then
+					minetest.set_node(leave_d_3, {name="ferns:tree_fern_leave_big"})
+					if minetest.get_node(leave_d_4).name == "air" then
+						minetest.set_node(leave_d_4, {name="ferns:tree_fern_leave_big_end", param2=0})
 					end
 				end
 			end
 		end
 
 		-- bug fixes # 2 - doesn't really work, so disabled for now
-		--[[if minetest.env:get_node(leave_a_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.env:get_node(leave_a_3).name == "ferns:fern_trunk_big" then
-			minetest.env:add_node(leave_a_4, {name="air"})
+		--[[if minetest.get_node(leave_a_4).name == "ferns:tree_fern_leave_big_end"
+		and minetest.get_node(leave_a_3).name == "ferns:fern_trunk_big" then
+			minetest.set_node(leave_a_4, {name="air"})
 		end
 		
-		if minetest.env:get_node(leave_b_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.env:get_node(leave_b_3).name == "ferns:fern_trunk_big" then
-			minetest.env:add_node(leave_b_4, {name="air"})
+		if minetest.get_node(leave_b_4).name == "ferns:tree_fern_leave_big_end"
+		and minetest.get_node(leave_b_3).name == "ferns:fern_trunk_big" then
+			minetest.set_node(leave_b_4, {name="air"})
 		end
 		
-		if minetest.env:get_node(leave_c_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.env:get_node(leave_c_3).name == "ferns:fern_trunk_big" then
-			minetest.env:add_node(leave_c_4, {name="air"})
+		if minetest.get_node(leave_c_4).name == "ferns:tree_fern_leave_big_end"
+		and minetest.get_node(leave_c_3).name == "ferns:fern_trunk_big" then
+			minetest.set_node(leave_c_4, {name="air"})
 		end
 		
-		if minetest.env:get_node(leave_d_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.env:get_node(leave_d_3).name == "ferns:fern_trunk_big" then
-			minetest.env:add_node(leave_d_4, {name="air"})
+		if minetest.get_node(leave_d_4).name == "ferns:tree_fern_leave_big_end"
+		and minetest.get_node(leave_d_3).name == "ferns:fern_trunk_big" then
+			minetest.set_node(leave_d_4, {name="air"})
 		end]]
 		
 	end

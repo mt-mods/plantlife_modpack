@@ -88,7 +88,7 @@ abstract_molehills.place_molehill = function(pos)
 	and minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z-1}).name ~= "air"
 	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z+1}).name ~= "air"
 	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z-1}).name ~= "air" then
-		minetest.add_node(right_here, {name="molehills:molehill"})
+		minetest.set_node(right_here, {name="molehills:molehill"})
 	end
 end
 

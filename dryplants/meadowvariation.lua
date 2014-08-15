@@ -10,7 +10,7 @@
 
 abstract_dryplants.grow_grass_variation = function(pos)
 	local right_here = {x=pos.x, y=pos.y, z=pos.z}
-	minetest.add_node(right_here, {name="dryplants:grass_short"})
+	minetest.set_node(right_here, {name="dryplants:grass_short"})
 end
 
 plantslib:register_generate_plant({

@@ -17,15 +17,15 @@ abstract_ferns.grow_fern = function(pos)
 	local fern_size = math.random(1,4)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	
-	if minetest.env:get_node(right_here).name == "air"  -- instead of check_air = true,
-	or minetest.env:get_node(right_here).name == "default:junglegrass" then
+	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
+	or minetest.get_node(right_here).name == "default:junglegrass" then
 	
 		if fern_size == 1 then
-			minetest.env:add_node(right_here, {name="ferns:fern_01"})
+			minetest.set_node(right_here, {name="ferns:fern_01"})
 		elseif fern_size <= 3 then
-			minetest.env:add_node(right_here, {name="ferns:fern_02"})
+			minetest.set_node(right_here, {name="ferns:fern_02"})
 		else -- fern_size == 4 then
-			minetest.env:add_node(right_here, {name="ferns:fern_03"})
+			minetest.set_node(right_here, {name="ferns:fern_03"})
 		end
 	end
 end

@@ -75,7 +75,7 @@ biome = {
 	avoid_nodes = {table},	-- same meaning as savoid, above
 	avoid_radius = num,	-- same as sradius
 	seed_diff = num,	-- The Perlin seed difference value passed to
-				-- the minetest.env:get_perlin() function.
+				-- the minetest.get_perlin() function.
 				-- Used along with the global Perlin controls
 				-- below to create the "biome" in which the
 				-- plants will spawn.  Defaults to 0 if not
@@ -459,7 +459,7 @@ one it finds as a facedir value, or nil if there are no adjacent walls.
 =====
 is_node_loaded(pos)
 
-This acts as a wrapper for the minetest.env:get_node_or_nil(node_pos)
+This acts as a wrapper for the minetest.get_node_or_nil(node_pos)
 function and accepts a single position parameter.  Returns true if the node in
 question is already loaded, or false if not.
 
@@ -511,7 +511,7 @@ Fertile Ground Mapping
 ======================
 
 The mod uses Perlin noise to create "biomes" of the various plants, via the
-minetest.env:get_perlin() function.  At present, there are three layers of
+minetest.get_perlin() function.  At present, there are three layers of
 Perlin noise used.
 
 The first one is for a "fertile ground" layer, which I tend to refer to as the

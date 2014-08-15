@@ -28,21 +28,21 @@ abstract_dryplants.grow_reedmace = function(pos)
 	local pos_01 = {x = pos.x, y = pos.y + 1, z = pos.z}
 	local pos_02 = {x = pos.x, y = pos.y + 2, z = pos.z}
 	local pos_03 = {x = pos.x, y = pos.y + 3, z = pos.z}
-	if minetest.env:get_node(pos_01).name == "air"  -- bug fix
-	or minetest.env:get_node(pos_01).name == "dryplants:reedmace_sapling" then
-		if minetest.env:get_node(pos_02).name ~= "air" then
-			minetest.env:add_node(pos_01, {name="dryplants:reedmace_top"})
-		elseif minetest.env:get_node(pos_03).name ~= "air" then
-			minetest.env:add_node(pos_01, {name="dryplants:reedmace_height_2"})
+	if minetest.get_node(pos_01).name == "air"  -- bug fix
+	or minetest.get_node(pos_01).name == "dryplants:reedmace_sapling" then
+		if minetest.get_node(pos_02).name ~= "air" then
+			minetest.set_node(pos_01, {name="dryplants:reedmace_top"})
+		elseif minetest.get_node(pos_03).name ~= "air" then
+			minetest.set_node(pos_01, {name="dryplants:reedmace_height_2"})
 		elseif size == 1 then
-			minetest.env:add_node(pos_01, {name="dryplants:reedmace_top"})
+			minetest.set_node(pos_01, {name="dryplants:reedmace_top"})
 		elseif size == 2 then
-			minetest.env:add_node(pos_01, {name="dryplants:reedmace_height_2"})
+			minetest.set_node(pos_01, {name="dryplants:reedmace_height_2"})
 		elseif size == 3 then
 			if spikes == 1 then
-				minetest.env:add_node(pos_01, {name="dryplants:reedmace_height_3_spikes"})
+				minetest.set_node(pos_01, {name="dryplants:reedmace_height_3_spikes"})
 			else
-				minetest.env:add_node(pos_01, {name="dryplants:reedmace_height_3"})
+				minetest.set_node(pos_01, {name="dryplants:reedmace_height_3"})
 			end
 		end
 	end
@@ -56,20 +56,20 @@ abstract_dryplants.grow_reedmace_water = function(pos)
 	local pos_03 = {x = pos.x, y = pos.y + 3, z = pos.z}
 	local pos_04 = {x = pos.x, y = pos.y + 4, z = pos.z}
 	minetest.add_entity(pos_01, "dryplants:reedmace_water_entity")
-	if minetest.env:get_node(pos_02).name == "air" then -- bug fix
-	if minetest.env:get_node(pos_03).name ~= "air" then
-		minetest.env:add_node(pos_02, {name="dryplants:reedmace_top"})
-	elseif minetest.env:get_node(pos_04).name ~= "air" then
-		minetest.env:add_node(pos_02, {name="dryplants:reedmace_height_2"})
+	if minetest.get_node(pos_02).name == "air" then -- bug fix
+	if minetest.get_node(pos_03).name ~= "air" then
+		minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
+	elseif minetest.get_node(pos_04).name ~= "air" then
+		minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
 	elseif size == 1 then
-		minetest.env:add_node(pos_02, {name="dryplants:reedmace_top"})
+		minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
 	elseif size == 2 then
-		minetest.env:add_node(pos_02, {name="dryplants:reedmace_height_2"})
+		minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
 	elseif size == 3 then
 		if spikes == 1 then
-			minetest.env:add_node(pos_02, {name="dryplants:reedmace_height_3_spikes"})
+			minetest.set_node(pos_02, {name="dryplants:reedmace_height_3_spikes"})
 		else
-			minetest.env:add_node(pos_02, {name="dryplants:reedmace_height_3"})
+			minetest.set_node(pos_02, {name="dryplants:reedmace_height_3"})
 		end	
 	end
 	end
@@ -276,14 +276,14 @@ minetest.register_abm({
 	interval = REEDMACE_GROWING_TIME,
 	chance = 100/REEDMACE_GROWING_CHANCE,
 	action = function(pos, node, _, _)
-		if string.find(minetest.env:get_node({x = pos.x + 1, y = pos.y, z = pos.z	 }).name, "default:water")
-		or string.find(minetest.env:get_node({x = pos.x, 	 y = pos.y, z = pos.z + 1}).name, "default:water")
-		or string.find(minetest.env:get_node({x = pos.x - 1, y = pos.y, z = pos.z	 }).name, "default:water")
-		or string.find(minetest.env:get_node({x = pos.x, 	 y = pos.y, z = pos.z - 1}).name, "default:water") then
-			if minetest.env:get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name == "air" then
+		if string.find(minetest.get_node({x = pos.x + 1, y = pos.y, z = pos.z	 }).name, "default:water")
+		or string.find(minetest.get_node({x = pos.x, 	 y = pos.y, z = pos.z + 1}).name, "default:water")
+		or string.find(minetest.get_node({x = pos.x - 1, y = pos.y, z = pos.z	 }).name, "default:water")
+		or string.find(minetest.get_node({x = pos.x, 	 y = pos.y, z = pos.z - 1}).name, "default:water") then
+			if minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name == "air" then
 				abstract_dryplants.grow_reedmace_water({x = pos.x, y = pos.y - 1, z = pos.z})
 			end
-			minetest.env:add_node({x=pos.x, y=pos.y, z=pos.z}, {name="default:water_source"})
+			minetest.set_node({x=pos.x, y=pos.y, z=pos.z}, {name="default:water_source"})
 		else
 			abstract_dryplants.grow_reedmace({x = pos.x, y = pos.y - 1, z = pos.z})
 		end

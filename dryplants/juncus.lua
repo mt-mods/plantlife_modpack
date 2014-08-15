@@ -12,12 +12,12 @@
 abstract_dryplants.grow_juncus = function(pos)
 	local juncus_type = math.random(2,3)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	if minetest.env:get_node(right_here).name == "air"  -- instead of check_air = true,
-	or minetest.env:get_node(right_here).name == "default:junglegrass" then
+	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
+	or minetest.get_node(right_here).name == "default:junglegrass" then
 		if juncus_type == 2 then
-			minetest.env:add_node(right_here, {name="dryplants:juncus_02"})
+			minetest.set_node(right_here, {name="dryplants:juncus_02"})
 		else
-			minetest.env:add_node(right_here, {name="dryplants:juncus"})
+			minetest.set_node(right_here, {name="dryplants:juncus"})
 		end
 	end
 end
@@ -48,9 +48,9 @@ minetest.register_node("dryplants:juncus", {
 		local juncus_type = math.random(2,3)
 		local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 		if juncus_type == 2 then
-			minetest.env:add_node(right_here, {name="dryplants:juncus_02"})
+			minetest.set_node(right_here, {name="dryplants:juncus_02"})
 		else
-			minetest.env:add_node(right_here, {name="dryplants:juncus"})
+			minetest.set_node(right_here, {name="dryplants:juncus"})
 		end
 		if not minetest.setting_getbool("creative_mode") then
 			itemstack:take_item()

@@ -54,8 +54,8 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 	elseif(	capabilities["groupcaps"]["snappy"] ) then
 
 		-- plant a new bush without fruits
-		minetest.env:add_node(pos,{type='node',name='bushes:fruitless_bush'})
-		local meta = minetest.env:get_meta( pos );
+		minetest.set_node(pos,{type='node',name='bushes:fruitless_bush'})
+		local meta = minetest.get_meta( pos );
 		meta:set_string( 'bush_type', bush_name ); 
 
 		-- construct the stack of fruits the player will get
@@ -116,8 +116,8 @@ plantlife_bushes.after_place_node = function(pos, placer, itemstack)
 		return nil;
 	end
 
-	minetest.env:set_node( pos, {type='node',name='bushes:fruitless_bush'});
-	local meta = minetest.env:get_meta( pos );
+	minetest.set_node( pos, {type='node',name='bushes:fruitless_bush'});
+	local meta = minetest.get_meta( pos );
 	meta:set_string( 'bush_type', name_parts[1] ); 
 
 	return nil;
@@ -133,13 +133,13 @@ minetest.register_abm({
 	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 
-		local meta = minetest.env:get_meta( pos );
+		local meta = minetest.get_meta( pos );
 		local bush_name = meta:get_string( 'bush_type' ); 
 		if( bush_name ~= nil and bush_name ~= '' ) then
 			local dirtpos = { x = pos.x, y = pos.y-1, z = pos.z }
 			local dirt = minetest.get_node(dirtpos)
 			if dirt.name == "farming:soil_wet" or math.random(1,3) == 1 then
-				minetest.env:set_node( pos, {type='node',name='bushes:'..bush_name..'_bush'})
+				minetest.set_node( pos, {type='node',name='bushes:'..bush_name..'_bush'})
 			end
 		end
 	end

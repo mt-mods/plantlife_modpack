@@ -54,7 +54,7 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 		return
 	end
 	
-	local node = minetest.env:get_node(pt.under)
+	local node = minetest.get_node(pt.under)
 	-- check if something that can be cut using fine tools
 	if minetest.get_item_group(under.name, "snappy") > 0 then
 		-- check if flora but no flower
@@ -63,7 +63,7 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 			minetest.set_node(pt.under, {name="dryplants:grass"})
 		else -- otherwise get the drop
 			local inv = user:get_inventory()
-			local name = minetest.env: get_node(pt.under).name
+			local name = minetest. get_node(pt.under).name
 			
 			local the_drop = minetest.registered_nodes[name].drop
 			
@@ -76,7 +76,7 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 					inv:add_item("main", name)
 				end
 			end
-			minetest.env:remove_node(pt.under)
+			minetest.remove_node(pt.under)
 		end
 		minetest.sound_play("default_dig_crumbly", {
 			pos = pt.under,
@@ -131,7 +131,7 @@ minetest.register_abm({
 	interval = HAY_DRYING_TIME, --1200, -- 20 minutes: a minetest-day/night-cycle
 	chance = 1,
 	action = function(pos)
-		minetest.env:add_node(pos, {name="dryplants:hay"})
+		minetest.set_node(pos, {name="dryplants:hay"})
 	end,
 })
 
@@ -176,7 +176,7 @@ minetest.register_abm({
 	interval = GRASS_REGROWING_TIME, --1200, -- 20 minutes: a minetest-day/night-cycle
 	chance = 100/GRASS_REGROWING_CHANCE,
 	action = function(pos)
-		minetest.env:add_node(pos, {name="default:dirt_with_grass"})
+		minetest.set_node(pos, {name="default:dirt_with_grass"})
 	end,
 })
 

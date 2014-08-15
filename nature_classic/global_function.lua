@@ -28,7 +28,7 @@ function nature:grow_node(pos, nodename)
 
 	if is_not_young(pos) and light_enough then
 	    minetest.remove_node(pos)
-	    minetest.add_node(pos, { name = nodename })
+	    minetest.set_node(pos, { name = nodename })
 	    set_young_node(pos)
 
 	    minetest.log("info", nodename .. " has grown at " .. pos.x .. ","

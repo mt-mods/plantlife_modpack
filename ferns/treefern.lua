@@ -16,53 +16,53 @@ abstract_ferns.grow_tree_fern = function(pos)
 	local pos_04 = {x = pos.x, y = pos.y + 4, z = pos.z}
 	local pos_05 = {x = pos.x, y = pos.y + 5, z = pos.z}
 	
-	if minetest.env:get_node(pos_01).name == "air"  -- instead of check_air = true,
-	or minetest.env:get_node(pos_01).name == "ferns:sapling_tree_fern"
-	or minetest.env:get_node(pos_01).name == "default:junglegrass" then
+	if minetest.get_node(pos_01).name == "air"  -- instead of check_air = true,
+	or minetest.get_node(pos_01).name == "ferns:sapling_tree_fern"
+	or minetest.get_node(pos_01).name == "default:junglegrass" then
 	
-		if minetest.env:get_node(pos_02).name ~= "air"
+		if minetest.get_node(pos_02).name ~= "air"
 		or size == 1 then
-			minetest.env:add_node(pos_01, {name="ferns:tree_fern_leaves"})
+			minetest.set_node(pos_01, {name="ferns:tree_fern_leaves"})
 			
-		elseif minetest.env:get_node(pos_03).name ~= "air" 
+		elseif minetest.get_node(pos_03).name ~= "air" 
 		or size == 2 then
-			minetest.env:add_node(pos_01, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_01, {name="ferns:fern_trunk"})
 			if crown == 1 then
-				minetest.env:add_node(pos_02, {name="ferns:tree_fern_leaves"})
+				minetest.set_node(pos_02, {name="ferns:tree_fern_leaves"})
 			else
-				minetest.env:add_node(pos_02, {name="ferns:tree_fern_leaves_02"})
+				minetest.set_node(pos_02, {name="ferns:tree_fern_leaves_02"})
 			end
 			
-		elseif minetest.env:get_node(pos_04).name ~= "air"
+		elseif minetest.get_node(pos_04).name ~= "air"
 		or size == 3 then
-			minetest.env:add_node(pos_01, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_02, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_01, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_02, {name="ferns:fern_trunk"})
 			if crown == 1 then
-				minetest.env:add_node(pos_03, {name="ferns:tree_fern_leaves"})
+				minetest.set_node(pos_03, {name="ferns:tree_fern_leaves"})
 			else
-				minetest.env:add_node(pos_03, {name="ferns:tree_fern_leaves_02"})
+				minetest.set_node(pos_03, {name="ferns:tree_fern_leaves_02"})
 			end
 			
-		elseif minetest.env:get_node(pos_05).name ~= "air"
+		elseif minetest.get_node(pos_05).name ~= "air"
 		or size == 4 then
-			minetest.env:add_node(pos_01, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_02, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_03, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_01, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_02, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_03, {name="ferns:fern_trunk"})
 			if crown == 1 then
-				minetest.env:add_node(pos_04, {name="ferns:tree_fern_leaves"})
+				minetest.set_node(pos_04, {name="ferns:tree_fern_leaves"})
 			else
-				minetest.env:add_node(pos_04, {name="ferns:tree_fern_leaves_02"})
+				minetest.set_node(pos_04, {name="ferns:tree_fern_leaves_02"})
 			end
 		
 		elseif size == 5 then
-			minetest.env:add_node(pos_01, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_02, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_03, {name="ferns:fern_trunk"})
-			minetest.env:add_node(pos_04, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_01, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_02, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_03, {name="ferns:fern_trunk"})
+			minetest.set_node(pos_04, {name="ferns:fern_trunk"})
 			if crown == 1 then
-				minetest.env:add_node(pos_05, {name="ferns:tree_fern_leaves"})
+				minetest.set_node(pos_05, {name="ferns:tree_fern_leaves"})
 			else
-				minetest.env:add_node(pos_05, {name="ferns:tree_fern_leaves_02"})
+				minetest.set_node(pos_05, {name="ferns:tree_fern_leaves_02"})
 			end
 			
 		end

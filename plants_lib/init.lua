@@ -260,7 +260,7 @@ function plantslib:generate_block(minp, maxp, blockseed)
 								spawned = true
 							elseif objtype == "string" and
 								minetest.registered_nodes[node_or_function_or_model] then
-								minetest.add_node(p_top, { name = node_or_function_or_model })
+								minetest.set_node(p_top, { name = node_or_function_or_model })
 								spawned = true
 							elseif objtype == "function" then
 								node_or_function_or_model(pos)
@@ -340,7 +340,7 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 					local walldir = plantslib:find_adjacent_wall(p_top, biome.verticals_list)
 					if biome.alt_wallnode and walldir then
 						if n_top.name == "air" then
-							minetest.add_node(p_top, { name = biome.alt_wallnode, param2 = walldir })
+							minetest.set_node(p_top, { name = biome.alt_wallnode, param2 = walldir })
 						end
 					else
 						local currentsurface = minetest.get_node(pos).name
@@ -357,19 +357,19 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 								assert(loadstring(spawn_plants.."(...)"))(pos)
 							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								if n_top.name == "air" then
-									minetest.add_node(p_top, { name = plant_to_spawn, param2 = fdir })
+									minetest.set_node(p_top, { name = plant_to_spawn, param2 = fdir })
 								end
 							elseif biome.spawn_replace_node then
-								minetest.add_node(pos, { name = plant_to_spawn, param2 = fdir })
+								minetest.set_node(pos, { name = plant_to_spawn, param2 = fdir })
 
 							elseif biome.spawn_on_side then
 								local onside = plantslib:find_open_side(pos)
 								if onside then 
-									minetest.add_node(onside.newpos, { name = plant_to_spawn, param2 = onside.facedir })
+									minetest.set_node(onside.newpos, { name = plant_to_spawn, param2 = onside.facedir })
 								end
 							elseif biome.spawn_on_bottom then
 								if minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
-									minetest.add_node({x=pos.x, y=pos.y-1, z=pos.z}, { name = plant_to_spawn, param2 = fdir} )
+									minetest.set_node({x=pos.x, y=pos.y-1, z=pos.z}, { name = plant_to_spawn, param2 = fdir} )
 								end
 							end
 						end
@@ -416,11 +416,11 @@ function plantslib:grow_plants(opts)
 				-- corner case for changing short junglegrass
 				-- to dry shrub in desert
 				if n_bot.name == options.dry_early_node and options.grow_plant == "junglegrass:short" then
-					minetest.add_node(pos, { name = "default:dry_shrub" })
+					minetest.set_node(pos, { name = "default:dry_shrub" })
 
 				elseif options.grow_vertically and walldir then
 					if plantslib:search_downward(pos, options.height_limit, options.ground_nodes) then
-						minetest.add_node(p_top, { name = options.grow_plant, param2 = walldir})
+						minetest.set_node(p_top, { name = options.grow_plant, param2 = walldir})
 					end
 
 				elseif not options.grow_result and not options.grow_function then
@@ -456,7 +456,7 @@ function plantslib:replace_object(pos, replacement, grow_function, walldir, seed
 		assert(loadstring(grow_function.."(...)"))(pos,noise1,noise2,walldir)
 		return
 	elseif growtype == "nil" then
-		minetest.add_node(pos, { name = replacement, param2 = walldir})
+		minetest.set_node(pos, { name = replacement, param2 = walldir})
 		return
 	elseif growtype ~= "nil" and growtype ~= "string" and growtype ~= "table" then
 		error("Invalid grow function "..dump(grow_function).." used on object at ("..dump(pos)..")")
@@ -611,7 +611,7 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 							spawned = true
 						elseif objtype == "string" and
 							minetest.registered_nodes[node_or_function_or_model] then
-							minetest.add_node(p_top, { name = node_or_function_or_model })
+							minetest.set_node(p_top, { name = node_or_function_or_model })
 							spawned = true
 						elseif objtype == "function" then
 							node_or_function_or_model(pos)

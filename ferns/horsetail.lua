@@ -12,13 +12,13 @@
 abstract_ferns.grow_horsetail = function(pos)
 	local horsetail_size = math.random(1,4)
 	if 	   horsetail_size == 1 then
-		minetest.env:add_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_01"})
+		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_01"})
 	elseif horsetail_size == 2 then
-		minetest.env:add_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_02"})
+		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_02"})
 	elseif horsetail_size == 3 then
-		minetest.env:add_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_03"})
+		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_03"})
 	elseif horsetail_size == 4 then
-		minetest.env:add_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_04"})
+		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_04"})
 	end
 end
 

@@ -223,7 +223,7 @@ if Auto_Roof_Corner == true then
 			and ((node_north.name == roof and node_north.param2 == 3)
 			or (node_north.name == corner and node_north.param2 == 3))
 			then
-				minetest.add_node(pos, {name=corner, param2=0})
+				minetest.set_node(pos, {name=corner, param2=0})
 			end
 		
 			if ((node_north.name == roof and node_north.param2 == 1)
@@ -231,7 +231,7 @@ if Auto_Roof_Corner == true then
 			and ((node_east.name == roof and node_east.param2 == 0)
 			or (node_east.name == corner and node_east.param2 == 0))
 			then
-				minetest.add_node(pos, {name=corner, param2=1})
+				minetest.set_node(pos, {name=corner, param2=1})
 			end
 		
 			if ((node_east.name == roof and node_east.param2 == 2)
@@ -239,7 +239,7 @@ if Auto_Roof_Corner == true then
 			and ((node_south.name == roof and node_south.param2 == 1)
 			or (node_south.name == corner and node_south.param2 == 1))
 			then
-				minetest.add_node(pos, {name=corner, param2=2})
+				minetest.set_node(pos, {name=corner, param2=2})
 			end
 		
 			if ((node_south.name == roof and node_south.param2 == 3)
@@ -247,7 +247,7 @@ if Auto_Roof_Corner == true then
 			and ((node_west.name == roof and node_west.param2 == 2)
 			or (node_west.name == corner and node_west.param2 == 2))
 			then
-				minetest.add_node(pos, {name=corner, param2=3})
+				minetest.set_node(pos, {name=corner, param2=3})
 			end
 		-- corner 2
 			if ((node_west.name == roof and node_west.param2 == 2)
@@ -255,7 +255,7 @@ if Auto_Roof_Corner == true then
 			and ((node_north.name == roof and node_north.param2 == 1)
 			or (node_north.name == corner_2 and node_north.param2 == 3))
 			then
-				minetest.add_node(pos, {name=corner_2, param2=0})
+				minetest.set_node(pos, {name=corner_2, param2=0})
 			end
 		
 			if ((node_north.name == roof and node_north.param2 == 3)
@@ -263,7 +263,7 @@ if Auto_Roof_Corner == true then
 			and ((node_east.name == roof and node_east.param2 == 2)
 			or (node_east.name == corner_2 and node_east.param2 == 0))
 			then
-				minetest.add_node(pos, {name=corner_2, param2=1})
+				minetest.set_node(pos, {name=corner_2, param2=1})
 			end
 		
 			if ((node_east.name == roof and node_east.param2 == 0)
@@ -271,7 +271,7 @@ if Auto_Roof_Corner == true then
 			and ((node_south.name == roof and node_south.param2 == 3)
 			or (node_south.name == corner_2 and node_south.param2 == 1))
 			then
-				minetest.add_node(pos, {name=corner_2, param2=2})
+				minetest.set_node(pos, {name=corner_2, param2=2})
 			end
 		
 			if ((node_south.name == roof and node_south.param2 == 1)
@@ -279,7 +279,7 @@ if Auto_Roof_Corner == true then
 			and ((node_west.name == roof and node_west.param2 == 0)
 			or (node_west.name == corner_2 and node_west.param2 == 2))
 			then
-				minetest.add_node(pos, {name=corner_2, param2=3})
+				minetest.set_node(pos, {name=corner_2, param2=3})
 			end
 
 		end,
