@@ -117,17 +117,17 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 	if type(node_or_function_or_model) == "string"
 	  and string.find(node_or_function_or_model, ":")
 	  and not minetest.registered_nodes[node_or_function_or_model] then
-		print("[Plants Lib] Ignored registration for undefined node "..dump(node_or_function_or_model))
+		print("[Plants Lib] Warning: Ignored registration for undefined node: "..dump(node_or_function_or_model))
 		return
 	end
 
 	if type(node_or_function_or_model) == "string"
 	  and not string.find(node_or_function_or_model, ":") then
-		print("[Plants Lib] Warning: registered function call using deprecated string method: "..dump(node_or_function_or_model))
+		print("[Plants Lib] Warning: Registered function call using deprecated string method: "..dump(node_or_function_or_model))
 	end
 
 	if biomedef.check_air == false then 
-		print("[Plants Lib] Called legacy mapgen code for "..dump(node_or_function_or_model))
+		print("[Plants Lib] Warning: Registered legacy mapgen hook: "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
 	else
 		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
