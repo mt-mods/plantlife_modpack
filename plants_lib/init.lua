@@ -512,8 +512,8 @@ function plantslib:get_nodedef_field(nodename, fieldname)
 	return minetest.registered_nodes[nodename][fieldname]
 end
 
--- The old version of the mapgen spawner, for mods that require re-checking
--- the map on each call.
+-- The old version of the mapgen spawner, for mods that require disabling of
+-- checking for air during the initial map read stage.
 
 function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model)
 	return function(minp, maxp, blockseed)
@@ -531,7 +531,6 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 			local noise2 = plantslib.perlin_temperature:get2d({x=p_top.x, y=p_top.z})
 			local noise3 = plantslib.perlin_humidity:get2d({x=p_top.x+150, y=p_top.z+50})
 			if (not biome.depth or minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name ~= biome.surface)
-			  and (not biome.check_air or (biome.check_air and minetest.get_node(p_top).name == "air"))
 			  and pos.y >= biome.min_elevation
 			  and pos.y <= biome.max_elevation
 			  and noise1 > biome.plantlife_limit
