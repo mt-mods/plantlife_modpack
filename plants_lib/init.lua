@@ -119,17 +119,17 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 	if type(node_or_function_or_model) == "string"
 	  and string.find(node_or_function_or_model, ":")
 	  and not minetest.registered_nodes[node_or_function_or_model] then
-		print("[Plants Lib] Warning: Ignored registration for undefined spawn node: "..dump(node_or_function_or_model))
+		plantslib:dbg("Warning: Ignored registration for undefined spawn node: "..dump(node_or_function_or_model))
 		return
 	end
 
 	if type(node_or_function_or_model) == "string"
 	  and not string.find(node_or_function_or_model, ":") then
-		print("[Plants Lib] Warning: Registered function call using deprecated string method: "..dump(node_or_function_or_model))
+		plantslib:dbg("Warning: Registered function call using deprecated string method: "..dump(node_or_function_or_model))
 	end
 
 	if biomedef.check_air == false then 
-		print("[Plants Lib] Warning: Registered legacy mapgen hook: "..dump(node_or_function_or_model))
+		plantslib:dbg("Warning: Registered legacy mapgen hook: "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
 		plantslib.total_legacy_calls = plantslib.total_legacy_calls + 1
 	else
@@ -141,7 +141,7 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 					plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
 				end
 			else
-				print("[Plants Lib] Warning: Ignored registration for undefined surface node: "..dump(s))
+				plantslib:dbg("Warning: Ignored registration for undefined surface node: "..dump(s))
 			end
 		else
 			for i = 1, #biomedef.surface do
@@ -151,7 +151,7 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 						plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
 					end
 				else
-					print("[Plants Lib] Warning: Ignored registration for undefined surface node: "..dump(s))
+					plantslib:dbg("Warning: Ignored registration for undefined surface node: "..dump(s))
 				end
 			end
 		end
@@ -269,7 +269,7 @@ function plantslib:generate_block(minp, maxp, blockseed)
 								format(node_or_function_or_model)),pos) then
 								spawned = true
 							else
-								print("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 							end
 						else
 							tries = tries + 1
@@ -621,7 +621,7 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 							format(node_or_function_or_model)),pos) then
 							spawned = true
 						else
-							print("Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+							plantslib:dbg("Warning:  Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 						end
 					else
 						tries = tries + 1
