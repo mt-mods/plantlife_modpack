@@ -278,7 +278,6 @@ function plantslib:generate_block(minp, maxp, blockseed)
 				end
 			end
 		end
-		surface_nodes.blockhash = nil -- nuke the block cache after using it (prevent a mem leak).
 	end
 end
 
