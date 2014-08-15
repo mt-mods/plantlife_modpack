@@ -104,7 +104,7 @@ plantslib.actions_list = {}
 plantslib.surface_nodes = {}
 
 local function search_table(t, s)
-	for i in ipairs(t) do
+	for i = 1, #t do
 		if t[i] == s then return true end
 	end
 	return false
@@ -118,16 +118,17 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 		print("==>> Called legacy mapgen code for "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
 	else
-		table.insert(plantslib.actions_list, { biomedef, node_or_function_or_model })
+		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
 			if not search_table(plantslib.surfaces_list, s) then
-				table.insert(plantslib.surfaces_list, s)
+				plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
 			end
 		else
-			for _, s in ipairs(biomedef.surface) do
+			for i = 1, #biomedef.surface do
+				local s = biomedef.surface[i]
 				if not search_table(plantslib.surfaces_list, s) then
-					table.insert(plantslib.surfaces_list, s)
+					plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
 				end
 			end
 		end
@@ -146,15 +147,16 @@ function plantslib:generate_block(minp, maxp, blockseed)
 		-- search the generated block for surfaces
 
 		plantslib.surface_nodes.blockhash = {}
-		for _, pos in ipairs(search_area) do
+
+		for i = 1, #search_area do
+		local pos = search_area[i]
 			local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
 			if minetest.get_node(p_top).name == "air" then
-				table.insert(plantslib.surface_nodes.blockhash, pos)
+				plantslib.surface_nodes.blockhash[#plantslib.surface_nodes.blockhash + 1] = pos
 			end
 		end
 
-		for action in ipairs(plantslib.actions_list) do
-
+		for action = 1, #plantslib.actions_list do
 			local biome = plantslib.actions_list[action][1]
 			local node_or_function_or_model = plantslib.actions_list[action][2]
 
@@ -163,7 +165,9 @@ function plantslib:generate_block(minp, maxp, blockseed)
 			-- filter stage 1 - find nodes from the supplied surfaces that are within the current biome.
 
 			local in_biome_nodes = {}
-			for _ , pos in ipairs(plantslib.surface_nodes.blockhash) do
+
+			for i = 1, #plantslib.surface_nodes.blockhash do
+				local pos = plantslib.surface_nodes.blockhash[i]
 				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 				local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 				local noise1 = perlin1:get2d({x=pos.x, y=pos.z})
@@ -184,7 +188,7 @@ function plantslib:generate_block(minp, maxp, blockseed)
 				  and math.random(1,100) > biome.rarity
 				  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
 				  then
-					table.insert(in_biome_nodes, pos)
+					in_biome_nodes[#in_biome_nodes + 1] = pos
 				end
 			end
 
@@ -517,7 +521,8 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 
 		local searchnodes = minetest.find_nodes_in_area(minp, maxp, biome.surface)
 		local in_biome_nodes = {}
-		for _ , pos in ipairs(searchnodes) do
+		for i = 1, #searchnodes do
+			local pos = searchnodes[i]
 			local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 			local perlin1 = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 			local noise1 = perlin1:get2d({x=p_top.x, y=p_top.z})
@@ -537,7 +542,7 @@ function plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_
 			  and math.random(1,100) > biome.rarity
 			  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
 			  then
-				table.insert(in_biome_nodes, pos)
+				in_biome_nodes[#in_biome_nodes + 1] = pos
 			end
 		end
 
