@@ -114,8 +114,16 @@ end
 
 function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 
+	-- if calling code passes an undefined node, don't register an action for it.
+	if type(node_or_function_or_model) == "string"
+	  and string.find(node_or_function_or_model, ":")
+	  and not minetest.registered_nodes[node_or_function_or_model] then
+		print("[Plants Lib] Ignored registration for undefined node "..dump(node_or_function_or_model))
+		return
+	end
+
 	if biomedef.check_air == false then 
-		print("==>> Called legacy mapgen code for "..dump(node_or_function_or_model))
+		print("[Plants Lib] Called legacy mapgen code for "..dump(node_or_function_or_model))
 		minetest.register_on_generated(plantslib:generate_block_legacy(minp, maxp, biomedef, node_or_function_or_model))
 	else
 		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
