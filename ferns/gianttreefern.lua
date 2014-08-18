@@ -129,7 +129,7 @@ minetest.register_node("ferns:tree_fern_leaves_giant", {
 	description = "Tree Fern Crown (Dicksonia)",
 	drawtype = "plantlike",
 	visual_scale = math.sqrt(8),
-	wield_scale = {x=1,y=1,z=1},
+	wield_scale = {x=0.175, y=0.175, z=0.175},
 	paramtype = "light",
 	--paramtype2 = "facedir",
 	--tiles = {"[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png^[transformFX^[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png"},
