@@ -1,41 +1,33 @@
- abstract_youngtrees = {} 
- 
-
-
+abstract_youngtrees = {} 
 
 minetest.register_node("youngtrees:bamboo", {
 	description = "Young Bamboo Tree", 
- drawtype="nodebox",
- tiles = {"bamboo.png"},
- 	inventory_image = "bamboo.png",
-	wield_image = "bamboo.png", 
-paramtype = "light",
+	drawtype="nodebox",
+	tiles = {"bamboo.png"},
+	paramtype = "light",
 	walkable = false,
 	is_ground_content = true,
-node_box = {
+	node_box = {
 	type = "fixed",
 	fixed = {
-			{-0.058251,-0.500000,-0.413681,0.066749,0.500000,-0.282500}, --NodeBox 1
-			{-0.058251,-0.500000,-0.103123,0.066749,0.500000,0.038672}, --NodeBox 2
-			{-0.058251,-0.500000,0.181227,0.066749,0.500000,0.342500}, --NodeBox 3
-	}
-},
+		{-0.058251,-0.500000,-0.413681,0.066749,0.500000,-0.282500}, --NodeBox 1
+		{-0.058251,-0.500000,-0.103123,0.066749,0.500000,0.038672}, --NodeBox 2
+		{-0.058251,-0.500000,0.181227,0.066749,0.500000,0.342500}, --NodeBox 3
+		}
+	},
 	groups = {snappy=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
- 
-
-
 
 minetest.register_node("youngtrees:youngtree2_middle",{
 	description = "Young Tree 2 (middle)", 
 	drawtype="nodebox",
-	 tiles = {"youngtree2branch.png"},
-	  	inventory_image = "youngtree2branch.png",
+	tiles = {"youngtree2branch.png"},
+	inventory_image = "youngtree2branch.png",
 	wield_image = "youngtree2branch.png", 
 	paramtype = "light",
-		walkable = false,
+	walkable = false,
 	is_ground_content = true,
 	node_box = {
 		type = "fixed",
