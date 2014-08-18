@@ -164,7 +164,7 @@ minetest.register_node("ferns:tree_fern_leaves_giant", {
 -- GIANT TREE FERN LEAVE PART
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:tree_fern_leave_big", {
-	description = "Giant Tree Fern Leave",
+	description = "Giant Tree Fern Leaves",
 	drawtype = "raillike",
 	paramtype = "light",
 	tiles = {
