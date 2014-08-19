@@ -64,24 +64,13 @@ for i, berry in ipairs(bushes_classic.bushes) do
 				on_use = minetest.item_eat(1),
 			})
 		end
-
-		if minetest.registered_nodes["farming:soil"] then
-			minetest.register_craft({
-				output = "bushes:"..berry.."_pie_raw 1",
-				recipe = {
-				{ "group:food_sugar", "farming:flour", "group:food_sugar" },
-				{ "group:"..berry, "group:"..berry, "group:"..berry },
-				},
-			})
-		else
-			minetest.register_craft({
-				output = "bushes:"..berry.."_pie_raw 1",
-				recipe = {
-				{ "group:food_sugar", "group:junglegrass", "group:food_sugar" },
-				{ "group:"..berry, "group:"..berry, "group:"..berry },
-				},
-			})
-		end
+		minetest.register_craft({
+			output = "bushes:"..berry.."_pie_raw 1",
+			recipe = {
+			{ "group:food_sugar", "farming:flour", "group:food_sugar" },
+			{ "group:"..berry, "group:"..berry, "group:"..berry },
+			},
+		})
 	end
 
 	-- Cooked pie
