@@ -114,23 +114,13 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	})
 end
 
-if minetest.registered_nodes["farming:soil"] then
-	minetest.register_craft({
-		output = "bushes:mixed_berry_pie_raw 2",
-		recipe = {
-		{ "group:food_sugar", "farming:flour", "group:food_sugar" },
-		{ "group:berry", "group:berry", "group:berry" },
-		{ "group:berry", "group:berry", "group:berry" },
-		},
-	})
-else
-	minetest.register_craft({
-		output = "bushes:mixed_berry_pie_raw 2",
-		recipe = {
-		{ "group:food_sugar", "group:junglegrass", "group:food_sugar" },
-		{ "group:berry", "group:berry", "group:berry" },
-		{ "group:berry", "group:berry", "group:berry" },
-		},
-	})
-end
+minetest.register_craft({
+	output = "bushes:mixed_berry_pie_raw 2",
+	recipe = {
+	{ "group:food_sugar", "farming:flour", "group:food_sugar" },
+	{ "group:berry", "group:berry", "group:berry" },
+	{ "group:berry", "group:berry", "group:berry" },
+	},
+})
+
 
