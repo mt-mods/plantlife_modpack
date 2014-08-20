@@ -20,26 +20,45 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 
 	local size = math.random(12,16)	-- min of range must be >= 4
 	
-	local leaf_a_1 = {x = pos.x + 1, y = pos.y + size - 1, z = pos.z    }
-	local leaf_a_2 = {x = pos.x + 2, y = pos.y + size    , z = pos.z    }
-	local leaf_a_3 = {x = pos.x + 3, y = pos.y + size - 1, z = pos.z    }
-	local leaf_a_4 = {x = pos.x + 4, y = pos.y + size - 2, z = pos.z    }
-	
-	local leaf_b_1 = {x = pos.x - 1, y = pos.y + size - 1, z = pos.z    }
-	local leaf_b_2 = {x = pos.x - 2, y = pos.y + size,     z = pos.z    }
-	local leaf_b_3 = {x = pos.x - 3, y = pos.y + size - 1, z = pos.z    }
-	local leaf_b_4 = {x = pos.x - 4, y = pos.y + size - 2, z = pos.z    }
-	
-	local leaf_c_1 = {x = pos.x    , y = pos.y + size - 1, z = pos.z + 1}
-	local leaf_c_2 = {x = pos.x    , y = pos.y + size    , z = pos.z + 2}
-	local leaf_c_3 = {x = pos.x    , y = pos.y + size - 1, z = pos.z + 3}
-	local leaf_c_4 = {x = pos.x    , y = pos.y + size - 2, z = pos.z + 4}
-	
-	local leaf_d_1 = {x = pos.x    , y = pos.y + size - 1, z = pos.z - 1}
-	local leaf_d_2 = {x = pos.x    , y = pos.y + size    , z = pos.z - 2}
-	local leaf_d_3 = {x = pos.x    , y = pos.y + size - 1, z = pos.z - 3}
-	local leaf_d_4 = {x = pos.x    , y = pos.y + size - 2, z = pos.z - 4}
-		
+	local leafchecks = {
+		{
+			direction  = 3,
+			positions = {
+				{x = pos.x + 1, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x + 2, y = pos.y + size    , z = pos.z    },
+				{x = pos.x + 3, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x + 4, y = pos.y + size - 2, z = pos.z    }
+			}
+		},
+		{
+			direction  = 1,
+			positions = {
+				{x = pos.x - 1, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x - 2, y = pos.y + size,     z = pos.z    },
+				{x = pos.x - 3, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x - 4, y = pos.y + size - 2, z = pos.z    }
+			}
+		},
+		{
+			direction  = 2,
+			positions = {
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z + 1},
+				{x = pos.x    , y = pos.y + size    , z = pos.z + 2},
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z + 3},
+				{x = pos.x    , y = pos.y + size - 2, z = pos.z + 4}
+			}
+		},
+		{
+			direction  = 0,
+			positions = {
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z - 1},
+				{x = pos.x    , y = pos.y + size    , z = pos.z - 2},
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z - 3},
+				{x = pos.x    , y = pos.y + size - 2, z = pos.z - 4}
+			}
+		}
+	}
+
 	for i = 1, size-3 do
 		minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
 	end
@@ -48,78 +67,26 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 
 	-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
 
-	if minetest.get_node(leaf_a_1).name == "air" then
-		minetest.set_node(leaf_a_1, {name="ferns:tree_fern_leaf_big"})
-		if minetest.get_node(leaf_a_2).name == "air" then
-			minetest.set_node(leaf_a_2, {name="ferns:tree_fern_leaf_big"})
-			if minetest.get_node(leaf_a_3).name == "air" then
-				minetest.set_node(leaf_a_3, {name="ferns:tree_fern_leaf_big"})
-				if minetest.get_node(leaf_a_4).name == "air" then
-					minetest.set_node(leaf_a_4, {name="ferns:tree_fern_leaf_big_end", param2=3})
-				end
+	-- assert(#leafchecks == 4)
+	for i = 1, 4 do
+		local positions = leafchecks[i].positions
+		local rot = leafchecks[i].direction
+		local endpos = 4	-- If the loop below adds all intermediate leaves then the "terminating" leaf will be at positions[4]
+		-- assert(#positions == 4)
+		-- add leaves so long as the destination nodes are air
+		for j = 1, 3 do
+			if minetest.get_node(positions[j]).name == "air" then
+				minetest.set_node(positions[j], {name="ferns:tree_fern_leaf_big"})
+			else
+				endpos = j
+				break
 			end
 		end
-	end
-
-	if minetest.get_node(leaf_b_1).name == "air" then
-		minetest.set_node(leaf_b_1, {name="ferns:tree_fern_leaf_big"})
-		if minetest.get_node(leaf_b_2).name == "air" then
-			minetest.set_node(leaf_b_2, {name="ferns:tree_fern_leaf_big"})
-			if minetest.get_node(leaf_b_3).name == "air" then
-				minetest.set_node(leaf_b_3, {name="ferns:tree_fern_leaf_big"})
-				if minetest.get_node(leaf_b_4).name == "air" then
-					minetest.set_node(leaf_b_4, {name="ferns:tree_fern_leaf_big_end", param2=1})
-				end
-			end
+		-- add the terminating leaf if required and possible
+		if endpos == 4 and minetest.get_node(positions[endpos]).name == "air" then
+			minetest.set_node(positions[endpos], {name="ferns:tree_fern_leaf_big_end", param2=rot})
 		end
 	end
-
-	if minetest.get_node(leaf_c_1).name == "air" then
-		minetest.set_node(leaf_c_1, {name="ferns:tree_fern_leaf_big"})
-		if minetest.get_node(leaf_c_2).name == "air" then
-			minetest.set_node(leaf_c_2, {name="ferns:tree_fern_leaf_big"})
-			if minetest.get_node(leaf_c_3).name == "air" then
-				minetest.set_node(leaf_c_3, {name="ferns:tree_fern_leaf_big"})
-				if minetest.get_node(leaf_c_4).name == "air" then
-					minetest.set_node(leaf_c_4, {name="ferns:tree_fern_leaf_big_end", param2=2})
-				end
-			end
-		end
-	end
-
-	if minetest.get_node(leaf_d_1).name == "air" then
-		minetest.set_node(leaf_d_1, {name="ferns:tree_fern_leaf_big"})
-		if minetest.get_node(leaf_d_2).name == "air" then
-			minetest.set_node(leaf_d_2, {name="ferns:tree_fern_leaf_big"})
-			if minetest.get_node(leaf_d_3).name == "air" then
-				minetest.set_node(leaf_d_3, {name="ferns:tree_fern_leaf_big"})
-				if minetest.get_node(leaf_d_4).name == "air" then
-					minetest.set_node(leaf_d_4, {name="ferns:tree_fern_leaf_big_end", param2=0})
-				end
-			end
-		end
-	end
-
-	-- bug fixes # 2 - doesn't really work, so disabled for now
-	--[[if minetest.get_node(leaf_a_4).name == "ferns:tree_fern_leaf_big_end"
-	and minetest.get_node(leaf_a_3).name == "ferns:fern_trunk_big" then
-		minetest.set_node(leaf_a_4, {name="air"})
-	end
-
-	if minetest.get_node(leaf_b_4).name == "ferns:tree_fern_leaf_big_end"
-	and minetest.get_node(leaf_b_3).name == "ferns:fern_trunk_big" then
-		minetest.set_node(leaf_b_4, {name="air"})
-	end
-
-	if minetest.get_node(leaf_c_4).name == "ferns:tree_fern_leaf_big_end"
-	and minetest.get_node(leaf_c_3).name == "ferns:fern_trunk_big" then
-		minetest.set_node(leaf_c_4, {name="air"})
-	end
-
-	if minetest.get_node(leaf_d_4).name == "ferns:tree_fern_leaf_big_end"
-	and minetest.get_node(leaf_d_3).name == "ferns:fern_trunk_big" then
-		minetest.set_node(leaf_d_4, {name="air"})
-	end]]
 end
 
 -----------------------------------------------------------------------------------------------
