@@ -101,149 +101,126 @@ minetest.register_node("ferns:fern_01", {
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
---[[plantslib:spawn_on_surfaces({
-	spawn_delay = 1200,
-	spawn_plants = {"ferns:fern"},
-	spawn_chance = 800,
-	spawn_surfaces = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"dryplants:grass_short", 
-		"default:jungletree",
-		"stoneage:grass_with_silex"
+
+assert(abstract_ferns.config.Lady_fern == true)
+
+if abstract_ferns.config.Ferns_near_Tree == true then
+	plantslib:register_generate_plant({ -- near trees (woodlands)
+		surface = {
+			"default:dirt_with_grass",
+			"default:mossycobble",
+			"default:desert_sand",
+			"default:sand",
+			"default:jungletree",
+			"stoneage:grass_with_silex",
+			"sumpf:sumpf"
+		},
+		max_count = 30,
+		rarity = 62,--63,
+		min_elevation = 1, -- above sea level
+		near_nodes = {"group:tree"},
+		near_nodes_size = 3,--4,
+		near_nodes_vertical = 2,--3,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C (too hot?)
+		temp_min = 0.75, -- -12 °C
 	},
-	seed_diff = 329,
-})
-plantslib:spawn_on_surfaces({
-	spawn_delay = 1200,
-	spawn_plants = {"ferns:fern_mid"},
-	spawn_chance = 400,
-	spawn_surfaces = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"dryplants:grass_short", 
-		"default:jungletree",
-		"stoneage:grass_with_silex"
-	},
-	seed_diff = 329,
-})]]
-if Ferns_near_Tree == true then
-plantslib:register_generate_plant({ -- near trees (woodlands)
-    surface = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"default:desert_sand",
-		"default:sand",
-		"default:jungletree",
-		"stoneage:grass_with_silex",
-		"sumpf:sumpf"
-	},
-    max_count = 30,
-    rarity = 62,--63,
-    min_elevation = 1, -- above sea level
-	near_nodes = {"group:tree"},
-	near_nodes_size = 3,--4,
-	near_nodes_vertical = 2,--3,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C (too hot?)
-    temp_min = 0.75, -- -12 °C
-  },
-  abstract_ferns.grow_fern
-)
+	abstract_ferns.grow_fern
+	)
 end
 
-if Ferns_near_Rock == true then
-plantslib:register_generate_plant({ -- near stone (mountains)
-    surface = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"group:falling_node", 
-		--"default:jungletree",
-		"stoneage:grass_with_silex",
-		"sumpf:sumpf"
+if abstract_ferns.config.Ferns_near_Rock == true then
+	plantslib:register_generate_plant({ -- near stone (mountains)
+		surface = {
+			"default:dirt_with_grass",
+			"default:mossycobble",
+			"group:falling_node",
+			--"default:jungletree",
+			"stoneage:grass_with_silex",
+			"sumpf:sumpf"
+		},
+		max_count = 35,
+		rarity = 40,
+		min_elevation = 1, -- above sea level
+		near_nodes = {"group:stone"},
+		near_nodes_size = 1,
+		near_nodes_count = 16,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C (too hot?)
+		temp_min = 0.75, -- -12 °C
 	},
-    max_count = 35,
-    rarity = 40,
-    min_elevation = 1, -- above sea level
-	near_nodes = {"group:stone"},
-	near_nodes_size = 1,
-	near_nodes_count = 16,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C (too hot?)
-    temp_min = 0.75, -- -12 °C
-  },
-  abstract_ferns.grow_fern
-)
+	abstract_ferns.grow_fern
+	)
 end
 
-if Ferns_near_Ores == true then -- this one causes a huge fps drop
-plantslib:register_generate_plant({ -- near ores (potential mining sites)
-    surface = {
-		"default:dirt_with_grass", 
-		"default:mossycobble",
-		"default:stone_with_coal",
-		"default:stone_with_iron",
-		"moreores:mineral_tin",
-		"moreores:mineral_silver",
-		"sumpf:sumpf"
+if abstract_ferns.config.Ferns_near_Ores == true then -- this one causes a huge fps drop
+	plantslib:register_generate_plant({ -- near ores (potential mining sites)
+		surface = {
+			"default:dirt_with_grass",
+			"default:mossycobble",
+			"default:stone_with_coal",
+			"default:stone_with_iron",
+			"moreores:mineral_tin",
+			"moreores:mineral_silver",
+			"sumpf:sumpf"
+		},
+		max_count = 1200,--1600, -- maybe too much? :D
+		rarity = 25,--15,
+		min_elevation = 1, -- above sea level
+		near_nodes = {
+			"default:stone_with_iron",
+			--"default:stone_with_copper",
+			--"default:stone_with_mese",
+			--"default:stone_with_gold",
+			--"default:stone_with_diamond",
+			"moreores:mineral_tin",
+			"moreores:mineral_silver"
+			--"moreores:mineral_mithril"
+		},
+		near_nodes_size = 2,
+		near_nodes_vertical = 4,--5,--6,
+		near_nodes_count = 2,--3,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C (too hot?)
+		temp_min = 0.75, -- -12 °C
 	},
-    max_count = 1200,--1600, -- maybe too much? :D
-    rarity = 25,--15,
-    min_elevation = 1, -- above sea level
-	near_nodes = {
-		"default:stone_with_iron",
-		--"default:stone_with_copper",
-		--"default:stone_with_mese",
-		--"default:stone_with_gold",
-		--"default:stone_with_diamond",
-		"moreores:mineral_tin",
-		"moreores:mineral_silver"
-		--"moreores:mineral_mithril"
-	},
-	near_nodes_size = 2,
-	near_nodes_vertical = 4,--5,--6,
-	near_nodes_count = 2,--3,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C (too hot?)
-    temp_min = 0.75, -- -12 °C
-  },
-  abstract_ferns.grow_fern
-)
+	abstract_ferns.grow_fern
+	)
 end
 
-if Ferns_in_Groups == true then -- this one is meant as a replacement of Ferns_near_Ores
-plantslib:register_generate_plant({
-    surface = {
-		"default:dirt_with_grass", 
-		"default:mossycobble",
-		"default:stone_with_coal",
-		"default:stone_with_iron",
-		"moreores:mineral_tin",
-		"moreores:mineral_silver",
-		"sumpf:sumpf"
+if abstract_ferns.config.Ferns_in_Groups == true then -- this one is meant as a replacement of Ferns_near_Ores
+	plantslib:register_generate_plant({
+		surface = {
+			"default:dirt_with_grass",
+			"default:mossycobble",
+			"default:stone_with_coal",
+			"default:stone_with_iron",
+			"moreores:mineral_tin",
+			"moreores:mineral_silver",
+			"sumpf:sumpf"
+		},
+		max_count = 70,
+		rarity = 25,--15,
+		min_elevation = 1, -- above sea level
+		near_nodes = {
+			"default:stone"
+		},
+		near_nodes_size = 2,
+		near_nodes_vertical = 2,--6,
+		near_nodes_count = 3,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C (too hot?)
+		temp_min = 0.75, -- -12 °C
 	},
-    max_count = 70,
-    rarity = 25,--15,
-    min_elevation = 1, -- above sea level
-	near_nodes = {
-		"default:stone"
-	},
-	near_nodes_size = 2,
-	near_nodes_vertical = 2,--6,
-	near_nodes_count = 3,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C (too hot?)
-    temp_min = 0.75, -- -12 °C
-  },
-  abstract_ferns.grow_fern
-)
+	abstract_ferns.grow_fern
+	)
 end

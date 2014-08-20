@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------------
 local title		= "Ferns" -- former "Archae Plantae"
-local version 	= "0.1.2"
+local version 	= "0.2.0"
 local mname		= "ferns" -- former "archaeplantae"
 -----------------------------------------------------------------------------------------------
 -- (by Mossmanikin)
@@ -8,21 +8,21 @@ local mname		= "ferns" -- former "archaeplantae"
 -----------------------------------------------------------------------------------------------
 abstract_ferns = {}
 
-dofile(minetest.get_modpath("ferns").."/SeTTiNGS.txt")
+dofile(minetest.get_modpath("ferns").."/settings.lua")
 
-if Lady_fern == true then
-dofile(minetest.get_modpath("ferns").."/fern.lua")
+if abstract_ferns.config.Lady_fern == true then
+	dofile(minetest.get_modpath("ferns").."/fern.lua")
 end
 
-if Horsetails == true then
+if abstract_ferns.config.Horsetails == true then
 	dofile(minetest.get_modpath("ferns").."/horsetail.lua")
 end
 
-if Tree_Fern == true then
+if abstract_ferns.config.Tree_Fern == true then
 	dofile(minetest.get_modpath("ferns").."/treefern.lua")
 end
 
-if Giant_Tree_Fern == true then
+if abstract_ferns.config.Giant_Tree_Fern == true then
 	dofile(minetest.get_modpath("ferns").."/gianttreefern.lua")
 end
 

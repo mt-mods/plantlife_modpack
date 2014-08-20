@@ -11,114 +11,81 @@
 -- lot of code, lot to load
 
 abstract_ferns.grow_giant_tree_fern = function(pos)
-	local size = math.random(12,16)	-- min of range must be >= 4
 	local pos_01 = {x = pos.x, y = pos.y + 1, z = pos.z}
-	
-	local leave_a_1 = {x = pos.x + 1, y = pos.y + size - 1, z = pos.z    }
-	local leave_a_2 = {x = pos.x + 2, y = pos.y + size    , z = pos.z    }
-	local leave_a_3 = {x = pos.x + 3, y = pos.y + size - 1, z = pos.z    }
-	local leave_a_4 = {x = pos.x + 4, y = pos.y + size - 2, z = pos.z    }
-	
-	local leave_b_1 = {x = pos.x - 1, y = pos.y + size - 1, z = pos.z    }
-	local leave_b_2 = {x = pos.x - 2, y = pos.y + size,     z = pos.z    }
-	local leave_b_3 = {x = pos.x - 3, y = pos.y + size - 1, z = pos.z    }
-	local leave_b_4 = {x = pos.x - 4, y = pos.y + size - 2, z = pos.z    }
-	
-	local leave_c_1 = {x = pos.x    , y = pos.y + size - 1, z = pos.z + 1}
-	local leave_c_2 = {x = pos.x    , y = pos.y + size    , z = pos.z + 2}
-	local leave_c_3 = {x = pos.x    , y = pos.y + size - 1, z = pos.z + 3}
-	local leave_c_4 = {x = pos.x    , y = pos.y + size - 2, z = pos.z + 4}
-	
-	local leave_d_1 = {x = pos.x    , y = pos.y + size - 1, z = pos.z - 1}
-	local leave_d_2 = {x = pos.x    , y = pos.y + size    , z = pos.z - 2}
-	local leave_d_3 = {x = pos.x    , y = pos.y + size - 1, z = pos.z - 3}
-	local leave_d_4 = {x = pos.x    , y = pos.y + size - 2, z = pos.z - 4}
-	
-	if minetest.get_node(pos_01).name == "air"  -- instead of check_air = true,
-	or minetest.get_node(pos_01).name == "ferns:sapling_giant_tree_fern"
-	or minetest.get_node(pos_01).name == "default:junglegrass" then
-		
-		for i = 1, size-3 do
-			minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
-		end
-		minetest.set_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
-		minetest.set_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
+	if minetest.get_node(pos_01).name ~= "air"
+			and minetest.get_node(pos_01).name ~= "ferns:sapling_giant_tree_fern"
+			and minetest.get_node(pos_01).name ~= "default:junglegrass" then
+		return
+	end
 
-		-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
-		
-		if minetest.get_node(leave_a_1).name == "air" then	
-			minetest.set_node(leave_a_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.get_node(leave_a_2).name == "air" then
-				minetest.set_node(leave_a_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.get_node(leave_a_3).name == "air" then
-					minetest.set_node(leave_a_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.get_node(leave_a_4).name == "air" then
-						minetest.set_node(leave_a_4, {name="ferns:tree_fern_leave_big_end", param2=3})
-					end
-				end
-			end
-		end
-		
-		if minetest.get_node(leave_b_1).name == "air" then
-			minetest.set_node(leave_b_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.get_node(leave_b_2).name == "air" then
-				minetest.set_node(leave_b_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.get_node(leave_b_3).name == "air" then
-					minetest.set_node(leave_b_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.get_node(leave_b_4).name == "air" then
-						minetest.set_node(leave_b_4, {name="ferns:tree_fern_leave_big_end", param2=1})
-					end
-				end
-			end
-		end
-		
-		if minetest.get_node(leave_c_1).name == "air" then
-			minetest.set_node(leave_c_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.get_node(leave_c_2).name == "air" then
-				minetest.set_node(leave_c_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.get_node(leave_c_3).name == "air" then
-					minetest.set_node(leave_c_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.get_node(leave_c_4).name == "air" then
-						minetest.set_node(leave_c_4, {name="ferns:tree_fern_leave_big_end", param2=2})
-					end
-				end
-			end
-		end
-			
-		if minetest.get_node(leave_d_1).name == "air" then
-			minetest.set_node(leave_d_1, {name="ferns:tree_fern_leave_big"})
-			if minetest.get_node(leave_d_2).name == "air" then
-				minetest.set_node(leave_d_2, {name="ferns:tree_fern_leave_big"})
-				if minetest.get_node(leave_d_3).name == "air" then
-					minetest.set_node(leave_d_3, {name="ferns:tree_fern_leave_big"})
-					if minetest.get_node(leave_d_4).name == "air" then
-						minetest.set_node(leave_d_4, {name="ferns:tree_fern_leave_big_end", param2=0})
-					end
-				end
-			end
-		end
+	local size = math.random(12,16)	-- min of range must be >= 4
+	
+	local leafchecks = {
+		{
+			direction  = 3,
+			positions = {
+				{x = pos.x + 1, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x + 2, y = pos.y + size    , z = pos.z    },
+				{x = pos.x + 3, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x + 4, y = pos.y + size - 2, z = pos.z    }
+			}
+		},
+		{
+			direction  = 1,
+			positions = {
+				{x = pos.x - 1, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x - 2, y = pos.y + size,     z = pos.z    },
+				{x = pos.x - 3, y = pos.y + size - 1, z = pos.z    },
+				{x = pos.x - 4, y = pos.y + size - 2, z = pos.z    }
+			}
+		},
+		{
+			direction  = 2,
+			positions = {
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z + 1},
+				{x = pos.x    , y = pos.y + size    , z = pos.z + 2},
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z + 3},
+				{x = pos.x    , y = pos.y + size - 2, z = pos.z + 4}
+			}
+		},
+		{
+			direction  = 0,
+			positions = {
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z - 1},
+				{x = pos.x    , y = pos.y + size    , z = pos.z - 2},
+				{x = pos.x    , y = pos.y + size - 1, z = pos.z - 3},
+				{x = pos.x    , y = pos.y + size - 2, z = pos.z - 4}
+			}
+		}
+	}
 
-		-- bug fixes # 2 - doesn't really work, so disabled for now
-		--[[if minetest.get_node(leave_a_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.get_node(leave_a_3).name == "ferns:fern_trunk_big" then
-			minetest.set_node(leave_a_4, {name="air"})
+	for i = 1, size-3 do
+		minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
+	end
+	minetest.set_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
+	minetest.set_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
+
+	-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
+
+	-- assert(#leafchecks == 4)
+	for i = 1, 4 do
+		local positions = leafchecks[i].positions
+		local rot = leafchecks[i].direction
+		local endpos = 4	-- If the loop below adds all intermediate leaves then the "terminating" leaf will be at positions[4]
+		-- assert(#positions == 4)
+		-- add leaves so long as the destination nodes are air
+		for j = 1, 3 do
+			if minetest.get_node(positions[j]).name == "air" then
+				minetest.set_node(positions[j], {name="ferns:tree_fern_leave_big"})
+			else
+				endpos = j
+				break
+			end
 		end
-		
-		if minetest.get_node(leave_b_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.get_node(leave_b_3).name == "ferns:fern_trunk_big" then
-			minetest.set_node(leave_b_4, {name="air"})
+		-- add the terminating leaf if required and possible
+		if endpos == 4 and minetest.get_node(positions[endpos]).name == "air" then
+			minetest.set_node(positions[endpos], {name="ferns:tree_fern_leave_big_end", param2=rot})
 		end
-		
-		if minetest.get_node(leave_c_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.get_node(leave_c_3).name == "ferns:fern_trunk_big" then
-			minetest.set_node(leave_c_4, {name="air"})
-		end
-		
-		if minetest.get_node(leave_d_4).name == "ferns:tree_fern_leave_big_end"
-		and minetest.get_node(leave_d_3).name == "ferns:fern_trunk_big" then
-			minetest.set_node(leave_d_4, {name="air"})
-		end]]
-		
 	end
 end
 
@@ -131,8 +98,6 @@ minetest.register_node("ferns:tree_fern_leaves_giant", {
 	visual_scale = math.sqrt(8),
 	wield_scale = {x=0.175, y=0.175, z=0.175},
 	paramtype = "light",
-	--paramtype2 = "facedir",
-	--tiles = {"[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png^[transformFX^[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png"},
 	tiles = {"ferns_fern_tree_giant.png"},
 	inventory_image = "ferns_fern_tree.png",
 	walkable = false,
@@ -309,58 +274,57 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 -- GENERATE GIANT TREE FERN
 -----------------------------------------------------------------------------------------------
+
+assert(abstract_ferns.config.Giant_Tree_Fern == true)
+
 -- in jungles
-if Giant_Tree_Ferns_in_Jungle == true then
-plantslib:register_generate_plant({
-    surface = {
-		"default:dirt_with_grass", 
-		"default:sand", 
-		"default:desert_sand"--, 
-		--"dryplants:grass_short"
+if abstract_ferns.config.Giant_Tree_Ferns_in_Jungle == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:dirt_with_grass",
+			"default:sand",
+			"default:desert_sand"--,
+			--"dryplants:grass_short"
+		},
+		max_count = 12,--27,
+		avoid_nodes = {"group:tree"},
+		avoid_radius = 3,--4,
+		rarity = 85,
+		seed_diff = 329,
+		min_elevation = 1,
+		near_nodes = {"default:jungletree"},
+		near_nodes_size = 6,
+		near_nodes_vertical = 2,--4,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
 	},
-    max_count = 12,--27,
-    avoid_nodes = {"group:tree"},
-    avoid_radius = 3,--4,
-    rarity = 85,
-    seed_diff = 329,
-    min_elevation = 1,
-	near_nodes = {"default:jungletree"},
-	near_nodes_size = 6,
-	near_nodes_vertical = 2,--4,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    --humidity_max = 0.39,--1.0,
-    --humidity_min = 0.5,
-    --temp_max = -1,-- -1.2,-- -0.5, -- ~ 55C
-    --temp_min = -0.35,-- -0.07, -- ~ 25C
-  },
-  abstract_ferns.grow_giant_tree_fern
-)
+	abstract_ferns.grow_giant_tree_fern
+	)
 end
 
 -- for oases & tropical beaches
-if Giant_Tree_Ferns_for_Oases == true then
-plantslib:register_generate_plant({
-    surface = {
-		"default:sand"--,
-		--"default:desert_sand"
+if abstract_ferns.config.Giant_Tree_Ferns_for_Oases == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:sand"--,
+			--"default:desert_sand"
+		},
+		max_count = 10,--27,
+		rarity = 90,
+		seed_diff = 329,
+		neighbors = {"default:desert_sand"},
+		ncount = 1,
+		min_elevation = 1,
+		near_nodes = {"default:water_source"},
+		near_nodes_size = 2,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 1.0,
+		temp_max = -1.0,
+		temp_min = 1.0,
 	},
-    max_count = 10,--27,
-    rarity = 90,
-    seed_diff = 329,
-	neighbors = {"default:desert_sand"},
-	ncount = 1,
-    min_elevation = 1,
-	near_nodes = {"default:water_source"},
-	near_nodes_size = 2,
-	near_nodes_vertical = 1,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 1.0,
-    temp_max = -1.0,
-    temp_min = 1.0,
-  },
-  abstract_ferns.grow_giant_tree_fern
-)
+	abstract_ferns.grow_giant_tree_fern
+	)
 end
