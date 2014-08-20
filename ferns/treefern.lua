@@ -197,8 +197,7 @@ if abstract_ferns.config.Tree_Ferns_in_Jungle == true then
 		surface = {
 			"default:dirt_with_grass",
 			"default:sand",
-			"default:desert_sand"--,
-			--"dryplants:grass_short"
+			"default:desert_sand",
 		},
 		max_count = 35,--27,
 		avoid_nodes = {"default:tree"},

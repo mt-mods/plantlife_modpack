@@ -101,32 +101,6 @@ minetest.register_node("ferns:fern_01", {
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
---[[plantslib:spawn_on_surfaces({
-	spawn_delay = 1200,
-	spawn_plants = {"ferns:fern"},
-	spawn_chance = 800,
-	spawn_surfaces = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"dryplants:grass_short", 
-		"default:jungletree",
-		"stoneage:grass_with_silex"
-	},
-	seed_diff = 329,
-})
-plantslib:spawn_on_surfaces({
-	spawn_delay = 1200,
-	spawn_plants = {"ferns:fern_mid"},
-	spawn_chance = 400,
-	spawn_surfaces = {
-		"default:dirt_with_grass", 
-		"default:mossycobble", 
-		"dryplants:grass_short", 
-		"default:jungletree",
-		"stoneage:grass_with_silex"
-	},
-	seed_diff = 329,
-})]]
 
 assert(abstract_ferns.config.Lady_fern == true)
 
