@@ -76,7 +76,7 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 		-- add leaves so long as the destination nodes are air
 		for j = 1, 3 do
 			if minetest.get_node(positions[j]).name == "air" then
-				minetest.set_node(positions[j], {name="ferns:tree_fern_leaves_big"})
+				minetest.set_node(positions[j], {name="ferns:tree_fern_leave_big"})
 			else
 				endpos = j
 				break
@@ -84,7 +84,7 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 		end
 		-- add the terminating leaf if required and possible
 		if endpos == 4 and minetest.get_node(positions[endpos]).name == "air" then
-			minetest.set_node(positions[endpos], {name="ferns:tree_fern_leaves_big_end", param2=rot})
+			minetest.set_node(positions[endpos], {name="ferns:tree_fern_leave_big_end", param2=rot})
 		end
 	end
 end
