@@ -236,7 +236,7 @@ local flowers_list = {
 	{ "Blue Geranium",		"geranium",			"flowers:geranium" },
 	{ "Viola",				"viola",			"flowers:viola" },
 	{ "Cactus",				"cactus",			"default:cactus" },
-	{ "Bonzai",				"bonzai",			"default:sapling" }
+	{ "Bonsai",				"bonsai",			"default:sapling" }
 }
 
 for i in ipairs(flowers_list) do
