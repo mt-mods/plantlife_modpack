@@ -8,7 +8,7 @@ local mname		= "ferns" -- former "archaeplantae"
 -----------------------------------------------------------------------------------------------
 abstract_ferns = {}
 
-dofile(minetest.get_modpath("ferns").."/SeTTiNGS.txt")
+dofile(minetest.get_modpath("ferns").."/settings.lua")
 
 if Lady_fern == true then
 dofile(minetest.get_modpath("ferns").."/fern.lua")
