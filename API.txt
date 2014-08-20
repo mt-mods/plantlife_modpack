@@ -331,7 +331,8 @@ biome = {
 				-- empty region above the spawn target.
 				-- Useful when adding trees to snow biomes.
 				-- Defaults to false.
-	spawn_replace_node = bool -- same as with the ABM spawner.
+	spawn_replace_node = bool, -- same as with the ABM spawner.
+	random_facedir = {table}, -- same as with the ABM spawner.
 }
 
 Regarding node_or_function_or_treedef, this must either be table with an 
