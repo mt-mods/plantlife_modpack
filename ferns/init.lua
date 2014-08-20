@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------------
 local title		= "Ferns" -- former "Archae Plantae"
-local version 	= "0.1.2"
+local version 	= "0.2.0"
 local mname		= "ferns" -- former "archaeplantae"
 -----------------------------------------------------------------------------------------------
 -- (by Mossmanikin)
