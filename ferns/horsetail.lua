@@ -94,85 +94,88 @@ minetest.register_node("ferns:horsetail_04", { -- the one in inventory
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
-if Horsetails_Spawning == true then
-plantslib:spawn_on_surfaces({
-	spawn_delay = 1200,
-	spawn_plants = {
-		"ferns:horsetail_01", 
-		"ferns:horsetail_02", 
-		"ferns:horsetail_03", 
-		"ferns:horsetail_04"
-	},
-	spawn_chance = 400,
-	spawn_surfaces = {
-		"default:dirt_with_grass",
-		"default:desert_sand",
-		"default:sand",
-		"dryplants:grass_short",
-		"stoneage:grass_with_silex",
-		"default:mossycobble",
-		"default:gravel"
-	},
-	seed_diff = 329,
-	min_elevation = 1, -- above sea level
-	near_nodes = {"default:water_source","default:gravel"},
-	near_nodes_size = 2,
-	near_nodes_vertical = 1,
-	near_nodes_count = 1,
-})
+if abstract_ferns.config.Horsetails_Spawning == true then
+	plantslib:spawn_on_surfaces({
+		spawn_delay = 1200,
+		spawn_plants = {
+			"ferns:horsetail_01",
+			"ferns:horsetail_02",
+			"ferns:horsetail_03",
+			"ferns:horsetail_04"
+		},
+		spawn_chance = 400,
+		spawn_surfaces = {
+			"default:dirt_with_grass",
+			"default:desert_sand",
+			"default:sand",
+			"dryplants:grass_short",
+			"stoneage:grass_with_silex",
+			"default:mossycobble",
+			"default:gravel"
+		},
+		seed_diff = 329,
+		min_elevation = 1, -- above sea level
+		near_nodes = {"default:water_source","default:gravel"},
+		near_nodes_size = 2,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1,
+	})
 end
 -----------------------------------------------------------------------------------------------
 -- Generating
 -----------------------------------------------------------------------------------------------
-if Horsetails_on_Grass == true then
-plantslib:register_generate_plant({
-    surface = {
-		"default:dirt_with_grass",
-		"sumpf:sumpf"
+
+assert(abstract_ferns.config.Horsetails == true)
+
+if abstract_ferns.config.Horsetails_on_Grass == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:dirt_with_grass",
+			"sumpf:sumpf"
+		},
+		max_count = 35,
+		rarity = 40,
+		min_elevation = 1, -- above sea level
+		near_nodes = {
+			"group:water", -- likes water (of course)
+			"default:gravel", -- near those on gravel
+			"default:sand", -- some like sand
+			"default:clay", -- some like clay
+			"stoneage:grass_with_silex",
+			"default:mossycobble",
+			"default:cobble",
+			"sumpf:sumpf"
+		},
+		near_nodes_size = 3,
+		near_nodes_vertical = 2,--3,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C
+		temp_min = 0.53, -- 0 °C, dies back in winter
 	},
-    max_count = 35,
-    rarity = 40,
-    min_elevation = 1, -- above sea level
-	near_nodes = {
-		"group:water", -- likes water (of course)
-		"default:gravel", -- near those on gravel
-		"default:sand", -- some like sand
-		"default:clay", -- some like clay
-		"stoneage:grass_with_silex",
-		"default:mossycobble",
-		"default:cobble",
-		"sumpf:sumpf"
-	},
-	near_nodes_size = 3,
-	near_nodes_vertical = 2,--3,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C
-    temp_min = 0.53, -- 0 °C, dies back in winter
-  },
-  abstract_ferns.grow_horsetail
-)
+	abstract_ferns.grow_horsetail
+	)
 end
 
-if Horsetails_on_Stony == true then
-plantslib:register_generate_plant({
-    surface = {
-		"default:gravel", -- roots go deep
-		"default:mossycobble",
-		"stoneage:dirt_with_silex",
-		"stoneage:grass_with_silex",
-		"stoneage:sand_with_silex"--, -- roots go deep
-		--"sumpf:sumpf"
+if abstract_ferns.config.Horsetails_on_Stony == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:gravel", -- roots go deep
+			"default:mossycobble",
+			"stoneage:dirt_with_silex",
+			"stoneage:grass_with_silex",
+			"stoneage:sand_with_silex"--, -- roots go deep
+			--"sumpf:sumpf"
+		},
+		max_count = 35,
+		rarity = 20,
+		min_elevation = 1, -- above sea level
+		plantlife_limit = -0.9,
+		humidity_min = 0.4,
+		temp_max = -0.5, -- 55 °C
+		temp_min = 0.53, -- 0 °C, dies back in winter
 	},
-    max_count = 35,
-    rarity = 20,
-    min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
-    humidity_min = 0.4,
-    temp_max = -0.5, -- 55 °C
-    temp_min = 0.53, -- 0 °C, dies back in winter
-  },
-  abstract_ferns.grow_horsetail
-)
+	abstract_ferns.grow_horsetail
+	)
 end

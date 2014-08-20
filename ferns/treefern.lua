@@ -188,58 +188,61 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 -- GENERATE TREE FERN
 -----------------------------------------------------------------------------------------------
+
+assert(abstract_ferns.config.Tree_Fern == true)
+
 -- in jungles
-if Tree_Ferns_in_Jungle == true	then
-plantslib:register_generate_plant({
-    surface = {
-		"default:dirt_with_grass", 
-		"default:sand", 
-		"default:desert_sand"--, 
-		--"dryplants:grass_short"
+if abstract_ferns.config.Tree_Ferns_in_Jungle == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:dirt_with_grass",
+			"default:sand",
+			"default:desert_sand"--,
+			--"dryplants:grass_short"
+		},
+		max_count = 35,--27,
+		avoid_nodes = {"default:tree"},
+		avoid_radius = 4,
+		rarity = 50,
+		seed_diff = 329,
+		min_elevation = -10,
+		near_nodes = {"default:jungletree"},
+		near_nodes_size = 6,
+		near_nodes_vertical = 2,--4,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 0.4,
+		temp_max = -0.5,
+		temp_min = 0.13,
 	},
-    max_count = 35,--27,
-    avoid_nodes = {"default:tree"},
-    avoid_radius = 4,
-    rarity = 50,
-    seed_diff = 329,
-    min_elevation = -10,
-	near_nodes = {"default:jungletree"},
-	near_nodes_size = 6,
-	near_nodes_vertical = 2,--4,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 0.4,
-    temp_max = -0.5,
-    temp_min = 0.13,
-  },
-  abstract_ferns.grow_tree_fern
-)
+	abstract_ferns.grow_tree_fern
+	)
 end
 
 -- for oases & tropical beaches
-if Tree_Ferns_for_Oases == true then
-plantslib:register_generate_plant({
-    surface = {
-		"default:sand"--,
-		--"default:desert_sand"
+if abstract_ferns.config.Tree_Ferns_for_Oases == true then
+	plantslib:register_generate_plant({
+		surface = {
+			"default:sand"--,
+			--"default:desert_sand"
+		},
+		max_count = 35,
+		rarity = 50,
+		seed_diff = 329,
+		neighbors = {"default:desert_sand"},
+		ncount = 1,
+		min_elevation = 1,
+		near_nodes = {"default:water_source"},
+		near_nodes_size = 2,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
+		humidity_max = -1.0,
+		humidity_min = 1.0,
+		temp_max = -1.0,
+		temp_min = 1.0,
 	},
-    max_count = 35,
-    rarity = 50,
-    seed_diff = 329,
-	neighbors = {"default:desert_sand"},
-	ncount = 1,
-    min_elevation = 1,
-	near_nodes = {"default:water_source"},
-	near_nodes_size = 2,
-	near_nodes_vertical = 1,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-    humidity_max = -1.0,
-    humidity_min = 1.0,
-    temp_max = -1.0,
-    temp_min = 1.0,
-  },
-  abstract_ferns.grow_tree_fern
+	abstract_ferns.grow_tree_fern
 )
 end
