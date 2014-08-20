@@ -14,7 +14,7 @@ if abstract_ferns.config.Lady_fern == true then
 	dofile(minetest.get_modpath("ferns").."/fern.lua")
 end
 
-if abstract_ferns.Horsetails == true then
+if abstract_ferns.config.Horsetails == true then
 	dofile(minetest.get_modpath("ferns").."/horsetail.lua")
 end
 
