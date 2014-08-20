@@ -98,8 +98,6 @@ minetest.register_node("ferns:tree_fern_leafs_giant", {
 	visual_scale = math.sqrt(8),
 	wield_scale = {x=0.175, y=0.175, z=0.175},
 	paramtype = "light",
-	--paramtype2 = "facedir",
-	--tiles = {"[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png^[transformFX^[combine:"..TSS..T1.."ferns_5.png"..T2.."ferns_6.png"..T3.."ferns_7.png"..T4.."ferns_8.png"},
 	tiles = {"ferns_fern_tree_giant.png"},
 	inventory_image = "ferns_fern_tree.png",
 	walkable = false,
@@ -299,10 +297,6 @@ if abstract_ferns.config.Giant_Tree_Ferns_in_Jungle == true then
 		near_nodes_vertical = 2,--4,
 		near_nodes_count = 1,
 		plantlife_limit = -0.9,
-		--humidity_max = 0.39,--1.0,
-		--humidity_min = 0.5,
-		--temp_max = -1,-- -1.2,-- -0.5, -- ~ 55C
-		--temp_min = -0.35,-- -0.07, -- ~ 25C
 	},
 	abstract_ferns.grow_giant_tree_fern
 	)
