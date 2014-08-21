@@ -289,7 +289,7 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 							  minetest.registered_nodes[node_or_function_or_model] then
 								local fdir = nil
 								if biome.random_facedir then
-									fdir = math.random(biome.random_facedir.1, biome.random_facedir.2)
+									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
 								end
 								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
 								spawned = true
@@ -409,7 +409,7 @@ function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
 							  minetest.registered_nodes[node_or_function_or_model] then
 								local fdir = nil
 								if biome.random_facedir then
-									fdir = math.random(biome.random_facedir.1, biome.random_facedir.2)
+									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
 								end
 								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
 								spawned = true
