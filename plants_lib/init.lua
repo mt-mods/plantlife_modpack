@@ -286,8 +286,12 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 								plantslib:generate_tree(pos, node_or_function_or_model)
 								spawned = true
 							elseif objtype == "string" and
-								minetest.registered_nodes[node_or_function_or_model] then
-								minetest.set_node(p_top, { name = node_or_function_or_model })
+							  minetest.registered_nodes[node_or_function_or_model] then
+								local fdir = nil
+								if biome.random_facedir then
+									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+								end
+								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
 								spawned = true
 							elseif objtype == "function" then
 								node_or_function_or_model(pos)
@@ -402,8 +406,12 @@ function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
 								plantslib:generate_tree(pos, node_or_function_or_model)
 								spawned = true
 							elseif objtype == "string" and
-								minetest.registered_nodes[node_or_function_or_model] then
-								minetest.set_node(p_top, { name = node_or_function_or_model })
+							  minetest.registered_nodes[node_or_function_or_model] then
+								local fdir = nil
+								if biome.random_facedir then
+									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+								end
+								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
 								spawned = true
 							elseif objtype == "function" then
 								node_or_function_or_model(pos)
