@@ -7,6 +7,8 @@
 -- Looked at code from:		default	, trees			
 -----------------------------------------------------------------------------------------------
 
+assert(abstract_ferns.config.enable_treefern == true)
+
 abstract_ferns.grow_tree_fern = function(pos)
 	local size = math.random(1,5)
 	local crown = math.random(1,2)
@@ -188,8 +190,6 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 -- GENERATE TREE FERN
 -----------------------------------------------------------------------------------------------
-
-assert(abstract_ferns.config.enable_treefern == true)
 
 -- in jungles
 if abstract_ferns.config.enable_treeferns_in_jungle == true then

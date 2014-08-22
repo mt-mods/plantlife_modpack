@@ -8,6 +8,8 @@
 -- Supports:				vines			
 -----------------------------------------------------------------------------------------------
 
+assert(abstract_ferns.config.enable_giant_treefern == true)
+
 -- lot of code, lot to load
 
 abstract_ferns.grow_giant_tree_fern = function(pos)
@@ -274,8 +276,6 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 -- GENERATE GIANT TREE FERN
 -----------------------------------------------------------------------------------------------
-
-assert(abstract_ferns.config.enable_giant_treefern == true)
 
 -- in jungles
 if abstract_ferns.config.enable_giant_treeferns_in_jungle == true then

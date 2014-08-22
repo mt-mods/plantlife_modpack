@@ -9,6 +9,8 @@
 -- Supports:				dryplants, stoneage, sumpf			
 -----------------------------------------------------------------------------------------------
 
+assert(abstract_ferns.config.enable_horsetails == true)
+
 abstract_ferns.grow_horsetail = function(pos)
 	local horsetail_size = math.random(1,4)
 	if 	   horsetail_size == 1 then
@@ -124,8 +126,6 @@ end
 -----------------------------------------------------------------------------------------------
 -- Generating
 -----------------------------------------------------------------------------------------------
-
-assert(abstract_ferns.config.enable_horsetails == true)
 
 if abstract_ferns.config.enable_horsetails_on_grass == true then
 	plantslib:register_generate_plant({
