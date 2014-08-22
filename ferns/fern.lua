@@ -18,16 +18,17 @@ assert(abstract_ferns.config.enable_lady_fern == true)
 abstract_ferns.grow_fern = function(pos)
 	local fern_size = math.random(1,4)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
+	local fdir = math.random(0, 179)
 	
-	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
-	or minetest.get_node(right_here).name == "default:junglegrass" then
+	if minetest.get_node(right_here).name == "air"
+			or minetest.get_node(right_here).name == "default:junglegrass" then
 	
 		if fern_size == 1 then
-			minetest.set_node(right_here, {name="ferns:fern_01"})
-		elseif fern_size <= 3 then
-			minetest.set_node(right_here, {name="ferns:fern_02"})
+			minetest.set_node(right_here, {name="ferns:fern_01", param2=fdir})
+		elseif fern_size < 4 then
+			minetest.set_node(right_here, {name="ferns:fern_02", param2=fdir})
 		else -- fern_size == 4 then
-			minetest.set_node(right_here, {name="ferns:fern_03"})
+			minetest.set_node(right_here, {name="ferns:fern_03", param2=fdir})
 		end
 	end
 end
