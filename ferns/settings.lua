@@ -16,28 +16,28 @@
 abstract_ferns.config = {}
 
 -- Which plants should generate/spawn?
-abstract_ferns.config.Lady_fern			= true
-abstract_ferns.config.Horsetails 		= true
-abstract_ferns.config.Tree_Fern 		= true
-abstract_ferns.config.Giant_Tree_Fern 	= true
+abstract_ferns.config.enable_lady_fern			= true
+abstract_ferns.config.enable_horsetails			= true
+abstract_ferns.config.enable_treefern			= true
+abstract_ferns.config.enable_giant_treefern		= true
 
 -- Where should they generate/spawn? (if they generate/spawn)
 --
 --  Lady-Fern
-abstract_ferns.config.Ferns_near_Tree = true
-abstract_ferns.config.Ferns_near_Rock = true
-abstract_ferns.config.Ferns_near_Ores = true				-- if there's a bunch of ferns there's ores nearby, this one causes a huge fps drop
-abstract_ferns.config.Ferns_in_Groups = false				-- this one is meant as a replacement of Ferns_near_Ores: ferns tend to generate in groups, less fps drop, no hint for nearby ores
+abstract_ferns.config.lady_ferns_near_tree = true
+abstract_ferns.config.lady_ferns_near_rock = true
+abstract_ferns.config.lady_ferns_near_ores = true				-- if there's a bunch of ferns there's ores nearby, this one causes a huge fps drop
+abstract_ferns.config.lady_ferns_in_groups = false				-- this one is meant as a replacement of Ferns_near_Ores: ferns tend to generate in groups, less fps drop, no hint for nearby ores
 --
 --	Horsetails
-abstract_ferns.config.Horsetails_Spawning = false			-- horsetails will grow in already explored areas, over time, near water or gravel
-abstract_ferns.config.Horsetails_on_Grass = true			-- on dirt with grass and swamp (sumpf mod)
-abstract_ferns.config.Horsetails_on_Stony = true			-- on gravel, mossy cobble and silex (stoneage mod)
+abstract_ferns.config.enable_horsetails_spawning	= false		-- horsetails will grow in already explored areas, over time, near water or gravel
+abstract_ferns.config.enable_horsetails_on_grass 	= true		-- on dirt with grass and swamp (sumpf mod)
+abstract_ferns.config.enable_horsetails_on_stones 	= true		-- on gravel, mossy cobble and silex (stoneage mod)
 --
 -- Tree_Fern
-abstract_ferns.config.Tree_Ferns_in_Jungle = true
-abstract_ferns.config.Tree_Ferns_for_Oases = true			-- for oases and tropical beaches
+abstract_ferns.config.enable_treeferns_in_jungle	= true
+abstract_ferns.config.enable_treeferns_in_oases 	= true		-- for oases and tropical beaches
 --
 -- Giant_Tree_Fern
-abstract_ferns.config.Giant_Tree_Ferns_in_Jungle = true
-abstract_ferns.config.Giant_Tree_Ferns_for_Oases = true		-- for oases and tropical beaches
+abstract_ferns.config.enable_giant_treeferns_in_jungle	= true
+abstract_ferns.config.enable_giant_treeferns_in_oases	= true	-- for oases and tropical beaches
