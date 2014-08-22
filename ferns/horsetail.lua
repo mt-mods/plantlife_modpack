@@ -12,15 +12,16 @@
 assert(abstract_ferns.config.enable_horsetails == true)
 
 abstract_ferns.grow_horsetail = function(pos)
-	local horsetail_size = math.random(1,4)
-	if 	   horsetail_size == 1 then
-		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_01"})
+	local horsetail_size = math.random(1, 4)
+	local dest = {x=pos.x, y=pos.y+1, z=pos.z}
+	if horsetail_size == 1 then
+		minetest.set_node(dest, {name="ferns:horsetail_01"})
 	elseif horsetail_size == 2 then
-		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_02"})
+		minetest.set_node(dest, {name="ferns:horsetail_02"})
 	elseif horsetail_size == 3 then
-		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_03"})
-	elseif horsetail_size == 4 then
-		minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="ferns:horsetail_04"})
+		minetest.set_node(dest, {name="ferns:horsetail_03"})
+	else -- horsetail_size == 4 
+		minetest.set_node(dest, {name="ferns:horsetail_04"})
 	end
 end
 
@@ -87,7 +88,7 @@ minetest.register_node("ferns:horsetail_04", { -- the one in inventory
 	},
 	on_place = function(itemstack, placer, pointed_thing)
 		-- place a random horsetail
-		local stack = ItemStack("ferns:horsetail_0"..math.random(2,4))
+		local stack = ItemStack("ferns:horsetail_0"..math.random(2, 4))
 		local ret = minetest.item_place(stack, placer, pointed_thing)
 		return ItemStack("ferns:horsetail_04 "..itemstack:get_count()-(1-ret:get_count()))
 	end,
@@ -165,8 +166,7 @@ if abstract_ferns.config.enable_horsetails_on_stones == true then
 			"default:mossycobble",
 			"stoneage:dirt_with_silex",
 			"stoneage:grass_with_silex",
-			"stoneage:sand_with_silex"--, -- roots go deep
-			--"sumpf:sumpf"
+			"stoneage:sand_with_silex", -- roots go deep
 		},
 		max_count = 35,
 		rarity = 20,
