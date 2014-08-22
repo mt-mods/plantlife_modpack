@@ -226,19 +226,23 @@ for i in ipairs(algae_list) do
 end
 
 -- register all potted plant nodes, crafts, and most backward-compat aliases
+-- Description, base node name, item to craft flowerpot with
 
 local flowers_list = {
-	{ "Rose",		"rose"},
-	{ "Tulip",		"tulip"},
-	{ "Yellow Dandelion",	"dandelion_yellow"},
-	{ "White Dandelion",	"dandelion_white"},
-	{ "Blue Geranium",	"geranium"},
-	{ "Viola",		"viola"},
+	{ "Rose",				"rose", 			"flowers:rose" },
+	{ "Tulip",				"tulip", 			"flowers:tulip" },
+	{ "Yellow Dandelion",	"dandelion_yellow",	"flowers:dandelion_yellow" },
+	{ "White Dandelion",	"dandelion_white",	"flowers:dandelion_white" },
+	{ "Blue Geranium",		"geranium",			"flowers:geranium" },
+	{ "Viola",				"viola",			"flowers:viola" },
+	{ "Cactus",				"cactus",			"default:cactus" },
+	{ "Bonsai",				"bonsai",			"default:sapling" }
 }
 
 for i in ipairs(flowers_list) do
-	local flowerdesc = flowers_list[i][1]
-	local flower     = flowers_list[i][2]
+	local flowerdesc	= flowers_list[i][1]
+	local flower		= flowers_list[i][2]
+	local craftwith		= flowers_list[i][3]
 	
 	minetest.register_node(":flowers:potted_"..flower, {
 		description = S("Potted "..flowerdesc),
@@ -261,8 +265,8 @@ for i in ipairs(flowers_list) do
 		type = "shapeless",
 		output = "flowers:potted_"..flower,
 		recipe = {
-			"flowers:flower_pot",
-			"flowers:"..flower
+			craftwith,
+			"flowers:flower_pot"
 		}
 	})
 
