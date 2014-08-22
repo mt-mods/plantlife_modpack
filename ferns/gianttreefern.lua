@@ -275,10 +275,10 @@ minetest.register_abm({
 -- GENERATE GIANT TREE FERN
 -----------------------------------------------------------------------------------------------
 
-assert(abstract_ferns.config.Giant_Tree_Fern == true)
+assert(abstract_ferns.config.enable_giant_treefern == true)
 
 -- in jungles
-if abstract_ferns.config.Giant_Tree_Ferns_in_Jungle == true then
+if abstract_ferns.config.enable_giant_treeferns_in_jungle == true then
 	plantslib:register_generate_plant({
 		surface = {
 			"default:dirt_with_grass",
@@ -303,7 +303,7 @@ if abstract_ferns.config.Giant_Tree_Ferns_in_Jungle == true then
 end
 
 -- for oases & tropical beaches
-if abstract_ferns.config.Giant_Tree_Ferns_for_Oases == true then
+if abstract_ferns.config.enable_giant_treeferns_in_oases == true then
 	plantslib:register_generate_plant({
 		surface = {
 			"default:sand"--,

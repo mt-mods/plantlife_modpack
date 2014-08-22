@@ -102,9 +102,9 @@ minetest.register_node("ferns:fern_01", {
 -- Spawning
 -----------------------------------------------------------------------------------------------
 
-assert(abstract_ferns.config.Lady_fern == true)
+assert(abstract_ferns.config.enable_lady_fern == true)
 
-if abstract_ferns.config.Ferns_near_Tree == true then
+if abstract_ferns.config.lady_ferns_near_tree == true then
 	plantslib:register_generate_plant({ -- near trees (woodlands)
 		surface = {
 			"default:dirt_with_grass",
@@ -132,7 +132,7 @@ if abstract_ferns.config.Ferns_near_Tree == true then
 	)
 end
 
-if abstract_ferns.config.Ferns_near_Rock == true then
+if abstract_ferns.config.lady_ferns_near_rock == true then
 	plantslib:register_generate_plant({ -- near stone (mountains)
 		surface = {
 			"default:dirt_with_grass",
@@ -158,7 +158,7 @@ if abstract_ferns.config.Ferns_near_Rock == true then
 	)
 end
 
-if abstract_ferns.config.Ferns_near_Ores == true then -- this one causes a huge fps drop
+if abstract_ferns.config.lady_ferns_near_ores == true then -- this one causes a huge fps drop
 	plantslib:register_generate_plant({ -- near ores (potential mining sites)
 		surface = {
 			"default:dirt_with_grass",
@@ -195,7 +195,7 @@ if abstract_ferns.config.Ferns_near_Ores == true then -- this one causes a huge 
 	)
 end
 
-if abstract_ferns.config.Ferns_in_Groups == true then -- this one is meant as a replacement of Ferns_near_Ores
+if abstract_ferns.config.lady_ferns_in_groups == true then -- this one is meant as a replacement of Ferns_near_Ores
 	plantslib:register_generate_plant({
 		surface = {
 			"default:dirt_with_grass",

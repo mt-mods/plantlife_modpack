@@ -94,7 +94,7 @@ minetest.register_node("ferns:horsetail_04", { -- the one in inventory
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
-if abstract_ferns.config.Horsetails_Spawning == true then
+if abstract_ferns.config.enable_horsetails_spawning == true then
 	plantslib:spawn_on_surfaces({
 		spawn_delay = 1200,
 		spawn_plants = {
@@ -125,9 +125,9 @@ end
 -- Generating
 -----------------------------------------------------------------------------------------------
 
-assert(abstract_ferns.config.Horsetails == true)
+assert(abstract_ferns.config.enable_horsetails == true)
 
-if abstract_ferns.config.Horsetails_on_Grass == true then
+if abstract_ferns.config.enable_horsetails_on_grass == true then
 	plantslib:register_generate_plant({
 		surface = {
 			"default:dirt_with_grass",
@@ -158,7 +158,7 @@ if abstract_ferns.config.Horsetails_on_Grass == true then
 	)
 end
 
-if abstract_ferns.config.Horsetails_on_Stony == true then
+if abstract_ferns.config.enable_horsetails_on_stones == true then
 	plantslib:register_generate_plant({
 		surface = {
 			"default:gravel", -- roots go deep
