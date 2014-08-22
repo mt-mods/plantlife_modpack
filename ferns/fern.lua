@@ -13,6 +13,8 @@
 -- http://www.mygarden.net.au/gardening/athyrium-yokoscense/3900/1
 -----------------------------------------------------------------------------------------------
 
+assert(abstract_ferns.config.enable_lady_fern == true)
+
 abstract_ferns.grow_fern = function(pos)
 	local fern_size = math.random(1,4)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -101,8 +103,6 @@ minetest.register_node("ferns:fern_01", {
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
-
-assert(abstract_ferns.config.enable_lady_fern == true)
 
 if abstract_ferns.config.lady_ferns_near_tree == true then
 	plantslib:register_generate_plant({ -- near trees (woodlands)
