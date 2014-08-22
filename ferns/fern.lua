@@ -22,7 +22,6 @@ abstract_ferns.grow_fern = function(pos)
 	
 	if minetest.get_node(right_here).name == "air"
 			or minetest.get_node(right_here).name == "default:junglegrass" then
-	
 		if fern_size == 1 then
 			minetest.set_node(right_here, {name="ferns:fern_01", param2=fdir})
 		elseif fern_size < 4 then
