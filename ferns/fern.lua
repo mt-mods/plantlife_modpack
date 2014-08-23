@@ -15,91 +15,57 @@
 
 assert(abstract_ferns.config.enable_lady_fern == true)
 
-abstract_ferns.grow_fern = function(pos)
-	local fern_size = math.random(1,4)
-	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	local fdir = math.random(0, 179)
-	
-	if minetest.get_node(right_here).name == "air"
-			or minetest.get_node(right_here).name == "default:junglegrass" then
-		if fern_size == 1 then
-			minetest.set_node(right_here, {name="ferns:fern_01", param2=fdir})
-		elseif fern_size < 4 then
-			minetest.set_node(right_here, {name="ferns:fern_02", param2=fdir})
-		else -- fern_size == 4 then
-			minetest.set_node(right_here, {name="ferns:fern_03", param2=fdir})
+-- Maintain backward compatibilty
+minetest.register_alias("archaeplantae:fern",		"ferns:fern_03")
+minetest.register_alias("archaeplantae:fern_mid",	"ferns:fern_02")
+minetest.register_alias("archaeplantae:fern_small",	"ferns:fern_01")
+minetest.register_alias("ferns:fern_04",      		"ferns:fern_02") -- for placing
+
+local nodenames = {}
+
+local function create_nodes()
+	local images 	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
+	local vscales	= { 1, 2, 2.2 }
+	local descs		= { "Lady-fern (Athyrium)", nil, nil }
+
+	for i = 1, 3 do
+		local node_on_place = nil
+		if i == 1 then
+			node_on_place = function(itemstack, placer, pointed_thing)
+				-- place a random fern
+				local stack = ItemStack("ferns:fern_0"..math.random(1,4))
+				local ret = minetest.item_place(stack, placer, pointed_thing)
+				return ItemStack("ferns:fern_01 "..itemstack:get_count()-(1-ret:get_count()))	-- TODO FIXME?
+			end
 		end
+		nodenames[i] = "ferns:fern_"..string.format("%02d", i)
+		minetest.register_node(nodenames[i], {
+			description = descs[i] or ("Lady-fern (Athyrium) " .. string.format("%02d", i)),
+			inventory_image = "ferns_fern.png",
+			drawtype = "plantlike",
+			visual_scale = vscales[i],
+			paramtype = "light",
+			tiles = { images[i] },
+			walkable = false,
+			buildable_to = true,
+			groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
+			sounds = default.node_sound_leaves_defaults(),
+			selection_box = {
+				type = "fixed",
+				fixed = {-7/16, -1/2, -7/16, 7/16, 0, 7/16},
+			},
+			drop = "ferns:fern_01",
+			on_place = node_on_place
+		})
 	end
 end
 
 -----------------------------------------------------------------------------------------------
--- FERN (large)
+-- Init
 -----------------------------------------------------------------------------------------------
-minetest.register_alias("archaeplantae:fern",      "ferns:fern_03") -- support old versions
 
-minetest.register_node("ferns:fern_03", {
-	drawtype = "plantlike",
-	visual_scale = 2,
-	paramtype = "light",
-	--tiles = {"[combine:32x32:0,0=top_left.png:0,16=bottom_left.png:16,0=top_right.png:16,16=bottom_right.png"},
-	tiles = {"ferns_fern_big.png"},
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = {-7/16, -1/2, -7/16, 7/16, 0, 7/16},
-	},
-	drop = "ferns:fern_01",
-})
------------------------------------------------------------------------------------------------
--- FERN (medium)
------------------------------------------------------------------------------------------------
-minetest.register_alias("archaeplantae:fern_mid",      "ferns:fern_02") -- support old versions
+create_nodes()
 
-minetest.register_node("ferns:fern_02", {
-	drawtype = "plantlike",
-	visual_scale = 2,
-	paramtype = "light",
-	tiles = {"ferns_fern_mid.png"},
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = {-7/16, -1/2, -7/16, 7/16, 0, 7/16},
-	},
-	drop = "ferns:fern_01",
-})
------------------------------------------------------------------------------------------------
--- FERN (small)
------------------------------------------------------------------------------------------------
-minetest.register_alias("archaeplantae:fern_small",      "ferns:fern_01") -- support old versions
-minetest.register_alias("ferns:fern_04",      "ferns:fern_02") -- for placing
-
-minetest.register_node("ferns:fern_01", {
-	description = "Lady-fern (Athyrium)", -- divinationis
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"ferns_fern.png"},
-	inventory_image = "ferns_fern.png",
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = {-7/16, -1/2, -7/16, 7/16, 0, 7/16},
-	},
-	on_place = function(itemstack, placer, pointed_thing)
-		-- place a random fern
-		local stack = ItemStack("ferns:fern_0"..math.random(1,4))
-		local ret = minetest.item_place(stack, placer, pointed_thing)
-		return ItemStack("ferns:fern_01 "..itemstack:get_count()-(1-ret:get_count()))
-	end,
-})
 -----------------------------------------------------------------------------------------------
 -- Spawning
 -----------------------------------------------------------------------------------------------
@@ -127,8 +93,9 @@ if abstract_ferns.config.lady_ferns_near_tree == true then
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C (too hot?)
 		temp_min = 0.75, -- -12 °C
+		random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_fern
+	nodenames
 	)
 end
 
@@ -153,8 +120,9 @@ if abstract_ferns.config.lady_ferns_near_rock == true then
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C (too hot?)
 		temp_min = 0.75, -- -12 °C
+		random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_fern
+	nodenames
 	)
 end
 
@@ -190,8 +158,9 @@ if abstract_ferns.config.lady_ferns_near_ores == true then -- this one causes a 
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C (too hot?)
 		temp_min = 0.75, -- -12 °C
+		random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_fern
+	nodenames
 	)
 end
 
@@ -220,7 +189,8 @@ if abstract_ferns.config.lady_ferns_in_groups == true then -- this one is meant 
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C (too hot?)
 		temp_min = 0.75, -- -12 °C
+		random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_fern
+	nodenames
 	)
 end
