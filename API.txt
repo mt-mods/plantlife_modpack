@@ -238,12 +238,12 @@ checking is disabled.  Same holds true for the nneighbors bit above that.
 
 
 =====
-plantslib:register_generate_plant(biome, node_or_function_or_treedef)
+plantslib:register_generate_plant(biome, nodes_or_function_or_treedef)
 
 To register an object to be spawned at mapgen time rather than via an ABM,
 call this function with two parameters:  a table with your object's biome
-information, and a string or table describing what to do if the engine finds a
-suitable node (see below).
+information, and a string, function, or table describing what to do if the
+engine finds a suitable surface node (see below).
 
 The biome table contains quite a number of options, though there are fewer 
 here than are available in the ABM-based spawner, as some stuff doesn't make
@@ -335,17 +335,25 @@ biome = {
 	random_facedir = {table}, -- same as with the ABM spawner.
 }
 
-Regarding node_or_function_or_treedef, this must either be table with an 
-L-Systems tree definition, or a string with a node or function name.
+Regarding nodes_or_function_or_treedef, this must either be a string naming
+a node to spawn, a table with a list of nodes to choose from, a table with an
+L-Systems tree definition, or a function.
 
 If you specified a string, the code will attempt to determine whether that
 string specifies a valid node name.  If it does, that node will be placed on
 top of the target position directly (unless one of the other mapgen options
 directs the code to do otherwise).
 
-If you specified a table, the code assumes this table contains an L-Systems
-tree definition, then that definition will be passed directly to the
-spawn_tree() function along with the position to spawn the tree on.
+If you specified a table and there is no "axiom" field, the code assumes that
+it is a list of nodes.  Simply name one node per entry in the list, e.g.
+{"default:junglegrass", "default:dry_shrub"} and so on, for as many nodes as
+you want to list.  A random node from the list will be chosen each time the
+code goes to place a node.
+
+If you specified a table, and there *is* an "axiom" field, the code assumes
+that this table contains an L-Systems tree definition, which will be passed
+directly to the engine's spawn_tree() function along with the position on
+which to spawn the tree.
 
 You can also supply a function to be directly executed, which is given the
 current node position (the usual "pos" table format) as its sole argument.  It
