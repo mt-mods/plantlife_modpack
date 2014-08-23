@@ -11,88 +11,64 @@
 
 assert(abstract_ferns.config.enable_horsetails == true)
 
-abstract_ferns.grow_horsetail = function(pos)
-	local horsetail_size = math.random(1, 4)
-	local dest = {x=pos.x, y=pos.y+1, z=pos.z}
-	if horsetail_size == 1 then
-		minetest.set_node(dest, {name="ferns:horsetail_01"})
-	elseif horsetail_size == 2 then
-		minetest.set_node(dest, {name="ferns:horsetail_02"})
-	elseif horsetail_size == 3 then
-		minetest.set_node(dest, {name="ferns:horsetail_03"})
-	else -- horsetail_size == 4 
-		minetest.set_node(dest, {name="ferns:horsetail_04"})
+-----------------------------------------------------------------------------------------------
+-- HORSETAIL  (EQUISETUM)
+-----------------------------------------------------------------------------------------------
+
+local node_names = {}
+
+local function create_nodes()
+	local selection_boxes = {
+		{ -0.15, -1/2, -0.15, 0.15, -1/16, 0.15 },
+		{ -0.15, -1/2, -0.15, 0.15, 1/16, 0.15 },
+		{ -0.15, -1/2, -0.15, 0.15, 4/16, 0.15 },
+		{ -0.15, -1/2, -0.15, 0.15, 7/16, 0.15 },
+	}
+
+	for i = 1, 4 do
+		local node_name = "ferns:horsetail_" .. string.format("%02d", i)
+		local node_img = "ferns_horsetail_" .. string.format("%02d", i) .. ".png"
+		local node_desc
+		local node_on_use = nil
+		local node_drop = "ferns:horsetail_04"
+
+		if i == 1 then
+			node_desc = "Young Horsetail (Equisetum)"
+			node_on_use = minetest.item_eat(1) -- young ones edible https://en.wikipedia.org/wiki/Equisetum
+			node_drop = node_name
+		elseif i == 4 then
+			node_desc = "Horsetail (Equisetum)"
+		else
+			node_desc = "Horsetail (Equisetum) ".. string.format("%02d", i)
+		end
+
+		node_names[i] = node_name
+
+		minetest.register_node(node_name, {
+			description = node_desc,
+			drawtype = "plantlike",
+			paramtype = "light",
+			tiles = { node_img },
+			inventory_image = node_img,
+			walkable = false,
+			buildable_to = true,
+			groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
+			sounds = default.node_sound_leaves_defaults(),
+			selection_box = {
+				type = "fixed",
+				fixed = selection_boxes[i],
+			},
+			on_use = node_on_use,
+			drop = node_drop,
+		})
 	end
 end
 
 -----------------------------------------------------------------------------------------------
--- HORSETAIL  (EQUISETUM)
+-- Init
 -----------------------------------------------------------------------------------------------
-minetest.register_node("ferns:horsetail_01", { 
-	description = "Young Horsetail (Equisetum)",
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"ferns_horsetail_01.png"},
-	inventory_image = "ferns_horsetail_01.png",
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -1/2, -0.15, 0.15, -1/16, 0.15 },
-	},
-	on_use = minetest.item_eat(1), -- young ones edible https://en.wikipedia.org/wiki/Equisetum
-})
-minetest.register_node("ferns:horsetail_02", {
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"ferns_horsetail_02.png"},
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1,not_in_creative_inventory=1},
-	drop = "ferns:horsetail_04",
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -1/2, -0.15, 0.15, 1/16, 0.15 },
-	},
-})
-minetest.register_node("ferns:horsetail_03", {
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"ferns_horsetail_03.png"},
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1,not_in_creative_inventory=1},
-	drop = "ferns:horsetail_04",
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -1/2, -0.15, 0.15, 4/16, 0.15 },
-	},
-})
-minetest.register_node("ferns:horsetail_04", { -- the one in inventory
-	description = "Horsetail (Equisetum)",
-	drawtype = "plantlike",
-	paramtype = "light",
-	tiles = {"ferns_horsetail_04.png"},
-	inventory_image = "ferns_horsetail_04.png",
-	walkable = false,
-	buildable_to = true,
-	groups = {snappy=3,flammable=2,attached_node=1,horsetail=1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -1/2, -0.15, 0.15, 7/16, 0.15 },
-	},
-	on_place = function(itemstack, placer, pointed_thing)
-		-- place a random horsetail
-		local stack = ItemStack("ferns:horsetail_0"..math.random(2, 4))
-		local ret = minetest.item_place(stack, placer, pointed_thing)
-		return ItemStack("ferns:horsetail_04 "..itemstack:get_count()-(1-ret:get_count()))
-	end,
-})
+
+create_nodes()
 
 -----------------------------------------------------------------------------------------------
 -- Spawning
@@ -100,12 +76,7 @@ minetest.register_node("ferns:horsetail_04", { -- the one in inventory
 if abstract_ferns.config.enable_horsetails_spawning == true then
 	plantslib:spawn_on_surfaces({
 		spawn_delay = 1200,
-		spawn_plants = {
-			"ferns:horsetail_01",
-			"ferns:horsetail_02",
-			"ferns:horsetail_03",
-			"ferns:horsetail_04"
-		},
+		spawn_plants = node_names,
 		spawn_chance = 400,
 		spawn_surfaces = {
 			"default:dirt_with_grass",
@@ -122,8 +93,10 @@ if abstract_ferns.config.enable_horsetails_spawning == true then
 		near_nodes_size = 2,
 		near_nodes_vertical = 1,
 		near_nodes_count = 1,
+		--random_facedir = { 0, 179 },
 	})
 end
+
 -----------------------------------------------------------------------------------------------
 -- Generating
 -----------------------------------------------------------------------------------------------
@@ -154,8 +127,9 @@ if abstract_ferns.config.enable_horsetails_on_grass == true then
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C
 		temp_min = 0.53, -- 0 °C, dies back in winter
+		--random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_horsetail
+	node_names
 	)
 end
 
@@ -175,7 +149,8 @@ if abstract_ferns.config.enable_horsetails_on_stones == true then
 		humidity_min = 0.4,
 		temp_max = -0.5, -- 55 °C
 		temp_min = 0.53, -- 0 °C, dies back in winter
+		--random_facedir = { 0, 179 },
 	},
-	abstract_ferns.grow_horsetail
+	node_names
 	)
 end
