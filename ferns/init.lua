@@ -36,6 +36,7 @@ dofile(minetest.get_modpath("ferns").."/crafting.lua")
 local run_tests = true	-- set to false to skip
 
 if run_tests then
+
 	-- Check node names
 	if abstract_ferns.config.enable_horsetails then
 		print("[Mod] " ..title.. " Checking horsetail item strings")
@@ -49,6 +50,13 @@ if run_tests then
 		assert(minetest.registered_items["ferns:fern_01"] ~= nil)
 		assert(minetest.registered_items["ferns:fern_02"] ~= nil)
 		assert(minetest.registered_items["ferns:fern_03"] ~= nil)
+	end
+	if abstract_ferns.config.enable_treefern then
+		print("[Mod] ".. title .." Checking tree fern item strings")
+		assert(minetest.registered_items["ferns:tree_fern_leaves"] ~= nil)
+		assert(minetest.registered_items["ferns:tree_fern_leaves_02"] ~= nil)
+		assert(minetest.registered_items["ferns:fern_trunk"] ~= nil)
+		assert(minetest.registered_items["ferns:sapling_tree_fern"] ~= nil)
 	end
 end
 
