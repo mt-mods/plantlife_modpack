@@ -114,26 +114,26 @@ end
 -- register the list of surfaces to spawn stuff on, filtering out all duplicates.
 -- separate the items by air-checking or non-air-checking map eval methods
 
-function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
+function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 
 	-- if calling code passes an undefined node for a surface or 
 	-- as a node to be spawned, don't register an action for it.
 
-	if type(node_or_function_or_model) == "string"
-	  and string.find(node_or_function_or_model, ":")
-	  and not minetest.registered_nodes[node_or_function_or_model] then
-		plantslib:dbg("Warning: Ignored registration for undefined spawn node: "..dump(node_or_function_or_model))
+	if type(nodes_or_function_or_model) == "string"
+	  and string.find(nodes_or_function_or_model, ":")
+	  and not minetest.registered_nodes[nodes_or_function_or_model] then
+		plantslib:dbg("Warning: Ignored registration for undefined spawn node: "..dump(nodes_or_function_or_model))
 		return
 	end
 
-	if type(node_or_function_or_model) == "string"
-	  and not string.find(node_or_function_or_model, ":") then
-		plantslib:dbg("Warning: Registered function call using deprecated string method: "..dump(node_or_function_or_model))
+	if type(nodes_or_function_or_model) == "string"
+	  and not string.find(nodes_or_function_or_model, ":") then
+		plantslib:dbg("Warning: Registered function call using deprecated string method: "..dump(nodes_or_function_or_model))
 	end
 
 	if biomedef.check_air == false then 
-		plantslib:dbg("Register no-air-check mapgen hook: "..dump(node_or_function_or_model))
-		plantslib.actions_list_noaircheck[#plantslib.actions_list_noaircheck + 1] = { biomedef, node_or_function_or_model }
+		plantslib:dbg("Register no-air-check mapgen hook: "..dump(nodes_or_function_or_model))
+		plantslib.actions_list_noaircheck[#plantslib.actions_list_noaircheck + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
 			if s and minetest.registered_nodes[s] then
@@ -156,8 +156,8 @@ function plantslib:register_generate_plant(biomedef, node_or_function_or_model)
 			end
 		end
 	else
-		plantslib:dbg("Register with-air-checking mapgen hook: "..dump(node_or_function_or_model))
-		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, node_or_function_or_model }
+		plantslib:dbg("Register with-air-checking mapgen hook: "..dump(nodes_or_function_or_model))
+		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
 			if s and minetest.registered_nodes[s] then
@@ -209,7 +209,7 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 
 		for action = 1, #plantslib.actions_list do
 			local biome = plantslib.actions_list[action][1]
-			local node_or_function_or_model = plantslib.actions_list[action][2]
+			local nodes_or_function_or_model = plantslib.actions_list[action][2]
 
 			plantslib:set_defaults(biome)
 
@@ -280,27 +280,36 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 								minetest.remove_node(pos)
 							end
 
-							local objtype = type(node_or_function_or_model)
+							local objtype = type(nodes_or_function_or_model)
 
 							if objtype == "table" then
-								plantslib:generate_tree(pos, node_or_function_or_model)
-								spawned = true
+								if nodes_or_function_or_model.axiom then
+									plantslib:generate_tree(pos, nodes_or_function_or_model)
+									spawned = true
+								else
+									local fdir = nil
+									if biome.random_facedir then
+										fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+									end
+									minetest.set_node(p_top, { name = nodes_or_function_or_model[math.random(#nodes_or_function_or_model)], param2 = fdir })
+									spawned = true
+								end
 							elseif objtype == "string" and
-							  minetest.registered_nodes[node_or_function_or_model] then
+							  minetest.registered_nodes[nodes_or_function_or_model] then
 								local fdir = nil
 								if biome.random_facedir then
 									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
 								end
-								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
+								minetest.set_node(p_top, { name = nodes_or_function_or_model, param2 = fdir })
 								spawned = true
 							elseif objtype == "function" then
-								node_or_function_or_model(pos)
+								nodes_or_function_or_model(pos)
 								spawned = true
 							elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
-								format(node_or_function_or_model)),pos) then
+								format(nodes_or_function_or_model)),pos) then
 								spawned = true
 							else
-								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(nodes_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 							end
 						else
 							tries = tries + 1
@@ -330,7 +339,7 @@ function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
 
 		for action = 1, #plantslib.actions_list_noaircheck do
 			local biome = plantslib.actions_list_noaircheck[action][1]
-			local node_or_function_or_model = plantslib.actions_list_noaircheck[action][2]
+			local nodes_or_function_or_model = plantslib.actions_list_noaircheck[action][2]
 
 			plantslib:set_defaults(biome)
 
@@ -400,27 +409,36 @@ function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
 								minetest.remove_node(pos)
 							end
 
-							local objtype = type(node_or_function_or_model)
+							local objtype = type(nodes_or_function_or_model)
 
 							if objtype == "table" then
-								plantslib:generate_tree(pos, node_or_function_or_model)
-								spawned = true
+								if nodes_or_function_or_model.axiom then
+									plantslib:generate_tree(pos, nodes_or_function_or_model)
+									spawned = true
+								else
+									local fdir = nil
+									if biome.random_facedir then
+										fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+									end
+									minetest.set_node(p_top, { name = nodes_or_function_or_model[math.random(#nodes_or_function_or_model)], param2 = fdir })
+									spawned = true
+								end
 							elseif objtype == "string" and
-							  minetest.registered_nodes[node_or_function_or_model] then
+							  minetest.registered_nodes[nodes_or_function_or_model] then
 								local fdir = nil
 								if biome.random_facedir then
 									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
 								end
-								minetest.set_node(p_top, { name = node_or_function_or_model, param2 = fdir })
+								minetest.set_node(p_top, { name = nodes_or_function_or_model, param2 = fdir })
 								spawned = true
 							elseif objtype == "function" then
-								node_or_function_or_model(pos)
+								nodes_or_function_or_model(pos)
 								spawned = true
 							elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
-								format(node_or_function_or_model)),pos) then
+								format(nodes_or_function_or_model)),pos) then
 								spawned = true
 							else
-								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(node_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(nodes_or_function_or_model).." that was pointed at {"..dump(pos).."}")
 							end
 						else
 							tries = tries + 1
@@ -666,14 +684,14 @@ end
 -- spawn_tree() on generate is routed through here so that other mods can hook
 -- into it.
 
-function plantslib:generate_tree(pos, node_or_function_or_model)
-	minetest.spawn_tree(pos, node_or_function_or_model)
+function plantslib:generate_tree(pos, nodes_or_function_or_model)
+	minetest.spawn_tree(pos, nodes_or_function_or_model)
 end
 
 -- and this one's for the call used in the growing code
 
-function plantslib:grow_tree(pos, node_or_function_or_model)
-	minetest.spawn_tree(pos, node_or_function_or_model)
+function plantslib:grow_tree(pos, nodes_or_function_or_model)
+	minetest.spawn_tree(pos, nodes_or_function_or_model)
 end
 
 -- Check for infinite stacks
