@@ -37,6 +37,10 @@ local run_tests = true	-- set to false to skip
 
 if run_tests then
 
+	-- These are, essentially, unit tests to make sure that all required item
+	-- strings are registered. The init sequence is not time critical so leaving
+	-- them here won't affect performance.
+
 	-- Check node names
 	if abstract_ferns.config.enable_horsetails then
 		print("[Mod] " ..title.. " Checking horsetail item strings")
