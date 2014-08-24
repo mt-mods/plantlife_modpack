@@ -587,9 +587,9 @@ above, Perlin values can be tested to determine the approximate humidity of
 the *air* in the area.  This humidity map is basically the perlin layer used
 for deserts.
 
-A value of -1.0 is very moist (basically a thick fog, if it could be seen), a
-value of +0.4 represents the edge of a desert as usually seen in the game, and
-a value of +1.0 is as dry as a bone.
+A value of +1.0 is very moist (basically a thick fog, if it could be seen), a
+value of roughly +0.25 represents the edge of a desert as usually seen in the
+game, and a value of -1.0 is as dry as a bone.
 
 This does not check for nearby water, just general air humidity, and that
 being the case, nearby ground does not affect the reported humidity of a
