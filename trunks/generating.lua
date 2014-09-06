@@ -223,13 +223,13 @@ local TRuNKS = {
 
 if Horizontal_Trunks == true then -- see settings.txt
 for i in pairs(TRuNKS) do
-	local 	MoD = 			TRuNKS[i][1]
-	local 	TRuNK = 		TRuNKS[i][2]
-	local 	NR = 			TRuNKS[i][3]
+	local 	MoD = 	TRuNKS[i][1]
+	local 	TRuNK = TRuNKS[i][2]
+	local 	NR = 	TRuNKS[i][3]
+	local	trunkname = MoD..":"..TRuNK
 	if minetest.get_modpath(MoD) ~= nil 
-	and NR < 6 then -- moretrees trunks allready have facedir
-
-			trunkname = MoD..":"..TRuNK
+	and NR < 6 -- moretrees trunks allready have facedir
+	and minetest.registered_nodes[trunkname] then -- the node being called exists.
 			temptrunk = clone_node(trunkname)
 			temptrunk.paramtype2 = "facedir"
 			minetest.register_node(":"..trunkname, temptrunk)
