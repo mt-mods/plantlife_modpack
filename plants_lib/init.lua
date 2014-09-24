@@ -10,10 +10,25 @@
 
 plantslib = {}
 
+plantslib.blocklist_aircheck = {}
+plantslib.blocklist_no_aircheck = {}
+
+plantslib.surface_nodes_aircheck = {}
+plantslib.surface_nodes_no_aircheck = {}
+
+plantslib.surfaceslist_aircheck = {}
+plantslib.surfaceslist_no_aircheck = {}
+
+plantslib.actioncount_aircheck = {}
+plantslib.actioncount_no_aircheck = {}
+
+plantslib.actionslist_aircheck = {}
+plantslib.actionslist_no_aircheck = {}
+
 plantslib.modpath = minetest.get_modpath("plants_lib")
 plantslib.intllib_modpath = minetest.get_modpath("intllib")
 
-plantslib.total_no_air_check_calls = 0
+plantslib.total_no_aircheck_calls = 0
 
 local S
 if plantslib.intllib_modpath then
@@ -98,12 +113,6 @@ function plantslib:set_defaults(biome)
 	biome.facedir = biome.facedir or 0
 end
 
-plantslib.surfaces_list = {}
-plantslib.actions_list = {}
-
-plantslib.surfaces_list_noaircheck = {}
-plantslib.actions_list_noaircheck = {}
-
 local function search_table(t, s)
 	for i = 1, #t do
 		if t[i] == s then return true end
@@ -133,12 +142,12 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 
 	if biomedef.check_air == false then 
 		plantslib:dbg("Register no-air-check mapgen hook: "..dump(nodes_or_function_or_model))
-		plantslib.actions_list_noaircheck[#plantslib.actions_list_noaircheck + 1] = { biomedef, nodes_or_function_or_model }
+		plantslib.actionslist_no_aircheck[#plantslib.actionslist_no_aircheck + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
 			if s and minetest.registered_nodes[s] then
-				if not search_table(plantslib.surfaces_list_noaircheck, s) then
-					plantslib.surfaces_list_noaircheck[#plantslib.surfaces_list_noaircheck + 1] = s
+				if not search_table(plantslib.surfaceslist_no_aircheck, s) then
+					plantslib.surfaceslist_no_aircheck[#plantslib.surfaceslist_no_aircheck + 1] = s
 				end
 			else
 				plantslib:dbg("Warning: Ignored no-air-check registration for undefined surface node: "..dump(s))
@@ -147,8 +156,8 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 			for i = 1, #biomedef.surface do
 				local s = biomedef.surface[i]
 				if s and minetest.registered_nodes[s] then
-					if not search_table(plantslib.surfaces_list_noaircheck, s) then
-						plantslib.surfaces_list_noaircheck[#plantslib.surfaces_list_noaircheck + 1] = s
+					if not search_table(plantslib.surfaceslist_no_aircheck, s) then
+						plantslib.surfaceslist_no_aircheck[#plantslib.surfaceslist_no_aircheck + 1] = s
 					end
 				else
 					plantslib:dbg("Warning: Ignored no-air-check registration for undefined surface node: "..dump(s))
@@ -157,12 +166,12 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 		end
 	else
 		plantslib:dbg("Register with-air-checking mapgen hook: "..dump(nodes_or_function_or_model))
-		plantslib.actions_list[#plantslib.actions_list + 1] = { biomedef, nodes_or_function_or_model }
+		plantslib.actionslist_aircheck[#plantslib.actionslist_aircheck + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
 			if s and minetest.registered_nodes[s] then
-				if not search_table(plantslib.surfaces_list, s) then
-					plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+				if not search_table(plantslib.surfaceslist_aircheck, s) then
+					plantslib.surfaceslist_aircheck[#plantslib.surfaceslist_aircheck + 1] = s
 				end
 			else
 				plantslib:dbg("Warning: Ignored with-air-checking registration for undefined surface node: "..dump(s))
@@ -171,8 +180,8 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 			for i = 1, #biomedef.surface do
 				local s = biomedef.surface[i]
 				if s and minetest.registered_nodes[s] then
-					if not search_table(plantslib.surfaces_list, s) then
-						plantslib.surfaces_list[#plantslib.surfaces_list + 1] = s
+					if not search_table(plantslib.surfaceslist_aircheck, s) then
+						plantslib.surfaceslist_aircheck[#plantslib.surfaceslist_aircheck + 1] = s
 					end
 				else
 					plantslib:dbg("Warning: Ignored with-air-checking registration for undefined surface node: "..dump(s))
@@ -182,7 +191,7 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 	end
 end
 
-function plantslib:populate_surfaces(minp, maxp, blockseed, biome, nodes_or_function_or_model, surface_nodes, checkair)
+function plantslib:populate_surfaces(biome, nodes_or_function_or_model, snodes, checkair)
 
 	plantslib:set_defaults(biome)
 
@@ -191,8 +200,8 @@ function plantslib:populate_surfaces(minp, maxp, blockseed, biome, nodes_or_func
 	local in_biome_nodes = {}
 	local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
 
-	for i = 1, #surface_nodes.blockhash do
-		local pos = surface_nodes.blockhash[i]
+	for i = 1, #snodes do
+		local pos = snodes[i]
 		local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
 		local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
@@ -295,31 +304,49 @@ end
 -- Primary mapgen spawner, for mods that can work with air checking enabled on
 -- a surface during the initial map read stage.
 
-function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
-	return function(minp, maxp, blockseed)
+function plantslib:generate_block_with_air_checking(dtime)
 
-		-- use the block hash as a unique key into the surface_nodes
-		-- table, so that we can write the table thread-safely later.
+	if #plantslib.blocklist_aircheck > 0 then
 
-		local blockhash = minetest.hash_node_position(minp)
-		local search_area = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaces_list)
+		local minp =		plantslib.blocklist_aircheck[1][1]
+		local maxp =		plantslib.blocklist_aircheck[1][2]
 
-		-- search the generated block for air-bounded surfaces
+		-- use the block hash as a unique key into the surface nodes
+		-- tables, so that we can write the tables thread-safely.
 
-		local surface_nodes = {}
-		surface_nodes.blockhash = {}
+		local blockhash =	minetest.hash_node_position(minp)
 
-		for i = 1, #search_area do
-		local pos = search_area[i]
-			local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
-			if minetest.get_node(p_top).name == "air" then
-				surface_nodes.blockhash[#surface_nodes.blockhash + 1] = pos
+		if not plantslib.surface_nodes_aircheck.blockhash then
+
+			local search_area = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_aircheck)
+
+			-- search the generated block for air-bounded surfaces
+
+			plantslib.surface_nodes_aircheck.blockhash = {}
+
+			for i = 1, #search_area do
+			local pos = search_area[i]
+				local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
+				if minetest.get_node(p_top).name == "air" then
+					plantslib.surface_nodes_aircheck.blockhash[#plantslib.surface_nodes_aircheck.blockhash + 1] = pos
+				end
 			end
-		end
+			plantslib.actioncount_aircheck.blockhash = 1
 
-		for action = 1, #plantslib.actions_list do
-			plantslib:populate_surfaces(minp, maxp, blockseed, plantslib.actions_list[action][1],
-			  plantslib.actions_list[action][2], surface_nodes, true)		-- [1] is biome, [2] is node/function/model
+		else
+			if plantslib.actioncount_aircheck.blockhash <= #plantslib.actionslist_aircheck then
+				-- [1] is biome, [2] is node/function/model
+				plantslib:populate_surfaces(
+					plantslib.actionslist_aircheck[plantslib.actioncount_aircheck.blockhash][1],
+					plantslib.actionslist_aircheck[plantslib.actioncount_aircheck.blockhash][2],
+					plantslib.surface_nodes_aircheck.blockhash, true)
+				plantslib.actioncount_aircheck.blockhash = plantslib.actioncount_aircheck.blockhash + 1
+			else
+				if plantslib.surface_nodes_aircheck.blockhash then
+					table.remove(plantslib.blocklist_aircheck, 1)
+					plantslib.surface_nodes_aircheck.blockhash = nil
+				end
+			end
 		end
 	end
 end
@@ -327,32 +354,60 @@ end
 -- Secondary mapgen spawner, for mods that require disabling of
 -- checking for air during the initial map read stage.
 
-function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
-	return function(minp, maxp, blockseed)
+function plantslib:generate_block_no_aircheck(dtime)
 
-		local blockhash = minetest.hash_node_position(minp)
+	if #plantslib.blocklist_no_aircheck > 0 then
 
-		-- read the generated block directly into the block cache, filtered just for "surfaces"
+		local minp =		plantslib.blocklist_no_aircheck[1][1]
+		local maxp =		plantslib.blocklist_no_aircheck[1][2]
 
-		local surface_nodes = {}
-		surface_nodes.blockhash = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaces_list_noaircheck)
+		local blockhash =	minetest.hash_node_position(minp)
 
-		for action = 1, #plantslib.actions_list_noaircheck do
-			plantslib:populate_surfaces(minp, maxp, blockseed, plantslib.actions_list_noaircheck[action][1],
-			  plantslib.actions_list_noaircheck[action][2], surface_nodes, false)
+		if not plantslib.surface_nodes_no_aircheck.blockhash then
+
+			-- directly read the block to be searched into the chunk cache
+
+			plantslib.surface_nodes_no_aircheck.blockhash =
+				minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_no_aircheck)
+			plantslib.actioncount_no_aircheck.blockhash = 1
+
+		else
+			if plantslib.actioncount_no_aircheck.blockhash <= #plantslib.actionslist_no_aircheck then
+				local action = plantslib.actioncount_no_aircheck.blockhash
+				plantslib:populate_surfaces(
+					plantslib.actionslist_no_aircheck[plantslib.actioncount_no_aircheck.blockhash][1],
+					plantslib.actionslist_no_aircheck[plantslib.actioncount_no_aircheck.blockhash][2],
+					plantslib.surface_nodes_no_aircheck.blockhash, false)
+				plantslib.actioncount_no_aircheck.blockhash = plantslib.actioncount_no_aircheck.blockhash + 1
+			else
+				if plantslib.surface_nodes_no_aircheck.blockhash then
+					table.remove(plantslib.blocklist_no_aircheck, 1)
+					plantslib.surface_nodes_no_aircheck.blockhash = nil
+				end
+			end
 		end
 	end
 end
 
--- And here we actually register the mapgen hooks with the engine
+-- "Record" the chunks being generated by the core mapgen
 
-minetest.register_on_generated(
-	plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
-)
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	plantslib.blocklist_aircheck[#plantslib.blocklist_aircheck + 1] = { minp, maxp }
+end)
 
-minetest.register_on_generated(
-	plantslib:generate_block_no_air_check(minp, maxp, blockseed)
-)
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	plantslib.blocklist_no_aircheck[#plantslib.blocklist_no_aircheck + 1] = { minp, maxp }
+end)
+
+-- "Play" them back, populating them with new stuff in the process
+
+minetest.register_globalstep(function(dtime)
+	plantslib:generate_block_with_air_checking(dtime)
+end)
+
+minetest.register_globalstep(function(dtime)
+	plantslib:generate_block_no_aircheck(dtime)
+end)
 
 -- The spawning ABM
 
@@ -608,7 +663,7 @@ end
 print("[Plants Lib] Loaded")
 
 minetest.after(0, function()
-	print("[Plants Lib] Registered a total of "..(#plantslib.surfaces_list)+(#plantslib.surfaces_list_noaircheck).." surface types to be evaluated, spread")
-	print("[Plants Lib] across "..#plantslib.actions_list.." actions with air-checking and "..#plantslib.actions_list_noaircheck.." actions without.")
+	print("[Plants Lib] Registered a total of "..(#plantslib.surfaceslist_aircheck)+(#plantslib.surfaceslist_no_aircheck).." surface types to be evaluated, spread")
+	print("[Plants Lib] across "..#plantslib.actionslist_aircheck.." actions with air-checking and "..#plantslib.actionslist_no_aircheck.." actions without.")
 end)
 
