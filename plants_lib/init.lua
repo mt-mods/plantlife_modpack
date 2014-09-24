@@ -182,6 +182,116 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 	end
 end
 
+function plantslib:populate_surfaces(minp, maxp, blockseed, biome, nodes_or_function_or_model, surface_nodes, checkair)
+
+	plantslib:set_defaults(biome)
+
+	-- filter stage 1 - find nodes from the supplied surfaces that are within the current biome.
+
+	local in_biome_nodes = {}
+	local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
+
+	for i = 1, #surface_nodes.blockhash do
+		local pos = surface_nodes.blockhash[i]
+		local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+		local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
+		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
+		local noise3 = plantslib.perlin_humidity:get2d({x=pos.x+150, y=pos.z+50})
+		local biome_surfaces_string = dump(biome.surface)
+		if ((not biome.depth and string.find(biome_surfaces_string, minetest.get_node(pos).name)) or (biome.depth and not string.find(biome_surfaces_string, minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name)))
+		  and (not checkair or minetest.get_node(p_top).name == "air")
+		  and pos.y >= biome.min_elevation
+		  and pos.y <= biome.max_elevation
+		  and noise1 > biome.plantlife_limit
+		  and noise2 <= biome.temp_min
+		  and noise2 >= biome.temp_max
+		  and noise3 <= biome.humidity_min
+		  and noise3 >= biome.humidity_max
+		  and (not biome.ncount or #(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
+		  and (not biome.near_nodes or #(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
+		  and math.random(1,100) > biome.rarity
+		  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
+		  then
+			in_biome_nodes[#in_biome_nodes + 1] = pos
+		end
+	end
+
+	-- filter stage 2 - find places within that biome area to place the plants.
+
+	local num_in_biome_nodes = #in_biome_nodes
+
+	if num_in_biome_nodes > 0 then
+		for i = 1, math.min(biome.max_count, num_in_biome_nodes) do
+			local tries = 0
+			local spawned = false
+			while tries < 2 and not spawned do
+				local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
+				if biome.spawn_replace_node then
+					pos.y = pos.y-1
+				end
+				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+
+				if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes)) then
+					if biome.delete_above then
+						minetest.remove_node(p_top)
+						minetest.remove_node({x=p_top.x, y=p_top.y+1, z=p_top.z})
+					end
+
+					if biome.delete_above_surround then
+						minetest.remove_node({x=p_top.x-1, y=p_top.y, z=p_top.z})
+						minetest.remove_node({x=p_top.x+1, y=p_top.y, z=p_top.z})
+						minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z-1})
+						minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z+1})
+
+						minetest.remove_node({x=p_top.x-1, y=p_top.y+1, z=p_top.z})
+						minetest.remove_node({x=p_top.x+1, y=p_top.y+1, z=p_top.z})
+						minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z-1})
+						minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z+1})
+					end
+
+					if biome.spawn_replace_node then
+						minetest.remove_node(pos)
+					end
+
+					local objtype = type(nodes_or_function_or_model)
+
+					if objtype == "table" then
+						if nodes_or_function_or_model.axiom then
+							plantslib:generate_tree(pos, nodes_or_function_or_model)
+							spawned = true
+						else
+							local fdir = nil
+							if biome.random_facedir then
+								fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+							end
+							minetest.set_node(p_top, { name = nodes_or_function_or_model[math.random(#nodes_or_function_or_model)], param2 = fdir })
+							spawned = true
+						end
+					elseif objtype == "string" and
+					  minetest.registered_nodes[nodes_or_function_or_model] then
+						local fdir = nil
+						if biome.random_facedir then
+							fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
+						end
+						minetest.set_node(p_top, { name = nodes_or_function_or_model, param2 = fdir })
+						spawned = true
+					elseif objtype == "function" then
+						nodes_or_function_or_model(pos)
+						spawned = true
+					elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
+						format(nodes_or_function_or_model)),pos) then
+						spawned = true
+					else
+						plantslib:dbg("Warning: Ignored invalid definition for object "..dump(nodes_or_function_or_model).." that was pointed at {"..dump(pos).."}")
+					end
+				else
+					tries = tries + 1
+				end
+			end
+		end
+	end
+end
+
 -- Primary mapgen spawner, for mods that can work with air checking enabled on
 -- a surface during the initial map read stage.
 
@@ -189,12 +299,12 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 	return function(minp, maxp, blockseed)
 
 		-- use the block hash as a unique key into the surface_nodes
-		-- table, so that we can write the table thread-safely.
+		-- table, so that we can write the table thread-safely later.
 
 		local blockhash = minetest.hash_node_position(minp)
 		local search_area = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaces_list)
 
-		-- search the generated block for surfaces
+		-- search the generated block for air-bounded surfaces
 
 		local surface_nodes = {}
 		surface_nodes.blockhash = {}
@@ -208,244 +318,28 @@ function plantslib:generate_block_with_air_checking(minp, maxp, blockseed)
 		end
 
 		for action = 1, #plantslib.actions_list do
-			local biome = plantslib.actions_list[action][1]
-			local nodes_or_function_or_model = plantslib.actions_list[action][2]
-
-			plantslib:set_defaults(biome)
-
-			-- filter stage 1 - find nodes from the supplied surfaces that are within the current biome.
-
-			local in_biome_nodes = {}
-			local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-
-			for i = 1, #surface_nodes.blockhash do
-				local pos = surface_nodes.blockhash[i]
-				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-				local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
-				local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
-				local noise3 = plantslib.perlin_humidity:get2d({x=pos.x+150, y=pos.z+50})
-				local biome_surfaces_string = dump(biome.surface)
-				if ((not biome.depth and string.find(biome_surfaces_string, minetest.get_node(pos).name)) or (biome.depth and not string.find(biome_surfaces_string, minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name)))
-				  and minetest.get_node(p_top).name == "air"
-				  and pos.y >= biome.min_elevation
-				  and pos.y <= biome.max_elevation
-				  and noise1 > biome.plantlife_limit
-				  and noise2 <= biome.temp_min
-				  and noise2 >= biome.temp_max
-				  and noise3 <= biome.humidity_min
-				  and noise3 >= biome.humidity_max
-				  and (not biome.ncount or #(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
-				  and (not biome.near_nodes or #(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
-				  and math.random(1,100) > biome.rarity
-				  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
-				  then
-					in_biome_nodes[#in_biome_nodes + 1] = pos
-				end
-			end
-
-			-- filter stage 2 - find places within that biome area to place the plants.
-
-			local num_in_biome_nodes = #in_biome_nodes
-
-			if num_in_biome_nodes > 0 then
-				for i = 1, math.min(biome.max_count, num_in_biome_nodes) do
-					local tries = 0
-					local spawned = false
-					while tries < 2 and not spawned do
-						local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
-						if biome.spawn_replace_node then
-							pos.y = pos.y-1
-						end
-						local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-
-						if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes)) then
-							if biome.delete_above then
-								minetest.remove_node(p_top)
-								minetest.remove_node({x=p_top.x, y=p_top.y+1, z=p_top.z})
-							end
-
-							if biome.delete_above_surround then
-								minetest.remove_node({x=p_top.x-1, y=p_top.y, z=p_top.z})
-								minetest.remove_node({x=p_top.x+1, y=p_top.y, z=p_top.z})
-								minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z-1})
-								minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z+1})
-
-								minetest.remove_node({x=p_top.x-1, y=p_top.y+1, z=p_top.z})
-								minetest.remove_node({x=p_top.x+1, y=p_top.y+1, z=p_top.z})
-								minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z-1})
-								minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z+1})
-							end
-
-							if biome.spawn_replace_node then
-								minetest.remove_node(pos)
-							end
-
-							local objtype = type(nodes_or_function_or_model)
-
-							if objtype == "table" then
-								if nodes_or_function_or_model.axiom then
-									plantslib:generate_tree(pos, nodes_or_function_or_model)
-									spawned = true
-								else
-									local fdir = nil
-									if biome.random_facedir then
-										fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
-									end
-									minetest.set_node(p_top, { name = nodes_or_function_or_model[math.random(#nodes_or_function_or_model)], param2 = fdir })
-									spawned = true
-								end
-							elseif objtype == "string" and
-							  minetest.registered_nodes[nodes_or_function_or_model] then
-								local fdir = nil
-								if biome.random_facedir then
-									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
-								end
-								minetest.set_node(p_top, { name = nodes_or_function_or_model, param2 = fdir })
-								spawned = true
-							elseif objtype == "function" then
-								nodes_or_function_or_model(pos)
-								spawned = true
-							elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
-								format(nodes_or_function_or_model)),pos) then
-								spawned = true
-							else
-								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(nodes_or_function_or_model).." that was pointed at {"..dump(pos).."}")
-							end
-						else
-							tries = tries + 1
-						end
-					end
-				end
-			end
+			plantslib:populate_surfaces(minp, maxp, blockseed, plantslib.actions_list[action][1],
+			  plantslib.actions_list[action][2], surface_nodes, true)		-- [1] is biome, [2] is node/function/model
 		end
 	end
 end
 
--- Separate copy of the mapgen spawner, for mods that require disabling of
+-- Secondary mapgen spawner, for mods that require disabling of
 -- checking for air during the initial map read stage.
 
 function plantslib:generate_block_no_air_check(minp, maxp, blockseed)
 	return function(minp, maxp, blockseed)
 
-		-- use the block hash as a unique key into the surface_nodes
-		-- table, so that we can write the table thread-safely.
-
 		local blockhash = minetest.hash_node_position(minp)
 
-		-- read the generated block into the block cache, filtered for "surfaces"
+		-- read the generated block directly into the block cache, filtered just for "surfaces"
 
 		local surface_nodes = {}
 		surface_nodes.blockhash = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaces_list_noaircheck)
 
 		for action = 1, #plantslib.actions_list_noaircheck do
-			local biome = plantslib.actions_list_noaircheck[action][1]
-			local nodes_or_function_or_model = plantslib.actions_list_noaircheck[action][2]
-
-			plantslib:set_defaults(biome)
-
-			-- filter stage 1 - find nodes from the supplied surfaces that are within the current biome.
-
-			local in_biome_nodes = {}
-			local perlin_fertile_area = minetest.get_perlin(biome.seed_diff, perlin_octaves, perlin_persistence, perlin_scale)
-
-			for i = 1, #surface_nodes.blockhash do
-				local pos = surface_nodes.blockhash[i]
-				local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-				local noise1 = perlin_fertile_area:get2d({x=pos.x, y=pos.z})
-				local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
-				local noise3 = plantslib.perlin_humidity:get2d({x=pos.x+150, y=pos.z+50})
-				local biome_surfaces_string = dump(biome.surface)
-				if ((not biome.depth and string.find(biome_surfaces_string, minetest.get_node(pos).name)) or (biome.depth and not string.find(biome_surfaces_string, minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name)))
-				  and pos.y >= biome.min_elevation
-				  and pos.y <= biome.max_elevation
-				  and noise1 > biome.plantlife_limit
-				  and noise2 <= biome.temp_min
-				  and noise2 >= biome.temp_max
-				  and noise3 <= biome.humidity_min
-				  and noise3 >= biome.humidity_max
-				  and (not biome.ncount or #(minetest.find_nodes_in_area({x=pos.x-1, y=pos.y, z=pos.z-1}, {x=pos.x+1, y=pos.y, z=pos.z+1}, biome.neighbors)) > biome.ncount)
-				  and (not biome.near_nodes or #(minetest.find_nodes_in_area({x=pos.x-biome.near_nodes_size, y=pos.y-biome.near_nodes_vertical, z=pos.z-biome.near_nodes_size}, {x=pos.x+biome.near_nodes_size, y=pos.y+biome.near_nodes_vertical, z=pos.z+biome.near_nodes_size}, biome.near_nodes)) >= biome.near_nodes_count)
-				  and math.random(1,100) > biome.rarity
-				  and (not biome.below_nodes or string.find(dump(biome.below_nodes), minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name) )
-				  then
-					in_biome_nodes[#in_biome_nodes + 1] = pos
-				end
-			end
-
-			-- filter stage 2 - find places within that biome area to place the plants.
-
-			local num_in_biome_nodes = #in_biome_nodes
-
-			if num_in_biome_nodes > 0 then
-				for i = 1, math.min(biome.max_count, num_in_biome_nodes) do
-					local tries = 0
-					local spawned = false
-					while tries < 2 and not spawned do
-						local pos = in_biome_nodes[math.random(1, num_in_biome_nodes)]
-						if biome.spawn_replace_node then
-							pos.y = pos.y-1
-						end
-						local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
-
-						if not (biome.avoid_nodes and biome.avoid_radius and minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes)) then
-							if biome.delete_above then
-								minetest.remove_node(p_top)
-								minetest.remove_node({x=p_top.x, y=p_top.y+1, z=p_top.z})
-							end
-
-							if biome.delete_above_surround then
-								minetest.remove_node({x=p_top.x-1, y=p_top.y, z=p_top.z})
-								minetest.remove_node({x=p_top.x+1, y=p_top.y, z=p_top.z})
-								minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z-1})
-								minetest.remove_node({x=p_top.x,   y=p_top.y, z=p_top.z+1})
-
-								minetest.remove_node({x=p_top.x-1, y=p_top.y+1, z=p_top.z})
-								minetest.remove_node({x=p_top.x+1, y=p_top.y+1, z=p_top.z})
-								minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z-1})
-								minetest.remove_node({x=p_top.x,   y=p_top.y+1, z=p_top.z+1})
-							end
-
-							if biome.spawn_replace_node then
-								minetest.remove_node(pos)
-							end
-
-							local objtype = type(nodes_or_function_or_model)
-
-							if objtype == "table" then
-								if nodes_or_function_or_model.axiom then
-									plantslib:generate_tree(pos, nodes_or_function_or_model)
-									spawned = true
-								else
-									local fdir = nil
-									if biome.random_facedir then
-										fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
-									end
-									minetest.set_node(p_top, { name = nodes_or_function_or_model[math.random(#nodes_or_function_or_model)], param2 = fdir })
-									spawned = true
-								end
-							elseif objtype == "string" and
-							  minetest.registered_nodes[nodes_or_function_or_model] then
-								local fdir = nil
-								if biome.random_facedir then
-									fdir = math.random(biome.random_facedir[1], biome.random_facedir[2])
-								end
-								minetest.set_node(p_top, { name = nodes_or_function_or_model, param2 = fdir })
-								spawned = true
-							elseif objtype == "function" then
-								nodes_or_function_or_model(pos)
-								spawned = true
-							elseif objtype == "string" and pcall(loadstring(("return %s(...)"):
-								format(nodes_or_function_or_model)),pos) then
-								spawned = true
-							else
-								plantslib:dbg("Warning: Ignored invalid definition for object "..dump(nodes_or_function_or_model).." that was pointed at {"..dump(pos).."}")
-							end
-						else
-							tries = tries + 1
-						end
-					end
-				end
-			end
+			plantslib:populate_surfaces(minp, maxp, blockseed, plantslib.actions_list_noaircheck[action][1],
+			  plantslib.actions_list_noaircheck[action][2], surface_nodes, false)
 		end
 	end
 end
