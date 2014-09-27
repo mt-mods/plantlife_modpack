@@ -207,7 +207,28 @@ function plantslib:populate_surfaces(biome, nodes_or_function_or_model, snodes, 
 		local noise2 = plantslib.perlin_temperature:get2d({x=pos.x, y=pos.z})
 		local noise3 = plantslib.perlin_humidity:get2d({x=pos.x+150, y=pos.z+50})
 		local biome_surfaces_string = dump(biome.surface)
-		if ((not biome.depth and string.find(biome_surfaces_string, minetest.get_node(pos).name)) or (biome.depth and not string.find(biome_surfaces_string, minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name)))
+		local surface_ok = false
+
+		if not biome.depth then
+			local dest_node = minetest.get_node(pos)
+			if string.find(biome_surfaces_string, dest_node.name) then
+				surface_ok = true
+			else
+				if string.find(biome_surfaces_string, "group:") then
+					for j = 1, #biome.surface do
+						if string.find(biome.surface[j], "^group:") 
+						  and minetest.get_item_group(dest_node.name, biome.surface[j]) then
+							surface_ok = true
+							break
+						end
+					end
+				end
+			end
+		elseif not string.find(biome_surfaces_string, minetest.get_node({ x = pos.x, y = pos.y-biome.depth-1, z = pos.z }).name) then
+			surface_ok = true
+		end
+
+		if surface_ok
 		  and (not checkair or minetest.get_node(p_top).name == "air")
 		  and pos.y >= biome.min_elevation
 		  and pos.y <= biome.max_elevation
@@ -263,7 +284,7 @@ function plantslib:populate_surfaces(biome, nodes_or_function_or_model, snodes, 
 					end
 
 					local objtype = type(nodes_or_function_or_model)
-					print(dump(nodes_or_function_or_model))
+
 					if objtype == "table" then
 						if nodes_or_function_or_model.axiom then
 							plantslib:generate_tree(pos, nodes_or_function_or_model)
@@ -367,7 +388,6 @@ function plantslib:generate_block_no_aircheck(dtime)
 
 			-- directly read the block to be searched into the chunk cache
 
-			print(dump(plantslib.surfaceslist_no_aircheck))
 			plantslib.surface_nodes_no_aircheck.blockhash =
 				minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_no_aircheck)
 			plantslib.actioncount_no_aircheck.blockhash = 1
