@@ -145,7 +145,7 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 		plantslib.actionslist_no_aircheck[#plantslib.actionslist_no_aircheck + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
-			if s and minetest.registered_nodes[s] then
+			if s and (string.find(s, "^group:") or minetest.registered_nodes[s]) then
 				if not search_table(plantslib.surfaceslist_no_aircheck, s) then
 					plantslib.surfaceslist_no_aircheck[#plantslib.surfaceslist_no_aircheck + 1] = s
 				end
@@ -155,7 +155,7 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 		else
 			for i = 1, #biomedef.surface do
 				local s = biomedef.surface[i]
-				if s and minetest.registered_nodes[s] then
+				if s and (string.find(s, "^group:") or minetest.registered_nodes[s]) then
 					if not search_table(plantslib.surfaceslist_no_aircheck, s) then
 						plantslib.surfaceslist_no_aircheck[#plantslib.surfaceslist_no_aircheck + 1] = s
 					end
@@ -169,7 +169,7 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 		plantslib.actionslist_aircheck[#plantslib.actionslist_aircheck + 1] = { biomedef, nodes_or_function_or_model }
 		local s = biomedef.surface
 		if type(s) == "string" then
-			if s and minetest.registered_nodes[s] then
+			if s and (string.find(s, "^group:") or minetest.registered_nodes[s]) then
 				if not search_table(plantslib.surfaceslist_aircheck, s) then
 					plantslib.surfaceslist_aircheck[#plantslib.surfaceslist_aircheck + 1] = s
 				end
@@ -179,7 +179,7 @@ function plantslib:register_generate_plant(biomedef, nodes_or_function_or_model)
 		else
 			for i = 1, #biomedef.surface do
 				local s = biomedef.surface[i]
-				if s and minetest.registered_nodes[s] then
+				if s and (string.find(s, "^group:") or minetest.registered_nodes[s]) then
 					if not search_table(plantslib.surfaceslist_aircheck, s) then
 						plantslib.surfaceslist_aircheck[#plantslib.surfaceslist_aircheck + 1] = s
 					end
@@ -263,7 +263,7 @@ function plantslib:populate_surfaces(biome, nodes_or_function_or_model, snodes, 
 					end
 
 					local objtype = type(nodes_or_function_or_model)
-
+					print(dump(nodes_or_function_or_model))
 					if objtype == "table" then
 						if nodes_or_function_or_model.axiom then
 							plantslib:generate_tree(pos, nodes_or_function_or_model)
@@ -367,6 +367,7 @@ function plantslib:generate_block_no_aircheck(dtime)
 
 			-- directly read the block to be searched into the chunk cache
 
+			print(dump(plantslib.surfaceslist_no_aircheck))
 			plantslib.surface_nodes_no_aircheck.blockhash =
 				minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_no_aircheck)
 			plantslib.actioncount_no_aircheck.blockhash = 1
