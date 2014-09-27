@@ -38,7 +38,7 @@ else
     S = function ( s ) return s end
 end
 
-local DEBUG = false --... except if you want to spam the console with debugging info :-)
+local DEBUG = true --... except if you want to spam the console with debugging info :-)
 
 function plantslib:dbg(msg)
 	if DEBUG then
@@ -373,7 +373,6 @@ function plantslib:generate_block_no_aircheck(dtime)
 
 		else
 			if plantslib.actioncount_no_aircheck.blockhash <= #plantslib.actionslist_no_aircheck then
-				local action = plantslib.actioncount_no_aircheck.blockhash
 				plantslib:populate_surfaces(
 					plantslib.actionslist_no_aircheck[plantslib.actioncount_no_aircheck.blockhash][1],
 					plantslib.actionslist_no_aircheck[plantslib.actioncount_no_aircheck.blockhash][2],
