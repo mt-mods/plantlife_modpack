@@ -38,7 +38,7 @@ else
     S = function ( s ) return s end
 end
 
-local DEBUG = true --... except if you want to spam the console with debugging info :-)
+local DEBUG = false --... except if you want to spam the console with debugging info :-)
 
 function plantslib:dbg(msg)
 	if DEBUG then
