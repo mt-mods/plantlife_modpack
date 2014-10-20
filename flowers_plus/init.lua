@@ -94,7 +94,7 @@ for i in ipairs(lilies_list) do
 				place_pos = pt.above
 			end
 
-			if not minetest.is_protected(place_pos, placer:get_player_name()) then
+			if place_pos and not minetest.is_protected(place_pos, placer:get_player_name()) then
 
 			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
 
