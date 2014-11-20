@@ -499,8 +499,8 @@ function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
 							if biome.random_facedir then
 								fdir = math.random(biome.random_facedir[1],biome.random_facedir[2])
 							end
-							if type(spawn_plants) == "string" then
-								assert(loadstring(spawn_plants.."(...)"))(pos)
+							if type(biome.spawn_plants) == "string" then
+								assert(loadstring(biome.spawn_plants.."(...)"))(pos)
 							elseif not biome.spawn_on_side and not biome.spawn_on_bottom and not biome.spawn_replace_node then
 								if n_top.name == "air" then
 									minetest.set_node(p_top, { name = plant_to_spawn, param2 = fdir })
