@@ -127,7 +127,7 @@ minetest.register_node("dryplants:reedmace_top", {
 minetest.register_node("dryplants:reedmace_height_2", {
 	description = "Reedmace, height: 2",
 	drawtype = "plantlike",
-	visual_scale = 2,
+	visual_scale = 2.8,
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_height_2.png"},
 	inventory_image = "dryplants_reedmace_top.png",
@@ -150,7 +150,7 @@ minetest.register_node("dryplants:reedmace_height_2", {
 minetest.register_node("dryplants:reedmace_height_3", {
 	description = "Reedmace, height: 3",
 	drawtype = "plantlike",
-	visual_scale = 2,
+	visual_scale = 2.8,
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_height_3.png"},
 	inventory_image = "dryplants_reedmace_top.png",
@@ -173,7 +173,7 @@ minetest.register_node("dryplants:reedmace_height_3", {
 minetest.register_node("dryplants:reedmace_height_3_spikes", {
 	description = "Reedmace, height: 3 & Spikes",
 	drawtype = "plantlike",
-	visual_scale = 2,
+	visual_scale = 2.8,
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_height_3_spikes.png"},
 	inventory_image = "dryplants_reedmace_top.png",
