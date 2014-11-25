@@ -49,7 +49,6 @@ abstract_dryplants.grow_reedmace = function(pos)
 end
 
 abstract_dryplants.grow_reedmace_water = function(pos)
-	print("abstract_dryplants.grow_reedmace_water executed.")
 	local size = math.random(1,3)
 	local spikes = math.random(1,3)
 	local pos_01 = {x = pos.x, y = pos.y + 1, z = pos.z}
@@ -57,7 +56,6 @@ abstract_dryplants.grow_reedmace_water = function(pos)
 	local pos_03 = {x = pos.x, y = pos.y + 3, z = pos.z}
 	local pos_04 = {x = pos.x, y = pos.y + 4, z = pos.z}
 	minetest.add_entity(pos_01, "dryplants:reedmace_water_entity")
-	print("dryplants:reedmace_water_entity spawned at"..dump(pos))
 	if minetest.get_node(pos_02).name == "air" then -- bug fix
 		if minetest.get_node(pos_03).name ~= "air" then
 			minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
