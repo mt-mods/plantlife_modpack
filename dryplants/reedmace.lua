@@ -49,6 +49,7 @@ abstract_dryplants.grow_reedmace = function(pos)
 end
 
 abstract_dryplants.grow_reedmace_water = function(pos)
+	print("abstract_dryplants.grow_reedmace_water executed.")
 	local size = math.random(1,3)
 	local spikes = math.random(1,3)
 	local pos_01 = {x = pos.x, y = pos.y + 1, z = pos.z}
@@ -56,22 +57,23 @@ abstract_dryplants.grow_reedmace_water = function(pos)
 	local pos_03 = {x = pos.x, y = pos.y + 3, z = pos.z}
 	local pos_04 = {x = pos.x, y = pos.y + 4, z = pos.z}
 	minetest.add_entity(pos_01, "dryplants:reedmace_water_entity")
+	print("dryplants:reedmace_water_entity spawned at"..dump(pos))
 	if minetest.get_node(pos_02).name == "air" then -- bug fix
-	if minetest.get_node(pos_03).name ~= "air" then
-		minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
-	elseif minetest.get_node(pos_04).name ~= "air" then
-		minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
-	elseif size == 1 then
-		minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
-	elseif size == 2 then
-		minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
-	elseif size == 3 then
-		if spikes == 1 then
-			minetest.set_node(pos_02, {name="dryplants:reedmace_height_3_spikes"})
-		else
-			minetest.set_node(pos_02, {name="dryplants:reedmace_height_3"})
-		end	
-	end
+		if minetest.get_node(pos_03).name ~= "air" then
+			minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
+		elseif minetest.get_node(pos_04).name ~= "air" then
+			minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
+		elseif size == 1 then
+			minetest.set_node(pos_02, {name="dryplants:reedmace_top"})
+		elseif size == 2 then
+			minetest.set_node(pos_02, {name="dryplants:reedmace_height_2"})
+		elseif size == 3 then
+			if spikes == 1 then
+				minetest.set_node(pos_02, {name="dryplants:reedmace_height_3_spikes"})
+			else
+				minetest.set_node(pos_02, {name="dryplants:reedmace_height_3"})
+			end	
+		end
 	end
 end
 
@@ -308,9 +310,10 @@ minetest.register_node("dryplants:reedmace_water", {
 -- REEDMACE WATER ENTITY
 -----------------------------------------------------------------------------------------------
 minetest.register_entity("dryplants:reedmace_water_entity",{
-	visual = "wielditem",
-	visual_size = {x=2/3, y=2/3, z=2/3},
-	textures = {"dryplants:reedmace_water"},
+	visual = "mesh",
+	mesh = "plantlike.obj",
+	visual_size = {x=10, y=10},
+	textures = {"dryplants_reedmace_water.png"},
 	collisionbox = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3},
 	on_punch = function(self, puncher)
 		if puncher:is_player() and puncher:get_inventory() then
