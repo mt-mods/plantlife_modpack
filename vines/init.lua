@@ -15,6 +15,13 @@ vines.growth_chance = 2
 vines.rot_interval = 300
 vines.rot_chance = 8
 
+local jungle_leaves_list = {
+	"default:jungleleaves",
+	"moretrees:jungle_leaves_red",
+	"moretrees:jungle_leaves_yellow",
+	"moretrees:jungle_leaves_green"
+}
+
 -- Nodes
 minetest.register_node("vines:rope_block", {
   description = "Rope",
@@ -288,7 +295,7 @@ minetest.register_abm({
 	interval = 10,
 	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		if not minetest.find_node_near(pos, 1, "group:leaves") then
+		if not minetest.find_node_near(pos, 1, jungle_leaves_list) then
 			local p_top = {x=pos.x, y=pos.y+1, z=pos.z}
 			if minetest.get_item_group(minetest.get_node(p_top).name, "vines_cleanup") == 0 then
 				minetest.remove_node(pos)
@@ -346,12 +353,10 @@ plantslib:spawn_on_surfaces({
   spawn_delay = spawn_interval,
   spawn_plants = {"vines:side"},
   spawn_chance = 10,
-  spawn_surfaces = {"group:leafdecay"},
+  spawn_surfaces = jungle_leaves_list,
   spawn_on_side = true,
-  near_nodes = {"default:water_source", "default:jungletree"},
-  near_nodes_size = 10,
-  near_nodes_vertical = 5,
-  near_nodes_count = 1,
+  near_nodes = {"default:jungletree"},
+  near_nodes_size = 5,
   plantlife_limit = -0.9,
 })
 
