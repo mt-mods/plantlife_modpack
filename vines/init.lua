@@ -3,10 +3,18 @@
   and rope does not drop anything!!!!
 ]]
 
+vines = {}
+
 local mod_name = "vines"
 local average_height = 12
 local spawn_interval = 90
 local vines_group = {attached_node=1,vines=1,snappy=3,flammable=2,hanging_node=1}
+
+vines.growth_interval = 300
+vines.growth_chance = 2
+vines.rot_interval = 300
+vines.rot_chance = 8
+
 -- Nodes
 minetest.register_node("vines:rope_block", {
   description = "Rope",
@@ -243,11 +251,12 @@ minetest.register_node("vines:vine_rotten", {
   },
 })
 
---ABM
+-- vine rotting
+
 minetest.register_abm({
   nodenames = {"vines:vine", "vines:side", "vines:willow"},
-  interval = 300,
-  chance = 8,
+  interval = vines.rot_interval,
+  chance = vines.rot_chance,
   action = function(pos, node, active_object_count, active_object_count_wider)
     if minetest.find_node_near(pos, 5, "group:tree") == nil then
       local walldir = node.param2
@@ -256,10 +265,12 @@ minetest.register_abm({
   end
 })
 
+-- vine growth
+
 minetest.register_abm({
   nodenames = {"vines:vine", "vines:side", "vines:willow"},
-  interval = 300,
-  chance = 2,
+  interval = vines.growth_interval,
+  chance = vines.growth_chance,
   action = function(pos, node, active_object_count, active_object_count_wider)
     local p = {x=pos.x, y=pos.y-1, z=pos.z}
     local n = minetest.get_node(p)
@@ -269,6 +280,8 @@ minetest.register_abm({
     end
   end
 })
+
+-- rope extension
 
 minetest.register_abm({
   nodenames = {"vines:rope_end"},
