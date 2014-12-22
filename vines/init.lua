@@ -8,7 +8,7 @@ vines = {}
 local mod_name = "vines"
 local average_height = 12
 local spawn_interval = 90
-local vines_group = {attached_node=1,vines=1,snappy=3,flammable=2,hanging_node=1}
+local vines_group = {attached_node=1,vines=1,snappy=3,flammable=2,hanging_node=1,vines_cleanup=1}
 
 vines.growth_interval = 300
 vines.growth_chance = 2
@@ -132,7 +132,7 @@ minetest.register_node("vines:side_rotten", {
   tile_images = { "vines_side_rotten.png" },
   drawtype = "signlike",
   inventory_image = "vines_side.png",
-  groups = {snappy = 3,flammable=2, hanging_node=1},
+  groups = {snappy = 3,flammable=2, hanging_node=1,vines_cleanup=1},
   sounds = default.node_sound_leaves_defaults(),
   selection_box = {
     type = "wallmounted",
@@ -179,7 +179,7 @@ minetest.register_node("vines:willow_rotten", {
   tile_images = { "vines_willow_rotten.png" },
   drawtype = "signlike",
   inventory_image = "vines_willow.png",
-  groups = {snappy = 3,flammable=2, hanging_node=1},
+  groups = {snappy = 3,flammable=2, hanging_node=1,vines_cleanup=1},
   sounds = default.node_sound_leaves_defaults(),
   selection_box = {
     type = "wallmounted",
@@ -196,7 +196,7 @@ minetest.register_node("vines:root", {
   tile_images = { "vines_root.png" },
   drawtype = "plantlike",
   inventory_image = "vines_root.png",
-  groups = {vines=1,snappy = 3,flammable=2, hanging_node=1},
+  groups = {vines=1,snappy = 3,flammable=2, hanging_node=1,vines_cleanup=1},
   sounds = default.node_sound_leaves_defaults(),
   selection_box = {
     type = "fixed",
@@ -243,7 +243,7 @@ minetest.register_node("vines:vine_rotten", {
   tile_images = { "vines_vine_rotten.png" },
   drawtype = "plantlike",
   inventory_image = "vines_vine_rotten.png",
-  groups = {snappy = 3,flammable=2, hanging_node=1},
+  groups = {snappy = 3,flammable=2, hanging_node=1,vines_cleanup=1},
   sounds = default.node_sound_leaves_defaults(),
   selection_box = {
     type = "fixed",
@@ -279,6 +279,22 @@ minetest.register_abm({
       minetest.add_node(p, {name=node.name, param2 = walldir})
     end
   end
+})
+
+-- cleanup if the initial tree is missing entirely (e.g. has been dug away)
+
+minetest.register_abm({
+	nodenames = {"group:vines_cleanup"},
+	interval = 10,
+	chance = 5,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		if not minetest.find_node_near(pos, 1, "group:leaves") then
+			local p_top = {x=pos.x, y=pos.y+1, z=pos.z}
+			if minetest.get_item_group(minetest.get_node(p_top).name, "vines_cleanup") == 0 then
+				minetest.remove_node(pos)
+			end
+		end
+	end
 })
 
 -- rope extension
