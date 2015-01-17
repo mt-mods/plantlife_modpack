@@ -1,5 +1,10 @@
 --Rocks
 
+local cbox = {
+	type = "fixed",
+	fixed = {-5/16, -8/16, -6/16, 5/16, -1/32, 5/16},
+}
+
 minetest.register_node("cavestuff:pebble_1",{
 	description = "Pebble",
 	drawtype = "mesh",
@@ -8,10 +13,8 @@ minetest.register_node("cavestuff:pebble_1",{
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1},
-    selection_box = {
-        type = "fixed",
-        fixed = {-7/16, -1/2, -6/16, 6/16, -1/16, 5/16},
-    },
+    selection_box = cbox,
+    collision_box = cbox,
     on_place = function(itemstack, placer, pointed_thing)
 		-- place a random pebble node
 		local stack = ItemStack("cavestuff:pebble_"..math.random(1,2))
@@ -30,10 +33,8 @@ minetest.register_node("cavestuff:pebble_2",{
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1, not_in_creative_inventory=1},
-    selection_box = {
-        type = "fixed",
-        fixed = {-7/16, -1/2, -6/16, 6/16, 0, 5/16},
-    },
+	selection_box = cbox,
+	collision_box = cbox,
     sounds = default.node_sound_stone_defaults(),
 })
 
@@ -45,10 +46,8 @@ minetest.register_node("cavestuff:desert_pebble_1",{
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1},
-    selection_box = {
-        type = "fixed",
-        fixed = {-7/16, -1/2, -6/16, 6/16, -1/16, 5/16},
-    },
+	selection_box = cbox,
+	collision_box = cbox,
     on_place = function(itemstack, placer, pointed_thing)
 		-- place a random pebble node
 		local stack = ItemStack("cavestuff:desert_pebble_"..math.random(1,2))
@@ -66,10 +65,8 @@ minetest.register_node("cavestuff:desert_pebble_2",{
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1, not_in_creative__inventory=1},
-    selection_box = {
-        type = "fixed",
-        fixed = {-7/16, -1/2, -6/16, 6/16, 0, 5/16},
-    },
+	selection_box = cbox,
+	collision_box = cbox,
     sounds = default.node_sound_stone_defaults(),
 })
 
