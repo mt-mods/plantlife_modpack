@@ -1,37 +1,13 @@
 --Rocks
 
 minetest.register_node("cavestuff:pebble_1",{
-	drawtype = "nodebox",
 	description = "Pebble",
+	drawtype = "mesh",
+	mesh = "cavestuff_pebble.obj",
     tiles = {"undergrowth_pebble.png"},
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1},
-    node_box = {
-        type = "fixed",
-        fixed = {
---			{ left, bottom, front,  right, top ,  back}
-			{-5/16, -2/16, -3/16,  1/16, -1/16, -1/16},
-			{-4/16, -2/16, -4/16,  0   , -1/16,  0   },
---			{ left, bottom, front,  right, top ,  back}
-			{-7/16, -7/16, -3/16, -6/16, -3/16,  1/16},
-			{-6/16, -7/16, -4/16, -5/16, -3/16,  2/16},
-			{-5/16, -7/16, -5/16,  3/16, -3/16,  3/16},
-			{-4/16, -7/16, -6/16,  1/16, -3/16, -5/16},
-			{-3/16, -7/16,  3/16,  3/16, -3/16,  4/16},
-			{ 0   , -7/16,  4/16,  3/16, -3/16,  5/16},
-			{ 3/16, -7/16, -4/16,  4/16, -3/16,  5/16},
-			{ 4/16, -7/16, -3/16,  5/16, -3/16,  4/16},
-			{ 5/16, -7/16, -1/16,  6/16, -3/16,  2/16},
---			{ left, bottom, front,  right, top ,  back}
-			{-6/16, -8/16, -3/16,  3/16, -2/16,  0   },
-			{-5/16, -8/16, -4/16,  2/16, -2/16,  1/16},
-			{-4/16, -8/16, -5/16,  0   , -2/16,  2/16},
-			{-2/16, -8/16, -2/16,  4/16, -2/16,  3/16},
-			{ 0   , -8/16,  3/16,  3/16, -2/16,  4/16},
-			{ 4/16, -8/16, -1/16,  5/16, -2/16,  2/16},
-        },
-    },
     selection_box = {
         type = "fixed",
         fixed = {-7/16, -1/2, -6/16, 6/16, -1/16, 5/16},
@@ -46,37 +22,14 @@ minetest.register_node("cavestuff:pebble_1",{
 })
 
 minetest.register_node("cavestuff:pebble_2",{
-	drawtype = "nodebox",
+	drawtype = "mesh",
+	mesh = "cavestuff_pebble.obj",
+    tiles = {"undergrowth_pebble.png"},
 	drop = "cavestuff:pebble_1",
     tiles = {"undergrowth_pebble.png"},
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1, not_in_creative_inventory=1},
-    node_box = {
-        type = "fixed",
-        fixed = {
---			{ left, bottom, front,  right, top ,  back}
-			{-5/16, -1/16, -3/16,  1/16,  0   , -1/16},
-			{-4/16, -1/16, -4/16,  0   ,  0   ,  0   },
---			{ left, bottom, front,  right, top ,  back}
-			{-7/16, -7/16, -3/16, -6/16, -2/16,  1/16},
-			{-6/16, -7/16, -4/16, -5/16, -2/16,  2/16},
-			{-5/16, -7/16, -5/16,  3/16, -2/16,  3/16},
-			{-4/16, -7/16, -6/16,  1/16, -2/16, -5/16},
-			{-3/16, -7/16,  3/16,  3/16, -2/16,  4/16},
-			{ 0   , -7/16,  4/16,  3/16, -2/16,  5/16},
-			{ 3/16, -7/16, -4/16,  4/16, -2/16,  5/16},
-			{ 4/16, -7/16, -3/16,  5/16, -2/16,  4/16},
-			{ 5/16, -7/16, -1/16,  6/16, -2/16,  2/16},
---			{ left, bottom, front,  right, top ,  back}
-			{-6/16, -8/16, -3/16,  3/16, -1/16,  0   },
-			{-5/16, -8/16, -4/16,  2/16, -1/16,  1/16},
-			{-4/16, -8/16, -5/16,  0   , -1/16,  2/16},
-			{-2/16, -8/16, -2/16,  4/16, -1/16,  3/16},
-			{ 0   , -8/16,  3/16,  3/16, -1/16,  4/16},
-			{ 4/16, -8/16, -1/16,  5/16, -1/16,  2/16},
-        },
-    },
     selection_box = {
         type = "fixed",
         fixed = {-7/16, -1/2, -6/16, 6/16, 0, 5/16},
@@ -85,37 +38,13 @@ minetest.register_node("cavestuff:pebble_2",{
 })
 
 minetest.register_node("cavestuff:desert_pebble_1",{
-	drawtype = "nodebox",
 	description = "Desert Pebble",
+	drawtype = "mesh",
+	mesh = "cavestuff_pebble.obj",
     tiles = {"default_desert_stone.png"},
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1},
-    node_box = {
-        type = "fixed",
-        fixed = {
---			{ left, bottom, front,  right, top ,  back}
-			{-5/16, -2/16, -3/16,  1/16, -1/16, -1/16},
-			{-4/16, -2/16, -4/16,  0   , -1/16,  0   },
---			{ left, bottom, front,  right, top ,  back}
-			{-7/16, -7/16, -3/16, -6/16, -3/16,  1/16},
-			{-6/16, -7/16, -4/16, -5/16, -3/16,  2/16},
-			{-5/16, -7/16, -5/16,  3/16, -3/16,  3/16},
-			{-4/16, -7/16, -6/16,  1/16, -3/16, -5/16},
-			{-3/16, -7/16,  3/16,  3/16, -3/16,  4/16},
-			{ 0   , -7/16,  4/16,  3/16, -3/16,  5/16},
-			{ 3/16, -7/16, -4/16,  4/16, -3/16,  5/16},
-			{ 4/16, -7/16, -3/16,  5/16, -3/16,  4/16},
-			{ 5/16, -7/16, -1/16,  6/16, -3/16,  2/16},
---			{ left, bottom, front,  right, top ,  back}
-			{-6/16, -8/16, -3/16,  3/16, -2/16,  0   },
-			{-5/16, -8/16, -4/16,  2/16, -2/16,  1/16},
-			{-4/16, -8/16, -5/16,  0   , -2/16,  2/16},
-			{-2/16, -8/16, -2/16,  4/16, -2/16,  3/16},
-			{ 0   , -8/16,  3/16,  3/16, -2/16,  4/16},
-			{ 4/16, -8/16, -1/16,  5/16, -2/16,  2/16},
-        },
-    },
     selection_box = {
         type = "fixed",
         fixed = {-7/16, -1/2, -6/16, 6/16, -1/16, 5/16},
@@ -130,37 +59,13 @@ minetest.register_node("cavestuff:desert_pebble_1",{
 })
 
 minetest.register_node("cavestuff:desert_pebble_2",{
-	drawtype = "nodebox",
+	drawtype = "mesh",
+	mesh = "cavestuff_pebble.obj",
 	drop = "cavestuff:desert_pebble_1",
     tiles = {"default_desert_stone.png"},
     paramtype = "light",
 	paramtype2 = "facedir",
     groups = {cracky=3, stone=1, not_in_creative__inventory=1},
-    node_box = {
-        type = "fixed",
-        fixed = {
---			{ left, bottom, front,  right, top ,  back}
-			{-5/16, -1/16, -3/16,  1/16,  0   , -1/16},
-			{-4/16, -1/16, -4/16,  0   ,  0   ,  0   },
---			{ left, bottom, front,  right, top ,  back}
-			{-7/16, -7/16, -3/16, -6/16, -2/16,  1/16},
-			{-6/16, -7/16, -4/16, -5/16, -2/16,  2/16},
-			{-5/16, -7/16, -5/16,  3/16, -2/16,  3/16},
-			{-4/16, -7/16, -6/16,  1/16, -2/16, -5/16},
-			{-3/16, -7/16,  3/16,  3/16, -2/16,  4/16},
-			{ 0   , -7/16,  4/16,  3/16, -2/16,  5/16},
-			{ 3/16, -7/16, -4/16,  4/16, -2/16,  5/16},
-			{ 4/16, -7/16, -3/16,  5/16, -2/16,  4/16},
-			{ 5/16, -7/16, -1/16,  6/16, -2/16,  2/16},
---			{ left, bottom, front,  right, top ,  back}
-			{-6/16, -8/16, -3/16,  3/16, -1/16,  0   },
-			{-5/16, -8/16, -4/16,  2/16, -1/16,  1/16},
-			{-4/16, -8/16, -5/16,  0   , -1/16,  2/16},
-			{-2/16, -8/16, -2/16,  4/16, -1/16,  3/16},
-			{ 0   , -8/16,  3/16,  3/16, -1/16,  4/16},
-			{ 4/16, -8/16, -1/16,  5/16, -1/16,  2/16},
-        },
-    },
     selection_box = {
         type = "fixed",
         fixed = {-7/16, -1/2, -6/16, 6/16, 0, 5/16},
