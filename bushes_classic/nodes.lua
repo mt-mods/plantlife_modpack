@@ -121,16 +121,20 @@ end
 
 minetest.register_abm({
 	nodenames = { "bushes:fruitless_bush" },
+	neighbors = { "group:soil", "group:potting_soil" },
 	interval = 500,
 	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 
 		local meta = minetest.get_meta( pos );
 		local bush_name = meta:get_string( 'bush_type' ); 
+
 		if( bush_name ~= nil and bush_name ~= '' ) then
 			local dirtpos = { x = pos.x, y = pos.y-1, z = pos.z }
 			local dirt = minetest.get_node(dirtpos)
-			if dirt.name == "farming:soil_wet" or math.random(1,3) == 1 then
+			local is_soil = minetest.get_item_group(dirt.name, "soil") or minetest.get_item_group(dirt.name, "potting_soil")
+
+			if is_soil and (dirt.name == "farming:soil_wet" or math.random(1,3) == 1) then
 				minetest.set_node( pos, {type='node',name='bushes:'..bush_name..'_bush'})
 			end
 		end
