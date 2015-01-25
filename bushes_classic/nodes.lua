@@ -96,8 +96,6 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 	end
 end
 
-
-
 plantlife_bushes.after_place_node = function(pos, placer, itemstack)
 
 	if not (itemstack and pos) then
@@ -119,8 +117,6 @@ plantlife_bushes.after_place_node = function(pos, placer, itemstack)
 	local meta = minetest.get_meta(pos)
 	meta:set_string("bush_type", name_parts[1])
 end
-
-
 
 -- regrow berries (uses a base abm instead of plants_lib because of the use of metadata).
 
@@ -178,35 +174,22 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
-			description = S(desc.." Bush"),
-			drawtype = "nodebox",
-			tiles = {texture_top, texture_bottom, "bushes_" .. bush_name .. "_bush.png"},
-			inventory_image = "bushes_" .. bush_name .. "_bush.png",
-			paramtype = "light",
-			sunlight_propagates = true,
-			walkable = false,
-			node_box = {
-				type = "fixed",
-				fixed = {
-					{-1/16,	-8/16,	-1/16,	1/16,	-6/16,	1/16},
-					{-4/16,	-6/16,	-4/16,	4/16,	5/16,	4/16},
-					{-5/16,	-5/16,	-5/16,	5/16,	3/16,	5/16},
-					{-6/16,	-4/16,	-6/16,	6/16,	2/16,	6/16},
-					{-6.5/16,	-3/16,	-6.5/16,	6.5/16,	-2/16,	6.5/16},
-					{-3/16,	5/16,	-3/16,	3/16,	6/16,	3/16},
-					{-2/16,	5/16,	-2/16,	2/16,	7/16,	2/16}
-				}
-			},
-
-			groups = groups,
-			sounds = default.node_sound_leaves_defaults(),
-			drop = "",
-			after_dig_node = function( pos, oldnode, oldmetadata, digger )
-				return plantlife_bushes.after_dig_node(pos, oldnode, oldmetadata, digger);
-			end,
-			after_place_node = function( pos, placer, itemstack )
-				return plantlife_bushes.after_place_node(pos, placer, itemstack);
-			end,
+		description = S(desc.." Bush"),
+		drawtype = "mesh",
+		mesh = "bushes_bush.obj",
+		tiles = {"bushes_bush_"..bush_name..".png"},
+		paramtype = "light",
+		sunlight_propagates = true,
+		walkable = false,
+		groups = groups,
+		sounds = default.node_sound_leaves_defaults(),
+		drop = "",
+		after_dig_node = function( pos, oldnode, oldmetadata, digger )
+			return plantlife_bushes.after_dig_node(pos, oldnode, oldmetadata, digger);
+		end,
+		after_place_node = function( pos, placer, itemstack )
+			return plantlife_bushes.after_place_node(pos, placer, itemstack);
+		end,
 	})
 
 	-- do not spawn fruitless bushes
@@ -214,7 +197,6 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		table.insert(bushes_classic.spawn_list, "bushes:"..bush_name.."_bush")
 	end
 end
-
 
 minetest.register_node(":bushes:basket_empty", {
     description = S("Basket"),
