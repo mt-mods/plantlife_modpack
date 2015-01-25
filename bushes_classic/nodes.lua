@@ -86,8 +86,13 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 	-- give the harvested result to the player
 	if harvested then
 		--minetest.chat_send_player("singleplayer","you would now get "..tostring( harvested ) );
+		local itemstack = ItemStack(harvested)
 		local inventory = digger:get_inventory()
-		inventory:add_item( "main", harvested );
+		if inventory:room_for_item("main", itemstack) then
+			inventory:add_item("main", itemstack)
+		else
+			minetest.item_drop(itemstack, digger, pos)
+		end
 	end
 end
 
