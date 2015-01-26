@@ -150,11 +150,13 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 
 	minetest.register_node(":bushes:basket_"..bush_name, {
 		description = S("Basket with "..desc.." Pies"),
+		drawtype = "mesh",
+		mesh = "bushes_basket_full.obj",
 		tiles = {
-		"bushes_basket_"..bush_name.."_top.png",
-		"bushes_basket_bottom.png",
-		"bushes_basket_side.png"
+			"bushes_basket_pie_"..bush_name..".png",
+			"bushes_basket.png"
 		},
+		paramtype = "light",
 		on_use = minetest.item_eat(18),
 		groups = { dig_immediate = 3 },
 	})
@@ -200,11 +202,10 @@ end
 
 minetest.register_node(":bushes:basket_empty", {
     description = S("Basket"),
-    tiles = {
-	"bushes_basket_empty_top.png",
-	"bushes_basket_bottom.png",
-	"bushes_basket_side.png"
-    },
+	drawtype = "mesh",
+	mesh = "bushes_basket_empty.obj",
+	tiles = { "bushes_basket.png" },
+	paramtype = "light",
     groups = { dig_immediate = 3 },
 })
 
