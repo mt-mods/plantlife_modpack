@@ -83,7 +83,7 @@ minetest.register_node("mushroom:brown_natural",{
 	tiles = {"mushroom_brown_3d.png"},
 	sunlight_propagates = true,
 	inventory_image = "mushroom_brown_inv.png",
-	groups = {oddly_breakable_by_hand=3},
+	groups = {oddly_breakable_by_hand=3, not_in_creative_inventory=1},
 	paramtype = "light",
 	walkable = false,
 	selection_box = {
@@ -100,7 +100,7 @@ minetest.register_node("mushroom:red_natural",{
 	tiles = {"mushroom_red_3d.png"},
 	sunlight_propagates = true,
 	inventory_image = "mushroom_red_inv.png",
-	groups = {oddly_breakable_by_hand=3},
+	groups = {oddly_breakable_by_hand=3, not_in_creative_inventory=1},
 	paramtype = "light",
 	walkable = false,
 	selection_box = {
