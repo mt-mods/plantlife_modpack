@@ -49,10 +49,10 @@ vines.register_vine( 'side', {
   spawn_chance = 100,
   spawn_surfaces = {
     "default:leaves",
-    "default:jungleleave",
-    "moretrees:jungetree_leaves_red",
-    "moretrees:jungetree_leaves_yellow",
-    "moretrees:jungetree_leaves_green"
+    "default:jungleleaves",
+    "moretrees:jungletree_leaves_red",
+    "moretrees:jungletree_leaves_yellow",
+    "moretrees:jungletree_leaves_green"
   },
   spawn_on_side = true,
   plantlife_limit = -0.9,
@@ -85,7 +85,9 @@ vines.register_vine( 'willow', {
   avoid_nodes = { "vines:willow_middle" },
   avoid_radius = 5,
   near_nodes = { 'default:water_source' },
-  near_nodes_size = 20,
+  near_nodes_size = 1,
+  near_nodes_vertical = 7,
+  near_nodes_count = 1,
   plantlife_limit = -0.8,
   spawn_chance = 10,
   spawn_delay = 500,
