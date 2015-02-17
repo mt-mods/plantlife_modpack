@@ -555,7 +555,7 @@ function plantslib:grow_plants(opts)
 			local root_node = minetest.get_node({x=pos.x, y=pos.y-options.height_limit, z=pos.z})
 			local walldir = nil
 			if options.need_wall and options.verticals_list then
-				walldir = plantslib:find_adjacent_wall(p_top, options.verticals_list, biome.choose_random_wall)
+				walldir = plantslib:find_adjacent_wall(p_top, options.verticals_list, options.choose_random_wall)
 			end
 			if n_top.name == "air" and (not options.need_wall or (options.need_wall and walldir))
 			  then
