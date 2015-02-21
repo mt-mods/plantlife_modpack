@@ -85,7 +85,7 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 			-- turn the node into cut grass, wear out item and play sound
 			minetest.set_node(pt.under, {name="dryplants:grass"})
 		else -- otherwise dig the node
-			if not minetest.dig_node(pt.under) then
+			if not minetest.node_dig(pt.under, under, user) then
 				return
 			end
 		end
