@@ -75,6 +75,9 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 		return
 	end
 
+	if not sickle_can_break(pt.under, under, user) then
+		return
+	end
 	-- check if something that can be cut using fine tools
 	if minetest.get_item_group(under.name, "snappy") > 0 then
 		-- check if flora but no flower
@@ -82,7 +85,9 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 			-- turn the node into cut grass, wear out item and play sound
 			minetest.set_node(pt.under, {name="dryplants:grass"})
 		else -- otherwise dig the node
-			minetest.dig_node(pt.under)
+			if not minetest.dig_node(pt.under) then
+				return
+			end
 		end
 		minetest.sound_play("default_dig_crumbly", {
 			pos = pt.under,
@@ -91,9 +96,6 @@ local function sickle_on_use(itemstack, user, pointed_thing, uses)
 		itemstack:add_wear(65535/(uses-1))
 		return itemstack
 	elseif string.find(under.name, "default:dirt_with_grass") then
-		if not sickle_can_break(pt.under, under, user) then
-			return
-		end
 		if minetest.is_protected(above_pos, user:get_player_name()) or above.name ~= "air" then
 			return
 		end
