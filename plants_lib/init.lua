@@ -339,17 +339,22 @@ function plantslib:generate_block_with_air_checking(dtime)
 
 		if not plantslib.surface_nodes_aircheck.blockhash then
 
-			local search_area = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_aircheck)
+			if type(minetest.find_nodes_in_area_under_air) == "function" then -- use newer API call
+				plantslib.surface_nodes_aircheck.blockhash =
+					minetest.find_nodes_in_area_under_air(minp, maxp, plantslib.surfaceslist_aircheck)
+			else
+				local search_area = minetest.find_nodes_in_area(minp, maxp, plantslib.surfaceslist_aircheck)
 
-			-- search the generated block for air-bounded surfaces
+				-- search the generated block for air-bounded surfaces the slow way.
 
-			plantslib.surface_nodes_aircheck.blockhash = {}
+				plantslib.surface_nodes_aircheck.blockhash = {}
 
-			for i = 1, #search_area do
-			local pos = search_area[i]
-				local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
-				if minetest.get_node(p_top).name == "air" then
-					plantslib.surface_nodes_aircheck.blockhash[#plantslib.surface_nodes_aircheck.blockhash + 1] = pos
+				for i = 1, #search_area do
+				local pos = search_area[i]
+					local p_top = { x=pos.x, y=pos.y+1, z=pos.z }
+					if minetest.get_node(p_top).name == "air" then
+						plantslib.surface_nodes_aircheck.blockhash[#plantslib.surface_nodes_aircheck.blockhash + 1] = pos
+					end
 				end
 			end
 			plantslib.actioncount_aircheck.blockhash = 1
