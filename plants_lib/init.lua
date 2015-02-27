@@ -434,6 +434,27 @@ minetest.register_globalstep(function(dtime)
 	plantslib:generate_block_no_aircheck(dtime)
 end)
 
+-- Play out the entire log all at once on shutdown
+-- to prevent unpopulated map areas
+
+minetest.register_on_shutdown(function()
+	print("[plants_lib] Stand by, playing out the rest of the aircheck mapblock log")
+	print("(there are "..#plantslib.blocklist_aircheck.." entries)...")
+	while true do
+		plantslib:generate_block_with_air_checking(0.1)
+		if #plantslib.blocklist_aircheck == 0 then return end
+	end
+end)
+
+minetest.register_on_shutdown(function()
+	print("[plants_lib] Stand by, playing out the rest of the no-aircheck mapblock log")
+	print("(there are "..#plantslib.blocklist_aircheck.." entries)...")
+	while true do
+		plantslib:generate_block_no_aircheck(0.1)
+		if #plantslib.blocklist_no_aircheck == 0 then return end
+	end
+end)
+
 -- The spawning ABM
 
 function plantslib:spawn_on_surfaces(sd,sp,sr,sc,ss,sa)
