@@ -325,8 +325,7 @@ end
 -- Primary mapgen spawner, for mods that can work with air checking enabled on
 -- a surface during the initial map read stage.
 
-function plantslib:generate_block_with_air_checking(dtime)
-	if dtime > 0.2 then return end -- don't attempt to populate if lag is too high
+function plantslib:generate_block_with_air_checking()
 	if #plantslib.blocklist_aircheck > 0 then
 
 		local minp =		plantslib.blocklist_aircheck[1][1]
@@ -380,8 +379,7 @@ end
 -- Secondary mapgen spawner, for mods that require disabling of
 -- checking for air during the initial map read stage.
 
-function plantslib:generate_block_no_aircheck(dtime)
-	if dtime > 0.2 then return end
+function plantslib:generate_block_no_aircheck()
 	if #plantslib.blocklist_no_aircheck > 0 then
 
 		local minp =		plantslib.blocklist_no_aircheck[1][1]
@@ -427,11 +425,19 @@ end)
 -- "Play" them back, populating them with new stuff in the process
 
 minetest.register_globalstep(function(dtime)
-	plantslib:generate_block_with_air_checking(dtime)
-end)
-
-minetest.register_globalstep(function(dtime)
-	plantslib:generate_block_no_aircheck(dtime)
+	if dtime < 0.2 then  -- don't attempt to populate if lag is already too high
+		plantslib.globalstep_start_time = minetest.get_us_time()
+		plantslib.globalstep_runtime = 0
+		while plantslib.globalstep_runtime < 200000 do  -- 0.2 seconds, in uS.
+			if #plantslib.blocklist_aircheck > 0 then
+				plantslib:generate_block_with_air_checking()
+			end
+			if #plantslib.blocklist_no_aircheck > 0 then 
+				plantslib:generate_block_no_aircheck()
+			end
+			plantslib.globalstep_runtime = minetest.get_us_time() - plantslib.globalstep_start_time
+		end
+	end
 end)
 
 -- Play out the entire log all at once on shutdown
