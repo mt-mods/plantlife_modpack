@@ -429,7 +429,8 @@ minetest.register_globalstep(function(dtime)
 	  (#plantslib.blocklist_aircheck > 0 or #plantslib.blocklist_no_aircheck > 0) then
 		plantslib.globalstep_start_time = minetest.get_us_time()
 		plantslib.globalstep_runtime = 0
-		while plantslib.globalstep_runtime < 200000 do  -- 0.2 seconds, in uS.
+		while (#plantslib.blocklist_aircheck > 0 or #plantslib.blocklist_no_aircheck > 0)
+		  and plantslib.globalstep_runtime < 200000 do  -- 0.2 seconds, in uS.
 			if #plantslib.blocklist_aircheck > 0 then
 				plantslib:generate_block_with_air_checking()
 			end
