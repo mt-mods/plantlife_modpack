@@ -425,14 +425,15 @@ end)
 -- "Play" them back, populating them with new stuff in the process
 
 minetest.register_globalstep(function(dtime)
-	if dtime < 0.2 then  -- don't attempt to populate if lag is already too high
+	if dtime < 0.2 and    -- don't attempt to populate if lag is already too high
+	  (#plantslib.blocklist_aircheck > 0 or #plantslib.blocklist_no_aircheck > 0) then
 		plantslib.globalstep_start_time = minetest.get_us_time()
 		plantslib.globalstep_runtime = 0
 		while plantslib.globalstep_runtime < 200000 do  -- 0.2 seconds, in uS.
 			if #plantslib.blocklist_aircheck > 0 then
 				plantslib:generate_block_with_air_checking()
 			end
-			if #plantslib.blocklist_no_aircheck > 0 then 
+			if #plantslib.blocklist_no_aircheck > 0 then
 				plantslib:generate_block_no_aircheck()
 			end
 			plantslib.globalstep_runtime = minetest.get_us_time() - plantslib.globalstep_start_time
