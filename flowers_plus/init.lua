@@ -12,7 +12,7 @@ local lilies_max_count = 320
 local lilies_rarity = 33
 local seaweed_max_count = 320
 local seaweed_rarity = 33
-local sunflowers_max_count = 2
+local sunflowers_max_count = 10
 local sunflowers_rarity = 25
 
 -- register the various rotations of waterlilies
@@ -422,7 +422,6 @@ plantslib:register_generate_plant({
 	plantlife_limit = -0.9,
 	temp_max = 0.53,
 	random_facedir = {0,3},
-	max_count = 10,
   },
   "flowers:sunflower"
 )
