@@ -13,7 +13,7 @@ local lilies_rarity = 33
 local seaweed_max_count = 320
 local seaweed_rarity = 33
 local sunflowers_max_count = 2
-local sunflowers_rarity = 66
+local sunflowers_rarity = 25
 
 -- register the various rotations of waterlilies
 
@@ -413,22 +413,18 @@ plantslib:register_generate_plant({
   flowers_plus.grow_seaweed
 )
 
-flowers_plus.grow_sunflowers = function(pos)
-	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	minetest.set_node(right_here, {name="flowers:sunflower", param2=math.random(1,3)})
-end
-
 plantslib:register_generate_plant({
 	surface = {"default:dirt_with_grass"},
+	avoid_nodes = { "flowers:sunflower" },
 	max_count = sunflowers_max_count,
 	rarity = sunflowers_rarity,
-	min_elevation = 10,
-	max_elevation = 40,
+	min_elevation = 0,
 	plantlife_limit = -0.9,
-	temp_max = -0.22,
-	temp_min = 0.22,
+	temp_max = 0.53,
+	random_facedir = {0,3},
+	max_count = 10,
   },
-  flowers_plus.grow_sunflowers
+  "flowers:sunflower"
 )
 
 -- spawn ABM registrations
@@ -501,10 +497,13 @@ plantslib:spawn_on_surfaces({
 	spawn_plants = {"flowers:sunflower"},
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower", "group:flora"},
+	avoid_nodes = {"group:flower"},
 	seed_diff = flowers_seed_diff,
-	light_min = 4,
+	light_min = 11,
 	light_max = 14,
+	min_elevation = 0,
+	plantlife_limit = -0.9,
+	temp_max = 0.53,
 	random_facedir = {0,3}
 })
 
