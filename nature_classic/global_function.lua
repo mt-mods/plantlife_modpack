@@ -73,7 +73,6 @@ function nature:grow_node(pos, nodename)
                 >= nature.minimum_growth_light 
 
         if is_not_young(pos) and light_enough then
-            minetest.remove_node(pos)
             minetest.set_node(pos, { name = nodename })
             set_young_node(pos)
 
