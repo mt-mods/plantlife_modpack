@@ -27,7 +27,7 @@ nature.apple_chance = 10
 nature.apple_spread = 2
 
 nature.meta_blossom_time = "blossom_time"
-nature.blossom_duration = 5
+nature.blossom_duration = nature.blossom_delay
 
 function dumppos(pos)
 	return "("..pos.x..","..pos.y..","..pos.z..")"
