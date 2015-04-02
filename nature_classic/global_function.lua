@@ -1,26 +1,51 @@
 -- helper functions
 
+local function process_blossom_queue_item()
+	local pos  = nature.blossomqueue[1][1]
+	local node = nature.blossomqueue[1][2]
+	local replace = nature.blossomqueue[1][3]
+	if (nature.blossomqueue[1][3] == nature.blossom_node and not nature:is_near_water(pos)) then
+		table.remove(nature.blossomqueue, 1) -- don't grow if it's not near water, pop from queue.
+		return
+	end
+	nature:grow_node(pos, replace) -- now actually grow it.
+	table.remove(nature.blossomqueue, 1)
+end
+
 minetest.register_globalstep(function(dtime)
 	nature.dtime = dtime
 	if #nature.blossomqueue > 0 and dtime < 0.2 then
-		local pos  = nature.blossomqueue[1][1]
-		local node = nature.blossomqueue[1][2]
-		local replace = nature.blossomqueue[1][3]
-		if (nature.blossomqueue[1][3] == nature.blossom_node and not nature:is_near_water(pos)) then
-			table.remove(nature.blossomqueue, 1) -- don't grow if it's not near water, pop from queue.
-			return
+		local i = 1
+		if dtime < 0.1 then
+			i = i + 4
 		end
-		nature:grow_node(pos, replace) -- now actually grow it.
-		table.remove(nature.blossomqueue, 1)
+		if dtime < 0.05 then
+			i = i + 10
+		end
+		while #nature.blossomqueue > 0 and i > 0 do
+			process_blossom_queue_item()
+			i = i - 1
+		end
 	end
 end)
 
 function nature.enqueue_node(pos, node, replace)
 	local idx = #nature.blossomqueue
-	nature.blossomqueue[idx+1] = {}
-	nature.blossomqueue[idx+1][1] = pos
-	nature.blossomqueue[idx+1][2] = node
-	nature.blossomqueue[idx+1][3] = replace
+	if idx < nature.blossomqueue_max then
+		local enqueue_prob = 0
+		if idx < nature.blossomqueue_max * 0.8 then
+			enqueue_prob = 1
+		else
+			-- Reduce queue growth as it gets closer to its max.
+			enqueue_prob = 1 - (idx - nature.blossomqueue_max * 0.8) / (nature.blossomqueue_max * 0.2)
+		end
+		if enqueue_prob == 1 or math.random(100) <= 100 * enqueue_prob then
+			nature.blossomqueue[idx+1] = {}
+			nature.blossomqueue[idx+1][1] = pos
+			nature.blossomqueue[idx+1][2] = node
+			nature.blossomqueue[idx+1][3] = replace
+		end
+	end
 end
 
 local function set_young_node(pos)

@@ -7,6 +7,7 @@ local current_mod_name = minetest.get_current_modname()
 
 nature = {}
 nature.blossomqueue = {}
+nature.blossomqueue_max = 1000
 
 nature.blossom_node = "nature:blossom"
 nature.blossom_leaves = "default:leaves"
