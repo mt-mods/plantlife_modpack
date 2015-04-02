@@ -26,10 +26,8 @@ nature.blossom_delay = 3600
 nature.apple_chance = 10
 nature.apple_spread = 2
 
-nature.node_young = "young"
-nature.setting_true = "true"
-nature.setting_false = "false"
-nature.youth_delay = 5
+nature.meta_blossom_time = "blossom_time"
+nature.blossom_duration = 5
 
 function dumppos(pos)
 	return "("..pos.x..","..pos.y..","..pos.z..")"

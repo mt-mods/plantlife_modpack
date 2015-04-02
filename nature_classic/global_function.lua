@@ -51,20 +51,14 @@ end
 local function set_young_node(pos)
     local meta = minetest.get_meta(pos)
 
-    meta:set_string(nature.node_young, nature.setting_true)
-    minetest.after(nature.youth_delay,
-        function(pos)
-            local meta = minetest.get_meta(pos)
-            meta:set_string(nature.node_young, nature.setting_false)
-        end,
-    pos)
+    meta:set_int(nature.meta_blossom_time, minetest.get_gametime())
 end
 
 local function is_not_young(pos)
     local meta = minetest.get_meta(pos)
 
-    local young = meta:get_string(nature.node_young)
-    return young ~= nature.setting_true
+    local blossom_time = meta:get_int(nature.meta_blossom_time)
+    return not (blossom_time and minetest.get_gametime() - blossom_time < nature.blossom_duration)
 end
 
 function nature:grow_node(pos, nodename)
