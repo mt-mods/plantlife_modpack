@@ -33,7 +33,7 @@ minetest.register_craft({
 minetest.register_abm({
     nodenames = { nature.blossom_leaves },
     interval = nature.blossom_delay,
-    chance = nature.blossom_chance,
+    chance = nature.leaves_blossom_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
 			nature.enqueue_node(pos, node, nature.blossom_node)
@@ -44,7 +44,7 @@ minetest.register_abm({
 minetest.register_abm({
     nodenames = { nature.blossom_node },
     interval = nature.blossom_delay,
-    chance = nature.blossom_chance,
+    chance = nature.blossom_leaves_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
 			nature.enqueue_node(pos, node, nature.blossom_leaves)
