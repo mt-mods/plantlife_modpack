@@ -5,21 +5,22 @@ minetest.register_globalstep(function(dtime)
 	if #nature.blossomqueue > 0 and dtime < 0.2 then
 		local pos  = nature.blossomqueue[1][1]
 		local node = nature.blossomqueue[1][2]
-		if (nature.blossomqueue[1][3] and not nature:is_near_water(pos)) then
+		local replace = nature.blossomqueue[1][3]
+		if (nature.blossomqueue[1][3] == nature.blossom_node and not nature:is_near_water(pos)) then
 			table.remove(nature.blossomqueue, 1) -- don't grow if it's not near water, pop from queue.
 			return
 		end
-		nature:grow_node(pos, nature.blossom_node) -- now actually grow it.
+		nature:grow_node(pos, replace) -- now actually grow it.
 		table.remove(nature.blossomqueue, 1)
 	end
 end)
 
-function nature.enqueue_node(pos, node, fcn)
+function nature.enqueue_node(pos, node, replace)
 	local idx = #nature.blossomqueue
 	nature.blossomqueue[idx+1] = {}
 	nature.blossomqueue[idx+1][1] = pos
 	nature.blossomqueue[idx+1][2] = node
-	nature.blossomqueue[idx+1][3] = fcn
+	nature.blossomqueue[idx+1][3] = replace
 end
 
 local function set_young_node(pos)

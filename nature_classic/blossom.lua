@@ -36,7 +36,7 @@ minetest.register_abm({
     chance = nature.blossom_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-			nature.enqueue_node(pos, node, true)
+			nature.enqueue_node(pos, node, nature.blossom_node)
     end
 })
 
@@ -47,7 +47,7 @@ minetest.register_abm({
     chance = nature.blossom_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-			nature.enqueue_node(pos, node, false)
+			nature.enqueue_node(pos, node, nature.blossom_leaves)
     end
 })
 
