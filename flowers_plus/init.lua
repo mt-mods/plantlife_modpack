@@ -495,14 +495,15 @@ plantslib:spawn_on_surfaces({
 	spawn_plants = {"flowers:sunflower"},
 	spawn_chance = SPAWN_CHANCE*2,
 	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:flower"},
+	avoid_nodes = {"group:flower", "flowers:sunflower"},
 	seed_diff = flowers_seed_diff,
 	light_min = 11,
 	light_max = 14,
 	min_elevation = 0,
 	plantlife_limit = -0.9,
 	temp_max = 0.53,
-	random_facedir = {0,3}
+	random_facedir = {0,3},
+	avoid_radius = 5
 })
 
 -- crafting recipes!
