@@ -40,8 +40,8 @@ TALL_GRASS_RARITY					=	75		-- percent
 
 
 -- short grass becomes dirt with grass again
-GRASS_REGROWING_TIME 				= 	16800 	-- seconds
-GRASS_REGROWING_CHANCE 				= 	0.5		-- percent
+GRASS_REGROWING_TIME 				= 	1200 	-- seconds
+GRASS_REGROWING_CHANCE 				= 	5		-- percent
 
 HAY_DRYING_TIME 					= 	3600 	-- seconds
 
