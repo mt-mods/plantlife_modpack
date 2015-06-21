@@ -22,6 +22,7 @@ abstract_ferns.grow_tree_fern = function(pos)
 	if (size > 5) then
 		size = 10 - size
 	end
+	size = size + 1
 	local crown = ({ "ferns:tree_fern_leaves", "ferns:tree_fern_leaves_02" })[math.random(1, 2)]
 	
 	local i = 1
