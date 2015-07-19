@@ -303,18 +303,18 @@ local TRuNKS = {
 --	  MoD 						 TRuNK
     {"default",  				"tree"						},
 	{"default",					"jungletree"				},
-	
+	{"default",					"pinetree"					},
+
 	{"trees",					"tree_conifer"				},
 	{"trees",					"tree_mangrove"				},
 	{"trees",					"tree_palm"					},
-	
+
 	{"moretrees",				"apple_tree_trunk"			},
 	{"moretrees",				"beech_trunk"				},
 	{"moretrees",				"birch_trunk"				},
 	{"moretrees",				"fir_trunk"					},
 	{"moretrees",				"oak_trunk"					},
 	{"moretrees",				"palm_trunk"				},
-	{"moretrees",				"pine_trunk"				},
 	{"moretrees",				"rubber_tree_trunk"			},
 	{"moretrees",				"rubber_tree_trunk_empty"	},
 	{"moretrees",				"sequoia_trunk"				},
@@ -326,7 +326,7 @@ for i in pairs(TRuNKS) do
 	local 	MoD = 			TRuNKS[i][1]
 	local 	TRuNK = 		TRuNKS[i][2]
 	if minetest.get_modpath(MoD) ~= nil then
-		
+
 		local des = minetest.registered_nodes[MoD..":"..TRuNK].description
 	
 		minetest.register_node("trunks:"..TRuNK.."root", {
@@ -359,3 +359,5 @@ for i in pairs(TRuNKS) do
 	end
 end
 end
+
+minetest.register_alias("trunks:pine_trunkroot", "trunks:pine_treeroot")
