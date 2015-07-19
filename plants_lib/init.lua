@@ -591,8 +591,8 @@ function plantslib:grow_plants(opts)
 			if options.need_wall and options.verticals_list then
 				walldir = plantslib:find_adjacent_wall(p_top, options.verticals_list, options.choose_random_wall)
 			end
-			if n_top.name == "air" and (not options.need_wall or (options.need_wall and walldir))
-			  then
+			if (n_top.name == "air" or n_top.name == "default:snow")
+			  and (not options.need_wall or (options.need_wall and walldir)) then
 				-- corner case for changing short junglegrass
 				-- to dry shrub in desert
 				if n_bot.name == options.dry_early_node and options.grow_plant == "junglegrass:short" then
