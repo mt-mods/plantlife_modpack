@@ -225,6 +225,11 @@ local box = {
 	fixed = { { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
 }
 
+local sunflower_drop = "farming:seed_wheat"
+if minetest.registered_items["farming:seed_spelt"] then 
+	sunflower_drop = "farming:seed_spelt"
+end
+
 minetest.register_node(":flowers:sunflower", {
 	description = "Sunflower",
 	drawtype = "mesh",
@@ -240,15 +245,14 @@ minetest.register_node(":flowers:sunflower", {
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = box,
 	collision_box = box,
-})
-
-minetest.override_item("flowers:sunflower", {drop = {
-	max_items = 1,
-	items = {
-		{items = {"farming:seed_wheat"}, rarity = 8},
-		{items = {"flowers:sunflower"}},
+	drop = {
+		max_items = 1,
+		items = {
+			{items = {sunflower_drop}, rarity = 8},
+			{items = {"flowers:sunflower"}},
+		}
 	}
-}})
+})
 
 local extra_aliases = {
 	"waterlily",
