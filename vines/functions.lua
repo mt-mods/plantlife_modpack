@@ -94,7 +94,7 @@ vines.register_vine = function( name, defs, biome )
   biome_lib:spawn_on_surfaces( biome )
 
   local override_nodes = function( nodes, defs )
-    function override( index, registered )
+    local function override( index, registered )
       local node = nodes[ index ]
       if index > #nodes then return registered end
       if minetest.registered_nodes[node] then
