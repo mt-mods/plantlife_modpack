@@ -68,7 +68,7 @@ minetest.register_abm({
     chance = nature.apple_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
-		if math.random(10) == 0 and nature.dtime < 0.2 and not minetest.find_node_near(pos, nature.apple_spread, { "default:apple" }) then
+		if math.random(10) == 1 and nature.dtime < 0.2 and not minetest.find_node_near(pos, nature.apple_spread, { "default:apple" }) then
 			spawn_apple_under(pos)
 		end
     end
