@@ -64,7 +64,7 @@ minetest.register_abm({
 -- spawn apples with 10% chance, but with 10 times higher frequency
 minetest.register_abm({
     nodenames = { nature.blossom_node },
-    interval = nature.blossom_delay / 10,
+    interval = nature.apple_delay / 10,
     chance = nature.apple_chance,
 
     action = function(pos, node, active_object_count, active_object_count_wider)
