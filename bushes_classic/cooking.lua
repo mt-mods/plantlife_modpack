@@ -67,7 +67,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 				on_use = minetest.item_eat(1),
 				groups = {berry=1, raspberry=1}
 			})
-			minetest.register_alias("bushes:blueberry", "farming:blueberries")
+			minetest.register_alias("bushes:raspberry", "farming:raspberries")
 
 		else
 			minetest.register_craftitem(":bushes:"..berry, {
