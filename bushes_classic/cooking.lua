@@ -3,27 +3,27 @@ local S = biome_lib.intllib
 -- Basket
 
 minetest.register_craft({
-    output = "bushes:basket_empty",
-    recipe = {
-	{ "default:stick", "default:stick", "default:stick" },
-	{ "", "default:stick", "" },
-    },
+	output = "bushes:basket_empty",
+	recipe = {
+		{ "default:stick", "default:stick", "default:stick" },
+		{ "", "default:stick", "" },
+	},
 })
 
 -- Sugar
 
 minetest.register_craftitem(":bushes:sugar", {
-    description = S("Sugar"),
-    inventory_image = "bushes_sugar.png",
-    on_use = minetest.item_eat(1),
+	description = S("Sugar"),
+	inventory_image = "bushes_sugar.png",
+	on_use = minetest.item_eat(1),
 	groups = {food_sugar=1}
 })
 
 minetest.register_craft({
-    output = "bushes:sugar 1",
-    recipe = {
-	{ "default:papyrus", "default:papyrus" },
-    },
+	output = "bushes:sugar 1",
+	recipe = {
+		{ "default:papyrus", "default:papyrus" },
+	},
 })
 
 for i, berry in ipairs(bushes_classic.bushes) do
@@ -37,10 +37,12 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 	if berry ~= "mixed_berry" then
 
+		-- Special case for strawberries, blueberries and raspberries
+		-- when farming_plus or farming redo is in use. Use items
+		-- from these mods, but redefine there so they has the right
+		-- groups and does't look so ugly!
+
 		if berry == "strawberry" and minetest.registered_nodes["farming_plus:strawberry"] then
-			-- Special case for strawberries, when farming_plus is in use. Use
-			-- the item from that mod, but redefine it so it has the right
-			-- groups and does't look so ugly!
 			minetest.register_craftitem(":farming_plus:strawberry_item", {
 				description = S("Strawberry"),
 				inventory_image = "bushes_"..berry..".png",
@@ -48,6 +50,25 @@ for i, berry in ipairs(bushes_classic.bushes) do
 				groups = {berry=1, strawberry=1}
 			})
 			minetest.register_alias("bushes:strawberry", "farming_plus:strawberry_item")
+
+		elseif berry == "blueberry" and minetest.registered_items["farming:blueberries"] then
+			minetest.register_craftitem(":farming:blueberries", {
+				description = S("Blueberry"),
+				inventory_image = "bushes_"..berry..".png",
+				on_use = minetest.item_eat(1),
+				groups = {berry=1, blueberry=1}
+			})
+			minetest.register_alias("bushes:blueberry", "farming:blueberries")
+
+		elseif berry == "raspberry" and minetest.registered_items["farming:raspberries"] then
+			minetest.register_craftitem(":farming:raspberries", {
+				description = S("Raspberry"),
+				inventory_image = "bushes_"..berry..".png",
+				on_use = minetest.item_eat(1),
+				groups = {berry=1, raspberry=1}
+			})
+			minetest.register_alias("bushes:blueberry", "farming:blueberries")
+
 		else
 			minetest.register_craftitem(":bushes:"..berry, {
 				description = desc,
@@ -56,6 +77,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 				on_use = minetest.item_eat(1),
 			})
 		end
+
 		minetest.register_craft({
 			output = "bushes:"..berry.."_pie_raw 1",
 			recipe = {
