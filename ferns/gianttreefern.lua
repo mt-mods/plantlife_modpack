@@ -61,32 +61,39 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 		}
 	}
 
+	local brk = false
 	for i = 1, size-3 do
+		if minetest.get_node({x = pos.x, y = pos.y + i, z = pos.z}).name ~= "air" then
+			brk = true
+			break
+		end
 		minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, {name="ferns:fern_trunk_big"})
 	end
-	minetest.set_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
-	minetest.set_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
+	if not brk then
+		minetest.set_node({x = pos.x, y = pos.y + size-2, z = pos.z}, {name="ferns:fern_trunk_big_top"})
+		minetest.set_node({x = pos.x, y = pos.y + size-1, z = pos.z}, {name="ferns:tree_fern_leaves_giant"})
 
-	-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
+		-- all the checking for air below is to prevent some ugly bugs (incomplete trunks of neighbouring trees), it's a bit slower, but worth the result
 
-	-- assert(#leafchecks == 4)
-	for i = 1, 4 do
-		local positions = leafchecks[i].positions
-		local rot = leafchecks[i].direction
-		local endpos = 4	-- If the loop below adds all intermediate leaves then the "terminating" leaf will be at positions[4]
-		-- assert(#positions == 4)
-		-- add leaves so long as the destination nodes are air
-		for j = 1, 3 do
-			if minetest.get_node(positions[j]).name == "air" then
-				minetest.set_node(positions[j], {name="ferns:tree_fern_leave_big"})
-			else
-				endpos = j
-				break
+		-- assert(#leafchecks == 4)
+		for i = 1, 4 do
+			local positions = leafchecks[i].positions
+			local rot = leafchecks[i].direction
+			local endpos = 4	-- If the loop below adds all intermediate leaves then the "terminating" leaf will be at positions[4]
+			-- assert(#positions == 4)
+			-- add leaves so long as the destination nodes are air
+			for j = 1, 3 do
+				if minetest.get_node(positions[j]).name == "air" then
+					minetest.set_node(positions[j], {name="ferns:tree_fern_leave_big"})
+				else
+					endpos = j
+					break
+				end
 			end
-		end
-		-- add the terminating leaf if required and possible
-		if endpos == 4 and minetest.get_node(positions[endpos]).name == "air" then
-			minetest.set_node(positions[endpos], {name="ferns:tree_fern_leave_big_end", param2=rot})
+			-- add the terminating leaf if required and possible
+			if endpos == 4 and minetest.get_node(positions[endpos]).name == "air" then
+				minetest.set_node(positions[endpos], {name="ferns:tree_fern_leave_big_end", param2=rot})
+			end
 		end
 	end
 end
