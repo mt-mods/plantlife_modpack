@@ -16,9 +16,15 @@ minetest.register_node(":"..nature.blossom_node, {
     drawtype = "allfaces_optional",
     tiles = nature.blossom_textures,
     paramtype = "light",
-    groups = { snappy = 3, leafdecay = 3, flammable = 2, leafdecay = 3 },
+    groups = nature.blossom_groups,
     sounds = default.node_sound_leaves_defaults(),
 	waving = 1
+})
+
+default.register_leafdecay({
+	trunks = { nature.blossom_trunk },
+	leaves = { nature.blossom_node },
+	radius = nature.blossom_decay,
 })
 
 minetest.register_craft({
