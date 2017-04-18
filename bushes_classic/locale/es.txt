@@ -1,0 +1,43 @@
+# Traducido por Carlos Barraza
+
+Strawberry = Frutilla
+Blackberry = Mora
+Blueberry = Arándano
+Raspberry = Frambuesa
+Gooseberry = Grosella
+Mixed Berry = Mezcla de Baya
+Basket with Strawberry Pies = Cesta con Pasteles de Frutilla
+Basket with Blackberry Pies = Cesta con Pasteles de Mora
+Basket with Blueberry Pies = Cesta con Pasteles de Arándano
+Basket with Raspberry Pies = Cesta con Pasteles de Frambuesa
+Basket with Gooseberry Pies = Cesta con Pasteles de Grosella
+Basket with Mixed Berry Pies = Cesta con Pasteles de Mezcla de Baya
+currently fruitless = Actualmente infructuoso
+Strawberry Bush = Arbusto de Frutilla
+Blackberry Bush = Arbusto de Mora
+Blueberry Bush = Arbusto de Arándano
+Raspberry Bush = Arbusto de Frambuesa
+Gooseberry Bush = Arbusto de Grosella
+Mixed Berry Bush = Arbusto de Mezcla de Baya
+Basket = Cesta
+Sugar = Azúcar
+Raw Strawberry pie = Pastel de Frutilla Crudo
+Raw Blackberry pie = Pastel de Mora Crudo
+Raw Blueberry pie = Pastel de Arándano Crudo
+Raw Raspberry pie = Pastel de Frambuesa Crudo
+Raw Gooseberry pie = Pastel de Grosella Crudo
+Raw Mixed Berry pie = Pastel de Mezcla de Bayas Cruda
+Cooked Strawberry pie = Pastel de Frutilla Cocido
+Cooked Blackberry pie = Pastel de Mora Cocido
+Cooked Blueberry pie = Pastel de Arándano Cocido
+Cooked Raspberry pie = Pastel de Frambuesa Cocido
+Cooked Gooseberry pie = Pastel de Grosella Cocido
+Cooked Mixed Berry pie = Pastel de Mezcla de Bayas Cocido
+Slice of Strawberry pie = Rebanada de Pastel de Frutilla
+Slice of Blackberry pie = Rebanada de Pastel de Mora
+Slice of Blueberry pie = Rebanada de Pastel de Arándano
+Slice of Raspberry pie = Rebanada de Pastel de Frambuesa
+Slice of Gooseberry pie = Rebanada de Pastel de Grosella
+Slice of Mixed Berry pie = Rebanada de Pastel de Mezcla de Bayas
+
+[Bushes] Loaded. = [Arbustos] Cargado.

@@ -3,7 +3,12 @@
 --
 -- License:  WTFPL
 
-local S = biome_lib.intllib
+local S
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
+else
+	S = function(s) return s end
+end
 
 bushes_classic = {}
 
@@ -17,7 +22,7 @@ bushes_classic.bushes = {
 }
 
 bushes_classic.bushes_descriptions = {
-    "Strawberry",
+	"Strawberry",
 	"Blackberry",
 	"Blueberry",
 	"Raspberry",

@@ -1,4 +1,9 @@
-local S = biome_lib.intllib
+local S
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
+else
+	S = function(s) return s end
+end
 
 -- Basket
 
@@ -71,7 +76,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 		else
 			minetest.register_craftitem(":bushes:"..berry, {
-				description = desc,
+				description = S(desc),
 				inventory_image = "bushes_"..berry..".png",
 				groups = {berry = 1, [berry] = 1},
 				on_use = minetest.item_eat(1),

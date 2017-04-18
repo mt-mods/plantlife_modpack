@@ -1,0 +1,13 @@
+# Traducido por Carlos Barraza
+
+Waterlily = Lirio de agua
+Seaweed = Algas marinas
+Potted Rose = Rosa en maceta
+Potted Tulip = Tulipán en maceta
+Potted Yellow Dandelion = Diente de león amarillo en maceta
+Potted White Dandelion = Diente de león blanco en maceta
+Potted Blue Geranium = Geranio azul en maceta
+Potted Viola = Viola en maceta
+Flower Pot = Florero
+
+[Flowers] Loaded. = [Flores] Cargado.
