@@ -25,7 +25,7 @@ local nodenames = {}
 
 local function create_nodes()
 	local images 	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
-	local vscales	= { 1, 2, 2.2 }
+	local vscales	= { 1, math.sqrt(8), math.sqrt(11) }
 	local descs		= { "Lady-fern (Athyrium)", nil, nil }
 
 	for i = 1, 3 do

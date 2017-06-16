@@ -25,7 +25,7 @@ end
 minetest.register_node("dryplants:juncus", {
 	description = "Juncus",
 	drawtype = "plantlike",
-	visual_scale = 2,
+	visual_scale = math.sqrt(8),
 	paramtype = "light",
 	tiles = {"dryplants_juncus_03.png"},
 	inventory_image = "dryplants_juncus_inv.png",
@@ -67,7 +67,7 @@ minetest.register_node("dryplants:juncus", {
 minetest.register_node("dryplants:juncus_02", {
 	description = "Juncus",
 	drawtype = "plantlike",
-	visual_scale = 2,
+	visual_scale = math.sqrt(8),
 	paramtype = "light",
 	tiles = {"dryplants_juncus_02.png"},
 	walkable = false,
