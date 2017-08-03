@@ -1,5 +1,8 @@
+-- support for i18n
+local S = plantlife_i18n.gettext
+
 minetest.register_node("vines:rope_block", {
-  description = "Rope",
+  description = S("Rope"),
   sunlight_propagates = true,
   paramtype = "light",
   tiles = {
@@ -30,7 +33,7 @@ minetest.register_node("vines:rope_block", {
 })
 
 minetest.register_node("vines:rope", {
-  description = "Rope",
+  description = S("Rope"),
   walkable = false,
   climbable = true,
   sunlight_propagates = true,
@@ -47,7 +50,7 @@ minetest.register_node("vines:rope", {
 })
 
 minetest.register_node("vines:rope_end", {
-  description = "Rope",
+  description = S("Rope"),
   walkable = false,
   climbable = true,
   sunlight_propagates = true,

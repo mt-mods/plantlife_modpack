@@ -1,9 +1,5 @@
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 plantlife_bushes = {}
 
@@ -16,7 +12,7 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 	-- find out which bush type we are dealing with
 	local bush_name   = ""
 	local can_harvest = false
-	
+
 	if oldnode.name == "bushes:fruitless_bush" then
 		-- this bush has not grown fruits yet (but will eventually)
 		bush_name = oldmetadata.fields.bush_type
@@ -151,10 +147,8 @@ minetest.register_abm({
 
 for i, bush_name in ipairs(bushes_classic.bushes) do
 
-	local desc = bushes_classic.bushes_descriptions[i]
-
 	minetest.register_node(":bushes:basket_"..bush_name, {
-		description = S("Basket with "..desc.." Pies"),
+		description = bushes_classic.bushes_descriptions[i][5],
 		drawtype = "mesh",
 		mesh = "bushes_basket_full.obj",
 		tiles = {
@@ -172,7 +166,6 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 	local groups = {snappy = 3, bush = 1, flammable = 2, attached_node=1}
 	if bush_name == "mixed_berry" then
 		bush_name = "fruitless";
-		desc      = S("currently fruitless");
 		texture_top = "bushes_fruitless_bush_top.png"
 		texture_bottom = "bushes_fruitless_bush_bottom.png"
 		groups.not_in_creative_inventory = 1
@@ -182,7 +175,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
-		description = S(desc.." Bush"),
+		description = bushes_classic.bushes_descriptions[i][6],
 		drawtype = "mesh",
 		mesh = "bushes_bush.obj",
 		tiles = {"bushes_bush_"..bush_name..".png"},
@@ -215,5 +208,3 @@ minetest.register_node(":bushes:basket_empty", {
 	paramtype2 = "facedir",
     groups = { dig_immediate = 3 },
 })
-
-

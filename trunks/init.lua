@@ -7,6 +7,9 @@ local mname		= "trunks"
 
 abstract_trunks = {}
 
+-- support for i18n
+local S = plantlife_i18n.gettext
+
 dofile(minetest.get_modpath("trunks").."/trunks_settings.txt")
 dofile(minetest.get_modpath("trunks").."/generating.lua")
 dofile(minetest.get_modpath("trunks").."/nodes.lua")

@@ -1,3 +1,6 @@
+-- support for i18n
+local S = plantlife_i18n.gettext
+
 vines.register_vine = function( name, defs, biome )
   local groups = { vines=1, snappy=3, flammable=2 }
 
@@ -61,7 +64,7 @@ vines.register_vine = function( name, defs, biome )
   })
 
   minetest.register_node( vine_name_middle, {
-    description = "Matured "..defs.description,
+    description = S("Matured").." "..defs.description,
     walkable = false,
     climbable = true,
     drop = "",

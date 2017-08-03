@@ -6,7 +6,7 @@
 -- Contains code from: 		biome_lib
 -- Looked at code from:		default, flowers, painting, trees
 -- Dependencies: 			biome_lib
--- Supports:				dryplants, stoneage, sumpf		
+-- Supports:				dryplants, stoneage, sumpf
 -----------------------------------------------------------------------------------------------
 -- some inspiration from here
 -- https://en.wikipedia.org/wiki/Athyrium_yokoscense
@@ -14,6 +14,9 @@
 -----------------------------------------------------------------------------------------------
 
 assert(abstract_ferns.config.enable_lady_fern == true)
+
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 -- Maintain backward compatibilty
 minetest.register_alias("archaeplantae:fern",		"ferns:fern_03")
@@ -26,7 +29,7 @@ local nodenames = {}
 local function create_nodes()
 	local images 	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
 	local vscales	= { 1, math.sqrt(8), math.sqrt(11) }
-	local descs		= { "Lady-fern (Athyrium)", nil, nil }
+	local descs		= { S("Lady-fern (Athyrium)"), nil, nil }
 
 	for i = 1, 3 do
 		local node_on_place = nil
@@ -40,7 +43,7 @@ local function create_nodes()
 		end
 		nodenames[i] = "ferns:fern_"..string.format("%02d", i)
 		minetest.register_node(nodenames[i], {
-			description = descs[i] or ("Lady-fern (Athyrium) " .. string.format("%02d", i)),
+			description = descs[i] or (S("Lady-fern (Athyrium)").." " .. string.format("%02d", i)),
 			inventory_image = "ferns_fern.png",
 			drawtype = "plantlike",
 			visual_scale = vscales[i],
@@ -91,8 +94,8 @@ if abstract_ferns.config.lady_ferns_near_tree == true then
 		plantlife_limit = -0.9,
 		humidity_max = -1.0,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜 (too hot?)
-		temp_min = 0.75, -- -12 캜
+		temp_max = -0.5, -- 55 째C (too hot?)
+		temp_min = 0.75, -- -12 째C
 		random_facedir = { 0, 179 },
 	},
 	nodenames
@@ -118,8 +121,8 @@ if abstract_ferns.config.lady_ferns_near_rock == true then
 		plantlife_limit = -0.9,
 		humidity_max = -1.0,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜 (too hot?)
-		temp_min = 0.75, -- -12 캜
+		temp_max = -0.5, -- 55 째C (too hot?)
+		temp_min = 0.75, -- -12 째C
 		random_facedir = { 0, 179 },
 	},
 	nodenames
@@ -156,8 +159,8 @@ if abstract_ferns.config.lady_ferns_near_ores == true then -- this one causes a 
 		plantlife_limit = -0.9,
 		humidity_max = -1.0,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜 (too hot?)
-		temp_min = 0.75, -- -12 캜
+		temp_max = -0.5, -- 55 째C (too hot?)
+		temp_min = 0.75, -- -12 째C
 		random_facedir = { 0, 179 },
 	},
 	nodenames
@@ -187,8 +190,8 @@ if abstract_ferns.config.lady_ferns_in_groups == true then -- this one is meant 
 		plantlife_limit = -0.9,
 		humidity_max = -1.0,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜 (too hot?)
-		temp_min = 0.75, -- -12 캜
+		temp_max = -0.5, -- 55 째C (too hot?)
+		temp_min = 0.75, -- -12 째C
 		random_facedir = { 0, 179 },
 	},
 	nodenames

@@ -6,11 +6,13 @@
 -- Contains code from: 		biome_lib
 -- Looked at code from:		default, flowers, trees
 -- Dependencies: 			biome_lib
--- Supports:				dryplants, stoneage, sumpf			
+-- Supports:				dryplants, stoneage, sumpf
 -----------------------------------------------------------------------------------------------
 
 assert(abstract_ferns.config.enable_horsetails == true)
 
+-- support for i18n
+local S = plantlife_i18n.gettext
 -----------------------------------------------------------------------------------------------
 -- HORSETAIL  (EQUISETUM)
 -----------------------------------------------------------------------------------------------
@@ -33,13 +35,13 @@ local function create_nodes()
 		local node_drop = "ferns:horsetail_04"
 
 		if i == 1 then
-			node_desc = "Young Horsetail (Equisetum)"
+			node_desc = S("Young Horsetail (Equisetum)")
 			node_on_use = minetest.item_eat(1) -- young ones edible https://en.wikipedia.org/wiki/Equisetum
 			node_drop = node_name
 		elseif i == 4 then
-			node_desc = "Horsetail (Equisetum)"
+			node_desc = S("Horsetail (Equisetum)")
 		else
-			node_desc = "Horsetail (Equisetum) ".. string.format("%02d", i)
+			node_desc = S("Horsetail (Equisetum)").." ".. string.format("%02d", i)
 		end
 
 		node_names[i] = node_name
@@ -125,8 +127,8 @@ if abstract_ferns.config.enable_horsetails_on_grass == true then
 		near_nodes_count = 1,
 		plantlife_limit = -0.9,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜
-		temp_min = 0.53, -- 0 캜, dies back in winter
+		temp_max = -0.5, -- 55 째C
+		temp_min = 0.53, -- 0 째C, dies back in winter
 		--random_facedir = { 0, 179 },
 	},
 	node_names
@@ -147,8 +149,8 @@ if abstract_ferns.config.enable_horsetails_on_stones == true then
 		min_elevation = 1, -- above sea level
 		plantlife_limit = -0.9,
 		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 캜
-		temp_min = 0.53, -- 0 캜, dies back in winter
+		temp_max = -0.5, -- 55 째C
+		temp_min = 0.53, -- 0 째C, dies back in winter
 		--random_facedir = { 0, 179 },
 	},
 	node_names

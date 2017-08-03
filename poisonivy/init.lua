@@ -1,12 +1,8 @@
 -- This file supplies poison ivy for the plantlife modpack
 -- Last revision:  2013-01-24
 
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 local SPAWN_DELAY = 1000
 local SPAWN_CHANCE = 200
