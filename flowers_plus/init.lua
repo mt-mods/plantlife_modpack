@@ -1,9 +1,5 @@
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 -- This file supplies a few additional plants and some related crafts
 -- for the plantlife modpack.  Last revision:  2013-04-24
@@ -47,7 +43,7 @@ for i in ipairs(lilies_list) do
 	minetest.register_node(":flowers:waterlily"..deg1, {
 		description = S("Waterlily"),
 		drawtype = "nodebox",
-		tiles = { 
+		tiles = {
 			"flowers_waterlily"..deg2..".png",
 			"flowers_waterlily"..deg2..".png^[transformFY"
 		},
@@ -85,7 +81,7 @@ for i in ipairs(lilies_list) do
 			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source" 
+				elseif top_node.name ~= "default:water_source"
 				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
@@ -144,11 +140,11 @@ for i in ipairs(algae_list) do
 		num = "_"..algae_list[i][1]
 		algae_groups = { snappy = 3,flammable=2,flower=1, not_in_creative_inventory=1 }
 	end
-	
+
 	minetest.register_node(":flowers:seaweed"..num, {
 		description = S("Seaweed"),
 		drawtype = "nodebox",
-		tiles = { 
+		tiles = {
 			"flowers_seaweed"..num..".png",
 			"flowers_seaweed"..num..".png^[transformFY"
 		},
@@ -167,9 +163,9 @@ for i in ipairs(algae_list) do
 		node_box = {
 			type = "fixed",
 			fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
-		},	
+		},
 		buildable_to = true,
-		
+
 		liquids_pointable = true,
 		drop = "flowers:seaweed",
 		on_place = function(itemstack, placer, pointed_thing)
@@ -185,7 +181,7 @@ for i in ipairs(algae_list) do
 			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source" 
+				elseif top_node.name ~= "default:water_source"
 				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
@@ -232,12 +228,12 @@ local box = {
 }
 
 local sunflower_drop = "farming:seed_wheat"
-if minetest.registered_items["farming:seed_spelt"] then 
+if minetest.registered_items["farming:seed_spelt"] then
 	sunflower_drop = "farming:seed_spelt"
 end
 
 minetest.register_node(":flowers:sunflower", {
-	description = "Sunflower",
+	description = S("Sunflower"),
 	drawtype = "mesh",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -296,7 +292,7 @@ flowers_plus.grow_waterlily = function(pos)
 		if lilies_list[i][1] ~= nil then
 			ext = "_"..lilies_list[i][1]
 		end
-	
+
 		if chance == num then
 			minetest.set_node(right_here, {name="flowers:waterlily"..ext, param2=math.random(0,3)})
 		end
@@ -474,7 +470,7 @@ biome_lib:spawn_on_surfaces({
 -- cotton wads -> string (can be crafted into wool blocks)
 -- potted cotton plants -> potted white dandelions
 
-minetest.register_alias("flowers:cotton_plant", "farming:cotton_8") 
+minetest.register_alias("flowers:cotton_plant", "farming:cotton_8")
 minetest.register_alias("flowers:flower_cotton", "farming:cotton_8")
 minetest.register_alias("flowers:flower_cotton_pot", "flowers:potted_dandelion_white")
 minetest.register_alias("flowers:potted_cotton_plant", "flowers:potted_dandelion_white")

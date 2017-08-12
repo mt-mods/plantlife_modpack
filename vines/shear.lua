@@ -1,5 +1,8 @@
+-- support for i18n
+local S = plantlife_i18n.gettext
+
 minetest.register_tool("vines:shears", {
-  description = "Shears",
+  description = S("Shears"),
   inventory_image = "vines_shears.png",
   wield_image = "vines_shears.png",
   stack_max = 1,

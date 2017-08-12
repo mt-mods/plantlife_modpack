@@ -5,11 +5,13 @@
 -- License (everything): 	WTFPL
 -- Contains code from: 		biome_lib
 -- Looked at code from:		4seasons, default
--- Supports:				vines			
+-- Supports:				vines
 -----------------------------------------------------------------------------------------------
 
 assert(abstract_ferns.config.enable_giant_treefern == true)
 
+-- support for i18n
+local S = plantlife_i18n.gettext
 -- lot of code, lot to load
 
 abstract_ferns.grow_giant_tree_fern = function(pos)
@@ -21,7 +23,7 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 	end
 
 	local size = math.random(12,16)	-- min of range must be >= 4
-	
+
 	local leafchecks = {
 		{
 			direction  = 3,
@@ -102,7 +104,7 @@ end
 -- GIANT TREE FERN LEAVES
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:tree_fern_leaves_giant", {
-	description = "Tree Fern Crown (Dicksonia)",
+	description = S("Tree Fern Crown (Dicksonia)"),
 	drawtype = "plantlike",
 	visual_scale = math.sqrt(11),
 	wield_scale = {x=0.175, y=0.175, z=0.175},
@@ -144,7 +146,7 @@ minetest.register_node("ferns:tree_fern_leaves_giant", {
 -- GIANT TREE FERN LEAVE PART
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:tree_fern_leave_big", {
-	description = "Giant Tree Fern Leaves",
+	description = S("Giant Tree Fern Leaves"),
 	drawtype = "raillike",
 	paramtype = "light",
 	tiles = {
@@ -165,7 +167,7 @@ minetest.register_node("ferns:tree_fern_leave_big", {
 -- GIANT TREE FERN LEAVE END
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:tree_fern_leave_big_end", {
-	description = "Giant Tree Fern Leave End",
+	description = S("Giant Tree Fern Leave End"),
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -194,7 +196,7 @@ minetest.register_node("ferns:tree_fern_leave_big_end", {
 -- GIANT TREE FERN TRUNK TOP
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:fern_trunk_big_top", {
-	description = "Giant Fern Trunk",
+	description = S("Giant Fern Trunk"),
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {
@@ -231,7 +233,7 @@ minetest.register_node("ferns:fern_trunk_big_top", {
 -- GIANT TREE FERN TRUNK
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:fern_trunk_big", {
-	description = "Giant Fern Trunk",
+	description = S("Giant Fern Trunk"),
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {
@@ -251,8 +253,8 @@ minetest.register_node("ferns:fern_trunk_big", {
 	sounds = default.node_sound_wood_defaults(),
 	after_destruct = function(pos,oldnode)
         local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
-        if node.name == "ferns:fern_trunk_big" or node.name == "ferns:fern_trunk_big_top" then 
-            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z}) 
+        if node.name == "ferns:fern_trunk_big" or node.name == "ferns:fern_trunk_big_top" then
+            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z})
             minetest.add_item(pos,"ferns:fern_trunk_big")
         end
     end,
@@ -262,7 +264,7 @@ minetest.register_node("ferns:fern_trunk_big", {
 -- GIANT TREE FERN SAPLING
 -----------------------------------------------------------------------------------------------
 minetest.register_node("ferns:sapling_giant_tree_fern", {
-	description = "Giant Tree Fern Sapling",
+	description = S("Giant Tree Fern Sapling"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"ferns_sapling_tree_fern_giant.png"},

@@ -6,6 +6,9 @@
 local current_mod_name = minetest.get_current_modname()
 
 nature = {}
+-- support for i18n
+local S = plantlife_i18n.gettext
+
 nature.blossomqueue = {}
 nature.blossomqueue_max = 1000
 
@@ -44,4 +47,4 @@ dofile(minetest.get_modpath(current_mod_name) .. "/config.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/global_function.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/blossom.lua")
 
-minetest.log("info", "[Nature Classic] loaded!")
+minetest.log("info", S("[Nature Classic] loaded!"))

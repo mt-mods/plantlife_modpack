@@ -6,7 +6,7 @@
 
 -- License (everything): 	WTFPL
 -- Contains code from: 		biome_lib
--- Looked at code from:		default, trees				
+-- Looked at code from:		default, trees
 -----------------------------------------------------------------------------------------------
 
 -- NOTES (from wikipedia, some of this might get implemented)
@@ -17,6 +17,9 @@
 -- pollen can be collected and used as a flour supplement or thickener
 -- Typha stems and leaves can be used to make paper
 -- The seed hairs were used by some Native American groups as tinder for starting fires
+
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 -----------------------------------------------------------------------------------------------
 -- REEDMACE SHAPES
@@ -70,7 +73,7 @@ abstract_dryplants.grow_reedmace_water = function(pos)
 				minetest.set_node(pos_02, {name="dryplants:reedmace_height_3_spikes"})
 			else
 				minetest.set_node(pos_02, {name="dryplants:reedmace_height_3"})
-			end	
+			end
 		end
 	end
 end
@@ -79,7 +82,7 @@ end
 -- REEDMACE SPIKES
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_spikes", {
-	description = "Reedmace",
+	description = S("Reedmace"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_spikes.png"},
@@ -101,7 +104,7 @@ minetest.register_node("dryplants:reedmace_spikes", {
 -- REEDMACE height: 1
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_top", {
-	description = "Reedmace, height: 1",
+	description = S("Reedmace, height: 1"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_top.png"},
@@ -123,7 +126,7 @@ minetest.register_node("dryplants:reedmace_top", {
 -- REEDMACE height: 2
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_height_2", {
-	description = "Reedmace, height: 2",
+	description = S("Reedmace, height: 2"),
 	drawtype = "plantlike",
 	visual_scale = math.sqrt(8),
 	paramtype = "light",
@@ -146,7 +149,7 @@ minetest.register_node("dryplants:reedmace_height_2", {
 -- REEDMACE height: 3
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_height_3", {
-	description = "Reedmace, height: 3",
+	description = S("Reedmace, height: 3"),
 	drawtype = "plantlike",
 	visual_scale = math.sqrt(8),
 	paramtype = "light",
@@ -169,7 +172,7 @@ minetest.register_node("dryplants:reedmace_height_3", {
 -- REEDMACE height: 3 & Spikes
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_height_3_spikes", {
-	description = "Reedmace, height: 3 & Spikes",
+	description = S("Reedmace, height: 3 & Spikes"),
 	drawtype = "plantlike",
 	visual_scale = math.sqrt(8),
 	paramtype = "light",
@@ -192,7 +195,7 @@ minetest.register_node("dryplants:reedmace_height_3_spikes", {
 -- REEDMACE STEMS
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace", {
-	description = "Reedmace",
+	description = S("Reedmace"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace.png"},
@@ -212,8 +215,8 @@ minetest.register_node("dryplants:reedmace", {
 	after_destruct = function(pos,oldnode)
         local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
         if node.name == "dryplants:reedmace_top"
-		or node.name == "dryplants:reedmace_spikes" then 
-            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z}) 
+		or node.name == "dryplants:reedmace_spikes" then
+            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z})
             minetest.add_item(pos,"dryplants:reedmace_sapling")
         end
     end,
@@ -222,7 +225,7 @@ minetest.register_node("dryplants:reedmace", {
 -- REEDMACE BOTTOM
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_bottom", {
-	description = "Reedmace",
+	description = S("Reedmace"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_bottom.png"},
@@ -241,10 +244,10 @@ minetest.register_node("dryplants:reedmace_bottom", {
 	},
 	after_destruct = function(pos,oldnode)
         local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
-        if node.name == "dryplants:reedmace" 
+        if node.name == "dryplants:reedmace"
 		or node.name == "dryplants:reedmace_top"
-		or node.name == "dryplants:reedmace_spikes" then 
-            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z}) 
+		or node.name == "dryplants:reedmace_spikes" then
+            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z})
             minetest.add_item(pos,"dryplants:reedmace_sapling")
         end
     end,
@@ -253,7 +256,7 @@ minetest.register_node("dryplants:reedmace_bottom", {
 -- REEDMACE "SAPLING" (the drop from the above)
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_sapling", {
-	description = "Reedmace",
+	description = S("Reedmace"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_sapling.png"},
@@ -293,7 +296,7 @@ minetest.register_abm({
 -- REEDMACE WATER (for entity)
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reedmace_water", {
-	description = "Reedmace",
+	description = S("Reedmace"),
 	drawtype = "plantlike",
 	paramtype = "light",
 	tiles = {"dryplants_reedmace_water.png"},
@@ -348,7 +351,7 @@ minetest.register_entity("dryplants:reedmace_water_entity",{
 -- near water or swamp
 biome_lib:register_generate_plant({
     surface = {
-		"default:dirt_with_grass", 
+		"default:dirt_with_grass",
 		"default:desert_sand",
 		"stoneage:grass_with_silex",
 		"sumpf:peat",
@@ -370,7 +373,7 @@ biome_lib:register_generate_plant({
 biome_lib:register_generate_plant({
     surface = {
 		"default:dirt",
-		"default:dirt_with_grass", 
+		"default:dirt_with_grass",
 		--"default:desert_sand",
 		--"stoneage:grass_with_silex",
 		"stoneage:sand_with_silex",

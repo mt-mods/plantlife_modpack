@@ -5,10 +5,12 @@
 -- Branch textures created by Neuromancer.
 -- Licence for Code and Non-Bush leaf code is WTFPL.
  
+-- support for i18n
+local S = plantlife_i18n.gettext
   abstract_bushes = {} 
 
   minetest.register_node("bushes:youngtree2_bottom", {
-	description = "Young Tree 2 (bottom)", 
+	description = S("Young Tree 2 (bottom)"),
  drawtype="nodebox",
  tiles = {"bushes_youngtree2trunk.png"},
  	inventory_image = "bushes_youngtree2trunk_inv.png",
@@ -33,7 +35,7 @@ for i in pairs(BushBranchCenter) do
 	local Num 		= BushBranchCenter[i][1]
 	local TexNum 	= BushBranchCenter[i][2]
 	minetest.register_node("bushes:bushbranches"..Num, {
-		description = "Bush Branches "..Num,
+		description = S("Bush Branches @1", Num),
 		drawtype = "nodebox",
 		tiles = {
 			"bushes_leaves_"..TexNum..".png",
@@ -70,7 +72,7 @@ for i in pairs(BushBranchSide) do
 	local Num 		= BushBranchSide[i][1]
 	local TexNum 	= BushBranchSide[i][2]
 	minetest.register_node("bushes:bushbranches"..Num, {
-		description = "Bush Branches "..Num,
+		description = S("Bush Branches @1", Num),
 		drawtype = "nodebox",
 		tiles = {
 --[[top]] 	"bushes_leaves_"..TexNum..".png",
@@ -112,7 +114,7 @@ local BushLeafNode 			= { {1}, {2}}
 for i in pairs(BushLeafNode) do
 	local Num = BushLeafNode[i][1]	
 	minetest.register_node("bushes:BushLeaves"..Num, {
-		description = "Bush Leaves "..Num,
+		description = S("Bush Leaves @1", Num),
 		drawtype = "allfaces_optional",
 		tiles = {"bushes_leaves_"..Num..".png"},
 		paramtype = "light",

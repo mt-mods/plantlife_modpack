@@ -1,9 +1,5 @@
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+-- support for i18n
+local S = plantlife_i18n.gettext
 
 -- Basket
 
@@ -32,10 +28,9 @@ minetest.register_craft({
 })
 
 for i, berry in ipairs(bushes_classic.bushes) do
-	local desc = bushes_classic.bushes_descriptions[i]
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_raw", {
-		description = S("Raw "..desc.." pie"),
+		description = bushes_classic.bushes_descriptions[i][2],
 		inventory_image = "bushes_"..berry.."_pie_raw.png",
 		on_use = minetest.item_eat(4),
 	})
@@ -49,7 +44,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 		if berry == "strawberry" and minetest.registered_nodes["farming_plus:strawberry"] then
 			minetest.register_craftitem(":farming_plus:strawberry_item", {
-				description = S("Strawberry"),
+				description = bushes_classic.bushes_descriptions[i][1],
 				inventory_image = "bushes_"..berry..".png",
 				on_use = minetest.item_eat(2),
 				groups = {berry=1, strawberry=1}
@@ -58,7 +53,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 		elseif berry == "blueberry" and minetest.registered_items["farming:blueberries"] then
 			minetest.register_craftitem(":farming:blueberries", {
-				description = S("Blueberry"),
+				description = bushes_classic.bushes_descriptions[i][1],
 				inventory_image = "bushes_"..berry..".png",
 				on_use = minetest.item_eat(1),
 				groups = {berry=1, blueberry=1}
@@ -67,7 +62,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 		elseif berry == "raspberry" and minetest.registered_items["farming:raspberries"] then
 			minetest.register_craftitem(":farming:raspberries", {
-				description = S("Raspberry"),
+				description = bushes_classic.bushes_descriptions[i][1],
 				inventory_image = "bushes_"..berry..".png",
 				on_use = minetest.item_eat(1),
 				groups = {berry=1, raspberry=1}
@@ -76,7 +71,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 
 		else
 			minetest.register_craftitem(":bushes:"..berry, {
-				description = S(desc),
+				description = bushes_classic.bushes_descriptions[i][1],
 				inventory_image = "bushes_"..berry..".png",
 				groups = {berry = 1, [berry] = 1},
 				on_use = minetest.item_eat(1),
@@ -95,7 +90,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	-- Cooked pie
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_cooked", {
-		description = S("Cooked "..desc.." pie"),
+		description = bushes_classic.bushes_descriptions[i][3],
 		inventory_image = "bushes_"..berry.."_pie_cooked.png",
 		on_use = minetest.item_eat(6),
 	})
@@ -110,7 +105,7 @@ for i, berry in ipairs(bushes_classic.bushes) do
 	-- slice of pie
 
 	minetest.register_craftitem(":bushes:"..berry.."_pie_slice", {
-		description = S("Slice of "..desc.." pie"),
+		description = bushes_classic.bushes_descriptions[i][4],
 		inventory_image = "bushes_"..berry.."_pie_slice.png",
 		on_use = minetest.item_eat(1),
 	})
@@ -141,5 +136,3 @@ minetest.register_craft({
 	{ "group:berry", "group:berry", "group:berry" },
 	},
 })
-
-
