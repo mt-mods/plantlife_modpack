@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------------
 local title		= "Mole Hills"
-local version 	= "0.0.3"
+local version	= "0.0.3"
 local mname		= "molehills"
 -----------------------------------------------------------------------------------------------
 -- Idea by Sokomine
@@ -49,7 +49,7 @@ minetest.register_craft({ -- molehills --> dirt
 -- GeNeRaTiNG
 -----------------------------------------------------------------------------------------------
 abstract_molehills.place_molehill = function(pos)
-	local right_here 	= {x=pos.x  , y=pos.y+1, z=pos.z  }
+	local right_here	= {x=pos.x  , y=pos.y+1, z=pos.z  }
 	if  minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  }).name ~= "air"
 	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  }).name ~= "air"
 	and minetest.get_node({x=pos.x  , y=pos.y, z=pos.z+1}).name ~= "air"

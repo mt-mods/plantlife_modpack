@@ -2,10 +2,10 @@
 -- Archae Plantae - Horsetail 0.0.5
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything): 	WTFPL
--- Contains code from: 		biome_lib
+-- License (everything):	WTFPL
+-- Contains code from:		biome_lib
 -- Looked at code from:		default, flowers, trees
--- Dependencies: 			biome_lib
+-- Dependencies:			biome_lib
 -- Supports:				dryplants, stoneage, sumpf
 -----------------------------------------------------------------------------------------------
 

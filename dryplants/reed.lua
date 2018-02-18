@@ -2,9 +2,9 @@
 -- Dry Plants - Reed 0.0.5
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything): 	WTFPL
+-- License (everything):	WTFPL
 -- Looked at code from:		darkage, default, stairs
--- Dependencies: 			default
+-- Dependencies:			default
 -----------------------------------------------------------------------------------------------
 -- support for i18n
 local S = plantlife_i18n.gettext
@@ -97,10 +97,10 @@ if AUTO_ROOF_CORNER == true then
 			chance = 1,
 			action = function(pos)
 
-				local node_east = 			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
-				local node_west = 			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
-				local node_north = 			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
-				local node_south = 			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
+				local node_east =			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
+				local node_west =			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
+				local node_north =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
+				local node_south =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
 		-- corner 1
 				if ((node_west.name == roof and node_west.param2 == 0)
 				or (node_west.name == corner and node_west.param2 == 1))
@@ -237,7 +237,7 @@ minetest.register_node("dryplants:wetreed_roof_corner_2", {
 if REED_WILL_DRY == true then
 
 	local DRyiNG = {
---	  	  WeT									 DRy
+--		  WeT									 DRy
 		{"dryplants:wetreed",					"dryplants:reed"},
 		{"dryplants:wetreed_slab",				"dryplants:reed_slab"},
 		{"dryplants:wetreed_roof",				"dryplants:reed_roof"},

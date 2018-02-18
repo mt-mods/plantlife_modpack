@@ -217,10 +217,10 @@ if Auto_Roof_Corner == true then
 		chance = 1,
 		action = function(pos)
 
-			local node_east = 			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
-			local node_west = 			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
-			local node_north = 			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
-			local node_south = 			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
+			local node_east =			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
+			local node_west =			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
+			local node_north =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
+			local node_south =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
 		-- corner 1
 			if ((node_west.name == roof and node_west.param2 == 0)
 			or (node_west.name == corner and node_west.param2 == 1))
@@ -302,8 +302,8 @@ local roots_cube =	{-2/16, -1/2, -3/16, 2/16, 1/16, 1/2}
 local roots_sheet = {0, -1/2, -1/2, 0, 1/16, 1/2}
 
 local TRuNKS = {
---	  MoD 						 TRuNK
-    {"default",  				"tree"						},
+--	  MoD						 TRuNK
+    {"default",					"tree"						},
 	{"default",					"jungletree"				},
 	{"default",					"pine_tree"					},
 
@@ -325,8 +325,8 @@ local TRuNKS = {
 }
 
 for i in pairs(TRuNKS) do
-	local 	MoD = 			TRuNKS[i][1]
-	local 	TRuNK = 		TRuNKS[i][2]
+	local	MoD =			TRuNKS[i][1]
+	local	TRuNK =			TRuNKS[i][2]
 	if minetest.get_modpath(MoD) ~= nil then
 
 		local node = minetest.registered_nodes[MoD..":"..TRuNK]

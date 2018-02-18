@@ -2,8 +2,8 @@
 -- Ferns - Tree Fern 0.1.1
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything): 	WTFPL
--- Contains code from: 		biome_lib
+-- License (everything):	WTFPL
+-- Contains code from:		biome_lib
 -- Looked at code from:		default	, trees
 -----------------------------------------------------------------------------------------------
 

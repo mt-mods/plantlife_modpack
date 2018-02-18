@@ -19,7 +19,7 @@ local sunflowers_rarity = 25
 -- register the various rotations of waterlilies
 
 local lilies_list = {
-	{ nil  , nil 	   , 1	},
+	{ nil  , nil	   , 1	},
 	{ "225", "22.5"    , 2	},
 	{ "45" , "45"      , 3	},
 	{ "675", "67.5"    , 4	},

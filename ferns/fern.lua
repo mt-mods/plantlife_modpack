@@ -2,10 +2,10 @@
 -- Ferns - Fern 0.1.0
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything): 	WTFPL
--- Contains code from: 		biome_lib
+-- License (everything):	WTFPL
+-- Contains code from:		biome_lib
 -- Looked at code from:		default, flowers, painting, trees
--- Dependencies: 			biome_lib
+-- Dependencies:			biome_lib
 -- Supports:				dryplants, stoneage, sumpf
 -----------------------------------------------------------------------------------------------
 -- some inspiration from here
@@ -22,12 +22,12 @@ local S = plantlife_i18n.gettext
 minetest.register_alias("archaeplantae:fern",		"ferns:fern_03")
 minetest.register_alias("archaeplantae:fern_mid",	"ferns:fern_02")
 minetest.register_alias("archaeplantae:fern_small",	"ferns:fern_01")
-minetest.register_alias("ferns:fern_04",      		"ferns:fern_02") -- for placing
+minetest.register_alias("ferns:fern_04",		"ferns:fern_02") -- for placing
 
 local nodenames = {}
 
 local function create_nodes()
-	local images 	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
+	local images	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
 	local vscales	= { 1, math.sqrt(8), math.sqrt(11) }
 	local descs		= { S("Lady-fern (Athyrium)"), nil, nil }
 

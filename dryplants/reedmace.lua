@@ -4,8 +4,8 @@
 -- by Mossmanikin
 -- textures & ideas partly by Neuromancer
 
--- License (everything): 	WTFPL
--- Contains code from: 		biome_lib
+-- License (everything):	WTFPL
+-- Contains code from:		biome_lib
 -- Looked at code from:		default, trees
 -----------------------------------------------------------------------------------------------
 
@@ -280,9 +280,9 @@ minetest.register_abm({
 	chance = 100/REEDMACE_GROWING_CHANCE,
 	action = function(pos, node, _, _)
 		if string.find(minetest.get_node({x = pos.x + 1, y = pos.y, z = pos.z	 }).name, "default:water")
-		or string.find(minetest.get_node({x = pos.x, 	 y = pos.y, z = pos.z + 1}).name, "default:water")
+		or string.find(minetest.get_node({x = pos.x,	 y = pos.y, z = pos.z + 1}).name, "default:water")
 		or string.find(minetest.get_node({x = pos.x - 1, y = pos.y, z = pos.z	 }).name, "default:water")
-		or string.find(minetest.get_node({x = pos.x, 	 y = pos.y, z = pos.z - 1}).name, "default:water") then
+		or string.find(minetest.get_node({x = pos.x,	 y = pos.y, z = pos.z - 1}).name, "default:water") then
 			if minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name == "air" then
 				abstract_dryplants.grow_reedmace_water({x = pos.x, y = pos.y - 1, z = pos.z})
 			end
