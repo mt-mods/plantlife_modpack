@@ -31,20 +31,14 @@ abstract_ferns.grow_tree_fern = function(pos)
 	local i = 1
 	local brk = false
 	while (i < size) do
-		print(minetest.get_node({x = pos.x, y = pos.y + i, z = pos.z}).name)
 		if minetest.get_node({x = pos.x, y = pos.y + i, z = pos.z}).name ~= "air" then
 			brk = true
-			print("break!")
 			break
 		end
-		print("set trunk node at:")
-		print(dump({x = pos.x, y = pos.y + i, z = pos.z}))
 		minetest.set_node({x = pos.x, y = pos.y + i, z = pos.z}, { name = "ferns:fern_trunk" })
 		i = i + 1
 	end
 	if not brk then
-		print("set crown node at:")
-		print(dump({x = pos.x, y = pos.y + i, z = pos.z}))
 		minetest.set_node({x = pos.x, y = pos.y + i - 1, z = pos.z}, { name = crown })
 	end
 end

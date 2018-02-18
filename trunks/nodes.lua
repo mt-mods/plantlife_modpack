@@ -361,7 +361,7 @@ for i in pairs(TRuNKS) do
 			})
 
 		else
-			print(string.format("[Trunks] warning: tree type '%s:%s' not found", MoD, TRuNK))
+			minetest.log("error", string.format("[Trunks] warning: tree type '%s:%s' not found", MoD, TRuNK))
 		end
 	end
 end
