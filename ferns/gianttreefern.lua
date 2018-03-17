@@ -297,6 +297,7 @@ if abstract_ferns.config.enable_giant_treeferns_in_jungle == true then
 	biome_lib:register_generate_plant({
 		surface = {
 			"default:dirt_with_grass",
+			"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
 			"default:sand",
 			"default:desert_sand"--,
 			--"dryplants:grass_short"
@@ -330,7 +331,7 @@ if abstract_ferns.config.enable_giant_treeferns_in_oases == true then
 		neighbors = {"default:desert_sand"},
 		ncount = 1,
 		min_elevation = 1,
-		near_nodes = {"default:water_source"},
+		near_nodes = {"default:water_source", "default:river_water_source"},
 		near_nodes_size = 2,
 		near_nodes_vertical = 1,
 		near_nodes_count = 1,
