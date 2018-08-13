@@ -31,9 +31,6 @@ else
 	minetest.register_alias("bushes:sugar", "farming:sugar")
 end
 
-minetest.register_alias("farming_plus:carrot_seed", "farming:carrot")
-
-
 -- override farming_plus strawberry and add food_ group
 if minetest.get_modpath("farming_plus") then
 
