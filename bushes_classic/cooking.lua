@@ -13,19 +13,26 @@ minetest.register_craft({
 
 -- Sugar
 
-minetest.register_craftitem(":bushes:sugar", {
-	description = S("Sugar"),
-	inventory_image = "bushes_sugar.png",
-	on_use = minetest.item_eat(1),
-	groups = {food_sugar=1, flammable = 2}
-})
+if not minetest.registered_items["farming:sugar"] then
+	minetest.register_craftitem(":bushes:sugar", {
+		description = S("Sugar"),
+		inventory_image = "bushes_sugar.png",
+		on_use = minetest.item_eat(1),
+		groups = {food_sugar=1, flammable = 2}
+	})
 
-minetest.register_craft({
-	output = "bushes:sugar 1",
-	recipe = {
-		{ "default:papyrus", "default:papyrus" },
-	},
-})
+	minetest.register_craft({
+		output = "bushes:sugar 1",
+		recipe = {
+			{ "default:papyrus", "default:papyrus" },
+		},
+	})
+else
+	minetest.register_alias("bushes:sugar", "farming:sugar")
+end
+
+minetest.register_alias("farming_plus:carrot_seed", "farming:carrot")
+
 
 -- override farming_plus strawberry and add food_ group
 if minetest.get_modpath("farming_plus") then
