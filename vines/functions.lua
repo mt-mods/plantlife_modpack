@@ -51,8 +51,8 @@ vines.register_vine = function( name, defs, biome )
       local bottom_node = minetest.get_node( bottom )
       if bottom_node.name == "air" then
         if not ( math.random( defs.average_length ) == 1 ) then
-          minetest.set_node( pos, { name = vine_name_middle, param2 = node.param2 } )
-          minetest.set_node( bottom, { name = node.name, param2 = node.param2 } )
+          minetest.swap_node( pos, { name = vine_name_middle, param2 = node.param2 } )
+          minetest.swap_node( bottom, { name = node.name, param2 = node.param2 } )
           local timer = minetest.get_node_timer( bottom_node )
           timer:start( math.random(5, 10) )
         end
@@ -83,7 +83,7 @@ vines.register_vine = function( name, defs, biome )
       local bottom = {x=pos.x, y=pos.y-1, z=pos.z}
       local bottom_node = minetest.get_node( bottom )
       if minetest.get_item_group( bottom_node.name, "vines") > 0 then
-        minetest.after( 0, minetest.remove_node, bottom )
+        minetest.after( 0, minetest.swap_node, bottom, biome_lib.air )
       end
     end,
     after_dig_node = function( pos, node, oldmetadata, user )
@@ -112,7 +112,7 @@ vines.register_vine = function( name, defs, biome )
       local pos_max = { x = pos.x +1, y = pos.y + 1, z = pos.z + 1 }
       local positions = minetest.find_nodes_in_area( pos_min, pos_max, "group:vines" )
       for index, position in pairs(positions) do
-        minetest.remove_node( position )
+        minetest.swap_node(position, biome_lib.air)
       end
     end
   })

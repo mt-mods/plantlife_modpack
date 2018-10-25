@@ -25,7 +25,7 @@ minetest.register_node("vines:rope_block", {
     local p = {x=pos.x, y=pos.y-1, z=pos.z}
     local n = minetest.get_node(p)
     while ( n.name == 'vines:rope' or n.name == 'vines:rope_end' ) do
-      minetest.remove_node(p)
+      minetest.swap_node(p, biome_lib.air)
       p = {x=p.x, y=p.y-1, z=p.z}
       n = minetest.get_node(p)
     end
@@ -76,7 +76,7 @@ minetest.register_node("vines:rope_end", {
     local p = {x=pos.x, y=pos.y-1, z=pos.z}
     local n = minetest.get_node(p)
     if  n.name == "air" then
-      minetest.set_node(pos, {name="vines:rope"})
+      minetest.swap_node(pos, {name="vines:rope"})
       minetest.add_node(p, {name="vines:rope_end"})
     else
       local timer = minetest.get_node_timer( pos )
