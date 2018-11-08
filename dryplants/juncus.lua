@@ -4,7 +4,6 @@
 -- by Mossmanikin
 -- textures & ideas partly by Neuromancer
 
--- License (everything):	WTFPL
 -- Contains code from:		biome_lib
 -- Looked at code from:		default
 -----------------------------------------------------------------------------------------------

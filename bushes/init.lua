@@ -1,9 +1,10 @@
 -- Bushes Mod by Mossmanikin, Evergreen, & Neuromancer
--- The initial code for this was taken from Mossmanikin's Grasses Mod, then heavilly modified by Neuromancer for this mod.
+-- The initial code for this was taken from Mossmanikin's Grasses Mod,
+-- then heavilly modified by Neuromancer for this mod.
 -- Mossmanikin also greatly helped with providing samples for coding.
--- bush leaf textures are cc-by-sa 3.0.  from VannessaE's moretrees mod.  (Leaf texture created by RealBadAngel or VanessaE)
+-- bush leaf textures are from VannessaE's moretrees mod.
+-- (Leaf texture created by RealBadAngel or VanessaE)
 -- Branch textures created by Neuromancer.
--- Licence for Code and Non-Bush leaf code is WTFPL.
 
 -- support for i18n
 local S = plantlife_i18n.gettext

@@ -2,7 +2,6 @@
 -- Dry Plants - Reed 0.0.5
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything):	WTFPL
 -- Looked at code from:		darkage, default, stairs
 -- Dependencies:			default
 -----------------------------------------------------------------------------------------------

@@ -2,7 +2,6 @@
 -- Ferns - Giant Tree Fern 0.1.1
 -----------------------------------------------------------------------------------------------
 -- by Mossmanikin
--- License (everything):	WTFPL
 -- Contains code from:		biome_lib
 -- Looked at code from:		4seasons, default
 -- Supports:				vines
