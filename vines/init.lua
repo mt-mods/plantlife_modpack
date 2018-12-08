@@ -3,6 +3,8 @@ vines = {
 	recipes = {}
 }
 
+local enable_roots = minetest.settings:get_bool("vines_enable_roots")
+
 -- support for i18n
 local S = plantlife_i18n.gettext
 
@@ -305,6 +307,14 @@ minetest.register_tool("vines:shears", {
 })
 
 -- VINES
+local spawn_root_surfaces = {}
+
+if enable_roots ~= false then
+	spawn_root_surfaces = {
+		"default:dirt_with_grass",
+		"default:dirt"
+	}
+end
 
 vines.register_vine('root',
 	{description = S("Roots"), average_length = 9}, {
@@ -313,10 +323,7 @@ vines.register_vine('root',
 	avoid_radius = 5,
 	spawn_delay = 500,
 	spawn_chance = 10,
-	spawn_surfaces = {
-		"default:dirt_with_grass",
-		"default:dirt"
-	},
+	spawn_surfaces = spawn_root_surfaces,
 	spawn_on_bottom = true,
 	plantlife_limit = -0.6,
 	humidity_min = 0.4,
