@@ -13,7 +13,7 @@ local S = plantlife_i18n.gettext
 minetest.register_craftitem("vines:vines", {
 	description = S("Vines"),
 	inventory_image = "vines_item.png",
-	group = {vines = 1, flammable = 2}
+	groups = {vines = 1, flammable = 2}
 })
 
 -- FUNCTIONS
