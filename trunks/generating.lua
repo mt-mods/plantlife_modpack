@@ -221,7 +221,7 @@ for i in pairs(TRuNKS) do
 	if minetest.get_modpath(MoD) ~= nil
 	and NR < 6 -- moretrees trunks allready have facedir
 	and minetest.registered_nodes[trunkname] then -- the node being called exists.
-			temptrunk = minetest.registered_nodes[trunkname]
+			temptrunk = table.copy(minetest.registered_nodes[trunkname])
 			temptrunk.paramtype2 = "facedir"
 			minetest.register_node(":"..trunkname, temptrunk)
 	end
