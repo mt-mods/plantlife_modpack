@@ -6,7 +6,7 @@ vines = {
 local enable_roots = minetest.settings:get_bool("vines_enable_roots")
 
 -- support for i18n
-local S = plantlife_i18n.gettext
+local S = minetest.get_translator("vines")
 
 -- ITEMS
 
@@ -410,4 +410,4 @@ vines.register_vine( 'willow',
 })
 
 
-print(S("[Vines] Loaded!"))
+print("[Vines] Loaded!")

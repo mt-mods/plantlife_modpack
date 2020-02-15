@@ -1,0 +1,28 @@
+# textdomain: dryplants
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# fat115 <fat115@framasoft.org>, 2017.
+#
+
+Sickle=Faucille
+Cut Grass=Herbe coupée
+Hay=Foin
+Short Grass=Herbes courtes
+Juncus=Joncs
+Wet Reed=Bloc de roseau humide
+Wet Reed Slab=Dalle en roseau humide
+Wet Reed Roof=Toit en roseau humide
+Wet Reed Roof Corner=Angle de toit en roseau humide
+Wet Reed Roof Corner 2=Angle de toit en roseau humide 2
+Reed=Roseau
+Reed Slab=Dalle en roseau
+Reed Roof=Toit en roseau
+Reed Roof Corner=Angle de toit en roseau
+Reed Roof Corner 2=Angle de toit en roseau 2
+Reedmace=Roseau
+Reedmace, height: 1=Roseau, 1 de hauteur
+Reedmace, height: 2=Roseau, 2 de hauteur
+Reedmace, height: 3=Roseau, 3 de hauteur
+Reedmace, height: 3 & Spikes=Roseau, 3 de hauteur avec panicules

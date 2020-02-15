@@ -9,7 +9,6 @@ read_globals = {
 	"vector", "nodeupdate",
 	"VoxelManip", "VoxelArea",
 	"PseudoRandom", "ItemStack",
-	"intllib",
 	"default",
 }
 
