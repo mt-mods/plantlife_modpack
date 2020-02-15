@@ -1,0 +1,28 @@
+# textdomain: dryplants
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+
+Sickle=
+Cut Grass=
+Hay=
+Short Grass=
+Juncus=
+Wet Reed=
+Wet Reed Slab=
+Wet Reed Roof=
+Wet Reed Roof Corner=
+Wet Reed Roof Corner 2=
+Reed=
+Reed Slab=
+Reed Roof=
+Reed Roof Corner=
+Reed Roof Corner 2=
+Reedmace=
+Reedmace, height: 1=
+Reedmace, height: 2=
+Reedmace, height: 3=
+Reedmace, height: 3 & Spikes=

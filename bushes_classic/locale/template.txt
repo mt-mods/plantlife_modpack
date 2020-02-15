@@ -1,0 +1,46 @@
+# textdomain: bushes_classic
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+
+Sugar=
+Basket with Strawberry pies=
+Cooked Strawberry pie=
+Raw Strawberry pie=
+Slice of Strawberry pie=
+Strawberry=
+Strawberry Bush=
+Basket with Blackberry pies=
+Blackberry=
+Blackberry Bush=
+Cooked Blackberry pie=
+Raw Blackberry pie=
+Slice of Blackberry pie=
+Basket with Blueberry pies=
+Blueberry=
+Blueberry Bush=
+Cooked Blueberry pie=
+Raw Blueberry pie=
+Slice of Blueberry pie=
+Basket with Raspberry pies=
+Cooked Raspberry pie=
+Raspberry=
+Raspberry Bush=
+Raw Raspberry pie=
+Slice of Raspberry pie=
+Basket with Gooseberry pies=
+Cooked Gooseberry pie=
+Gooseberry=
+Gooseberry Bush=
+Raw Gooseberry pie=
+Slice of Gooseberry pie=
+Basket with Mixed Berry pies=
+Cooked Mixed Berry pie=
+Currently fruitless Bush=
+Mixed Berry=
+Raw Mixed Berry pie=
+Slice of Mixed Berry pie=
+Basket=

@@ -1,6 +1,6 @@
 -- Code by Mossmanikin & Neuromancer
 -- support for i18n
-local S = plantlife_i18n.gettext
+local S = minetest.get_translator("trunks")
 -----------------------------------------------------------------------------------------------
 -- TWiGS
 -----------------------------------------------------------------------------------------------
@@ -334,7 +334,7 @@ for i in pairs(TRuNKS) do
 			local des = node.description
 
 			minetest.register_node("trunks:"..TRuNK.."root", {
-				description = des.." "..S("Root"),
+				description = S("@1 Root", des),
 				paramtype = "light",
 				paramtype2 = "facedir",
 				tiles = {
