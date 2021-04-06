@@ -2,7 +2,12 @@
 
 biome_lib:register_generate_plant(
 	{
-		surface = { "default:dirt_with_grass" },
+		surface = {
+			"default:dirt_with_grass",
+			"default:gravel",
+			"default:stone",
+			"default:permafrost_with_stones"
+		},
 		max_count = 50,
 		rarity = 0,
 		plantlife_limit = -1,
@@ -17,7 +22,10 @@ biome_lib:register_generate_plant(
 
 biome_lib:register_generate_plant(
 	{
-		surface = { "default:desert_sand" },
+		surface = {
+			"default:desert_sand",
+			"default:desert_stone"
+		},
 		max_count = 50,
 		rarity = 0,
 		plantlife_limit = -1,
