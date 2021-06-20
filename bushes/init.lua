@@ -26,7 +26,7 @@ node_box = {
 		{-0.0612,-0.500000,-0.500000,0.0612,0.500000,-0.375000}, --NodeBox 1
 	}
 },
-	groups = {snappy=3,flammable=2},
+	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'default:stick'
 })
@@ -61,7 +61,8 @@ for i in pairs(BushBranchCenter) do
 		--	tree=1, -- MM: disabled because some recipes use group:tree for trunks
 			snappy=3,
 			flammable=2,
-			leaves=1
+			leaves=1,
+			attached_node=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
 		drop = 'default:stick 4'
@@ -104,7 +105,8 @@ for i in pairs(BushBranchSide) do
 		--	tree=1, -- MM: disabled because some recipes use group:tree for trunks
 			snappy=3,
 			flammable=2,
-			leaves=1
+			leaves=1,
+			attached_node=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
 		drop = 'default:stick 3'

@@ -40,7 +40,7 @@ minetest.register_node("youngtrees:youngtree2_middle",{
 			{-0.500000,0.125000,-0.500000,0.500000,0.500000,0.500000}, --NodeBox 3
 		}
 	},
-		groups = {snappy=3,flammable=2},
+		groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
@@ -58,7 +58,7 @@ minetest.register_node("youngtrees:youngtree_top", {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
 	},
-	groups = {snappy=3,flammable=2},
+	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
@@ -77,7 +77,7 @@ minetest.register_node("youngtrees:youngtree_middle", {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
 	},
-	groups = {snappy=3,flammable=2},
+	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
@@ -97,7 +97,7 @@ minetest.register_node("youngtrees:youngtree_bottom", {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
 	},
-	groups = {snappy=3,flammable=2},
+	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })

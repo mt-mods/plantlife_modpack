@@ -79,7 +79,7 @@ minetest.register_node("trunks:moss", {
 	walkable = false,
 	node_box = {type = "fixed", fixed = flat_moss},
 	selection_box = {type = "fixed", fixed = flat_stick},--{type = "wallmounted"},
-	groups = {snappy = 3, flammable = 3 },
+	groups = {snappy = 3, flammable = 3, attached_node=1 },
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -98,7 +98,7 @@ minetest.register_node("trunks:moss_fungus", {
 	walkable = false,
 	node_box = {type = "fixed", fixed = flat_moss},
 	selection_box = {type = "fixed", fixed = flat_stick},--{type = "wallmounted"},
-	groups = {snappy = 3, flammable = 3 },
+	groups = {snappy = 3, flammable = 3, attached_node=1 },
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -361,11 +361,17 @@ for i in pairs(TRuNKS) do
 					snappy=1,
 					choppy=2,
 					oddly_breakable_by_hand=1,
-					flammable=2--,
+					flammable=2,
 					--not_in_creative_inventory=1 -- atm in inv for testing
 				},
 				--drop = "trunks:twig_1", -- not sure about this yet
 				sounds = default.node_sound_wood_defaults(),
+			})
+
+			default.register_leafdecay({
+				trunks = { MoD..":"..TRuNK },
+				leaves = { "trunks:"..TRuNK.."root" },
+				radius = 1,
 			})
 
 		else
