@@ -97,6 +97,7 @@ for r = 0, 3 do
 		node_box = cbox,
 		groups = {snappy = 3, flammable = 3, attached_node=1, not_in_creative_inventory = r},
 		sounds = default.node_sound_leaves_defaults(),
+		drop = "trunks:moss_plain_0",
 	})
 
 	-----------------------------------------------------------------------------------------------
@@ -115,6 +116,7 @@ for r = 0, 3 do
 		node_box = cbox,
 		groups = {snappy = 3, flammable = 3, attached_node=1, not_in_creative_inventory = r},
 		sounds = default.node_sound_leaves_defaults(),
+		drop = "trunks:moss_with_fungus_0",
 	})
 end
 
