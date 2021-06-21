@@ -356,11 +356,12 @@ if Moss_on_ground == true then
 abstract_trunks.grow_moss_on_ground = function(pos)
 	local on_ground = {x=pos.x, y=pos.y+1, z=pos.z}
 	local moss_type = math.random(1,21)
+	local rot = math.random(0,3)
 
 	if moss_type == 1 then
-		minetest.swap_node(on_ground, {name="trunks:moss_fungus", param2=math.random(0,3)})
+		minetest.swap_node(on_ground, {name="trunks:moss_with_fungus_"..rot, param2=1})
 	else
-		minetest.swap_node(on_ground, {name="trunks:moss", param2=math.random(0,3)})
+		minetest.swap_node(on_ground, {name="trunks:moss_plain_"..rot, param2=1})
 	end
 
 end
@@ -406,44 +407,49 @@ abstract_trunks.grow_moss_on_trunk = function(pos)
 	local node_under = minetest.get_node(undrneath)
 
 	--if minetest.get_item_group(node_under.name, "tree") < 1 then
-		local moss_type = math.random(1,41)
-		if minetest.registered_nodes[node_here.name].buildable_to then -- instead of check_air = true,
+		if minetest.registered_nodes[node_here.name].buildable_to then
+			local moss_type = math.random(1,41)
+			local rot = math.random(0,3)
 			if moss_type == 1 then
-				minetest.swap_node(on_ground, {name="trunks:moss_fungus", param2=math.random(0,3) --[[1]]})
+				minetest.swap_node(on_ground, {name="trunks:moss_with_fungus_"..rot, param2=1})
 			elseif moss_type < 22 then
-				minetest.swap_node(on_ground, {name="trunks:moss", param2=math.random(0,3) --[[1]]})
+				minetest.swap_node(on_ground, {name="trunks:moss_plain_"..rot, param2=1})
 			end
 		end
-		local moss_type = math.random(1,31) -- cliche of more moss at north
-		if minetest.registered_nodes[node_north.name].buildable_to then -- instead of check_air = true,
+		if minetest.registered_nodes[node_north.name].buildable_to then
+			local moss_type = math.random(1,31) -- cliche of more moss at north
+			local rot = math.random(0,3)
 			if moss_type == 1 then
-				minetest.swap_node(at_side_n, {name="trunks:moss_fungus", param2=math.random(4,7)}) -- 5,4,6,7
+				minetest.swap_node(at_side_n, {name="trunks:moss_with_fungus_"..rot, param2=5})
 			elseif moss_type < 22 then
-				minetest.swap_node(at_side_n, {name="trunks:moss", param2=math.random(4,7)})
+				minetest.swap_node(at_side_n, {name="trunks:moss_plain_"..rot, param2=5})
 			end
 		end
-		local moss_type = math.random(1,41)
-		if minetest.registered_nodes[node_east.name].buildable_to then -- instead of check_air = true,
+		if minetest.registered_nodes[node_east.name].buildable_to then
+			local moss_type = math.random(1,41)
+			local rot = math.random(0,3)
 			if moss_type == 1 then
-				minetest.swap_node(at_side_e, {name="trunks:moss_fungus", param2=math.random(12,15)})
+				minetest.swap_node(at_side_e, {name="trunks:moss_with_fungus_"..rot, param2=3})
 			elseif moss_type < 22 then
-				minetest.swap_node(at_side_e, {name="trunks:moss", param2=math.random(12,15)})
+				minetest.swap_node(at_side_e, {name="trunks:moss_plain_"..rot, param2=3})
 			end
 		end
-		local moss_type = math.random(1,41)
-		if minetest.registered_nodes[node_south.name].buildable_to then -- instead of check_air = true,
+		if minetest.registered_nodes[node_south.name].buildable_to then
+			local moss_type = math.random(1,41)
+			local rot = math.random(0,3)
 			if moss_type == 1 then
-				minetest.swap_node(at_side_s, {name="trunks:moss_fungus", param2=math.random(8,11)})
+				minetest.swap_node(at_side_s, {name="trunks:moss_with_fungus_"..rot, param2=4})
 			elseif moss_type < 22 then
-				minetest.swap_node(at_side_s, {name="trunks:moss", param2=math.random(8,11)})
+				minetest.swap_node(at_side_s, {name="trunks:moss_plain_"..rot, param2=4})
 			end
 		end
-		local moss_type = math.random(1,41)
-		if minetest.registered_nodes[node_west.name].buildable_to then -- instead of check_air = true,
+		if minetest.registered_nodes[node_west.name].buildable_to then
+			local moss_type = math.random(1,41)
+			local rot = math.random(0,3)
 			if moss_type == 1 then
-				minetest.swap_node(at_side_w, {name="trunks:moss_fungus", param2=math.random(16,19)})
+				minetest.swap_node(at_side_w, {name="trunks:moss_with_fungus_"..rot, param2=2})
 			elseif moss_type < 22 then
-				minetest.swap_node(at_side_w, {name="trunks:moss", param2=math.random(16,19)})
+				minetest.swap_node(at_side_w, {name="trunks:moss_plain_"..rot, param2=2})
 			end
 		end
 	--end

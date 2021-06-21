@@ -65,42 +65,61 @@ end
 -----------------------------------------------------------------------------------------------
 -- MoSS
 -----------------------------------------------------------------------------------------------
-local flat_moss = {-1/2, -1/2, -1/2, 1/2, -15/32--[[<-flickers if smaller]], 1/2}
 
-minetest.register_node("trunks:moss", {
-	description = S("Moss"),
-	drawtype = "nodebox",--"signlike",
-	tiles = {"trunks_moss.png"},
-	inventory_image = "trunks_moss.png",
-	wield_image = "trunks_moss.png",
-	paramtype = "light",
-	paramtype2 = "facedir",--"wallmounted",
-	sunlight_propagates = true,
-	walkable = false,
-	node_box = {type = "fixed", fixed = flat_moss},
-	selection_box = {type = "fixed", fixed = flat_stick},--{type = "wallmounted"},
-	groups = {snappy = 3, flammable = 3, attached_node=1 },
-	sounds = default.node_sound_leaves_defaults(),
-})
+--			wall_top    = {-0.4375, 0.4375, -0.3125, 0.4375, 0.5, 0.3125},
+--			wall_bottom = {-0.4375, -0.5, -0.3125, 0.4375, -0.4375, 0.3125},
+--			wall_side   = {-0.5, -0.3125, -0.4375, -0.4375, 0.3125, 0.4375},
 
------------------------------------------------------------------------------------------------
--- MoSS & FuNGuS
------------------------------------------------------------------------------------------------
-minetest.register_node("trunks:moss_fungus", {
-	description = S("Moss with Fungus"),
-	drawtype = "nodebox",--"signlike",
-	tiles = {"trunks_moss_fungus.png"},
-	inventory_image = "trunks_moss_fungus.png",
-	wield_image = "trunks_moss_fungus.png",
-	paramtype = "light",
-	paramtype2 = "facedir",--"wallmounted",
-	sunlight_propagates = true,
-	walkable = false,
-	node_box = {type = "fixed", fixed = flat_moss},
-	selection_box = {type = "fixed", fixed = flat_stick},--{type = "wallmounted"},
-	groups = {snappy = 3, flammable = 3, attached_node=1 },
-	sounds = default.node_sound_leaves_defaults(),
-})
+-- was  local flat_moss = {-1/2, -1/2, -1/2, 1/2, -15/32, 1/2}
+
+
+local cbox = {
+	type = "wallmounted",
+	wall_top =    {-1/2,  1/2, -1/2,    1/2,  15/32, 1/2},
+	wall_bottom = {-1/2, -1/2, -1/2,    1/2, -15/32, 1/2},
+	wall_side =   {-1/2, -1/2, -1/2, -15/32,    1/2, 1/2}
+}
+
+for r = 0, 3 do
+	local xform = ""
+	if r > 0 then xform = "^[transformR"..r*90 end
+
+	minetest.register_node("trunks:moss_plain_"..r, {
+		description = S("Moss"),
+		drawtype = "nodebox",
+		tiles = {"trunks_moss.png"..xform},
+		inventory_image = "trunks_moss.png",
+		wield_image = "trunks_moss.png",
+		paramtype = "light",
+		paramtype2 = "wallmounted",
+		sunlight_propagates = true,
+		walkable = false,
+		node_box = cbox,
+		groups = {snappy = 3, flammable = 3, attached_node=1, not_in_creative_inventory = r},
+		sounds = default.node_sound_leaves_defaults(),
+	})
+
+	-----------------------------------------------------------------------------------------------
+	-- MoSS & FuNGuS
+	-----------------------------------------------------------------------------------------------
+	minetest.register_node("trunks:moss_with_fungus_"..r, {
+		description = S("Moss with Fungus"),
+		drawtype = "nodebox",
+		tiles = {"trunks_moss_fungus.png"..xform},
+		inventory_image = "trunks_moss_fungus.png",
+		wield_image = "trunks_moss_fungus.png",
+		paramtype = "light",
+		paramtype2 = "wallmounted",
+		sunlight_propagates = true,
+		walkable = false,
+		node_box = cbox,
+		groups = {snappy = 3, flammable = 3, attached_node=1, not_in_creative_inventory = r},
+		sounds = default.node_sound_leaves_defaults(),
+	})
+end
+
+minetest.register_alias("trunks:moss_plain",       "trunks:moss_plain_0")
+minetest.register_alias("trunks:moss_with_fungus", "trunks:moss_with_fungus_0")
 
 -----------------------------------------------------------------------------------------------
 -- TWiGS BLoCK
@@ -362,16 +381,11 @@ for i in pairs(TRuNKS) do
 					choppy=2,
 					oddly_breakable_by_hand=1,
 					flammable=2,
+					attached_node = 1
 					--not_in_creative_inventory=1 -- atm in inv for testing
 				},
 				--drop = "trunks:twig_1", -- not sure about this yet
 				sounds = default.node_sound_wood_defaults(),
-			})
-
-			default.register_leafdecay({
-				trunks = { MoD..":"..TRuNK },
-				leaves = { "trunks:"..TRuNK.."root" },
-				radius = 1,
 			})
 
 		else
@@ -382,3 +396,26 @@ end
 end
 
 minetest.register_alias("trunks:pine_trunkroot", "trunks:pine_treeroot")
+
+-- convert moss to wallmounted mode so that attached_node works properly.
+
+local fdirtowall = {
+	[0] = 1,
+	[1] = 5,
+	[2] = 4,
+	[3] = 3,
+	[4] = 2,
+}
+
+minetest.register_lbm({
+	name = "trunks:convert_moss_wallmounted",
+	label = "Convert moss to wallmounted mode",
+	run_at_every_load = false,
+	nodenames = {"trunks:moss", "trunks:moss_fungus"},
+	action = function(pos, node)
+		local basedir = math.floor(node.param2 / 4)
+		local rot = node.param2 % 4
+		local newname = node.name == "trunks:moss_fungus" and "trunks:moss_with_fungus" or "trunks:moss_plain"
+		minetest.set_node(pos, {name = newname.."_"..rot, param2 = fdirtowall[basedir] })
+	end
+})
