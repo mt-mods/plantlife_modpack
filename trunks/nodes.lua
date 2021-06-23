@@ -410,7 +410,7 @@ local fdirtowall = {
 }
 
 minetest.register_lbm({
-	name = "trunks:convert_moss_wallmounted",
+	name = "trunks:convert_moss_wallmounted_2",
 	label = "Convert moss to wallmounted mode",
 	run_at_every_load = false,
 	nodenames = {"trunks:moss", "trunks:moss_fungus"},
