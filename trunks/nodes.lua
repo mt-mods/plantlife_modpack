@@ -410,9 +410,9 @@ local fdirtowall = {
 }
 
 minetest.register_lbm({
-	name = "trunks:convert_moss_wallmounted_2",
+	name = "trunks:convert_moss_wallmounted",
 	label = "Convert moss to wallmounted mode",
-	run_at_every_load = false,
+	run_at_every_load = true,
 	nodenames = {"trunks:moss", "trunks:moss_fungus"},
 	action = function(pos, node)
 		local basedir = math.floor(node.param2 / 4)
