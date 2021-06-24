@@ -4,28 +4,44 @@
 -- TWiGS
 -----------------------------------------------------------------------------------------------
 
+local fakenode = {
+	name = "default:stone", -- could be anything that's guaranteed to exist at mapgen time, and isn't buildable_to
+	param1 = 0,
+	param2 = 0
+}
+
 abstract_trunks.place_twig = function(pos)
-	local twig_size		= math.random(1,27)
+	local twig_size     = math.random(1,27)
 
-	local right_here	= {x=pos.x  , y=pos.y+1, z=pos.z  }
-	local north		= {x=pos.x  , y=pos.y+1, z=pos.z+1}
-	local north_east	= {x=pos.x+1, y=pos.y+1, z=pos.z+1}
-	local east			= {x=pos.x+1, y=pos.y+1, z=pos.z  }
-	local south_east	= {x=pos.x+1, y=pos.y+1, z=pos.z-1}
-	local south		= {x=pos.x  , y=pos.y+1, z=pos.z-1}
-	local south_west	= {x=pos.x-1, y=pos.y+1, z=pos.z-1}
-	local west			= {x=pos.x-1, y=pos.y+1, z=pos.z  }
-	local north_west	= {x=pos.x-1, y=pos.y+1, z=pos.z+1}
+	local right_here    = {x=pos.x  , y=pos.y+1, z=pos.z  }
+	local north         = {x=pos.x  , y=pos.y+1, z=pos.z+1}
+	local north_east    = {x=pos.x+1, y=pos.y+1, z=pos.z+1}
+	local east          = {x=pos.x+1, y=pos.y+1, z=pos.z  }
+	local south_east    = {x=pos.x+1, y=pos.y+1, z=pos.z-1}
+	local south         = {x=pos.x  , y=pos.y+1, z=pos.z-1}
+	local south_west    = {x=pos.x-1, y=pos.y+1, z=pos.z-1}
+	local west          = {x=pos.x-1, y=pos.y+1, z=pos.z  }
+	local north_west    = {x=pos.x-1, y=pos.y+1, z=pos.z+1}
 
-	local node_here		= minetest.get_node(right_here)
-	local node_north	= minetest.get_node(north)
-	local node_n_e		= minetest.get_node(north_east)
-	local node_east		= minetest.get_node(east)
-	local node_s_e		= minetest.get_node(south_east)
-	local node_south	= minetest.get_node(south)
-	local node_s_w		= minetest.get_node(south_west)
-	local node_west		= minetest.get_node(west)
-	local node_n_w		= minetest.get_node(north_west)
+	local node_here     = minetest.get_node(right_here)
+	local node_north    = minetest.get_node(north)
+	local node_n_e      = minetest.get_node(north_east)
+	local node_east     = minetest.get_node(east)
+	local node_s_e      = minetest.get_node(south_east)
+	local node_south    = minetest.get_node(south)
+	local node_s_w      = minetest.get_node(south_west)
+	local node_west     = minetest.get_node(west)
+	local node_n_w      = minetest.get_node(north_west)
+
+	node_north = minetest.registered_nodes[node_north.name] and node_north or fakenode
+	node_n_e   = minetest.registered_nodes[node_n_e.name]   and node_n_e   or fakenode
+	node_east  = minetest.registered_nodes[node_east.name]  and node_east  or fakenode
+	node_s_e   = minetest.registered_nodes[node_s_e.name]   and node_s_e   or fakenode
+	node_south = minetest.registered_nodes[node_south.name] and node_south or fakenode
+	node_s_w   = minetest.registered_nodes[node_s_w.name]   and node_s_w   or fakenode
+	node_west  = minetest.registered_nodes[node_west.name]  and node_west  or fakenode
+	node_n_w   = minetest.registered_nodes[node_n_w.name]   and node_n_w   or fakenode
+
 --	small twigs
 	if twig_size <= 16 then
 		minetest.swap_node(right_here, {name="trunks:twig_"..math.random(1,4), param2=math.random(0,3)})
