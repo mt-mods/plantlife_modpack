@@ -243,7 +243,7 @@ minetest.register_node(":flowers:sunflower", {
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
-	groups = { dig_immediate=3, flora=1, flammable=3 },
+	groups = { dig_immediate=3, flora=1, flammable=3, attached_node=1 },
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = box,
 	collision_box = box,
