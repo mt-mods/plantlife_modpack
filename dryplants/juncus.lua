@@ -92,7 +92,7 @@ minetest.register_node("dryplants:juncus_02", {
 -- GENERATE SMALL JUNCUS
 -----------------------------------------------------------------------------------------------
 -- near water or swamp
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:dirt_with_grass",
 		--"default:desert_sand",
@@ -113,7 +113,7 @@ biome_lib:register_generate_plant({
   abstract_dryplants.grow_juncus
 )
 -- at dunes/beach
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		--"default:dirt_with_grass",
 		--"default:desert_sand",

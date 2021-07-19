@@ -1,6 +1,6 @@
 --Map Generation Stuff
 
-biome_lib:register_generate_plant(
+biome_lib.register_on_generate(
 	{
 		surface = {
 			"default:dirt_with_grass",
@@ -20,7 +20,7 @@ biome_lib:register_generate_plant(
 	}
 )
 
-biome_lib:register_generate_plant(
+biome_lib.register_on_generate(
 	{
 		surface = {
 			"default:desert_sand",

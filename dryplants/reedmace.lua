@@ -327,7 +327,7 @@ minetest.register_entity("dryplants:reedmace_water_entity",{
 -----------------------------------------------------------------------------------------------
 -- SPAWN REEDMACE
 -----------------------------------------------------------------------------------------------
---[[biome_lib:spawn_on_surfaces({
+--[[biome_lib.register_active_spawner({
 	spawn_delay = 1200,
 	spawn_plants = {"dryplants:reedmace_sapling"},
 	spawn_chance = 400,
@@ -348,7 +348,7 @@ minetest.register_entity("dryplants:reedmace_water_entity",{
 -- GENERATE REEDMACE
 -----------------------------------------------------------------------------------------------
 -- near water or swamp
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:dirt_with_grass",
 		"default:desert_sand",
@@ -369,7 +369,7 @@ biome_lib:register_generate_plant({
   abstract_dryplants.grow_reedmace
 )
 -- in water
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:dirt",
 		"default:dirt_with_grass",
@@ -392,7 +392,7 @@ biome_lib:register_generate_plant({
   abstract_dryplants.grow_reedmace_water
 )
 -- for oases & tropical beaches & tropical swamps
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:sand",
 		"sumpf:sumpf"

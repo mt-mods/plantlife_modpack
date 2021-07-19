@@ -181,7 +181,7 @@ minetest.register_abm({
 
 -- in jungles
 if abstract_ferns.config.enable_treeferns_in_jungle == true then
-	biome_lib:register_generate_plant({
+	biome_lib.register_on_generate({
 		surface = {
 			"default:dirt_with_grass",
 			"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
@@ -210,7 +210,7 @@ end
 
 -- for oases & tropical beaches
 if abstract_ferns.config.enable_treeferns_in_oases == true then
-	biome_lib:register_generate_plant({
+	biome_lib.register_on_generate({
 		surface = {
 			"default:sand"--,
 			--"default:desert_sand"

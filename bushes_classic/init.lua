@@ -30,7 +30,7 @@ local modpath = minetest.get_modpath('bushes_classic')
 dofile(modpath..'/cooking.lua')
 dofile(modpath..'/nodes.lua')
 
-biome_lib:spawn_on_surfaces({
+biome_lib.register_active_spawner({
 	spawn_delay = 3600,
 	spawn_plants = bushes_classic.spawn_list,
 	avoid_radius = 10,

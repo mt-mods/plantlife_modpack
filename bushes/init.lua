@@ -199,7 +199,7 @@ abstract_bushes.grow_bush_node = function(pos,dir, leaf_type)
 end
 
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:dirt_with_grass",
 		"stoneage:grass_with_silex",
@@ -244,7 +244,7 @@ abstract_bushes.grow_youngtree_node2 = function(pos, height)
 end
 
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:dirt_with_grass",
 		"stoneage:grass_with_silex",

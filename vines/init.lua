@@ -133,7 +133,7 @@ vines.register_vine = function( name, defs, biome )
 		end,
 	})
 
-	biome_lib:spawn_on_surfaces(biome)
+	biome_lib.register_active_spawner(biome)
 end
 
 -- ALIASES

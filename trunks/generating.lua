@@ -169,7 +169,7 @@ abstract_trunks.place_twig = function(pos)
 end
 
 if Twigs_on_ground == true then
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
     max_count = Twigs_on_ground_Max_Count,
     rarity = Twigs_on_ground_Rarity,
@@ -186,7 +186,7 @@ biome_lib:register_generate_plant({
 end
 
 if Twigs_on_water == true then
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {"default:water_source"},
     max_count = Twigs_on_water_Max_Count,
     rarity = Twigs_on_water_Rarity,
@@ -348,7 +348,7 @@ abstract_trunks.place_trunk = function(pos)
 	end
 end
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
     max_count = Trunks_Max_Count, -- 320,
     rarity = Trunks_Rarity, -- 99,
@@ -382,7 +382,7 @@ abstract_trunks.grow_moss_on_ground = function(pos)
 
 end
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
     max_count = Moss_on_ground_Max_Count,
     rarity = Moss_on_ground_Rarity,
@@ -471,7 +471,7 @@ abstract_trunks.grow_moss_on_trunk = function(pos)
 	--end
 end
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {
 		"default:tree",
 		"default:jungletree",
@@ -548,7 +548,7 @@ abstract_trunks.grow_roots = function(pos)
 	end
 end
 
-biome_lib:register_generate_plant({
+biome_lib.register_on_generate({
     surface = {"group:tree"},
     max_count = 1000,
     rarity = 1,

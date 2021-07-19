@@ -75,7 +75,7 @@ create_nodes()
 -- Spawning
 -----------------------------------------------------------------------------------------------
 if abstract_ferns.config.enable_horsetails_spawning == true then
-	biome_lib:spawn_on_surfaces({
+	biome_lib.register_active_spawner({
 		spawn_delay = 1200,
 		spawn_plants = node_names,
 		spawn_chance = 400,
@@ -104,7 +104,7 @@ end
 -----------------------------------------------------------------------------------------------
 
 if abstract_ferns.config.enable_horsetails_on_grass == true then
-	biome_lib:register_generate_plant({
+	biome_lib.register_on_generate({
 		surface = {
 			"default:dirt_with_grass",
 			"default:dirt_with_coniferous_litter", -- minetest >= 0.5
@@ -137,7 +137,7 @@ if abstract_ferns.config.enable_horsetails_on_grass == true then
 end
 
 if abstract_ferns.config.enable_horsetails_on_stones == true then
-	biome_lib:register_generate_plant({
+	biome_lib.register_on_generate({
 		surface = {
 			"default:gravel", -- roots go deep
 			"default:mossycobble",
