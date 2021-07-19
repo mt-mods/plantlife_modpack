@@ -78,16 +78,16 @@ for i in ipairs(lilies_list) do
 			local above_node = minetest.get_node(pt.above)
 			local top_node   = minetest.get_node(top_pos)
 
-			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
+			if biome_lib.get_nodedef_field(under_node.name, "buildable_to") then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
 				elseif top_node.name ~= "default:water_source"
-				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
+				       and biome_lib.get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
 					return
 				end
-			elseif biome_lib:get_nodedef_field(above_node.name, "buildable_to") then
+			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
 				place_pos = pt.above
 			end
 
@@ -178,16 +178,16 @@ for i in ipairs(algae_list) do
 			local above_node = minetest.get_node(pt.above)
 			local top_node   = minetest.get_node(top_pos)
 
-			if biome_lib:get_nodedef_field(under_node.name, "buildable_to") then
+			if biome_lib.get_nodedef_field(under_node.name, "buildable_to") then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
 				elseif top_node.name ~= "default:water_source"
-				       and biome_lib:get_nodedef_field(top_node.name, "buildable_to") then
+				       and biome_lib.get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
 					return
 				end
-			elseif biome_lib:get_nodedef_field(above_node.name, "buildable_to") then
+			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
 				place_pos = pt.above
 			end
 
