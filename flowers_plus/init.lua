@@ -190,6 +190,7 @@ for i in ipairs(algae_list) do
 			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
 				place_pos = pt.above
 			end
+			if not place_pos then return end -- something went wrong :P
 
 			if not minetest.is_protected(place_pos, placer:get_player_name()) then
 
