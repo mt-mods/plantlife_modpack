@@ -40,11 +40,20 @@ vines.register_vine = function( name, defs, biome )
 	local vine_image_middle = "vines_" .. name .. "_middle.png"
 	local drop_node = vine_name_end
 
-	biome.spawn_plants = {vine_name_end}
+	local spawn_plants = function(pos, fdir)
+		local max_length = math.random(defs.average_length)
+		local current_length = 0
+		while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
+			minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
+			pos.y = pos.y - 1
+			current_length = current_length + 1
+		end
+		minetest.swap_node(pos, { name = vine_name_end, param2 = fdir })
+	end
 
 	local vine_group = 'group:' .. name .. '_vines'
 
-	biome.spawn_surfaces[#biome.spawn_surfaces + 1] = vine_group
+	biome.surface[#biome.surface + 1] = vine_group
 
 	local selection_box = {type = "wallmounted",}
 	local drawtype = 'signlike'
@@ -133,7 +142,7 @@ vines.register_vine = function( name, defs, biome )
 		end,
 	})
 
-	biome_lib.register_active_spawner(biome)
+    biome_lib.register_on_generate(biome, spawn_plants)
 end
 
 -- ALIASES
@@ -321,12 +330,10 @@ vines.register_vine('root',
 	choose_random_wall = true,
 	avoid_nodes = {"vines:root_middle"},
 	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 10,
-	spawn_surfaces = spawn_root_surfaces,
+	surface = spawn_root_surfaces,
 	spawn_on_bottom = true,
 	plantlife_limit = -0.6,
-	humidity_min = 0.4,
+--	humidity_min = 0.4,
 })
 
 vines.register_vine('vine',
@@ -334,9 +341,7 @@ vines.register_vine('vine',
 	choose_random_wall = true,
 	avoid_nodes = {"group:vines"},
 	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
+	surface = {
 --		"default:leaves",
 		"default:jungleleaves",
 		"moretrees:jungletree_leaves_red",
@@ -345,7 +350,7 @@ vines.register_vine('vine',
 	},
 	spawn_on_bottom = true,
 	plantlife_limit = -0.9,
-	humidity_min = 0.7,
+--	humidity_min = 0.7,
 })
 
 vines.register_vine('side',
@@ -353,9 +358,7 @@ vines.register_vine('side',
 	choose_random_wall = true,
 	avoid_nodes = {"group:vines", "default:apple"},
 	avoid_radius = 3,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
+	surface = {
 --		"default:leaves",
 		"default:jungleleaves",
 		"moretrees:jungletree_leaves_red",
@@ -364,7 +367,7 @@ vines.register_vine('side',
 	},
 	spawn_on_side = true,
 	plantlife_limit = -0.9,
-	humidity_min = 0.4,
+--	humidity_min = 0.4,
 })
 
 vines.register_vine("jungle",
@@ -381,15 +384,13 @@ vines.register_vine("jungle",
 		"vines:jungle_end",
 	},
 	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
+	surface = {
 		"default:jungletree",
 		"moretrees:jungletree_trunk"
 	},
 	spawn_on_side = true,
 	plantlife_limit = -0.9,
-	humidity_min = 0.2,
+--	humidity_min = 0.2,
 })
 
 vines.register_vine( 'willow',
@@ -402,11 +403,9 @@ vines.register_vine( 'willow',
 	near_nodes_count = 1,
 	near_nodes_vertical = 7,
 	plantlife_limit = -0.8,
-	spawn_chance = 10,
-	spawn_delay = 500,
 	spawn_on_side = true,
-	spawn_surfaces = {"moretrees:willow_leaves"},
-	humidity_min = 0.5
+	surface = {"moretrees:willow_leaves"},
+--	humidity_min = 0.5
 })
 
 
