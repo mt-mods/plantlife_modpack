@@ -33,6 +33,27 @@ minetest.register_craftitem("vines:vines", {
 
 -- FUNCTIONS
 
+local function on_dig(pos, node, player)
+	wielded_item = player:get_wielded_item()
+	if wielded_item and wielded_item:get_name() == 'vines:shears' then
+		wielded_item:add_wear(1)
+
+		vine_name_end = node.name:gsub("_middle", "_end")
+		minetest.remove_node(pos)
+		minetest.handle_node_drops(pos, {vine_name_end}, player)
+
+		below_pos = {x = pos.x, y = pos.y - 1, z = pos.z}
+		while minetest.get_item_group(minetest.get_node(below_pos).name, "vines") > 0 do
+			minetest.remove_node(below_pos)
+			minetest.handle_node_drops(below_pos, {vine_name_end}, player)
+			below_pos.y = below_pos.y - 1
+		end
+
+	else
+		minetest.node_dig(pos, node, player)
+	end
+end
+
 local function dig_down(pos, node, digger)
 
 	if digger == nil then return end
@@ -140,6 +161,8 @@ vines.register_vine = function( name, defs, biome )
 			end
 		end,
 
+		on_dig = on_dig,
+
 		after_dig_node = function(pos, node, metadata, digger)
 			dig_down(pos, node, digger)
 		end,
@@ -165,6 +188,8 @@ vines.register_vine = function( name, defs, biome )
 		groups = groups,
 		sounds = default.node_sound_leaves_defaults(),
 		selection_box = selection_box,
+
+		on_dig = on_dig,
 
 		after_dig_node = function(pos, node, metadata, digger)
 			dig_down(pos, node, digger)
