@@ -42,6 +42,17 @@ local function dig_down(pos, node, digger)
 	end
 end
 
+local function ensure_vine_end(pos, oldnode)
+	local np = {x = pos.x, y = pos.y + 1, z = pos.z}
+	local nn = minetest.get_node(np)
+
+	vine_name_end = oldnode.name:gsub("_middle", "_end")
+
+	if minetest.get_item_group(nn.name, "vines") > 0 then
+		minetest.swap_node(np, { name = vine_name_end, param2 = oldnode.param2 })
+	end
+end
+
 
 vines.register_vine = function( name, defs, biome )
 
@@ -130,6 +141,10 @@ vines.register_vine = function( name, defs, biome )
 		after_dig_node = function(pos, node, metadata, digger)
 			dig_down(pos, node, digger)
 		end,
+
+		after_destruct = function(pos, oldnode)
+			ensure_vine_end(pos, oldnode)
+		end,
 	})
 
 	minetest.register_node( vine_name_middle, {
@@ -151,6 +166,10 @@ vines.register_vine = function( name, defs, biome )
 
 		after_dig_node = function(pos, node, metadata, digger)
 			dig_down(pos, node, digger)
+		end,
+
+		after_destruct = function(pos, oldnode)
+			ensure_vine_end(pos, oldnode)
 		end,
 	})
 
