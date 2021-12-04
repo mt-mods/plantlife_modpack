@@ -18,8 +18,8 @@ local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or defa
 local rarity_jungle = tonumber(minetest.settings:get("vines_rarity_jungle")) or default_rarity
 local rarity_willow = tonumber(minetest.settings:get("vines_rarity_willow")) or default_rarity
 
-local growth_min = 60 * 3
-local growth_max = 60 * 6
+local growth_min = tonumber(minetest.settings:get("vines_growth_min")) or 180
+local growth_max = tonumber(minetest.settings:get("vines_growth_max")) or 360
 
 -- support for i18n
 local S = minetest.get_translator("vines")

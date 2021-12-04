@@ -33,3 +33,9 @@ vines_enable_willow (Enable willow vines) bool true
 
 #Rarity of willow vines, from 1 to 100, higher numbers are rarer.
 vines_rarity_willow (Rarity of willow vines) int 90 1 100
+
+#Vine growth speed, minimum number of seconds between each growth.
+vines_growth_min (Minimum number of seconds between growth) int 180 1 3600
+
+#Vine growth speed, maximum number of seconds between each growth.
+vines_growth_max (Maximum number of seconds between growth) int 360 1 3600
