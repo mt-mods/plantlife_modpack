@@ -3,6 +3,7 @@ vines = {
 	recipes = {}
 }
 
+local enable_vines = minetest.settings:get_bool("vines_enable_vines")
 local enable_rope = minetest.settings:get_bool("vines_enable_rope")
 local enable_roots = minetest.settings:get_bool("vines_enable_roots")
 local enable_standard = minetest.settings:get_bool("vines_enable_standard")
@@ -25,11 +26,13 @@ local S = minetest.get_translator("vines")
 
 -- ITEMS
 
-minetest.register_craftitem("vines:vines", {
-	description = S("Vines"),
-	inventory_image = "vines_item.png",
-	groups = {vines = 1, flammable = 2}
-})
+if enable_vines ~= false then
+	minetest.register_craftitem("vines:vines", {
+		description = S("Vines"),
+		inventory_image = "vines_item.png",
+		groups = {vines = 1, flammable = 2}
+	})
+end
 
 -- FUNCTIONS
 
@@ -86,7 +89,11 @@ vines.register_vine = function( name, defs, biome )
 	local vine_name_middle = 'vines:' .. name .. '_middle'
 	local vine_image_end = "vines_" .. name .. "_end.png"
 	local vine_image_middle = "vines_" .. name .. "_middle.png"
+
 	local drop_node = vine_name_end
+	if enable_vines ~= false then
+		drop_node = "vines:vines"
+	end
 
 	local spawn_plants = function(pos, fdir)
 		local max_length = math.random(defs.average_length)
@@ -121,7 +128,7 @@ vines.register_vine = function( name, defs, biome )
 		walkable = false,
 		climbable = true,
 		wield_image = vine_image_end,
-		drop = "vines:vines",
+		drop = drop_node,
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
@@ -176,7 +183,7 @@ vines.register_vine = function( name, defs, biome )
 		description = S("Matured") .. " " .. defs.description,
 		walkable = false,
 		climbable = true,
-		drop = "vines:vines",
+		drop = drop_node,
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
