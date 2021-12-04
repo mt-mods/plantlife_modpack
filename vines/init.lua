@@ -17,6 +17,9 @@ local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or defa
 local rarity_jungle = tonumber(minetest.settings:get("vines_rarity_jungle")) or default_rarity
 local rarity_willow = tonumber(minetest.settings:get("vines_rarity_willow")) or default_rarity
 
+local growth_min = 60 * 3
+local growth_max = 60 * 6
+
 -- support for i18n
 local S = minetest.get_translator("vines")
 
@@ -50,6 +53,7 @@ local function ensure_vine_end(pos, oldnode)
 
 	if minetest.get_item_group(nn.name, "vines") > 0 then
 		minetest.swap_node(np, { name = vine_name_end, param2 = oldnode.param2 })
+		minetest.registered_items[vine_name_end].on_construct(np, minetest.get_node(np))
 	end
 end
 
@@ -71,7 +75,7 @@ vines.register_vine = function( name, defs, biome )
 			pos.y = pos.y - 1
 			current_length = current_length + 1
 		end
-		minetest.swap_node(pos, { name = vine_name_end, param2 = fdir })
+		minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
 	end
 
 	local vine_group = 'group:' .. name .. '_vines'
@@ -111,7 +115,7 @@ vines.register_vine = function( name, defs, biome )
 		on_construct = function(pos)
 
 			local timer = minetest.get_node_timer(pos)
-			timer:start(math.random(5, 10))
+			timer:start(math.random(growth_min, growth_max))
 		end,
 
 		on_timer = function(pos)
@@ -121,9 +125,9 @@ vines.register_vine = function( name, defs, biome )
 			local bottom_node = minetest.get_node( bottom )
 			if bottom_node.name == "air" then
 
-				if not math.random(defs.average_length) == 1 then
+				if math.random(defs.average_length) ~= 1 then
 
-					minetest.set_node(pos, {
+					minetest.swap_node(pos, {
 							name = vine_name_middle, param2 = node.param2})
 
 					minetest.set_node(bottom, {
@@ -131,7 +135,7 @@ vines.register_vine = function( name, defs, biome )
 
 					local timer = minetest.get_node_timer(bottom_node)
 
-					timer:start(math.random(5, 10))
+					timer:start(math.random(growth_min, growth_max))
 				end
 			end
 		end,
