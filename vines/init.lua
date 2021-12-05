@@ -51,14 +51,11 @@ local function on_dig(pos, node, player)
 		end
 	end
 
-	minetest.remove_node(pos)
-	minetest.handle_node_drops(pos, {drop_item}, player)
-
-	below_pos = {x = pos.x, y = pos.y - 1, z = pos.z}
-	while minetest.get_item_group(minetest.get_node(below_pos).name, "vines") > 0 do
-		minetest.remove_node(below_pos)
-		minetest.handle_node_drops(below_pos, {drop_item}, player)
-		below_pos.y = below_pos.y - 1
+	break_pos = {x = pos.x, y = pos.y, z = pos.z}
+	while minetest.get_item_group(minetest.get_node(break_pos).name, "vines") > 0 do
+		minetest.remove_node(break_pos)
+		minetest.handle_node_drops(break_pos, {drop_item}, player)
+		break_pos.y = break_pos.y - 1
 	end
 end
 
@@ -85,7 +82,7 @@ vines.register_vine = function( name, defs, biome )
 
 	local spawn_plants = function(pos, fdir)
 		local max_length = math.random(defs.average_length)
-		local current_length = 0
+		local current_length = 1
 		while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
 			minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
 			pos.y = pos.y - 1
