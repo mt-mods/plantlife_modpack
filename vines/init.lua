@@ -37,35 +37,28 @@ end
 -- FUNCTIONS
 
 local function on_dig(pos, node, player)
-	wielded_item = player:get_wielded_item()
-	if wielded_item and wielded_item:get_name() == 'vines:shears' then
-		wielded_item:add_wear(1)
-
-		vine_name_end = node.name:gsub("_middle", "_end")
-		minetest.remove_node(pos)
-		minetest.handle_node_drops(pos, {vine_name_end}, player)
-
-		below_pos = {x = pos.x, y = pos.y - 1, z = pos.z}
-		while minetest.get_item_group(minetest.get_node(below_pos).name, "vines") > 0 do
-			minetest.remove_node(below_pos)
-			minetest.handle_node_drops(below_pos, {vine_name_end}, player)
-			below_pos.y = below_pos.y - 1
-		end
-
-	else
-		minetest.node_dig(pos, node, player)
+	vine_name_end = node.name:gsub("_middle", "_end")
+	drop_item = "vines:vines"
+	if enable_vines == false then
+		drop_item = vine_name_end
 	end
-end
+	
+	wielded_item = player:get_wielded_item()
+	if wielded_item then
+		wielded_item:add_wear(1)
+		if wielded_item:get_name() == 'vines:shears' then
+			drop_item = vine_name_end
+		end
+	end
 
-local function dig_down(pos, node, digger)
+	minetest.remove_node(pos)
+	minetest.handle_node_drops(pos, {drop_item}, player)
 
-	if digger == nil then return end
-
-	local np = {x = pos.x, y = pos.y - 1, z = pos.z}
-	local nn = minetest.get_node(np)
-
-	if minetest.get_item_group(nn.name, "vines") > 0 then
-		minetest.node_dig(np, nn, digger)
+	below_pos = {x = pos.x, y = pos.y - 1, z = pos.z}
+	while minetest.get_item_group(minetest.get_node(below_pos).name, "vines") > 0 do
+		minetest.remove_node(below_pos)
+		minetest.handle_node_drops(below_pos, {drop_item}, player)
+		below_pos.y = below_pos.y - 1
 	end
 end
 
@@ -89,11 +82,6 @@ vines.register_vine = function( name, defs, biome )
 	local vine_name_middle = 'vines:' .. name .. '_middle'
 	local vine_image_end = "vines_" .. name .. "_end.png"
 	local vine_image_middle = "vines_" .. name .. "_middle.png"
-
-	local drop_node = vine_name_end
-	if enable_vines ~= false then
-		drop_node = "vines:vines"
-	end
 
 	local spawn_plants = function(pos, fdir)
 		local max_length = math.random(defs.average_length)
@@ -128,7 +116,7 @@ vines.register_vine = function( name, defs, biome )
 		walkable = false,
 		climbable = true,
 		wield_image = vine_image_end,
-		drop = drop_node,
+		drop = {},
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
@@ -170,10 +158,6 @@ vines.register_vine = function( name, defs, biome )
 
 		on_dig = on_dig,
 
-		after_dig_node = function(pos, node, metadata, digger)
-			dig_down(pos, node, digger)
-		end,
-
 		after_destruct = function(pos, oldnode)
 			ensure_vine_end(pos, oldnode)
 		end,
@@ -183,7 +167,7 @@ vines.register_vine = function( name, defs, biome )
 		description = S("Matured") .. " " .. defs.description,
 		walkable = false,
 		climbable = true,
-		drop = drop_node,
+		drop = {},
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
@@ -197,10 +181,6 @@ vines.register_vine = function( name, defs, biome )
 		selection_box = selection_box,
 
 		on_dig = on_dig,
-
-		after_dig_node = function(pos, node, metadata, digger)
-			dig_down(pos, node, digger)
-		end,
 
 		after_destruct = function(pos, oldnode)
 			ensure_vine_end(pos, oldnode)
