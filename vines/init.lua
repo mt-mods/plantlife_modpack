@@ -83,12 +83,14 @@ vines.register_vine = function( name, defs, biome )
 	local spawn_plants = function(pos, fdir)
 		local max_length = math.random(defs.average_length)
 		local current_length = 1
-		while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
-			minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
-			pos.y = pos.y - 1
-			current_length = current_length + 1
+		if minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' then
+			while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
+				minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
+				pos.y = pos.y - 1
+				current_length = current_length + 1
+			end
+			minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
 		end
-		minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
 	end
 
 	local vine_group = 'group:' .. name .. '_vines'
