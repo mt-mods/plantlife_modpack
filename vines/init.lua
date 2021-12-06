@@ -3,13 +3,13 @@ vines = {
 	recipes = {}
 }
 
-local enable_vines = minetest.settings:get_bool("vines_enable_vines")
-local enable_rope = minetest.settings:get_bool("vines_enable_rope")
-local enable_roots = minetest.settings:get_bool("vines_enable_roots")
-local enable_standard = minetest.settings:get_bool("vines_enable_standard")
-local enable_side = minetest.settings:get_bool("vines_enable_side")
-local enable_jungle = minetest.settings:get_bool("vines_enable_jungle")
-local enable_willow = minetest.settings:get_bool("vines_enable_willow")
+local enable_vines = minetest.settings:get_bool("vines_enable_vines", true)
+local enable_rope = minetest.settings:get_bool("vines_enable_rope", true)
+local enable_roots = minetest.settings:get_bool("vines_enable_roots", true)
+local enable_standard = minetest.settings:get_bool("vines_enable_standard", true)
+local enable_side = minetest.settings:get_bool("vines_enable_side", true)
+local enable_jungle = minetest.settings:get_bool("vines_enable_jungle", true)
+local enable_willow = minetest.settings:get_bool("vines_enable_willow", true)
 
 local default_rarity = 90
 local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or default_rarity
