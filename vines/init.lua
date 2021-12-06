@@ -381,6 +381,9 @@ if enable_roots ~= false then
 		rarity = rarity_roots,
 	--	humidity_min = 0.4,
 	})
+else
+	minetest.register_alias('vines:root_middle', 'air')
+	minetest.register_alias('vines:root_end', 'air')
 end
 
 if enable_standard ~= false then
@@ -401,6 +404,9 @@ if enable_standard ~= false then
 		rarity = rarity_standard,
 	--	humidity_min = 0.7,
 	})
+else
+	minetest.register_alias('vines:vine_middle', 'air')
+	minetest.register_alias('vines:vine_end', 'air')
 end
 
 if enable_side ~= false then
@@ -421,6 +427,9 @@ if enable_side ~= false then
 		rarity = rarity_side,
 	--	humidity_min = 0.4,
 	})
+else
+	minetest.register_alias('vines:side_middle', 'air')
+	minetest.register_alias('vines:side_end', 'air')
 end
 
 if enable_jungle ~= false then
@@ -447,6 +456,9 @@ if enable_jungle ~= false then
 		rarity = rarity_jungle,
 	--	humidity_min = 0.2,
 	})
+else
+	minetest.register_alias('vines:jungle_middle', 'air')
+	minetest.register_alias('vines:jungle_end', 'air')
 end
 
 if enable_willow ~= false then
@@ -465,6 +477,9 @@ if enable_willow ~= false then
 		rarity = rarity_willow,
 	--	humidity_min = 0.5
 	})
+else
+	minetest.register_alias('vines:willow_middle', 'air')
+	minetest.register_alias('vines:willow_end', 'air')
 end
 
 print("[Vines] Loaded")
