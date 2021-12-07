@@ -3,48 +3,99 @@ vines = {
 	recipes = {}
 }
 
-local enable_roots = minetest.settings:get_bool("vines_enable_roots")
+local enable_vines = minetest.settings:get_bool("vines_enable_vines", true)
+local enable_rope = minetest.settings:get_bool("vines_enable_rope", true)
+local enable_roots = minetest.settings:get_bool("vines_enable_roots", true)
+local enable_standard = minetest.settings:get_bool("vines_enable_standard", true)
+local enable_side = minetest.settings:get_bool("vines_enable_side", true)
+local enable_jungle = minetest.settings:get_bool("vines_enable_jungle", true)
+local enable_willow = minetest.settings:get_bool("vines_enable_willow", true)
+
+local default_rarity = 90
+local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or default_rarity
+local rarity_standard = tonumber(minetest.settings:get("vines_rarity_standard")) or default_rarity
+local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or default_rarity
+local rarity_jungle = tonumber(minetest.settings:get("vines_rarity_jungle")) or default_rarity
+local rarity_willow = tonumber(minetest.settings:get("vines_rarity_willow")) or default_rarity
+
+local growth_min = tonumber(minetest.settings:get("vines_growth_min")) or 180
+local growth_max = tonumber(minetest.settings:get("vines_growth_max")) or 360
 
 -- support for i18n
 local S = minetest.get_translator("vines")
 
 -- ITEMS
 
-minetest.register_craftitem("vines:vines", {
-	description = S("Vines"),
-	inventory_image = "vines_item.png",
-	groups = {vines = 1, flammable = 2}
-})
+if enable_vines ~= false then
+	minetest.register_craftitem("vines:vines", {
+		description = S("Vines"),
+		inventory_image = "vines_item.png",
+		groups = {vines = 1, flammable = 2}
+	})
+end
 
 -- FUNCTIONS
 
-local function dig_down(pos, node, digger)
+local function on_dig(pos, node, player)
+	vine_name_end = node.name:gsub("_middle", "_end")
+	drop_item = "vines:vines"
+	if enable_vines == false then
+		drop_item = vine_name_end
+	end
+	
+	wielded_item = player:get_wielded_item()
+	if wielded_item then
+		wielded_item:add_wear(1)
+		if wielded_item:get_name() == 'vines:shears' then
+			drop_item = vine_name_end
+		end
+	end
 
-	if digger == nil then return end
+	break_pos = {x = pos.x, y = pos.y, z = pos.z}
+	while minetest.get_item_group(minetest.get_node(break_pos).name, "vines") > 0 do
+		minetest.remove_node(break_pos)
+		minetest.handle_node_drops(break_pos, {drop_item}, player)
+		break_pos.y = break_pos.y - 1
+	end
+end
 
-	local np = {x = pos.x, y = pos.y - 1, z = pos.z}
+local function ensure_vine_end(pos, oldnode)
+	local np = {x = pos.x, y = pos.y + 1, z = pos.z}
 	local nn = minetest.get_node(np)
 
+	vine_name_end = oldnode.name:gsub("_middle", "_end")
+
 	if minetest.get_item_group(nn.name, "vines") > 0 then
-		minetest.node_dig(np, nn, digger)
+		minetest.swap_node(np, { name = vine_name_end, param2 = oldnode.param2 })
+		minetest.registered_items[vine_name_end].on_construct(np, minetest.get_node(np))
 	end
 end
 
 
 vines.register_vine = function( name, defs, biome )
 
-	local groups = {vines = 1, snappy = 3, flammable = 2, attached_node = 1}
+	local groups = {vines = 1, snappy = 3, flammable = 2}
 	local vine_name_end = 'vines:' .. name .. '_end'
 	local vine_name_middle = 'vines:' .. name .. '_middle'
 	local vine_image_end = "vines_" .. name .. "_end.png"
 	local vine_image_middle = "vines_" .. name .. "_middle.png"
-	local drop_node = vine_name_end
 
-	biome.spawn_plants = {vine_name_end}
+	local spawn_plants = function(pos, fdir)
+		local max_length = math.random(defs.average_length)
+		local current_length = 1
+		if minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' then
+			while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
+				minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
+				pos.y = pos.y - 1
+				current_length = current_length + 1
+			end
+			minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
+		end
+	end
 
 	local vine_group = 'group:' .. name .. '_vines'
 
-	biome.spawn_surfaces[#biome.spawn_surfaces + 1] = vine_group
+	biome.surface[#biome.surface + 1] = vine_group
 
 	local selection_box = {type = "wallmounted",}
 	local drawtype = 'signlike'
@@ -64,7 +115,7 @@ vines.register_vine = function( name, defs, biome )
 		walkable = false,
 		climbable = true,
 		wield_image = vine_image_end,
-		drop = "vines:vines",
+		drop = {},
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
@@ -79,8 +130,7 @@ vines.register_vine = function( name, defs, biome )
 		on_construct = function(pos)
 
 			local timer = minetest.get_node_timer(pos)
-
-			timer:start(math.random(5, 10))
+			timer:start(math.random(growth_min, growth_max))
 		end,
 
 		on_timer = function(pos)
@@ -88,12 +138,11 @@ vines.register_vine = function( name, defs, biome )
 			local node = minetest.get_node(pos)
 			local bottom = {x = pos.x, y = pos.y - 1, z = pos.z}
 			local bottom_node = minetest.get_node( bottom )
-
 			if bottom_node.name == "air" then
 
-				if not math.random(defs.average_length) == 1 then
+				if math.random(defs.average_length) ~= 1 then
 
-					minetest.set_node(pos, {
+					minetest.swap_node(pos, {
 							name = vine_name_middle, param2 = node.param2})
 
 					minetest.set_node(bottom, {
@@ -101,13 +150,15 @@ vines.register_vine = function( name, defs, biome )
 
 					local timer = minetest.get_node_timer(bottom_node)
 
-					timer:start(math.random(5, 10))
+					timer:start(math.random(growth_min, growth_max))
 				end
 			end
 		end,
 
-		after_dig_node = function(pos, node, metadata, digger)
-			dig_down(pos, node, digger)
+		on_dig = on_dig,
+
+		after_destruct = function(pos, oldnode)
+			ensure_vine_end(pos, oldnode)
 		end,
 	})
 
@@ -115,7 +166,7 @@ vines.register_vine = function( name, defs, biome )
 		description = S("Matured") .. " " .. defs.description,
 		walkable = false,
 		climbable = true,
-		drop = "vines:vines",
+		drop = {},
 		sunlight_propagates = true,
 		paramtype = "light",
 		paramtype2 = "wallmounted",
@@ -128,12 +179,14 @@ vines.register_vine = function( name, defs, biome )
 		sounds = default.node_sound_leaves_defaults(),
 		selection_box = selection_box,
 
-		after_dig_node = function(pos, node, metadata, digger)
-			dig_down(pos, node, digger)
+		on_dig = on_dig,
+
+		after_destruct = function(pos, oldnode)
+			ensure_vine_end(pos, oldnode)
 		end,
 	})
 
-	biome_lib.register_active_spawner(biome)
+	biome_lib.register_on_generate(biome, spawn_plants)
 end
 
 -- ALIASES
@@ -184,110 +237,112 @@ minetest.register_craft({
 
 -- NODES
 
-minetest.register_node("vines:rope_block", {
-	description = S("Rope"),
-	sunlight_propagates = true,
-	paramtype = "light",
-	tiles = {
-		"default_wood.png^vines_rope.png",
-		"default_wood.png^vines_rope.png",
-		"default_wood.png",
-		"default_wood.png",
-		"default_wood.png^vines_rope.png",
-		"default_wood.png^vines_rope.png",
-	},
-	groups = {flammable = 2, choppy = 2, oddly_breakable_by_hand = 1},
+if enable_rope ~= false then
+	minetest.register_node("vines:rope_block", {
+		description = S("Rope"),
+		sunlight_propagates = true,
+		paramtype = "light",
+		tiles = {
+			"default_wood.png^vines_rope.png",
+			"default_wood.png^vines_rope.png",
+			"default_wood.png",
+			"default_wood.png",
+			"default_wood.png^vines_rope.png",
+			"default_wood.png^vines_rope.png",
+		},
+		groups = {flammable = 2, choppy = 2, oddly_breakable_by_hand = 1},
 
-	after_place_node = function(pos)
+		after_place_node = function(pos)
 
-		local p = {x = pos.x, y = pos.y - 1, z = pos.z}
-		local n = minetest.get_node(p)
+			local p = {x = pos.x, y = pos.y - 1, z = pos.z}
+			local n = minetest.get_node(p)
 
-		if n.name == "air" then
-			minetest.add_node(p, {name = "vines:rope_end"})
+			if n.name == "air" then
+				minetest.add_node(p, {name = "vines:rope_end"})
+			end
+		end,
+
+		after_dig_node = function(pos, node, digger)
+
+			local p = {x = pos.x, y = pos.y - 1, z = pos.z}
+			local n = minetest.get_node(p)
+
+			while n.name == 'vines:rope' or n.name == 'vines:rope_end' do
+
+				minetest.remove_node(p)
+
+				p = {x = p.x, y = p.y - 1, z = p.z}
+				n = minetest.get_node(p)
+			end
 		end
-	end,
+	})
 
-	after_dig_node = function(pos, node, digger)
+	minetest.register_node("vines:rope", {
+		description = S("Rope"),
+		walkable = false,
+		climbable = true,
+		sunlight_propagates = true,
+		paramtype = "light",
+		drop = {},
+		tiles = {"vines_rope.png"},
+		drawtype = "plantlike",
+		groups = {flammable = 2, not_in_creative_inventory = 1},
+		sounds = default.node_sound_leaves_defaults(),
+		selection_box = {
+			type = "fixed",
+			fixed = {-1/7, -1/2, -1/7, 1/7, 1/2, 1/7},
+		},
+	})
 
-		local p = {x = pos.x, y = pos.y - 1, z = pos.z}
-		local n = minetest.get_node(p)
+	minetest.register_node("vines:rope_end", {
+		description = S("Rope"),
+		walkable = false,
+		climbable = true,
+		sunlight_propagates = true,
+		paramtype = "light",
+		drop = {},
+		tiles = {"vines_rope_end.png"},
+		drawtype = "plantlike",
+		groups = {flammable = 2, not_in_creative_inventory = 1},
+		sounds = default.node_sound_leaves_defaults(),
 
-		while n.name == 'vines:rope' or n.name == 'vines:rope_end' do
+		after_place_node = function(pos)
 
-			minetest.remove_node(p)
+			local yesh = {x = pos.x, y = pos.y - 1, z = pos.z}
 
-			p = {x = p.x, y = p.y - 1, z = p.z}
-			n = minetest.get_node(p)
-		end
-	end
-})
+			minetest.add_node(yesh, {name = "vines:rope"})
+		end,
 
-minetest.register_node("vines:rope", {
-	description = S("Rope"),
-	walkable = false,
-	climbable = true,
-	sunlight_propagates = true,
-	paramtype = "light",
-	drop = {},
-	tiles = {"vines_rope.png"},
-	drawtype = "plantlike",
-	groups = {flammable = 2, not_in_creative_inventory = 1},
-	sounds = default.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = {-1/7, -1/2, -1/7, 1/7, 1/2, 1/7},
-	},
-})
+		selection_box = {
+			type = "fixed",
+			fixed = {-1/7, -1/2, -1/7, 1/7, 1/2, 1/7},
+		},
 
-minetest.register_node("vines:rope_end", {
-	description = S("Rope"),
-	walkable = false,
-	climbable = true,
-	sunlight_propagates = true,
-	paramtype = "light",
-	drop = {},
-	tiles = {"vines_rope_end.png"},
-	drawtype = "plantlike",
-	groups = {flammable = 2, not_in_creative_inventory = 1},
-	sounds = default.node_sound_leaves_defaults(),
-
-	after_place_node = function(pos)
-
-		local yesh = {x = pos.x, y = pos.y - 1, z = pos.z}
-
-		minetest.add_node(yesh, {name = "vines:rope"})
-	end,
-
-	selection_box = {
-		type = "fixed",
-		fixed = {-1/7, -1/2, -1/7, 1/7, 1/2, 1/7},
-	},
-
-	on_construct = function(pos)
-
-		local timer = minetest.get_node_timer(pos)
-
-		timer:start(1)
-	end,
-
-	on_timer = function( pos, elapsed )
-
-		local p = {x = pos.x, y = pos.y - 1, z = pos.z}
-		local n = minetest.get_node(p)
-
-		if	n.name == "air" then
-
-			minetest.set_node(pos, {name = "vines:rope"})
-			minetest.add_node(p, {name = "vines:rope_end"})
-		else
+		on_construct = function(pos)
 
 			local timer = minetest.get_node_timer(pos)
 
 			timer:start(1)
+		end,
+
+		on_timer = function( pos, elapsed )
+
+			local p = {x = pos.x, y = pos.y - 1, z = pos.z}
+			local n = minetest.get_node(p)
+
+			if	n.name == "air" then
+
+				minetest.set_node(pos, {name = "vines:rope"})
+				minetest.add_node(p, {name = "vines:rope_end"})
+			else
+
+				local timer = minetest.get_node_timer(pos)
+
+				timer:start(1)
+			end
 		end
-	end
-})
+	})
+end
 
 -- SHEARS
 
@@ -314,100 +369,116 @@ if enable_roots ~= false then
 		"default:dirt_with_grass",
 		"default:dirt"
 	}
+
+	vines.register_vine('root',
+		{description = S("Roots"), average_length = 9}, {
+		choose_random_wall = true,
+		avoid_nodes = {"vines:root_middle"},
+		avoid_radius = 5,
+		surface = spawn_root_surfaces,
+		spawn_on_bottom = true,
+		plantlife_limit = -0.6,
+		rarity = rarity_roots,
+	--	humidity_min = 0.4,
+	})
+else
+	minetest.register_alias('vines:root_middle', 'air')
+	minetest.register_alias('vines:root_end', 'air')
 end
 
-vines.register_vine('root',
-	{description = S("Roots"), average_length = 9}, {
-	choose_random_wall = true,
-	avoid_nodes = {"vines:root_middle"},
-	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 10,
-	spawn_surfaces = spawn_root_surfaces,
-	spawn_on_bottom = true,
-	plantlife_limit = -0.6,
-	humidity_min = 0.4,
-})
+if enable_standard ~= false then
+	vines.register_vine('vine',
+		{description = S("Vines"), average_length = 5}, {
+		choose_random_wall = true,
+		avoid_nodes = {"group:vines"},
+		avoid_radius = 5,
+		surface = {
+	--		"default:leaves",
+			"default:jungleleaves",
+			"moretrees:jungletree_leaves_red",
+			"moretrees:jungletree_leaves_yellow",
+			"moretrees:jungletree_leaves_green"
+		},
+		spawn_on_bottom = true,
+		plantlife_limit = -0.9,
+		rarity = rarity_standard,
+	--	humidity_min = 0.7,
+	})
+else
+	minetest.register_alias('vines:vine_middle', 'air')
+	minetest.register_alias('vines:vine_end', 'air')
+end
 
-vines.register_vine('vine',
-	{description = S("Vines"), average_length = 5}, {
-	choose_random_wall = true,
-	avoid_nodes = {"group:vines"},
-	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
---		"default:leaves",
-		"default:jungleleaves",
-		"moretrees:jungletree_leaves_red",
-		"moretrees:jungletree_leaves_yellow",
-		"moretrees:jungletree_leaves_green"
-	},
-	spawn_on_bottom = true,
-	plantlife_limit = -0.9,
-	humidity_min = 0.7,
-})
+if enable_side ~= false then
+	vines.register_vine('side',
+		{description = S("Vines"), average_length = 6}, {
+		choose_random_wall = true,
+		avoid_nodes = {"group:vines", "default:apple"},
+		avoid_radius = 3,
+		surface = {
+	--		"default:leaves",
+			"default:jungleleaves",
+			"moretrees:jungletree_leaves_red",
+			"moretrees:jungletree_leaves_yellow",
+			"moretrees:jungletree_leaves_green"
+		},
+		spawn_on_side = true,
+		plantlife_limit = -0.9,
+		rarity = rarity_side,
+	--	humidity_min = 0.4,
+	})
+else
+	minetest.register_alias('vines:side_middle', 'air')
+	minetest.register_alias('vines:side_end', 'air')
+end
 
-vines.register_vine('side',
-	{description = S("Vines"), average_length = 6}, {
-	choose_random_wall = true,
-	avoid_nodes = {"group:vines", "default:apple"},
-	avoid_radius = 3,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
---		"default:leaves",
-		"default:jungleleaves",
-		"moretrees:jungletree_leaves_red",
-		"moretrees:jungletree_leaves_yellow",
-		"moretrees:jungletree_leaves_green"
-	},
-	spawn_on_side = true,
-	plantlife_limit = -0.9,
-	humidity_min = 0.4,
-})
+if enable_jungle ~= false then
+	vines.register_vine("jungle",
+		{description = S("Jungle Vines"), average_length = 7}, {
+		choose_random_wall = true,
+		neighbors = {
+			"default:jungleleaves",
+			"moretrees:jungletree_leaves_red",
+			"moretrees:jungletree_leaves_yellow",
+			"moretrees:jungletree_leaves_green"
+		},
+		avoid_nodes = {
+			"vines:jungle_middle",
+			"vines:jungle_end",
+		},
+		avoid_radius = 5,
+		surface = {
+			"default:jungletree",
+			"moretrees:jungletree_trunk"
+		},
+		spawn_on_side = true,
+		plantlife_limit = -0.9,
+		rarity = rarity_jungle,
+	--	humidity_min = 0.2,
+	})
+else
+	minetest.register_alias('vines:jungle_middle', 'air')
+	minetest.register_alias('vines:jungle_end', 'air')
+end
 
-vines.register_vine("jungle",
-	{description = S("Jungle Vines"), average_length = 7}, {
-	choose_random_wall = true,
-	neighbors = {
-		"default:jungleleaves",
-		"moretrees:jungletree_leaves_red",
-		"moretrees:jungletree_leaves_yellow",
-		"moretrees:jungletree_leaves_green"
-	},
-	avoid_nodes = {
-		"vines:jungle_middle",
-		"vines:jungle_end",
-	},
-	avoid_radius = 5,
-	spawn_delay = 500,
-	spawn_chance = 100,
-	spawn_surfaces = {
-		"default:jungletree",
-		"moretrees:jungletree_trunk"
-	},
-	spawn_on_side = true,
-	plantlife_limit = -0.9,
-	humidity_min = 0.2,
-})
+if enable_willow ~= false then
+	vines.register_vine( 'willow',
+		{description = S("Willow Vines"), average_length = 9}, {
+		choose_random_wall = true,
+		avoid_nodes = {"vines:willow_middle"},
+		avoid_radius = 5,
+		near_nodes = {'default:water_source'},
+		near_nodes_size = 1,
+		near_nodes_count = 1,
+		near_nodes_vertical = 7,
+		plantlife_limit = -0.8,
+		spawn_on_side = true,
+		surface = {"moretrees:willow_leaves"},
+		rarity = rarity_willow,
+	--	humidity_min = 0.5
+	})
+else
+	minetest.register_alias('vines:willow_middle', 'air')
+	minetest.register_alias('vines:willow_end', 'air')
+end
 
-vines.register_vine( 'willow',
-	{description = S("Willow Vines"), average_length = 9}, {
-	choose_random_wall = true,
-	avoid_nodes = {"vines:willow_middle"},
-	avoid_radius = 5,
-	near_nodes = {'default:water_source'},
-	near_nodes_size = 1,
-	near_nodes_count = 1,
-	near_nodes_vertical = 7,
-	plantlife_limit = -0.8,
-	spawn_chance = 10,
-	spawn_delay = 500,
-	spawn_on_side = true,
-	spawn_surfaces = {"moretrees:willow_leaves"},
-	humidity_min = 0.5
-})
-
-
-print("[Vines] Loaded!")
