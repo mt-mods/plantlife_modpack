@@ -186,7 +186,7 @@ vines.register_vine = function( name, defs, biome )
 		end,
 	})
 
-    biome_lib.register_on_generate(biome, spawn_plants)
+	biome_lib.register_on_generate(biome, spawn_plants)
 end
 
 -- ALIASES
