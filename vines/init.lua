@@ -482,4 +482,3 @@ else
 	minetest.register_alias('vines:willow_end', 'air')
 end
 
-print("[Vines] Loaded")
