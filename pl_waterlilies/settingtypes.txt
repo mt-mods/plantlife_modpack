@@ -1,0 +1,5 @@
+#Water-lilies maximum count
+pl_waterlilies_max_count (Water-lilies maximum count) int 320 1 1000
+
+#Water-lilies rarity
+pl_waterlilies_rarity (Water-lilies rarity) int 33 0 100
