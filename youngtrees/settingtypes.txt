@@ -1,0 +1,5 @@
+#Youngtree density %
+youngtrees_youngtrees_density (Youngtree density %) float 1 0 100
+
+#Youngtree minimum fertility (-1 to +1)
+youngtrees_youngtrees_fertility (Youngtree minimum fertility) float -0 -1 1

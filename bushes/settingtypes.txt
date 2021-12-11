@@ -1,0 +1,11 @@
+#Bush density %
+bushes_bush_density (Bush density %) float 1 0 100
+
+#Bush minimum fertility (-1 to +1)
+bushes_bush_fertility (Bush minimum fertility) float -0.7 -1 1
+
+#Youngtree (from bushes mod) density %
+bushes_youngtrees_density (Youngtree bush density %) float 0.5 0 100
+
+#Youngtree (from bushes mod) minimum fertility (-1 to +1)
+bushes_youngtrees_fertility (Youngtree bush minimum fertility) float -0.5 -1 1
