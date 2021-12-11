@@ -1,0 +1,5 @@
+#Youngtree maximum count
+youngtrees_youngtrees_max_count (Youngtree maximum count) int 55 0 1000
+
+#Youngtree rarity - Set to 100 to disable entirely
+youngtrees_youngtrees_rarity (Youngtree rarity) int 99 0 100

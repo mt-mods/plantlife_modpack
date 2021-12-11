@@ -1,0 +1,11 @@
+#Bush maximum count
+bushes_bush_max_count (Bush maximum count) int 15 0 1000
+
+#Bush rarity - Set to 100 to disable entirely
+bushes_bush_rarity (Bush rarity) int 99 0 100
+
+#Youngtree (from bushes mod) maximum count
+bushes_youngtree2_max_count (Youngtree bushes maximum count) int 55 0 1000
+
+#Youngtree (from bushes mod) rarity - Set to 100 to disable entirely
+bushes_youngtree2_rarity (Youngtree bushes rarity) int 99 0 100

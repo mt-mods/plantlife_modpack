@@ -8,30 +8,37 @@
 
 -- support for i18n
 local S = minetest.get_translator("bushes")
-  abstract_bushes = {}
+abstract_bushes = {}
 
-  minetest.register_node("bushes:youngtree2_bottom", {
+local bushes_bush_max_count = tonumber(minetest.settings:get("bushes_bush_max_count")) or 15
+local bushes_bush_rarity = tonumber(minetest.settings:get("bushes_bush_rarity")) or 99
+
+local bushes_youngtree2_max_count = tonumber(minetest.settings:get("bushes_youngtree2_max_count")) or 55
+local bushes_youngtree2_rarity = tonumber(minetest.settings:get("bushes_youngtree2_rarity")) or 99
+
+
+minetest.register_node("bushes:youngtree2_bottom", {
 	description = S("Young Tree 2 (bottom)"),
- drawtype="nodebox",
- tiles = {"bushes_youngtree2trunk.png"},
+	drawtype="nodebox",
+	tiles = {"bushes_youngtree2trunk.png"},
 	inventory_image = "bushes_youngtree2trunk_inv.png",
 	wield_image = "bushes_youngtree2trunk_inv.png",
-paramtype = "light",
+	paramtype = "light",
 	walkable = false,
 	is_ground_content = true,
-node_box = {
-	type = "fixed",
-	fixed = {
-		--{0.375000,-0.500000,-0.500000,0.500000,0.500000,-0.375000}, --NodeBox 1
-		{-0.0612,-0.500000,-0.500000,0.0612,0.500000,-0.375000}, --NodeBox 1
-	}
-},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			--{0.375000,-0.500000,-0.500000,0.500000,0.500000,-0.375000}, --NodeBox 1
+			{-0.0612,-0.500000,-0.500000,0.0612,0.500000,-0.375000}, --NodeBox 1
+		}
+	},
 	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'default:stick'
 })
 
-  local BushBranchCenter			= { {1,1}, {3,2} }
+local BushBranchCenter			= { {1,1}, {3,2} }
 for i in pairs(BushBranchCenter) do
 	local Num		= BushBranchCenter[i][1]
 	local TexNum	= BushBranchCenter[i][2]
@@ -55,8 +62,8 @@ for i in pairs(BushBranchCenter) do
 		},
 		inventory_image = "bushes_branches_center_"..TexNum..".png",
 		paramtype = "light",
-			paramtype2 = "facedir",
-				sunlight_propagates = true,
+		paramtype2 = "facedir",
+		sunlight_propagates = true,
 		groups = {
 		--	tree=1, -- MM: disabled because some recipes use group:tree for trunks
 			snappy=3,
@@ -81,16 +88,16 @@ for i in pairs(BushBranchSide) do
 --[[bottom]]"bushes_branches_center_"..TexNum..".png",
 --[[right]]	"bushes_branches_left_"..TexNum..".png",
 --[[left]]	"bushes_branches_right_"..TexNum..".png", -- MM: We could also mirror the previous here,
---[[back]]	"bushes_branches_center_"..TexNum..".png",--     unless U really want 'em 2 B different
+--[[back]]	"bushes_branches_center_"..TexNum..".png",--		 unless U really want 'em 2 B different
 --[[front]]	"bushes_branches_right_"..TexNum..".png"
 		},
 		node_box = {
 			type = "fixed",
 			fixed = {
---				{ left	 , bottom  , front, right   , top     , back    }
-				{0.137748,-0.491944, 0.5  ,-0.125000,-0.179444,-0.007790}, --NodeBox 1
-				{0.262748,-0.185995, 0.5  ,-0.237252, 0.126505,-0.260269}, --NodeBox 2
-				{0.500000, 0.125000, 0.5  ,-0.500000, 0.500000,-0.500000}, --NodeBox 3
+--				{ left	 , bottom	, front, right	 , top		 , back		}
+				{0.137748,-0.491944, 0.5	,-0.125000,-0.179444,-0.007790}, --NodeBox 1
+				{0.262748,-0.185995, 0.5	,-0.237252, 0.126505,-0.260269}, --NodeBox 2
+				{0.500000, 0.125000, 0.5	,-0.500000, 0.500000,-0.500000}, --NodeBox 3
 			},
 		},
 		selection_box = {
@@ -99,8 +106,8 @@ for i in pairs(BushBranchSide) do
 		},
 		inventory_image = "bushes_branches_right_"..TexNum..".png",
 		paramtype = "light",
-			paramtype2 = "facedir",
-				sunlight_propagates = true,
+		paramtype2 = "facedir",
+		sunlight_propagates = true,
 		groups = {
 		--	tree=1, -- MM: disabled because some recipes use group:tree for trunks
 			snappy=3,
@@ -160,9 +167,8 @@ abstract_bushes.grow_bush = function(pos)
 abstract_bushes.grow_bush_node(pos,5,leaf_type)
 end
 
+
 abstract_bushes.grow_bush_node = function(pos,dir, leaf_type)
-
-
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
 
@@ -184,7 +190,7 @@ abstract_bushes.grow_bush_node = function(pos,dir, leaf_type)
 		dir = 1
 	end
 
-	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
+	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
 	or minetest.get_node(right_here).name == "default:junglegrass" then
 		minetest.swap_node(right_here, {name="bushes:bushbranches"..bush_branch_type , param2=dir})
 						--minetest.chat_send_all("leaf_type: (" .. leaf_type .. ")")
@@ -200,63 +206,59 @@ end
 
 
 biome_lib.register_on_generate({
-    surface = {
-		"default:dirt_with_grass",
-		"stoneage:grass_with_silex",
-		"sumpf:peat",
-		"sumpf:sumpf"
+		surface = {
+			"default:dirt_with_grass",
+			"stoneage:grass_with_silex",
+			"sumpf:peat",
+			"sumpf:sumpf"
+		},
+		max_count = bushes_bush_max_count,
+		rarity = bushes_bush_rarity,
+		min_elevation = 1, -- above sea level
+		plantlife_limit = -0.9,
 	},
-    max_count = 15,  --10,15
-    rarity = 101 - 4,  --3,4
-    min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
-  },
-  abstract_bushes.grow_bush
+	abstract_bushes.grow_bush
 )
 
- abstract_bushes.grow_youngtree2 = function(pos)
+abstract_bushes.grow_youngtree2 = function(pos)
 	local height = math.random(4,5)
 	abstract_bushes.grow_youngtree_node2(pos,height)
 end
 
+
 abstract_bushes.grow_youngtree_node2 = function(pos, height)
-
-
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
 	local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
 	local three_above_right_here = {x=pos.x, y=pos.y+4, z=pos.z}
 
-	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
+	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
 	or minetest.get_node(right_here).name == "default:junglegrass" then
 		if height == 4 then
-				local two_above_right_here_south = {x=pos.x, y=pos.y+3, z=pos.z-1}
-				local three_above_right_here_south = {x=pos.x, y=pos.y+4, z=pos.z-1}
-				minetest.swap_node(right_here, {name="bushes:youngtree2_bottom"})
-				minetest.swap_node(above_right_here, {name="bushes:youngtree2_bottom"})
-				minetest.swap_node(two_above_right_here, {name="bushes:bushbranches2"  , param2=2})
-				minetest.swap_node(two_above_right_here_south, {name="bushes:bushbranches2"  , param2=0})
-				minetest.swap_node(three_above_right_here, {name="bushes:BushLeaves1" })
-				minetest.swap_node(three_above_right_here_south, {name="bushes:BushLeaves1" })
+			local two_above_right_here_south = {x=pos.x, y=pos.y+3, z=pos.z-1}
+			local three_above_right_here_south = {x=pos.x, y=pos.y+4, z=pos.z-1}
+			minetest.swap_node(right_here, {name="bushes:youngtree2_bottom"})
+			minetest.swap_node(above_right_here, {name="bushes:youngtree2_bottom"})
+			minetest.swap_node(two_above_right_here, {name="bushes:bushbranches2"	, param2=2})
+			minetest.swap_node(two_above_right_here_south, {name="bushes:bushbranches2"	, param2=0})
+			minetest.swap_node(three_above_right_here, {name="bushes:BushLeaves1" })
+			minetest.swap_node(three_above_right_here_south, {name="bushes:BushLeaves1" })
 		end
-
 	end
 end
 
 
 biome_lib.register_on_generate({
-    surface = {
-		"default:dirt_with_grass",
-		"stoneage:grass_with_silex",
-		"sumpf:peat",
-		"sumpf:sumpf"
+		surface = {
+			"default:dirt_with_grass",
+			"stoneage:grass_with_silex",
+			"sumpf:peat",
+			"sumpf:sumpf"
+		},
+		max_count = bushes_youngtree2_max_count,
+		rarity = bushes_youngtree2_rarity,
+		min_elevation = 1, -- above sea level
+		plantlife_limit = -0.9,
 	},
-    max_count = 55,  --10,15
-    rarity = 101 - 4,  --3,4
-    min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
-  },
-  abstract_bushes.grow_youngtree2
+	abstract_bushes.grow_youngtree2
 )
-
-		--http://dev.minetest.net/Node_Drawtypes

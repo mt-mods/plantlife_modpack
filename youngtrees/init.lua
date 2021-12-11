@@ -1,7 +1,10 @@
 -- support for i18n
 local S = minetest.get_translator("youngtrees")
-
 abstract_youngtrees = {}
+
+local youngtrees_youngtrees_max_count = tonumber(minetest.settings:get("youngtrees_youngtrees_max_count")) or 55
+local youngtrees_youngtrees_rarity = tonumber(minetest.settings:get("youngtrees_youngtrees_rarity")) or 99
+
 
 minetest.register_node("youngtrees:bamboo", {
 	description = S("Young Bamboo Tree"),
@@ -40,7 +43,7 @@ minetest.register_node("youngtrees:youngtree2_middle",{
 			{-0.500000,0.125000,-0.500000,0.500000,0.500000,0.500000}, --NodeBox 3
 		}
 	},
-		groups = {snappy=3,flammable=2,attached_node=1},
+	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
@@ -63,7 +66,6 @@ minetest.register_node("youngtrees:youngtree_top", {
 	drop = 'trunks:twig_1'
 })
 
-
 minetest.register_node("youngtrees:youngtree_middle", {
 	description = S("Young Tree (middle)"),
 	drawtype = "plantlike",
@@ -81,8 +83,6 @@ minetest.register_node("youngtrees:youngtree_middle", {
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
-
-
 
 minetest.register_node("youngtrees:youngtree_bottom", {
 	description = S("Young Tree (bottom)"),
@@ -103,47 +103,46 @@ minetest.register_node("youngtrees:youngtree_bottom", {
 })
 
 
- abstract_youngtrees.grow_youngtree = function(pos)
+abstract_youngtrees.grow_youngtree = function(pos)
 	local height = math.random(1,3)
 	abstract_youngtrees.grow_youngtree_node(pos,height)
 end
 
+
 abstract_youngtrees.grow_youngtree_node = function(pos, height)
-
-
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
 
-	if minetest.get_node(right_here).name == "air"  -- instead of check_air = true,
+	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
 	or minetest.get_node(right_here).name == "default:junglegrass" then
 		if height == 1 then
-				minetest.swap_node(right_here, {name="youngtrees:youngtree_top"})
+			minetest.swap_node(right_here, {name="youngtrees:youngtree_top"})
 		end
 		if height == 2 then
-				minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
-				minetest.swap_node(above_right_here, {name="youngtrees:youngtree_top"})
+			minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
+			minetest.swap_node(above_right_here, {name="youngtrees:youngtree_top"})
 		end
 		if height == 3 then
-				local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
-				minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
-				minetest.swap_node(above_right_here, {name="youngtrees:youngtree_middle"})
-				minetest.swap_node(two_above_right_here, {name="youngtrees:youngtree_top"})
+			local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
+			minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
+			minetest.swap_node(above_right_here, {name="youngtrees:youngtree_middle"})
+			minetest.swap_node(two_above_right_here, {name="youngtrees:youngtree_top"})
 		end
 	end
 end
 
 
 biome_lib.register_on_generate({
-    surface = {
-		"default:dirt_with_grass",
-		"stoneage:grass_with_silex",
-		"sumpf:peat",
-		"sumpf:sumpf"
+		surface = {
+			"default:dirt_with_grass",
+			"stoneage:grass_with_silex",
+			"sumpf:peat",
+			"sumpf:sumpf"
+		},
+		max_count = youngtrees_youngtrees_max_count,
+		rarity = youngtrees_youngtrees_rarity,
+		min_elevation = 1, -- above sea level
+		plantlife_limit = -0.9,
 	},
-    max_count = 55,  --10,15
-    rarity = 101 - 4,  --3,4
-    min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
-  },
-  abstract_youngtrees.grow_youngtree
+	abstract_youngtrees.grow_youngtree
 )
