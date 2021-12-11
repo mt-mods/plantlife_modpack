@@ -11,8 +11,8 @@ local enable_side = minetest.settings:get_bool("vines_enable_side", true)
 local enable_jungle = minetest.settings:get_bool("vines_enable_jungle", true)
 local enable_willow = minetest.settings:get_bool("vines_enable_willow", true)
 
-local default_rarity = 75
-local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or default_rarity
+local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or 70
+local default_rarity = 95
 local rarity_standard = tonumber(minetest.settings:get("vines_rarity_standard")) or default_rarity
 local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or default_rarity
 local rarity_jungle = tonumber(minetest.settings:get("vines_rarity_jungle")) or default_rarity
@@ -371,6 +371,7 @@ if enable_roots ~= false then
 		spawn_on_bottom = true,
 		plantlife_limit = -0.6,
 		rarity = rarity_roots,
+		tries = 3,
 		humidity_min = 0.4,
 		temp_min = 0.4,
 	})
@@ -395,6 +396,7 @@ if enable_standard ~= false then
 		spawn_on_bottom = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_standard,
+		tries = 1,
 		humidity_min = 0.7,
 		temp_min = 0.4,
 	})
@@ -419,6 +421,7 @@ if enable_side ~= false then
 		spawn_on_side = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_side,
+		tries = 1,
 		humidity_min = 0.4,
 		temp_min = 0.4,
 	})
@@ -451,6 +454,7 @@ if enable_jungle ~= false then
 		spawn_on_side = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_jungle,
+		tries = 1,
 		humidity_min = 0.2,
 		temp_min = 0.3,
 	})
@@ -473,6 +477,7 @@ if enable_willow ~= false then
 		spawn_on_side = true,
 		surface = {"moretrees:willow_leaves"},
 		rarity = rarity_willow,
+		tries = 1,
 		humidity_min = 0.5,
 		temp_min = 0.5,
 	})

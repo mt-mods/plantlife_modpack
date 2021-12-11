@@ -1,0 +1,8 @@
+#Molehills rarity %
+molehills_rarity (Molehills rarity %) float 99.5 0 100
+
+#How much the rarity is reduced by fertility %
+molehills_rarity_fertility (Molehills rarity fertility reduction %) float 1 0 100
+
+#Molehills minimum fertility (-1 to +1)
+molehills_fertility (Molehills minimum fertility) float -0.6 -1 1
