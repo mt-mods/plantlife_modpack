@@ -1,0 +1,5 @@
+#Molehills density %
+molehills_density (Molehills density %) float 2 0 100
+
+#Molehills minimum fertility (-1 to +1)
+molehills_fertility (Molehills minimum fertility) float -0.3 -1 1
