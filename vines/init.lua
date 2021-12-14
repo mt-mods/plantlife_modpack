@@ -11,7 +11,7 @@ local enable_side = minetest.settings:get_bool("vines_enable_side", true)
 local enable_jungle = minetest.settings:get_bool("vines_enable_jungle", true)
 local enable_willow = minetest.settings:get_bool("vines_enable_willow", true)
 
-local default_rarity = 90
+local default_rarity = 75
 local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or default_rarity
 local rarity_standard = tonumber(minetest.settings:get("vines_rarity_standard")) or default_rarity
 local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or default_rarity
@@ -42,7 +42,7 @@ local function on_dig(pos, node, player)
 	if enable_vines == false then
 		drop_item = vine_name_end
 	end
-	
+
 	wielded_item = player:get_wielded_item()
 	if wielded_item then
 		wielded_item:add_wear(1)
@@ -92,10 +92,6 @@ vines.register_vine = function( name, defs, biome )
 			minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
 		end
 	end
-
-	local vine_group = 'group:' .. name .. '_vines'
-
-	biome.surface[#biome.surface + 1] = vine_group
 
 	local selection_box = {type = "wallmounted",}
 	local drawtype = 'signlike'
@@ -362,24 +358,21 @@ minetest.register_tool("vines:shears", {
 })
 
 -- VINES
-local spawn_root_surfaces = {}
-
 if enable_roots ~= false then
-	spawn_root_surfaces = {
-		"default:dirt_with_grass",
-		"default:dirt"
-	}
-
 	vines.register_vine('root',
 		{description = S("Roots"), average_length = 9}, {
-		choose_random_wall = true,
+		check_air = false,
 		avoid_nodes = {"vines:root_middle"},
 		avoid_radius = 5,
-		surface = spawn_root_surfaces,
+		surface = {
+			"default:dirt_with_grass",
+			"default:dirt"
+		},
 		spawn_on_bottom = true,
 		plantlife_limit = -0.6,
 		rarity = rarity_roots,
-	--	humidity_min = 0.4,
+		humidity_min = 0.4,
+		temp_min = 0.4,
 	})
 else
 	minetest.register_alias('vines:root_middle', 'air')
@@ -389,7 +382,7 @@ end
 if enable_standard ~= false then
 	vines.register_vine('vine',
 		{description = S("Vines"), average_length = 5}, {
-		choose_random_wall = true,
+		check_air = false,
 		avoid_nodes = {"group:vines"},
 		avoid_radius = 5,
 		surface = {
@@ -402,7 +395,8 @@ if enable_standard ~= false then
 		spawn_on_bottom = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_standard,
-	--	humidity_min = 0.7,
+		humidity_min = 0.7,
+		temp_min = 0.4,
 	})
 else
 	minetest.register_alias('vines:vine_middle', 'air')
@@ -412,7 +406,7 @@ end
 if enable_side ~= false then
 	vines.register_vine('side',
 		{description = S("Vines"), average_length = 6}, {
-		choose_random_wall = true,
+		check_air = false,
 		avoid_nodes = {"group:vines", "default:apple"},
 		avoid_radius = 3,
 		surface = {
@@ -425,7 +419,8 @@ if enable_side ~= false then
 		spawn_on_side = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_side,
-	--	humidity_min = 0.4,
+		humidity_min = 0.4,
+		temp_min = 0.4,
 	})
 else
 	minetest.register_alias('vines:side_middle', 'air')
@@ -435,13 +430,15 @@ end
 if enable_jungle ~= false then
 	vines.register_vine("jungle",
 		{description = S("Jungle Vines"), average_length = 7}, {
-		choose_random_wall = true,
-		neighbors = {
+		check_air = false,
+		near_nodes = {
 			"default:jungleleaves",
 			"moretrees:jungletree_leaves_red",
 			"moretrees:jungletree_leaves_yellow",
 			"moretrees:jungletree_leaves_green"
 		},
+		near_nodes_size = 4,
+		near_nodes_vertical = 4,
 		avoid_nodes = {
 			"vines:jungle_middle",
 			"vines:jungle_end",
@@ -454,7 +451,8 @@ if enable_jungle ~= false then
 		spawn_on_side = true,
 		plantlife_limit = -0.9,
 		rarity = rarity_jungle,
-	--	humidity_min = 0.2,
+		humidity_min = 0.2,
+		temp_min = 0.3,
 	})
 else
 	minetest.register_alias('vines:jungle_middle', 'air')
@@ -464,7 +462,7 @@ end
 if enable_willow ~= false then
 	vines.register_vine( 'willow',
 		{description = S("Willow Vines"), average_length = 9}, {
-		choose_random_wall = true,
+		check_air = false,
 		avoid_nodes = {"vines:willow_middle"},
 		avoid_radius = 5,
 		near_nodes = {'default:water_source'},
@@ -475,7 +473,8 @@ if enable_willow ~= false then
 		spawn_on_side = true,
 		surface = {"moretrees:willow_leaves"},
 		rarity = rarity_willow,
-	--	humidity_min = 0.5
+		humidity_min = 0.5,
+		temp_min = 0.5,
 	})
 else
 	minetest.register_alias('vines:willow_middle', 'air')
