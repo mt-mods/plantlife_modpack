@@ -6,14 +6,10 @@
 
 function check_node_buildable_to(pos)
 	local node = minetest.get_node(pos)
-	if node == nil then
-		return false
+	local def = minetest.registered_nodes[node.name]
+	if def then
+		return def.buildable_to
 	end
-	local node_type = minetest.registered_nodes[node.name]
-	if node_type == nil then
-		return false
-	end
-	return node_type.buildable_to
 end
 
 abstract_trunks.place_twig = function(pos)
