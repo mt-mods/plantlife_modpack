@@ -1,14 +1,13 @@
 -----------------------------------------------------------------------------------------------
-local title		= "Mole Hills"
-local version	= "0.0.3"
-local mname		= "molehills"
------------------------------------------------------------------------------------------------
 -- Idea by Sokomine
 -- Code & textures by Mossmanikin
 
 abstract_molehills = {}
 
-dofile(minetest.get_modpath("molehills").."/molehills_settings.txt")
+local molehills_rarity = tonumber(minetest.settings:get("molehills_rarity")) or 99.5
+local molehills_rarity_fertility = tonumber(minetest.settings:get("molehills_rarity_fertility")) or 1
+local molehills_fertility = tonumber(minetest.settings:get("molehills_fertility")) or -0.6
+
 
 -- support for i18n
 local S = minetest.get_translator("molehills")
@@ -49,11 +48,11 @@ minetest.register_craft({ -- molehills --> dirt
 -- GeNeRaTiNG
 -----------------------------------------------------------------------------------------------
 abstract_molehills.place_molehill = function(pos)
-	local right_here	= {x=pos.x  , y=pos.y+1, z=pos.z  }
-	if  minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  }).name ~= "air"
-	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  }).name ~= "air"
-	and minetest.get_node({x=pos.x  , y=pos.y, z=pos.z+1}).name ~= "air"
-	and minetest.get_node({x=pos.x  , y=pos.y, z=pos.z-1}).name ~= "air"
+	local right_here	= {x=pos.x	, y=pos.y+1, z=pos.z	}
+	if	minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z	}).name ~= "air"
+	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z	}).name ~= "air"
+	and minetest.get_node({x=pos.x	, y=pos.y, z=pos.z+1}).name ~= "air"
+	and minetest.get_node({x=pos.x	, y=pos.y, z=pos.z-1}).name ~= "air"
 	and minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z+1}).name ~= "air"
 	and minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z-1}).name ~= "air"
 	and minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z+1}).name ~= "air"
@@ -63,18 +62,14 @@ abstract_molehills.place_molehill = function(pos)
 end
 
 biome_lib.register_on_generate({
-    surface = {"default:dirt_with_grass"},
-    max_count = Molehills_Max_Count,
-    rarity = Molehills_Rarity,
-    min_elevation = 1,
-	max_elevation = 40,
-	avoid_nodes = {"group:tree","group:liquid","group:stone","group:falling_node"--[[,"air"]]},
-	avoid_radius = 4,
-    plantlife_limit = -0.3,
-  },
-  abstract_molehills.place_molehill
+		surface = {"default:dirt_with_grass"},
+		rarity = molehills_rarity,
+		rarity_fertility = molehills_rarity_fertility,
+		plantlife_limit = molehills_fertility,
+		min_elevation = 1,
+		max_elevation = 40,
+		avoid_nodes = {"group:tree","group:liquid","group:stone","group:falling_node"--[[,"air"]]},
+		avoid_radius = 4,
+	},
+	abstract_molehills.place_molehill
 )
-
------------------------------------------------------------------------------------------------
-print("[Mod] "..title.." ["..version.."] ["..mname.."]".."Loaded...")
------------------------------------------------------------------------------------------------
