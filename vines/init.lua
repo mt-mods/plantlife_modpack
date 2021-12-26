@@ -43,7 +43,7 @@ local function on_dig(pos, node, player)
 		drop_item = vine_name_end
 	end
 
-	wielded_item = player:get_wielded_item()
+	wielded_item = player and player:get_wielded_item()
 	if wielded_item then
 		wielded_item:add_wear(1)
 		if wielded_item:get_name() == 'vines:shears' then
