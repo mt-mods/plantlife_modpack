@@ -37,13 +37,13 @@ end
 -- FUNCTIONS
 
 local function on_dig(pos, node, player)
-	vine_name_end = node.name:gsub("_middle", "_end")
-	drop_item = "vines:vines"
+	local vine_name_end = node.name:gsub("_middle", "_end")
+	local drop_item = "vines:vines"
 	if enable_vines == false then
 		drop_item = vine_name_end
 	end
 
-	wielded_item = player and player:get_wielded_item()
+	local wielded_item = player and player:get_wielded_item()
 	if wielded_item then
 		wielded_item:add_wear(1)
 		if wielded_item:get_name() == 'vines:shears' then
@@ -51,7 +51,7 @@ local function on_dig(pos, node, player)
 		end
 	end
 
-	break_pos = {x = pos.x, y = pos.y, z = pos.z}
+	local break_pos = {x = pos.x, y = pos.y, z = pos.z}
 	while minetest.get_item_group(minetest.get_node(break_pos).name, "vines") > 0 do
 		minetest.remove_node(break_pos)
 		minetest.handle_node_drops(break_pos, {drop_item}, player)
@@ -63,7 +63,7 @@ local function ensure_vine_end(pos, oldnode)
 	local np = {x = pos.x, y = pos.y + 1, z = pos.z}
 	local nn = minetest.get_node(np)
 
-	vine_name_end = oldnode.name:gsub("_middle", "_end")
+	local vine_name_end = oldnode.name:gsub("_middle", "_end")
 
 	if minetest.get_item_group(nn.name, "vines") > 0 then
 		minetest.swap_node(np, { name = vine_name_end, param2 = oldnode.param2 })
@@ -199,41 +199,29 @@ minetest.register_alias( 'vines:jungle_rotten', 'air' )
 minetest.register_alias( 'vines:willow', 'air' )
 minetest.register_alias( 'vines:willow_rotten', 'air' )
 
--- CRAFTS
 
-minetest.register_craft({
-	output = 'vines:rope_block',
-	recipe = {
-		{'group:vines', 'group:vines', 'group:vines'},
-		{'group:vines', 'group:wood', 'group:vines'},
-		{'group:vines', 'group:vines', 'group:vines'},
-	}
-})
-
-if minetest.get_modpath("moreblocks") then
-
+-- ROPE
+if enable_rope ~= false then
 	minetest.register_craft({
 		output = 'vines:rope_block',
 		recipe = {
-			{'moreblocks:rope', 'moreblocks:rope', 'moreblocks:rope'},
-			{'moreblocks:rope', 'group:wood', 'moreblocks:rope'},
-			{'moreblocks:rope', 'moreblocks:rope', 'moreblocks:rope'},
+			{'group:vines', 'group:vines', 'group:vines'},
+			{'group:vines', 'group:wood', 'group:vines'},
+			{'group:vines', 'group:vines', 'group:vines'},
 		}
 	})
-end
 
-minetest.register_craft({
-	output = 'vines:shears',
-	recipe = {
-		{'', 'default:steel_ingot', ''},
-		{'group:stick', 'group:wood', 'default:steel_ingot'},
-		{'', '', 'group:stick'}
-	}
-})
+	if minetest.get_modpath("moreblocks") then
+		minetest.register_craft({
+			output = 'vines:rope_block',
+			recipe = {
+				{'moreblocks:rope', 'moreblocks:rope', 'moreblocks:rope'},
+				{'moreblocks:rope', 'group:wood', 'moreblocks:rope'},
+				{'moreblocks:rope', 'moreblocks:rope', 'moreblocks:rope'},
+			}
+		})
+	end
 
--- NODES
-
-if enable_rope ~= false then
 	minetest.register_node("vines:rope_block", {
 		description = S("Rope"),
 		sunlight_propagates = true,
@@ -341,7 +329,6 @@ if enable_rope ~= false then
 end
 
 -- SHEARS
-
 minetest.register_tool("vines:shears", {
 	description = S("Shears"),
 	inventory_image = "vines_shears.png",
@@ -357,7 +344,16 @@ minetest.register_tool("vines:shears", {
 	},
 })
 
--- VINES
+minetest.register_craft({
+	output = 'vines:shears',
+	recipe = {
+		{'', 'default:steel_ingot', ''},
+		{'group:stick', 'group:wood', 'default:steel_ingot'},
+		{'', '', 'group:stick'}
+	}
+})
+
+-- ROOT VINES
 if enable_roots ~= false then
 	vines.register_vine('root',
 		{description = S("Roots"), average_length = 9}, {
@@ -380,6 +376,7 @@ else
 	minetest.register_alias('vines:root_end', 'air')
 end
 
+-- STANDARD VINES
 if enable_standard ~= false then
 	vines.register_vine('vine',
 		{description = S("Vines"), average_length = 5}, {
@@ -405,6 +402,7 @@ else
 	minetest.register_alias('vines:vine_end', 'air')
 end
 
+-- SIDE VINES
 if enable_side ~= false then
 	vines.register_vine('side',
 		{description = S("Vines"), average_length = 6}, {
@@ -430,6 +428,7 @@ else
 	minetest.register_alias('vines:side_end', 'air')
 end
 
+-- JUNGLE VINES
 if enable_jungle ~= false then
 	vines.register_vine("jungle",
 		{description = S("Jungle Vines"), average_length = 7}, {
@@ -463,6 +462,7 @@ else
 	minetest.register_alias('vines:jungle_end', 'air')
 end
 
+-- WILLOW VINES
 if enable_willow ~= false then
 	vines.register_vine( 'willow',
 		{description = S("Willow Vines"), average_length = 9}, {
@@ -485,4 +485,3 @@ else
 	minetest.register_alias('vines:willow_middle', 'air')
 	minetest.register_alias('vines:willow_end', 'air')
 end
-
