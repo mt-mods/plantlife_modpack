@@ -161,17 +161,10 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		groups = { dig_immediate = 3 },
 	})
 
-	local texture_top, texture_bottom
-
 	local groups = {snappy = 3, bush = 1, flammable = 2, attached_node=1}
 	if bush_name == "mixed_berry" then
-		bush_name = "fruitless";
-		texture_top = "bushes_fruitless_bush_top.png"
-		texture_bottom = "bushes_fruitless_bush_bottom.png"
+		bush_name = "fruitless"
 		groups.not_in_creative_inventory = 1
-	else
-		texture_top = "bushes_bush_top.png"
-		texture_bottom = "bushes_bush_bottom.png"
 	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {

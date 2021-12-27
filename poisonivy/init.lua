@@ -20,7 +20,8 @@ local walls_list = {
 	"default:jungletree",
 	"default:stone_with_coal",
 	"default:stone_with_iron"
-},
+}
+
 minetest.register_node('poisonivy:seedling', {
 	description = S("Poison ivy (seedling)"),
 	drawtype = 'plantlike',

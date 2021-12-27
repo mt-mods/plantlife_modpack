@@ -8,8 +8,6 @@ local mname		= "ferns" -- former "archaeplantae"
 
 abstract_ferns = {}
 
--- support for i18n
-local S = minetest.get_translator("ferns")
 
 dofile(minetest.get_modpath("ferns").."/settings.lua")
 
