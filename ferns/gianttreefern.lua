@@ -271,7 +271,7 @@ minetest.register_node("ferns:sapling_giant_tree_fern", {
 	tiles = {"ferns_sapling_tree_fern_giant.png"},
 	inventory_image = "ferns_sapling_tree_fern_giant.png",
 	walkable = false,
-	groups = {snappy=3,flammable=2,flora=1,attached_node=1},
+	groups = {snappy=3,flammable=2,flora=1,attached_node=1,sapling=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
