@@ -43,9 +43,19 @@ local function on_dig(pos, node, player)
 		drop_item = vine_name_end
 	end
 
-	local wielded_item = player and player:get_wielded_item()
+	local wielded_item = minetest.is_player(player) and player:get_wielded_item()
 	if wielded_item then
-		wielded_item:add_wear(1)
+		local node_def = minetest.registered_nodes[node.name]
+		local dig_params = minetest.get_dig_params(
+			node_def.groups,
+			wielded_item:get_tool_capabilities(),
+			wielded_item:get_wear()
+		)
+		if dig_params.wear then
+			wielded_item:add_wear(dig_params.wear)
+			player:set_wielded_item(wielded_item)
+		end
+
 		if wielded_item:get_name() == 'vines:shears' then
 			drop_item = vine_name_end
 		end
