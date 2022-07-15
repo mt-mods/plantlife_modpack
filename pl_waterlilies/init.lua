@@ -85,7 +85,6 @@ for i in ipairs(lilies_list) do
 			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
 
 				if not keys["sneak"] then
-					local node = minetest.get_node(pt.under)
 					local waterlily = math.random(1,8)
 					if waterlily == 1 then
 						nodename = "flowers:waterlily"

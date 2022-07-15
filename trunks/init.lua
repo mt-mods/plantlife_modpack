@@ -7,9 +7,6 @@ local mname		= "trunks"
 
 abstract_trunks = {}
 
--- support for i18n
-local S = minetest.get_translator("trunks")
-
 dofile(minetest.get_modpath("trunks").."/trunks_settings.txt")
 dofile(minetest.get_modpath("trunks").."/generating.lua")
 dofile(minetest.get_modpath("trunks").."/nodes.lua")

@@ -475,8 +475,6 @@ end
 if Roots == true then -- see settings.txt
 
 abstract_trunks.grow_roots = function(pos)
-	local twig_size		= math.random(1,27)
-
 	local right_here	= {x=pos.x  , y=pos.y  , z=pos.z  }
 	local below		= {x=pos.x  , y=pos.y-1, z=pos.z  }
 	local north		= {x=pos.x  , y=pos.y  , z=pos.z+1}

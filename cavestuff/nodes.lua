@@ -32,7 +32,6 @@ minetest.register_node("cavestuff:pebble_2",{
 	mesh = "cavestuff_pebble.obj",
 	 tiles = {"undergrowth_pebble.png"},
 	drop = "cavestuff:pebble_1",
-	 tiles = {"undergrowth_pebble.png"},
 	 paramtype = "light",
 	paramtype2 = "facedir",
 	 groups = {cracky=3, stone=1, attached_node=1, not_in_creative_inventory=1},
@@ -100,7 +99,7 @@ minetest.register_node("cavestuff:stalactite_1",{
 		if not placer then return end
 		local playername = placer:get_player_name()
 		if minetest.is_protected(place, playername)
-		or minetest.is_protected(above, playername) then 
+		or minetest.is_protected(above, playername) then
 			minetest.record_protection_violation(place, playername)
 			return
 		end

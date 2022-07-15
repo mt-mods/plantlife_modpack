@@ -45,7 +45,7 @@ for i in pairs(NoDe) do
 
 			if not placer then return end
 			local playername = placer:get_player_name()
-			if minetest.is_protected(pt.above, playername) then 
+			if minetest.is_protected(pt.above, playername) then
 				minetest.record_protection_violation(pt.above, playername)
 				return
 			end

@@ -1,7 +1,5 @@
 -- 3D Mushroom mod by VanessaE
 
-mushroom = {}
-
 minetest.override_item("flowers:mushroom_fertile_brown", {
 	drawtype = "mesh",
 	mesh = "3dmushrooms.obj",
