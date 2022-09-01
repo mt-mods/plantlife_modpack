@@ -2,6 +2,9 @@
 
 mushroom = {}
 
+-- support for i18n
+local S = minetest.get_translator("3dmushrooms")
+
 minetest.override_item("flowers:mushroom_fertile_brown", {
 	drawtype = "mesh",
 	mesh = "3dmushrooms.obj",
@@ -66,4 +69,4 @@ minetest.register_alias("mushroom:poison", "flowers:mushroom_red")
 
 minetest.register_alias("mushroom:identifier", "default:mese_crystal_fragment")
 
-print("[3D Mushrooms] loaded.")
+minetest.log("info", S("[3D Mushrooms] loaded."))
