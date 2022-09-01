@@ -1,0 +1,28 @@
+# textdomain: dryplants
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# reusityback, 2022.
+#
+
+Sickle=Sichel
+Cut Grass=Gras schneiden
+Hay=Heu
+Short Grass=Kurzes Gras
+Juncus=Binsen
+Wet Reed=Nasses Schilf
+Wet Reed Slab=Nasse Schilfstufe
+Wet Reed Roof=Nasses Schilfdach
+Wet Reed Roof Corner=Nasser Schilfdachwinkel
+Wet Reed Roof Corner 2=Nasser Schilfdachwinkel 2
+Reed=Schilf
+Reed Slab=Schilfstufe
+Reed Roof=Schilfdach
+Reed Roof Corner=Schilfdachwinkel
+Reed Roof Corner 2=Schilfdachwinkel
+Reedmace=Rohrkolben
+Reedmace, height: 1=Rohrkolben, Höhe: 1
+Reedmace, height: 2=Rohrkolben, Höhe: 2
+Reedmace, height: 3=Rohrkolben, Höhe: 3
+Reedmace, height: 3 & Spikes=Rohrkolben, Höhe: 3 & Rispe
