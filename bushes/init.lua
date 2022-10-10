@@ -133,7 +133,8 @@ for i in pairs(BushLeafNode) do
 		groups = {	-- MM: Should we add leafdecay?
 			snappy=3,
 			flammable=2,
-			attached_node=1
+			attached_node=1,
+			leaves=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
 	})
