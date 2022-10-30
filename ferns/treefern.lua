@@ -11,6 +11,25 @@ local S = minetest.get_translator("ferns")
 
 assert(abstract_ferns.config.enable_treefern == true)
 
+function abstract_ferns.can_grow_tree_fern(pos)
+	local node_name = minetest.get_node(pos).name
+	if node_name ~= "air" and node_name ~= "ferns:sapling_tree_fern" and node_name ~= "default:junglegrass" then
+		return false
+	end
+
+	local below_name = minetest.get_node(vector.new(pos.x, pos.y - 1, pos.z)).name
+	if minetest.get_item_group(below_name, "soil") == 0 and minetest.get_item_group(below_name, "sand") == 0 then
+		return false
+	end
+
+	local light = minetest.get_node_light(pos, 0.5)
+	if light <= 8 then
+		return false
+	end
+
+	return true
+end
+
 abstract_ferns.grow_tree_fern = function(pos)
 
 	local pos_aux = {x = pos.x, y = pos.y + 1, z = pos.z}
@@ -171,7 +190,9 @@ minetest.register_abm({
 	interval = 1000,
 	chance = 4,
 	action = function(pos, node, _, _)
-		abstract_ferns.grow_tree_fern({x = pos.x, y = pos.y-1, z = pos.z})
+		if abstract_ferns.can_grow_tree_fern(pos) then
+			abstract_ferns.grow_tree_fern({x = pos.x, y = pos.y-1, z = pos.z})
+		end
     end
 })
 
