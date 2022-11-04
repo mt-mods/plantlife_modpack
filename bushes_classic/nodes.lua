@@ -63,7 +63,7 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 
 		-- with a chance of 1/3, return 2 bushes
 		local amount
-		if math.random(1,3) == 1 then
+		if can_harvest and math.random(1,3) == 1 then
 			amount = "2"
 		else
 			amount = "1"
