@@ -173,6 +173,13 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		texture_top = "bushes_bush_top.png"
 		texture_bottom = "bushes_bush_bottom.png"
 	end
+	
+	local node_dig_prediction
+	local node_placement_prediction
+	if bush_name ~= "fruitless" then
+		node_dig_prediction = "bushes:fruitless_bush"
+		node_placement_prediction = "bushes:fruitless_bush"
+	end
 
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
 		description = bushes_classic.bushes_descriptions[i][6],
@@ -185,6 +192,8 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		groups = groups,
 		sounds = default.node_sound_leaves_defaults(),
 		drop = "",
+		node_dig_prediction = node_dig_prediction,
+		node_placement_prediction = node_placement_prediction,
 		after_dig_node = function( pos, oldnode, oldmetadata, digger )
 			return plantlife_bushes.after_dig_node(pos, oldnode, oldmetadata, digger);
 		end,
