@@ -126,7 +126,7 @@ vines.register_vine = function( name, defs, biome )
 		paramtype = "light",
 		paramtype2 = "wallmounted",
 		buildable_to = false,
-		tiles = {vine_image_end},
+		tiles = {vine_image_end .. (drawtype == "plantlike" and "^[transformR180" or "")},
 		drawtype = drawtype,
 		inventory_image = vine_image_end,
 		groups = groups,
