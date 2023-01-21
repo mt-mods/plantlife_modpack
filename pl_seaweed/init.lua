@@ -25,6 +25,7 @@ for i in ipairs(algae_list) do
 			"flowers_seaweed"..num..".png",
 			"flowers_seaweed"..num..".png^[transformFY"
 		},
+		use_texture_alpha = "clip",
 		inventory_image = "flowers_seaweed_2.png",
 		wield_image	= "flowers_seaweed_2.png",
 		sunlight_propagates = true,

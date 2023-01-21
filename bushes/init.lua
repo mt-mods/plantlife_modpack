@@ -51,6 +51,7 @@ for i in pairs(BushBranchCenter) do
 			"bushes_leaves_"..TexNum..".png",
 			"bushes_branches_center_"..TexNum..".png"
 		},
+		use_texture_alpha = "clip",
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -93,6 +94,7 @@ for i in pairs(BushBranchSide) do
 --[[back]]	"bushes_branches_center_"..TexNum..".png",--		 unless U really want 'em 2 B different
 --[[front]]	"bushes_branches_right_"..TexNum..".png"
 		},
+		use_texture_alpha = "clip",
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -129,6 +131,7 @@ for i in pairs(BushLeafNode) do
 		description = S("Bush Leaves @1", Num),
 		drawtype = "allfaces_optional",
 		tiles = {"bushes_leaves_"..Num..".png"},
+		use_texture_alpha = "clip",
 		paramtype = "light",
 		groups = {	-- MM: Should we add leafdecay?
 			snappy=3,

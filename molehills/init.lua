@@ -26,6 +26,7 @@ minetest.register_node("molehills:molehill",{
 	description = S("Mole Hill"),
 	inventory_image = "molehills_side.png",
 	tiles = { "molehills_dirt.png" },
+	use_texture_alpha = "clip",
 	paramtype = "light",
 	selection_box = mh_cbox,
 	collision_box = mh_cbox,

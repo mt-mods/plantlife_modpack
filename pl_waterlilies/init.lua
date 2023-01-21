@@ -36,6 +36,7 @@ for i in ipairs(lilies_list) do
 			"flowers_waterlily"..deg2..".png",
 			"flowers_waterlily"..deg2..".png^[transformFY"
 		},
+		use_texture_alpha = "clip",
 		inventory_image = "flowers_waterlily.png",
 		wield_image	= "flowers_waterlily.png",
 		sunlight_propagates = true,

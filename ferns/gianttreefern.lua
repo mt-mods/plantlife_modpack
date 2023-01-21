@@ -200,6 +200,7 @@ minetest.register_node("ferns:tree_fern_leave_big_end", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = { "ferns_tree_fern_leave_big_end.png" },
+	use_texture_alpha = "clip",
 	walkable = false,
 	node_box = {
 		type = "fixed",
@@ -232,6 +233,7 @@ minetest.register_node("ferns:fern_trunk_big_top", {
 		"ferns_fern_trunk_big_top.png^ferns_tree_fern_leave_big_cross.png",
 		"ferns_fern_trunk_big.png"
 	},
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 --			{left, bottom, front, right, top,   back }
@@ -269,6 +271,7 @@ minetest.register_node("ferns:fern_trunk_big", {
 		"ferns_fern_trunk_big_top.png",
 		"ferns_fern_trunk_big.png"
 	},
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = {-1/4, -1/2, -1/4, 1/4, 1/2, 1/4},

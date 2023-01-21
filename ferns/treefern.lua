@@ -147,6 +147,7 @@ minetest.register_node("ferns:fern_trunk", {
 		"ferns_fern_trunk_top.png",
 		"ferns_fern_trunk.png"
 	},
+	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
 		fixed = {-1/8, -1/2, -1/8, 1/8, 1/2, 1/8},

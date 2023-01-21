@@ -23,6 +23,7 @@ minetest.register_node(":flowers:sunflower", {
 	inventory_image = "flowers_sunflower_inv.png",
 	mesh = "flowers_sunflower.obj",
 	tiles = { "flowers_sunflower.png" },
+	use_texture_alpha = "clip",
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,

@@ -130,6 +130,7 @@ minetest.register_node("dryplants:grass", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"dryplants_grass.png"},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	node_box = {
 	    type = "fixed",
@@ -161,6 +162,7 @@ minetest.register_node("dryplants:hay", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"dryplants_hay.png"},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	node_box = {
 	    type = "fixed",
