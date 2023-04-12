@@ -437,8 +437,8 @@ abstract_trunks.grow_moss_on_trunk = function(pos)
 	--end
 end
 
-biome_lib.register_on_generate({
-    surface = {
+pl.register_on_generate({
+	surface = {
 		"default:tree",
 		"default:jungletree",
 		"default:pine_tree",
@@ -465,7 +465,9 @@ biome_lib.register_on_generate({
     plantlife_limit = -0.9,
 	check_air = false,
   },
-  "abstract_trunks.grow_moss_on_trunk"
+  "trunks:grow_moss_on_trunk",
+  nil,
+  abstract_trunks.grow_moss_on_trunk
 )
 end
 

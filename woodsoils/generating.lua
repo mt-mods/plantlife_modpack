@@ -94,7 +94,7 @@ biome_lib.register_on_generate({
   "abstract_woodsoils.place_soil"
 )
 
-biome_lib.register_on_generate({
+pl.register_on_generate({
     surface = {
 		"moretrees:apple_tree_sapling_ongen",
 		"moretrees:beech_sapling_ongen",
@@ -115,7 +115,9 @@ biome_lib.register_on_generate({
 	plantlife_limit = -0.9,
     check_air = false,
   },
-  "abstract_woodsoils.place_soil"
+  "woodsoils:place_soil_ongen",
+  nil,
+  abstract_woodsoils.place_soil
 )
 
 minetest.register_abm({
