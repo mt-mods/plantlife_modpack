@@ -1,8 +1,15 @@
 pl = {}
-local deco_ids = {}
-local spawn_funcs = {}
+local deco = {}
 
-function pl.register_on_generate(def, plantname, index, func) -- add spawnfunction support
+function pl.get_def_from_id(id)
+	for i, _ in pairs(deco) do
+		if deco[i][1].id and deco[i][1].id == id then
+			return deco[i]
+		end
+	end
+end
+
+function pl.register_on_generate(def, plantname, index, func)
 	if not index then index = 1 end
 	local deco_def = {
 		name = plantname .. "_" .. index,
@@ -16,36 +23,50 @@ function pl.register_on_generate(def, plantname, index, func) -- add spawnfuncti
 		num_spawn_by = def.near_nodes_count,
 		decoration = "air"
 	}
-	deco_ids[#deco_ids+1] = plantname .. ("_" .. index or "_1")
-    spawn_funcs[#deco_ids+1] = func
+	local next = #deco + 1
+	deco[next] = {}
+	deco[next][1] = deco_def
+	deco[next][2] = func or nil
 	minetest.register_decoration(deco_def)
+	print(dump(deco))
 end
 
+local ids = {}
 minetest.register_on_mods_loaded(function()
-    print(dump(deco_ids))
-    for k, v in pairs(deco_ids) do
-        deco_ids[k] = minetest.get_decoration_id(v)
+    print(dump(deco))
+    for k, v in pairs(deco) do
+		local id = minetest.get_decoration_id(deco[k][1].name)
+        deco[k][1].id = id
+		table.insert(ids, id)
     end
-    minetest.set_gen_notify("decoration", deco_ids)
-    print(dump(deco_ids))
+	print(dump2(ids))
+    minetest.set_gen_notify("decoration", ids)
+    print(dump2(deco))
 end)
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
     local g = minetest.get_mapgen_object("gennotify")
-	print(dump(g))
     local locations = {}
-	for _, id in pairs(deco_ids) do
+	for _, id in pairs(ids) do
 		local deco_locations = g["decoration#" .. id] or {}
-		for _, pos in pairs(deco_locations) do
-			locations[#locations+1] = pos
+		print("dl: " .. dump2(deco_locations))
+		for k, pos in pairs(deco_locations) do
+			print(id)
+			local next = #locations + 1
+			locations[next] = {}
+			locations[next].pos = pos
+			locations[next].id = id
+			-- dbg()             ^ - This must be ID!
 		end
 	end
-    print(dump(locations))
     if #locations == 0 then return end
-    for _, pos in ipairs(locations) do
-		print("yay")
-		abstract_bushes.grow_bush(pos)
+	print("locations: " .. dump2(locations))
+    for _, t in ipairs(locations) do
+		local def = pl.get_def_from_id(t.id)
+		local spawn_func = def[2]
+		spawn_func(t.pos)
+		abstract_bushes.grow_bush(t.pos)
 		local player = minetest.get_player_by_name("Niklp")
-		player:set_pos(pos)
+		player:set_pos(t.pos)
     end
 end)

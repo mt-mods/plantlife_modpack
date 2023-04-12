@@ -255,8 +255,7 @@ abstract_bushes.grow_youngtree_node2 = function(pos, height)
 	end
 end
 
---[[
-biome_lib.register_on_generate({
+pl.register_on_generate({
 		surface = {
 			"default:dirt_with_grass",
 			"stoneage:grass_with_silex",
@@ -268,6 +267,7 @@ biome_lib.register_on_generate({
 		plantlife_limit = bushes_youngtrees_fertility,
 		min_elevation = 1, -- above sea level
 	},
+	"bushes:youngtrees",
+	nil,
 	abstract_bushes.grow_youngtree2
 )
-]]--
