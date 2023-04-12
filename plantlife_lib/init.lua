@@ -11,17 +11,21 @@ end
 
 function pl.register_on_generate(def, plantname, index, func)
 	if not index then index = 1 end -- Do we need `index`?
-	local deco_def = { -- This needs some good values (and noise param support)
+	local deco_def = {
 		name = plantname .. "_" .. index,
 		deco_type = "simple",
 		place_on = def.place_on or def.surface,
 		sidelen = 16,
-		fill_ratio = def.fill_ratio or 0.001,
+		fill_ratio = def.fill_ratio or 0.02,
+		noise_params = def.noise_params,
 		y_min = def.min_elevation,
 		y_max = def.max_elevation,
 		spawn_by = def.near_nodes,
 		num_spawn_by = def.near_nodes_count,
-		decoration = "air"
+		flags = def.flags,
+		decoration = "air",
+		near_nodes_size = def.near_nodes_size,
+		near_nodes_count = def.near_nodes_count,
 	}
 	local next = #deco + 1
 	deco[next] = {}
@@ -44,6 +48,35 @@ minetest.register_on_mods_loaded(function()
 	-- print(dump(deco))
 end)
 
+local function place_handler(t)
+	local def = pl.get_def_from_id(t.id)
+	-- near nodes handler
+	if def.near_nodes_count and -- not tested yet
+		#minetest.find_nodes_in_area(
+			{x = t.pos.x-def.near_nodes_size, y = t.pos.y-def.near_nodes_vertical, z = t.pos.z-def.near_nodes_size},
+			{x = t.pos.x+def.near_nodes_size, y = t.pos.y+def.near_nodes_vertical, z = t.pos.z+def.near_nodes_size},
+			def.near_nodes
+		) < def.near_nodes_count then
+		return -- Long distance neighbours do not match
+	end
+
+	-- run spawn function
+	local spawn_func = def[2]
+	spawn_func(t.pos)
+
+	-- some fun
+	local player = minetest.get_player_by_name("Niklp")
+	-- player:set_pos(t.pos)
+	minetest.add_particle({
+		pos = t.pos,
+		expirationtime = 15,
+		playername = player:get_player_name(),
+		glow = minetest.LIGHT_MAX,
+		texture = "default_mese_crystal.png",
+		size = 15,
+	})
+end
+
 minetest.register_on_generated(function(minp, maxp, blockseed)
     local g = minetest.get_mapgen_object("gennotify")
     local locations = {}
@@ -60,13 +93,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		end
 	end
     if #locations == 0 then return end
-	-- print("locations: " .. dump2(locations))
+	print("locations: " .. dump2(locations))
     for _, t in ipairs(locations) do
-		local def = pl.get_def_from_id(t.id)
-		local spawn_func = def[2]
-		spawn_func(t.pos)
-		-- local player = minetest.get_player_by_name("Niklp")
-		-- player:set_pos(t.pos)
+		place_handler(t)
     end
 end)
 
