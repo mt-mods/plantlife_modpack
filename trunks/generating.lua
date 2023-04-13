@@ -169,19 +169,35 @@ biome_lib.register_on_generate({
 end
 
 if Twigs_on_water == true then
-biome_lib.register_on_generate({
-    surface = {"default:water_source"},
-    max_count = Twigs_on_water_Max_Count,
-    rarity = Twigs_on_water_Rarity,
-    min_elevation = 1,
-	max_elevation = 40,
-	near_nodes = {"group:tree"},
-	near_nodes_size = 3,
-	near_nodes_vertical = 1,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-  },
-  abstract_trunks.place_twig
+pl.register_on_generate({
+		place_on = {
+			"default:water_source"
+		},
+		noise_params = {
+			flags = "absvalue",
+			offset = 0,
+			scale = 0.05,
+			spread = {
+				z = 100,
+				x = 100,
+				y = 100
+			},
+			seed = 0,
+			octaves = 3,
+			lacunarity = 2,
+			persist = 0.6
+		},
+		flags = "all_floors",
+		y_min = 1,
+		y_max = 40,
+		near_nodes = {"group:tree"},
+		near_nodes_size = 3,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1
+	},
+	"trunks:on_water",
+	nil,
+	abstract_trunks.place_twig
 )
 end
 
@@ -356,24 +372,43 @@ abstract_trunks.grow_moss_on_ground = function(pos)
 
 end
 
-biome_lib.register_on_generate({
-    surface = {"default:dirt_with_grass"},
-    max_count = Moss_on_ground_Max_Count,
-    rarity = Moss_on_ground_Rarity,
-    min_elevation = 1,
-	max_elevation = 40,
-	near_nodes = {
-		"group:tree",
-		"ferns:fern_03",
-		"ferns:fern_02",
-		"ferns:fern_01"
+pl.register_on_generate({
+        y_max = 40,
+        flags = "all_floors",
+        deco_type = "simple",
+        place_on = {
+			"default:dirt_with_grass"
+        },
+        noise_params = {
+			offset = 0,
+			scale = 0.1,
+			persist = 0.6,
+			seed = 0,
+			octaves = 3,
+			lacunarity = 2,
+			flags = "absvalue",
+			spread = {
+				x = 100,
+				y = 100,
+				z = 100
+			}
+        },
+        flags = "all_floors",
+		y_min = 1, 
+		y_max = 40,
+		near_nodes = {
+			"group:tree",
+			"ferns:fern_03",
+			"ferns:fern_02",
+			"ferns:fern_01"
+		},
+		near_nodes_size = 2,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1
 	},
-	near_nodes_size = 2,
-	near_nodes_vertical = 1,
-	near_nodes_count = 1,
-    plantlife_limit = -0.9,
-  },
-  abstract_trunks.grow_moss_on_ground
+	"trunks:on_dirt_with_grass",
+	nil,
+	abstract_trunks.grow_moss_on_ground
 )
 end
 

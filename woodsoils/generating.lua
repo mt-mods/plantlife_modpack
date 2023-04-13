@@ -73,25 +73,41 @@ abstract_woodsoils.place_soil = function(pos)
 	end
 end
 
-biome_lib.register_on_generate({
-    surface = {
-		"group:tree",
-		"ferns:fern_03",
-		"ferns:fern_02",
-		"ferns:fern_01"
+pl.register_on_generate({
+		place_on = {
+			"group:tree",
+			"ferns:fern_03",
+			"ferns:fern_02",
+			"ferns:fern_01"
+		},
+        noise_params = {
+			flags = "absvalue",
+			offset = 0,
+			scale = 0.15625,
+			spread = {
+				x = 100,
+				y = 100,
+				z = 100
+			},
+			seed = 0,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2
+        },
+		flags = "all_floors,force_placement",
+		y_min = 1,
+        y_max = 40,
+		near_nodes = {
+			"group:tree",
+			"ferns:fern_03",
+			"ferns:fern_02",
+			"ferns:fern_01"
+		},
+        near_nodes_count = 4
 	},
-    max_count = 1000,
-    rarity = 1,
-    min_elevation = 1,
-	max_elevation = 40,
-	near_nodes = {"group:tree","ferns:fern_03","ferns:fern_02","ferns:fern_01"},
-	near_nodes_size = 5,
-	near_nodes_vertical = 1,
-	near_nodes_count = 4,
-    plantlife_limit = -1,
-    check_air = false,
-  },
-  "abstract_woodsoils.place_soil"
+	"woodsoils:place_soil",
+	nil,
+	abstract_woodsoils.place_soil
 )
 
 pl.register_on_generate({

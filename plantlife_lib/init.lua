@@ -1,8 +1,10 @@
 pl = {}
 local deco = {}
 
+dofile(minetest.get_modpath("plantlife_lib") .. DIR_DELIM .. "util.lua")
+
 function pl.get_def_from_id(id)
-	for i, _ in pairs(deco) do
+	for i, _ in ipairs(deco) do
 		if deco[i][1].id and deco[i][1].id == id then
 			return deco[i]
 		end
@@ -20,25 +22,33 @@ function pl.register_on_generate(def, plantname, index, func)
 		noise_params = def.noise_params,
 		y_min = def.min_elevation,
 		y_max = def.max_elevation,
-		spawn_by = def.near_nodes,
-		num_spawn_by = def.near_nodes_count,
 		flags = def.flags,
 		decoration = "air",
-		near_nodes_size = def.near_nodes_size,
-		near_nodes_count = def.near_nodes_count,
 	}
+	-- handle near_nodes (we can't use the engine function for that)
+	if def.near_nodes then
+		deco_def.near_nodes = def.near_nodes
+		if def.near_nodes_size then
+			deco_def.near_nodes_size = def.near_nodes_size
+			if def.near_nodes_vertical then
+				deco_def.near_nodes_vertical = def.near_nodes_vertical
+			end
+		end
+		deco_def.near_nodes_count = def.near_nodes_count or 1
+	end
+	-- save def
 	local next = #deco + 1
 	deco[next] = {}
 	deco[next][1] = deco_def
 	deco[next][2] = func or nil
 	minetest.register_decoration(deco_def)
-	print(dump(deco))
+	-- print(dump(deco))
 end
 
 local ids = {}
 minetest.register_on_mods_loaded(function()
     -- print(dump(deco))
-    for k, v in pairs(deco) do
+    for k, v in ipairs(deco) do
 		local id = minetest.get_decoration_id(deco[k][1].name)
         deco[k][1].id = id
 		table.insert(ids, id)
@@ -51,7 +61,7 @@ end)
 local function place_handler(t)
 	local def = pl.get_def_from_id(t.id)
 	-- near nodes handler
-	if def.near_nodes_count and -- not tested yet
+	if def.near_nodes and
 		#minetest.find_nodes_in_area(
 			{x = t.pos.x-def.near_nodes_size, y = t.pos.y-def.near_nodes_vertical, z = t.pos.z-def.near_nodes_size},
 			{x = t.pos.x+def.near_nodes_size, y = t.pos.y+def.near_nodes_vertical, z = t.pos.z+def.near_nodes_size},
@@ -67,6 +77,7 @@ local function place_handler(t)
 	-- some fun
 	local player = minetest.get_player_by_name("Niklp")
 	-- player:set_pos(t.pos)
+	t.pos.y = t.pos.y + 3
 	minetest.add_particle({
 		pos = t.pos,
 		expirationtime = 15,
@@ -78,9 +89,10 @@ local function place_handler(t)
 end
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
+	local t0 = minetest.get_us_time()
     local g = minetest.get_mapgen_object("gennotify")
     local locations = {}
-	for _, id in pairs(ids) do
+	for _, id in ipairs(ids) do
 		local deco_locations = g["decoration#" .. id] or {}
 		-- print("dl: " .. dump2(deco_locations))
 		for k, pos in pairs(deco_locations) do
@@ -93,10 +105,12 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		end
 	end
     if #locations == 0 then return end
-	print("locations: " .. dump2(locations))
+	-- print("locations: " .. dump2(locations))
     for _, t in ipairs(locations) do
 		place_handler(t)
     end
+	local t1 = minetest.get_us_time()
+	print((t1 - t0) / 1000 .. " ms")
 end)
 
 --[[ Example plant
