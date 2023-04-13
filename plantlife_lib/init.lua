@@ -23,8 +23,15 @@ function pl.register_on_generate(def, plantname, index, func)
 		y_min = def.min_elevation,
 		y_max = def.max_elevation,
 		flags = def.flags,
-		decoration = "air",
+		decoration = "air", -- spawn the decoration later
 	}
+	-- handle avoid_nodes (no engine support :\)
+	if def.avoid_nodes then
+		deco_def.avoid_nodes = def.avoid_nodes
+		if def.avoid_radius then
+			deco_def.avoid_radius = def.avoid_radius
+		end
+	end
 	-- handle near_nodes (we can't use the engine function for that)
 	if def.near_nodes then
 		deco_def.near_nodes = def.near_nodes
@@ -60,6 +67,8 @@ end)
 
 local function place_handler(t)
 	local def = pl.get_def_from_id(t.id)
+	local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+
 	-- near nodes handler
 	if def.near_nodes and
 		#minetest.find_nodes_in_area(
@@ -70,6 +79,13 @@ local function place_handler(t)
 		return -- Long distance neighbours do not match
 	end
 
+	-- avoid nodes handler
+	if def.avoid_nodes and def.avoid_radius then
+		if minetest.find_node_near(p_top, def.avoid_radius + math.random(-1.5,2), def.avoid_nodes) then
+			return
+		end
+	end
+
 	-- run spawn function
 	local spawn_func = def[2]
 	spawn_func(t.pos)
@@ -77,9 +93,8 @@ local function place_handler(t)
 	-- some fun
 	local player = minetest.get_player_by_name("Niklp")
 	-- player:set_pos(t.pos)
-	t.pos.y = t.pos.y + 3
 	minetest.add_particle({
-		pos = t.pos,
+		pos = p_top,
 		expirationtime = 15,
 		playername = player:get_player_name(),
 		glow = minetest.LIGHT_MAX,
