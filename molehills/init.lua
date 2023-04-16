@@ -62,15 +62,14 @@ abstract_molehills.place_molehill = function(pos)
 	end
 end
 
-biome_lib.register_on_generate({
+pl.register_on_generate({
 		surface = {"default:dirt_with_grass"},
-		rarity = molehills_rarity,
-		rarity_fertility = molehills_rarity_fertility,
-		plantlife_limit = molehills_fertility,
+		noise_params = pl.generate_noise_params({rarity = molehills_rarity, rarity_fertility = molehills_rarity_fertility}),
 		min_elevation = 1,
 		max_elevation = 40,
-		avoid_nodes = {"group:tree","group:liquid","group:stone","group:falling_node"--[[,"air"]]},
+		avoid_nodes = {"group:tree","group:liquid","group:stone","group:falling_node"},
 		avoid_radius = 4,
 	},
+	"molehills:molehills",
 	abstract_molehills.place_molehill
 )

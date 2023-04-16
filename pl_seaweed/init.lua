@@ -56,16 +56,16 @@ for i in ipairs(algae_list) do
 			local above_node = minetest.get_node(pt.above)
 			local top_node	 = minetest.get_node(top_pos)
 
-			if biome_lib.get_nodedef_field(under_node.name, "buildable_to") then
+			if pl.get_nodedef_field(under_node.name, "buildable_to") then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
 				elseif top_node.name ~= "default:water_source"
-							 and biome_lib.get_nodedef_field(top_node.name, "buildable_to") then
+							 and pl.get_nodedef_field(top_node.name, "buildable_to") then
 					place_pos = top_pos
 				else
 					return
 				end
-			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
+			elseif pl.get_nodedef_field(above_node.name, "buildable_to") then
 				place_pos = pt.above
 			end
 			if not place_pos then return end -- something went wrong :P
@@ -92,7 +92,7 @@ for i in ipairs(algae_list) do
 					minetest.swap_node(place_pos, {name = "flowers:seaweed", param2 = fdir})
 				end
 
-				if not biome_lib.expect_infinite_stacks then
+				if not pl.expect_infinite_stacks then
 					itemstack:take_item()
 				end
 				return itemstack
@@ -111,34 +111,18 @@ pl_seaweed.grow_seaweed = function(pos)
 	minetest.swap_node(right_here, {name=node_name, param2=math.random(1,3)})
 end
 
-pl.register_on_generate({
-        place_on = {
-            "default:water_source"
-        },
-		noise_params = {
-			scale = 0.00234375,
-			offset = 0,
-			seed = 0,
-			octaves = 3,
-			lacunarity = 2,
-			flags = "absvalue",
-			spread = {
-				x = 100,
-				y = 100,
-				z = 100
-			},
-			persist = 0.6
-		},
-		flags = "all_floors",
-		y_min = 1,
-		y_max = 40,
-		near_nodes = {
-            "default:dirt_with_grass"
-        },
-        near_nodes_size = 1
+biome_lib.register_on_generate({
+		surface = {"default:water_source"},
+		max_count = seaweed_max_count,
+		rarity = seaweed_rarity,
+		min_elevation = 1,
+		max_elevation = 40,
+		near_nodes = {"default:dirt_with_grass"},
+		near_nodes_size = 4,
+		near_nodes_vertical = 1,
+		near_nodes_count = 1,
+		plantlife_limit = -0.9,
 	},
-	"pl_seaweed:water_grass",
-	nil,
 	pl_seaweed.grow_seaweed
 )
 

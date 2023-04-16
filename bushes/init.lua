@@ -12,11 +12,9 @@ abstract_bushes = {}
 
 local bushes_bush_rarity = tonumber(minetest.settings:get("bushes_bush_rarity")) or 99.9
 local bushes_bush_rarity_fertility = tonumber(minetest.settings:get("bushes_bush_rarity_fertility")) or 1.5
-local bushes_bush_fertility = tonumber(minetest.settings:get("bushes_bush_fertility")) or -1
 
 local bushes_youngtrees_rarity = tonumber(minetest.settings:get("bushes_youngtrees_rarity")) or 100
 local bushes_youngtrees_rarity_fertility = tonumber(minetest.settings:get("bushes_youngtrees_rarity_fertility")) or 0.6
-local bushes_youngtrees_fertility = tonumber(minetest.settings:get("bushes_youngtrees_fertility")) or -0.5
 
 
 minetest.register_node("bushes:youngtree2_bottom", {
@@ -218,13 +216,10 @@ pl.register_on_generate({
 			"sumpf:peat",
 			"sumpf:sumpf"
 		},
-		rarity = bushes_bush_rarity,
-		rarity_fertility = bushes_bush_rarity_fertility,
-		plantlife_limit = bushes_bush_fertility,
+		noise_params = pl.generate_noise_params({rarity = bushes_bush_rarity, rarity_fertility = bushes_bush_rarity_fertility}),
 		min_elevation = 1, -- above sea level
 	},
 	"bushes:bushes",
-	nil,
 	abstract_bushes.grow_bush
 )
 
@@ -255,6 +250,7 @@ abstract_bushes.grow_youngtree_node2 = function(pos, height)
 	end
 end
 
+
 pl.register_on_generate({
 		surface = {
 			"default:dirt_with_grass",
@@ -262,12 +258,9 @@ pl.register_on_generate({
 			"sumpf:peat",
 			"sumpf:sumpf"
 		},
-		rarity = bushes_youngtrees_rarity,
-		rarity_fertility = bushes_youngtrees_rarity_fertility,
-		plantlife_limit = bushes_youngtrees_fertility,
+		noise_params = pl.generate_noise_params({rarity = bushes_youngtrees_rarity, rarity_fertility = bushes_youngtrees_rarity_fertility}),
 		min_elevation = 1, -- above sea level
 	},
 	"bushes:youngtrees",
-	nil,
 	abstract_bushes.grow_youngtree2
 )

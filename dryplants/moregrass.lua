@@ -21,20 +21,7 @@ minetest.register_decoration({
 		"sumpf:peat",
 		"sumpf:sumpf"
 	},
-	noise_params = {
-		persist = 0.6,
-		flags = "absvalue",
-		lacunarity = 2,
-		offset = 0,
-		scale = 0.74,
-		spread = {
-			z = 100,
-			x = 100,
-			y = 100
-		},
-		seed = 0,
-		octaves = 3
-	},
+	noise_params = pl.generate_noise_params({max_count = TALL_GRASS_PER_MAPBLOCK, rarity = 101 - TALL_GRASS_RARITY}),
 	flags = "all_floors",
 	deco_type = "simple",
 	y_min = 1,

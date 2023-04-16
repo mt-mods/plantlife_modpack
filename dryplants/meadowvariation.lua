@@ -12,14 +12,13 @@ abstract_dryplants.grow_grass_variation = function(pos)
 	minetest.swap_node(right_here, {name="dryplants:grass_short"})
 end
 
-biome_lib.register_on_generate({
+pl.register_on_generate({
     surface = {
-		"default:dirt_with_grass",
-	},
-    max_count = 4800,
-    rarity = 25,
+      "default:dirt_with_grass",
+    },
+    noise_params = pl.generate_noise_params({max_count = 4800, rarity = 25}),
     min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
   },
+  "dryplants:grass",
   abstract_dryplants.grow_grass_variation
 )

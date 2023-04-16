@@ -11,10 +11,9 @@ function pl.get_def_from_id(id)
 	end
 end
 
-function pl.register_on_generate(def, plantname, index, func)
-	if not index then index = 1 end -- Do we need `index`?
+function pl.register_on_generate(def, plantname, func)
 	local deco_def = {
-		name = plantname .. "_" .. index,
+		name = plantname,
 		deco_type = "simple",
 		place_on = def.place_on or def.surface,
 		sidelen = 16,
@@ -43,6 +42,11 @@ function pl.register_on_generate(def, plantname, index, func)
 		end
 		deco_def.near_nodes_count = def.near_nodes_count or 1
 	end
+	-- handle ncount/neighbors
+	if def.ncount and def.neighbors then
+		deco_def.ncount = def.ncount
+		deco_def.neighbors = def.neighbors
+	end
 	-- save def
 	local next = #deco + 1
 	deco[next] = {}
@@ -60,14 +64,24 @@ minetest.register_on_mods_loaded(function()
         deco[k][1].id = id
 		table.insert(ids, id)
     end
-	-- print(dump2(ids))
+	print(dump2(ids))
     minetest.set_gen_notify("decoration", ids)
 	-- print(dump(deco))
 end)
 
 local function place_handler(t)
 	local def = pl.get_def_from_id(t.id)
-	local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+
+	-- ncount/neighbors handler
+	if def.ncount and
+		#minetest.find_nodes_in_area(
+			{x = t.pos.x-1, y = t.pos.y, z = t.pos.z-1},
+			{x = t.pos.x+1, y = t.pos.y, z = t.pos.z+1},
+			def.neighbors
+		) <= def.ncount then
+			print("return due ncount")
+		return -- Not enough similar biome nodes around
+	end
 
 	-- near nodes handler
 	if def.near_nodes and
@@ -76,11 +90,12 @@ local function place_handler(t)
 			{x = t.pos.x+def.near_nodes_size, y = t.pos.y+def.near_nodes_vertical, z = t.pos.z+def.near_nodes_size},
 			def.near_nodes
 		) < def.near_nodes_count then
-		return -- Long distance neighbours do not match
+		return -- Long distance neighbors do not match
 	end
 
 	-- avoid nodes handler
 	if def.avoid_nodes and def.avoid_radius then
+		local p_top = {x = t.pos.x, y = t.pos.y + 1, z = t.pos.z}
 		if minetest.find_node_near(p_top, def.avoid_radius + math.random(-1.5,2), def.avoid_nodes) then
 			return
 		end
@@ -93,8 +108,9 @@ local function place_handler(t)
 	-- some fun
 	local player = minetest.get_player_by_name("Niklp")
 	-- player:set_pos(t.pos)
+	t.pos.y = t.pos.y + 3
 	minetest.add_particle({
-		pos = p_top,
+		pos = t.pos,
 		expirationtime = 15,
 		playername = player:get_player_name(),
 		glow = minetest.LIGHT_MAX,
