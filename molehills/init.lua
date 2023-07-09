@@ -52,7 +52,7 @@ minetest.register_decoration({
 		"default:dirt_with_grass"
 	},
 	spawn_by = "air",
-	num_spawn_by = 1,
+	num_spawn_by = 3,
 	deco_type = "simple",
 	flags = "all_floors",
 })
