@@ -155,5 +155,3 @@ minetest.register_node("cavestuff:stalactite_3",{
 		}
 	},
 })
-
---Stalagmites

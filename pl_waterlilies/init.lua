@@ -59,7 +59,11 @@ for i in ipairs(lilies_list) do
 		liquids_pointable = true,
 		drop = "flowers:waterlily",
 		on_place = function(itemstack, placer, pointed_thing)
-			local keys=placer:get_player_control()
+			if not itemstack or not placer or not pointed_thing then
+				return
+			end
+
+			local keys = placer:get_player_control()
 			local pt = pointed_thing
 
 			local place_pos = nil
