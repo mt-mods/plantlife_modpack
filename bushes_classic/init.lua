@@ -7,7 +7,7 @@ bushes_classic = {}
 local S = minetest.get_translator("bushes_classic")
 
 bushes_classic.bushes = {
-  "strawberry",
+	"strawberry",
 	"blackberry",
 	"blueberry",
 	"raspberry",
@@ -55,4 +55,4 @@ biome_lib.register_active_spawner({
 
 minetest.register_alias("bushes:basket_pies", "bushes:basket_strawberry")
 
-print("[Bushes] Loaded.")
+minetest.log("action", "[Bushes] Loaded")

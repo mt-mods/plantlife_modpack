@@ -84,8 +84,8 @@ abstract_ferns.grow_giant_tree_fern = function(pos)
 	local brk = false
 	for i = 1, size-3 do
 		pos_aux.y = pos.y + i
-		local name = minetest.get_node(pos_aux).name
-		if not (name == "air" or (i == 1 and name == "ferns:sapling_giant_tree_fern")) then
+		local nodename = minetest.get_node(pos_aux).name
+		if not (nodename == "air" or (i == 1 and nodename == "ferns:sapling_giant_tree_fern")) then
 			brk = true
 			break
 		end

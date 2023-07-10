@@ -161,9 +161,9 @@ biome_lib.register_on_generate({
 	pl_seaweed.grow_seaweed
 )
 
-minetest.register_alias( "flowers:flower_seaweed" , "flowers:seaweed"	 )
-minetest.register_alias( "along_shore:pondscum_1" ,	"flowers:seaweed"	 )
-minetest.register_alias( "along_shore:seaweed_1"	,	"flowers:seaweed"	 )
-minetest.register_alias( "along_shore:seaweed_2"	,	"flowers:seaweed_2" )
-minetest.register_alias( "along_shore:seaweed_3"	,	"flowers:seaweed_3" )
-minetest.register_alias( "along_shore:seaweed_4"	,	"flowers:seaweed_4" )
+minetest.register_alias("flowers:flower_seaweed", "flowers:seaweed")
+minetest.register_alias("along_shore:pondscum_1", "flowers:seaweed")
+minetest.register_alias("along_shore:seaweed_1", "flowers:seaweed")
+minetest.register_alias("along_shore:seaweed_2", "flowers:seaweed_2")
+minetest.register_alias("along_shore:seaweed_3", "flowers:seaweed_3")
+minetest.register_alias("along_shore:seaweed_4", "flowers:seaweed_4")

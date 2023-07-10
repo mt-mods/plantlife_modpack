@@ -1,10 +1,5 @@
 -- 3D Mushroom mod by VanessaE
 
-mushroom = {}
-
--- support for i18n
-local S = minetest.get_translator("3dmushrooms")
-
 minetest.override_item("flowers:mushroom_fertile_brown", {
 	drawtype = "mesh",
 	mesh = "3dmushrooms.obj",
@@ -69,4 +64,4 @@ minetest.register_alias("mushroom:poison", "flowers:mushroom_red")
 
 minetest.register_alias("mushroom:identifier", "default:mese_crystal_fragment")
 
-minetest.log("info", S("[3D Mushrooms] loaded."))
+minetest.log("info", "[3d_mushrooms] loaded")

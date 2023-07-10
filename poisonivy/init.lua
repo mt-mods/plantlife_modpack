@@ -1,5 +1,4 @@
 -- This file supplies poison ivy for the plantlife modpack
--- Last revision:  2013-01-24
 
 -- support for i18n
 local S = minetest.get_translator("poisonivy")
@@ -20,7 +19,7 @@ local walls_list = {
 	"default:jungletree",
 	"default:stone_with_coal",
 	"default:stone_with_iron"
-},
+}
 minetest.register_node('poisonivy:seedling', {
 	description = S("Poison ivy (seedling)"),
 	drawtype = 'plantlike',
@@ -101,4 +100,4 @@ biome_lib.update_plant({
 	ground_nodes = {"default:dirt_with_grass"}
 })
 
-print("[Poison Ivy] Loaded.")
+minetest.log("action", "[poiaon_ivy] Loaded")

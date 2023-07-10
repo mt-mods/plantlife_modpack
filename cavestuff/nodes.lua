@@ -12,33 +12,32 @@ minetest.register_node("cavestuff:pebble_1",{
 	description = S("Pebble"),
 	drawtype = "mesh",
 	mesh = "cavestuff_pebble.obj",
-	 tiles = {"undergrowth_pebble.png"},
-	 paramtype = "light",
+	tiles = {"undergrowth_pebble.png"},
+	paramtype = "light",
 	paramtype2 = "facedir",
-	 groups = {cracky=3, stone=1, attached_node=1},
-	 selection_box = cbox,
-	 collision_box = cbox,
-	 on_place = function(itemstack, placer, pointed_thing)
+	groups = {cracky=3, stone=1, attached_node=1},
+	selection_box = cbox,
+	collision_box = cbox,
+	on_place = function(itemstack, placer, pointed_thing)
 		-- place a random pebble node
 		local stack = ItemStack("cavestuff:pebble_"..math.random(1,2))
 		local ret = minetest.item_place(stack, placer, pointed_thing)
 		return ItemStack("cavestuff:pebble_1 "..itemstack:get_count()-(1-ret:get_count()))
 	end,
-	 sounds = default.node_sound_stone_defaults(),
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("cavestuff:pebble_2",{
 	drawtype = "mesh",
 	mesh = "cavestuff_pebble.obj",
-	 tiles = {"undergrowth_pebble.png"},
+	tiles = {"undergrowth_pebble.png"},
 	drop = "cavestuff:pebble_1",
-	 tiles = {"undergrowth_pebble.png"},
-	 paramtype = "light",
+	paramtype = "light",
 	paramtype2 = "facedir",
-	 groups = {cracky=3, stone=1, attached_node=1, not_in_creative_inventory=1},
+	groups = {cracky=3, stone=1, attached_node=1, not_in_creative_inventory=1},
 	selection_box = cbox,
 	collision_box = cbox,
-	 sounds = default.node_sound_stone_defaults(),
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("cavestuff:desert_pebble_1",{
@@ -100,7 +99,7 @@ minetest.register_node("cavestuff:stalactite_1",{
 		if not placer then return end
 		local playername = placer:get_player_name()
 		if minetest.is_protected(place, playername)
-		or minetest.is_protected(above, playername) then 
+		or minetest.is_protected(above, playername) then
 			minetest.record_protection_violation(place, playername)
 			return
 		end

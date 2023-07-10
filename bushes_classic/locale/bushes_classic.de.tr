@@ -1,46 +1,39 @@
 # textdomain: bushes_classic
-
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# Xanthin, 2017.
-#
-
 Sugar=Zucker
-Basket with Strawberry pies=Korb mit Erdbeertorten
-Cooked Strawberry pie=Erdbeertorte
-Raw Strawberry pie=Rohe Erdbeertorte
-Slice of Strawberry pie=Erdbeertortenstueck
 Strawberry=Erdbeere
+Raw Strawberry pie=Rohe Erdbeertorte
+Cooked Strawberry pie=Erdbeertorte
+Slice of Strawberry pie=Erdbeertortenstueck
+Basket with Strawberry pies=Korb mit Erdbeertorten
 Strawberry Bush=Erdbeerbusch
-Basket with Blackberry pies=Korb mit Brombeertorten
 Blackberry=Brombeere
-Blackberry Bush=Brombeerbusch
-Cooked Blackberry pie=Brombeertorte
 Raw Blackberry pie=Rohe Brombeertorte
+Cooked Blackberry pie=Brombeertorte
 Slice of Blackberry pie=Brombeertortenstueck
-Basket with Blueberry pies=Korb mit Blaubeertorten
+Basket with Blackberry pies=Korb mit Brombeertorten
+Blackberry Bush=Brombeerbusch
 Blueberry=Blaubeere
-Blueberry Bush=Blaubeerbusch
-Cooked Blueberry pie=Blaubeertorte
 Raw Blueberry pie=Rohe Blaubeertorte
+Cooked Blueberry pie=Blaubeertorte
 Slice of Blueberry pie=Blaubeertortenstueck
-Basket with Raspberry pies=Korb mit Himbeertorten
-Cooked Raspberry pie=Himbeertorte
+Basket with Blueberry pies=Korb mit Blaubeertorten
+Blueberry Bush=Blaubeerbusch
 Raspberry=Himbeere
-Raspberry Bush=Himbeerbusch
 Raw Raspberry pie=Rohe Himbeertorte
+Cooked Raspberry pie=Himbeertorte
 Slice of Raspberry pie=Himbeertortenstueck
-Basket with Gooseberry pies=Korb mit Stachelbeertorten
-Cooked Gooseberry pie=Stachelbeertorte
+Basket with Raspberry pies=Korb mit Himbeertorten
+Raspberry Bush=Himbeerbusch
 Gooseberry=Stachelbeere
-Gooseberry Bush=Stachelbeerbusch
 Raw Gooseberry pie=Rohe Stachelbeertorte
+Cooked Gooseberry pie=Stachelbeertorte
 Slice of Gooseberry pie=Stachelbeertortenstueck
-Basket with Mixed Berry pies=Korb mit Beerenmixtorten
-Cooked Mixed Berry pie=Beerenmixtorte
-Currently fruitless Bush=zur Zeit fruechteloser
+Basket with Gooseberry pies=Korb mit Stachelbeertorten
+Gooseberry Bush=Stachelbeerbusch
 Mixed Berry=Beerenmix
 Raw Mixed Berry pie=Rohe Beerenmixtorte
+Cooked Mixed Berry pie=Beerenmixtorte
 Slice of Mixed Berry pie=Beerenmixtortenstueck
+Basket with Mixed Berry pies=Korb mit Beerenmixtorten
+Currently fruitless Bush=zur Zeit fruechteloser
 Basket=Korb
