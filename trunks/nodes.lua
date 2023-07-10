@@ -46,7 +46,7 @@ for i in pairs(NoDe) do
 
 			if not placer then return end
 			local playername = placer:get_player_name()
-			if minetest.is_protected(pt.above, playername) then 
+			if minetest.is_protected(pt.above, playername) then
 				minetest.record_protection_violation(pt.above, playername)
 				return
 			end
@@ -125,7 +125,7 @@ for r = 0, 3 do
 	})
 end
 
-minetest.register_alias("trunks:moss_plain",       "trunks:moss_plain_0")
+minetest.register_alias("trunks:moss_plain", "trunks:moss_plain_0")
 minetest.register_alias("trunks:moss_with_fungus", "trunks:moss_with_fungus_0")
 
 -----------------------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ minetest.register_node("trunks:twigs_roof", {
 -----------------------------------------------------------------------------------------------
 -- TWiGS RooF CoRNeR
 -----------------------------------------------------------------------------------------------
-minetest.register_alias("woodstuff:twigs_roof_corner",	"trunks:twigs_roof_corner")
+minetest.register_alias("woodstuff:twigs_roof_corner", "trunks:twigs_roof_corner")
 
 minetest.register_node("trunks:twigs_roof_corner", {
 	description = S("Twigs Roof Corner 1"),
@@ -214,7 +214,7 @@ minetest.register_node("trunks:twigs_roof_corner", {
 -----------------------------------------------------------------------------------------------
 -- TWiGS RooF CoRNeR 2
 -----------------------------------------------------------------------------------------------
-minetest.register_alias("woodstuff:twigs_roof_corner_2",	"trunks:twigs_roof_corner_2")
+minetest.register_alias("woodstuff:twigs_roof_corner_2", "trunks:twigs_roof_corner_2")
 
 minetest.register_node("trunks:twigs_roof_corner_2", {
 	description = S("Twigs Roof Corner 2"),

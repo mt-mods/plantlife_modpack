@@ -59,7 +59,11 @@ for i in ipairs(lilies_list) do
 		liquids_pointable = true,
 		drop = "flowers:waterlily",
 		on_place = function(itemstack, placer, pointed_thing)
-			local keys=placer:get_player_control()
+			if not itemstack or not placer or not pointed_thing then
+				return
+			end
+
+			local keys = placer:get_player_control()
 			local pt = pointed_thing
 
 			local place_pos = nil
@@ -86,7 +90,6 @@ for i in ipairs(lilies_list) do
 			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
 
 				if not keys["sneak"] then
-					local node = minetest.get_node(pt.under)
 					local waterlily = math.random(1,8)
 					if waterlily == 1 then
 						nodename = "flowers:waterlily"
@@ -158,8 +161,8 @@ minetest.register_alias( "flowers:flower_waterlily", "flowers:waterlily")
 minetest.register_alias( "flowers:flower_waterlily_225", "flowers:waterlily_225")
 minetest.register_alias( "flowers:flower_waterlily_45", "flowers:waterlily_45")
 minetest.register_alias( "flowers:flower_waterlily_675", "flowers:waterlily_675")
-minetest.register_alias( "trunks:lilypad"				 ,	"flowers:waterlily_s1" )
-minetest.register_alias( "along_shore:lilypads_1" , "flowers:waterlily_s1" )
-minetest.register_alias( "along_shore:lilypads_2" , "flowers:waterlily_s2" )
-minetest.register_alias( "along_shore:lilypads_3" , "flowers:waterlily_s3" )
-minetest.register_alias( "along_shore:lilypads_4" , "flowers:waterlily_s4" )
+minetest.register_alias( "trunks:lilypad", "flowers:waterlily_s1")
+minetest.register_alias( "along_shore:lilypads_1", "flowers:waterlily_s1")
+minetest.register_alias( "along_shore:lilypads_2", "flowers:waterlily_s2")
+minetest.register_alias( "along_shore:lilypads_3", "flowers:waterlily_s3")
+minetest.register_alias( "along_shore:lilypads_4", "flowers:waterlily_s4")

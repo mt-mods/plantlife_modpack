@@ -1,13 +1,10 @@
------------------------------------------------------------------------------------------------
 -- Idea by Sokomine
 -- Code & textures by Mossmanikin
 
 -- support for i18n
 local S = minetest.get_translator("molehills")
------------------------------------------------------------------------------------------------
--- NoDe
------------------------------------------------------------------------------------------------
 
+-- Node
 local mh_cbox = {
 	type = "fixed",
 	fixed = { -0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
@@ -27,9 +24,7 @@ minetest.register_node("molehills:molehill",{
 	sounds = default.node_sound_dirt_defaults(),
 })
 
------------------------------------------------------------------------------------------------
--- CRaFTiNG
------------------------------------------------------------------------------------------------
+-- Crafting
 minetest.register_craft({ -- molehills --> dirt
 	output = "default:dirt",
 	recipe = {
@@ -38,9 +33,7 @@ minetest.register_craft({ -- molehills --> dirt
 	}
 })
 
------------------------------------------------------------------------------------------------
--- GeNeRaTiNG
------------------------------------------------------------------------------------------------
+-- Generating
 minetest.register_decoration({
 	decoration = {
 		"molehills:molehill"
