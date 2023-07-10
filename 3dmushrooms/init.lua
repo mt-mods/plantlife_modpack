@@ -63,5 +63,3 @@ minetest.register_alias("mushroom:spore1", "flowers:mushroom_spores_red")
 minetest.register_alias("mushroom:poison", "flowers:mushroom_red")
 
 minetest.register_alias("mushroom:identifier", "default:mese_crystal_fragment")
-
-minetest.log("info", "[3d_mushrooms] loaded")

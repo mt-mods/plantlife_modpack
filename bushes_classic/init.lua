@@ -54,5 +54,3 @@ biome_lib.register_active_spawner({
 })
 
 minetest.register_alias("bushes:basket_pies", "bushes:basket_strawberry")
-
-minetest.log("action", "[Bushes] Loaded")

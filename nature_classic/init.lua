@@ -40,5 +40,3 @@ nature.blossom_duration = nature.blossom_delay
 dofile(minetest.get_modpath(current_mod_name) .. "/config.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/global_function.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/blossom.lua")
-
-minetest.log("info", "[nature_classic] loaded")

@@ -196,5 +196,3 @@ minetest.register_abm({
 		end
 	end,
 })
-
-minetest.log("info", "[dryplants] loaded")

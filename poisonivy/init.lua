@@ -99,5 +99,3 @@ biome_lib.update_plant({
 	verticals_list = walls_list,
 	ground_nodes = {"default:dirt_with_grass"}
 })
-
-minetest.log("action", "[poison_ivy] Loaded")

@@ -19,5 +19,3 @@ if abstract_ferns.config.enable_giant_treefern == true then
 end
 
 dofile(minetest.get_modpath("ferns").."/crafting.lua")
-
-minetest.log("info", "[ferns] loaded")
