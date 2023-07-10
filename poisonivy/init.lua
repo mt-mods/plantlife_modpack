@@ -100,4 +100,4 @@ biome_lib.update_plant({
 	ground_nodes = {"default:dirt_with_grass"}
 })
 
-minetest.log("action", "[poiaon_ivy] Loaded")
+minetest.log("action", "[poison_ivy] Loaded")
