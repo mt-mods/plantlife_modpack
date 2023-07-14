@@ -6,6 +6,9 @@ pl_seaweed = {}
 local seaweed_max_count = tonumber(minetest.settings:get("pl_seaweed_max_count")) or 320
 local seaweed_rarity = tonumber(minetest.settings:get("pl_seaweed_rarity")) or 33
 
+local function get_ndef(name)
+	return minetest.registered_noes[name] or {}
+end
 
 local algae_list = { {nil}, {2}, {3}, {4} }
 
@@ -59,22 +62,21 @@ for i in ipairs(algae_list) do
 			local under_node = minetest.get_node(pt.under)
 			local above_node = minetest.get_node(pt.above)
 			local top_node	 = minetest.get_node(top_pos)
-
-			if biome_lib.get_nodedef_field(under_node.name, "buildable_to") then
+			if get_ndef(under_node.name)["buildable_to"] then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source"
-							 and biome_lib.get_nodedef_field(top_node.name, "buildable_to") then
+				elseif top_node.name ~= "default:water_source" and get_ndef(top_node.name)["buildable_to"] then
 					place_pos = top_pos
 				else
 					return
 				end
-			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
+			elseif get_ndef(above_node.name)["buildable_to"] then
 				place_pos = pt.above
 			end
 			if not place_pos then return end -- something went wrong :P
 
-			if not minetest.is_protected(place_pos, placer:get_player_name()) then
+			local pname = placer:get_player_name()
+			if not minetest.is_protected(place_pos, pname) then
 
 			local nodename = "default:cobble" -- :D
 
@@ -96,7 +98,7 @@ for i in ipairs(algae_list) do
 					minetest.swap_node(place_pos, {name = "flowers:seaweed", param2 = fdir})
 				end
 
-				if not biome_lib.expect_infinite_stacks then
+				if not minetest.is_creative_enabled(pname) then
 					itemstack:take_item()
 				end
 				return itemstack

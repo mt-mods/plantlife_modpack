@@ -3,11 +3,6 @@
 -- support for i18n
 local S = minetest.get_translator("poisonivy")
 
-local SPAWN_DELAY = 1000
-local SPAWN_CHANCE = 200
-local GROW_DELAY = 500
-local GROW_CHANCE = 30
-local poisonivy_seed_diff = 339
 local walls_list = {
 	"default:dirt",
 	"default:dirt_with_grass",
@@ -69,33 +64,76 @@ minetest.register_node('poisonivy:climbing', {
 	buildable_to = true,
 })
 
-biome_lib.register_active_spawner({
-	spawn_delay = SPAWN_DELAY,
-	spawn_plants = {"poisonivy:seedling"},
-	avoid_radius = 10,
-	spawn_chance = SPAWN_CHANCE/10,
-	spawn_surfaces = {"default:dirt_with_grass"},
-	avoid_nodes = {"group:poisonivy", "group:flower", "group:flora"},
-	seed_diff = poisonivy_seed_diff,
-	light_min = 7,
-	alt_wallnode = "poisonivy:climbing",
-	verticals_list = walls_list
+local function find_adjacent_wall(pos, verticals, randomflag)
+	local verts = dump(verticals)
+
+	if string.find(verts, minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  }).name) then return 3 end
+	if string.find(verts, minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  }).name) then return 2 end
+	if string.find(verts, minetest.get_node({x=pos.x  , y=pos.y, z=pos.z-1}).name) then return 5 end
+	if string.find(verts, minetest.get_node({x=pos.x  , y=pos.y, z=pos.z+1}).name) then return 4 end
+
+	return nil
+end
+
+minetest.register_abm({
+	nodenames = {"default:dirt_with_grass"},
+	interval = 1000,
+	chance = 200,
+	label = "[poisoninvy] spawn plants",
+	min_y = -16,
+    max_y = 48,
+	action = function(pos, node)
+		local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local n_top = minetest.get_node_or_nil(p_top)
+		if not n_top then return end
+		if n_top.name ~= "air" then return end
+
+		local n_light = minetest.get_node_light(p_top, nil)
+		if n_light < 7 then
+			return
+		end
+
+		if minetest.find_node_near(p_top, 10 + math.random(-1.5,2), {"group:poisonivy", "group:flower", "group:flora"}) then
+			return -- Nodes to avoid are nearby
+		end
+
+		local walldir = find_adjacent_wall(p_top, walls_list)
+		if walldir then
+			minetest.swap_node(p_top, {name = "poisonivy:climbing", param2 = walldir})
+			return
+		end
+
+		minetest.swap_node(p_top, {name = "poisonivy:seedling", param2 = 0})
+	end
 })
 
-biome_lib.update_plant({
-	grow_delay = SPAWN_DELAY,
-	grow_chance = GROW_CHANCE,
-	grow_plant = "poisonivy:seedling",
-	grow_result = "poisonivy:sproutling",
-	grow_nodes = {"default:dirt_with_grass"}
+minetest.register_abm({
+	nodenames = {"poisonivy:seedling"},
+	interval = 500,
+	chance = 30,
+	label = "grow poisonivy",
+	action = function(pos, node)
+		local p_top = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n_top = minetest.get_node(p_top)
+
+		if n_top.name == "air" then
+			minetest.swap_node(p_top, {name = "poisonivy:sproutling"})
+		end
+	end
 })
 
-biome_lib.update_plant({
-	grow_delay = GROW_DELAY,
-	grow_chance = GROW_CHANCE*2,
-	grow_plant = "poisonivy:climbing",
-	need_wall = true,
-	grow_vertically = true,
-	verticals_list = walls_list,
-	ground_nodes = {"default:dirt_with_grass"}
+minetest.register_abm({
+	nodenames = {"poisonivy:climbing"},
+	interval = 500,
+	chance = 60,
+	label = "grow climbing poisonivy",
+	action = function(pos, node)
+		local p_top = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n_top = minetest.get_node(p_top)
+
+		local walldir = find_adjacent_wall(p_top, walls_list)
+		if n_top.name == "air" and walldir then
+			minetest.swap_node(p_top, {name = "poisonivy:climbing", param2 = walldir})
+		end
+	end
 })

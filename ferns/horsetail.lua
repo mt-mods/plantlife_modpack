@@ -75,13 +75,10 @@ create_nodes()
 -- Spawning
 -----------------------------------------------------------------------------------------------
 if abstract_ferns.config.enable_horsetails_spawning == true then
-	biome_lib.register_active_spawner({
-		spawn_delay = 1200,
-		spawn_plants = node_names,
-		spawn_chance = 400,
-		spawn_surfaces = {
+	minetest.register_abm({
+		nodenames = {
 			"default:dirt_with_grass",
-			"default:dirt_with_coniferous_litter", -- minetest >= 0.5
+			"default:dirt_with_coniferous_litter",
 			"default:desert_sand",
 			"default:sand",
 			"dryplants:grass_short",
@@ -89,13 +86,29 @@ if abstract_ferns.config.enable_horsetails_spawning == true then
 			"default:mossycobble",
 			"default:gravel"
 		},
-		seed_diff = 329,
-		min_elevation = 1, -- above sea level
-		near_nodes = {"default:water_source","default:river_water_source","default:gravel"},
-		near_nodes_size = 2,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		--random_facedir = { 0, 179 },
+		interval = 1200,
+		chance = 400,
+		label = "[ferns] spawn horsetails",
+		min_y = 1,
+		max_y = 48,
+		action = function(pos, node)
+			local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
+			local n_top = minetest.get_node_or_nil(p_top)
+			if not n_top then return end
+			if n_top.name ~= "air" then return end
+
+			local NEAR_DST = 2
+			if #minetest.find_nodes_in_area(
+					{x=pos.x-NEAR_DST, y=pos.y-1, z=pos.z-NEAR_DST},
+					{x=pos.x+NEAR_DST, y=pos.y+1, z=pos.z+NEAR_DST},
+					{"default:water_source","default:river_water_source","default:gravel"}
+				) < 1 then return
+			end
+
+			local plant_to_spawn = node_names[math.random(1, #node_names)]
+
+			minetest.swap_node(p_top, {name = plant_to_spawn, param2 = 0})
+		end
 	})
 end
 
