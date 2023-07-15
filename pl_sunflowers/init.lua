@@ -15,7 +15,7 @@ minetest.register_node(":flowers:sunflower", {
 	description = S("Sunflower"),
 	drawtype = "mesh",
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "degrotate",
 	inventory_image = "flowers_sunflower_inv.png",
 	mesh = "flowers_sunflower.obj",
 	tiles = { "flowers_sunflower.png" },
@@ -44,7 +44,7 @@ minetest.register_decoration({
 	y_min = 1,
 	y_max = 40,
 	param2 = 0,
-	param2_max = 3,
+	param2_max = 239,
 	place_on = {
 		"default:dirt_with_grass"
 	},
