@@ -78,7 +78,7 @@ end
 minetest.register_abm({
 	nodenames = {"default:dirt_with_grass"},
 	interval = 1000,
-	chance = 200,
+	chance = 20,
 	label = "[poisoninvy] spawn plants",
 	min_y = -16,
     max_y = 48,
@@ -88,7 +88,7 @@ minetest.register_abm({
 		if not n_top then return end
 		if n_top.name ~= "air" then return end
 
-		local n_light = minetest.get_node_light(p_top, nil)
+		local n_light = minetest.get_node_light(p_top)
 		if n_light < 7 then
 			return
 		end
@@ -109,7 +109,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"poisonivy:seedling"},
-	interval = 500,
+	interval = 1000,
 	chance = 30,
 	label = "grow poisonivy",
 	action = function(pos, node)
@@ -117,7 +117,7 @@ minetest.register_abm({
 		local n_top = minetest.get_node(p_top)
 
 		if n_top.name == "air" then
-			minetest.swap_node(p_top, {name = "poisonivy:sproutling"})
+			minetest.swap_node(pos, {name = "poisonivy:sproutling"})
 		end
 	end
 })
