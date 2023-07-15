@@ -93,7 +93,7 @@ minetest.register_abm({
 			return
 		end
 
-		if minetest.find_node_near(p_top, 10 + math.random(-1.5,2), {"group:poisonivy", "group:flower", "group:flora"}) then
+		if minetest.find_node_near(p_top, 10 + math.random(-1.5,2), {"group:poisonivy", "group:flower"}) then
 			return -- Nodes to avoid are nearby
 		end
 
