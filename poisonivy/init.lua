@@ -81,12 +81,11 @@ minetest.register_abm({
 	chance = 20,
 	label = "[poisoninvy] spawn plants",
 	min_y = -16,
-    max_y = 48,
+	max_y = 48,
 	action = function(pos, node)
 		local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
 		local n_top = minetest.get_node_or_nil(p_top)
-		if not n_top then return end
-		if n_top.name ~= "air" then return end
+		if not n_top or n_top.name ~= "air" then return end
 
 		local n_light = minetest.get_node_light(p_top)
 		if n_light < 7 then

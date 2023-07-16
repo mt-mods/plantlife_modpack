@@ -7,7 +7,7 @@ local seaweed_max_count = tonumber(minetest.settings:get("pl_seaweed_max_count")
 local seaweed_rarity = tonumber(minetest.settings:get("pl_seaweed_rarity")) or 33
 
 local function get_ndef(name)
-	return minetest.registered_noes[name] or {}
+	return minetest.registered_nodes[name] or {}
 end
 
 local algae_list = { {nil}, {2}, {3}, {4} }

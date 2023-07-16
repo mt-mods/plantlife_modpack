@@ -7,7 +7,7 @@ local lilies_max_count = tonumber(minetest.settings:get("pl_waterlilies_max_coun
 local lilies_rarity = tonumber(minetest.settings:get("pl_waterlilies_rarity")) or 33
 
 local function get_ndef(name)
-	return minetest.registered_noes[name] or {}
+	return minetest.registered_nodes[name] or {}
 end
 
 local lilies_list = {

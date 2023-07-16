@@ -54,21 +54,18 @@ minetest.register_abm({
 	chance = 100,
 	label = "[bushes_classic] spawn bushes",
 	min_y = -16,
-    max_y = 48,
+	max_y = 48,
 	action = function(pos, node)
 		local p_top = {x = pos.x, y = pos.y + 1, z = pos.z}
 		local n_top = minetest.get_node_or_nil(p_top)
-		if not n_top then return end
-		if n_top.name ~= "air" then return end
+		if not n_top or n_top.name ~= "air" then return end
 
 		local perlin_fertile_area = minetest.get_perlin(545342534, 3, 0.6, 100)
 
 		local fertility, temperature, humidity = get_biome_data(pos, perlin_fertile_area)
 
 		local pos_biome_ok = fertility > -0.1 and temperature <= 0.15 and temperature >= -0.15 and humidity <= 0 and humidity >= -1
-		if not pos_biome_ok then
-			return -- Outside of biome
-		end
+		if not pos_biome_ok then return end
 
 		if minetest.find_node_near(p_top, 10 + math.random(-1.5,2), {"group:bush"}) then
 			return -- Nodes to avoid are nearby
