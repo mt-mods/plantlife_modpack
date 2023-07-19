@@ -32,7 +32,7 @@ minetest.register_node("cavestuff:pebble_2",{
 	mesh = "cavestuff_pebble.obj",
 	tiles = {"undergrowth_pebble.png"},
 	drop = "cavestuff:pebble_1",
-  paramtype = "light",
+	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky=3, stone=1, attached_node=1, not_in_creative_inventory=1},
 	selection_box = cbox,
