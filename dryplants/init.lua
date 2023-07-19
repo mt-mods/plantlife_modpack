@@ -1,8 +1,3 @@
------------------------------------------------------------------------------------------------
-local title		= "Grasses" -- former "Dry plants"
-local version	= "0.1.5"
-local mname		= "dryplants"
------------------------------------------------------------------------------------------------
 -- by Mossmanikin
 -- textures & ideas partly by Neuromancer
 
@@ -20,13 +15,13 @@ dofile(minetest.get_modpath("dryplants").."/crafting.lua")
 dofile(minetest.get_modpath("dryplants").."/settings.txt")
 dofile(minetest.get_modpath("dryplants").."/reed.lua")
 if REEDMACE_GENERATES == true then
-dofile(minetest.get_modpath("dryplants").."/reedmace.lua")
+	dofile(minetest.get_modpath("dryplants").."/reedmace.lua")
 end
 if SMALL_JUNCUS_GENERATES == true then
-dofile(minetest.get_modpath("dryplants").."/juncus.lua")
+	dofile(minetest.get_modpath("dryplants").."/juncus.lua")
 end
 if EXTRA_TALL_GRASS_GENERATES == true then
-dofile(minetest.get_modpath("dryplants").."/moregrass.lua")
+	dofile(minetest.get_modpath("dryplants").."/moregrass.lua")
 end
 --dofile(minetest.get_modpath("dryplants").."/meadowvariation.lua")
 
@@ -130,6 +125,7 @@ minetest.register_node("dryplants:grass", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"dryplants_grass.png"},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	node_box = {
 	    type = "fixed",
@@ -161,6 +157,7 @@ minetest.register_node("dryplants:hay", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"dryplants_hay.png"},
+	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	node_box = {
 	    type = "fixed",
@@ -199,7 +196,3 @@ minetest.register_abm({
 		end
 	end,
 })
-
------------------------------------------------------------------------------------------------
-print("[Mod] "..title.." ["..version.."] ["..mname.."] Loaded...")
------------------------------------------------------------------------------------------------

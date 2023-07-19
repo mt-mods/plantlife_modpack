@@ -1,10 +1,6 @@
 -- support for i18n
 local S = minetest.get_translator("pl_sunflowers")
 
-local sunflowers_max_count = tonumber(minetest.settings:get("pl_sunflowers_max_count")) or 10
-local sunflowers_rarity = tonumber(minetest.settings:get("pl_sunflowers_rarity")) or 25
-
-
 local box = {
 	type="fixed",
 	fixed = { { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
@@ -19,10 +15,11 @@ minetest.register_node(":flowers:sunflower", {
 	description = S("Sunflower"),
 	drawtype = "mesh",
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "degrotate",
 	inventory_image = "flowers_sunflower_inv.png",
 	mesh = "flowers_sunflower.obj",
 	tiles = { "flowers_sunflower.png" },
+	use_texture_alpha = "clip",
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
@@ -39,17 +36,20 @@ minetest.register_node(":flowers:sunflower", {
 	}
 })
 
-biome_lib.register_on_generate({
-	surface = {"default:dirt_with_grass"},
-	avoid_nodes = { "flowers:sunflower" },
-	max_count = sunflowers_max_count,
-	rarity = sunflowers_rarity,
-	min_elevation = 0,
-	plantlife_limit = -0.9,
-	temp_max = -0.1,
-	random_facedir = {0,3},
+minetest.register_decoration({
+	decoration = {
+		"flowers:sunflower"
 	},
-	"flowers:sunflower"
-)
+	fill_ratio = 0.005,
+	y_min = 1,
+	y_max = 40,
+	param2 = 0,
+	param2_max = 239,
+	place_on = {
+		"default:dirt_with_grass"
+	},
+	deco_type = "simple",
+	flags = "all_floors",
+})
 
 minetest.register_alias("sunflower:sunflower", "flowers:sunflower")

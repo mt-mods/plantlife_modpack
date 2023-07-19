@@ -63,7 +63,7 @@ plantlife_bushes.after_dig_node = function(pos, oldnode, oldmetadata, digger)
 
 		-- with a chance of 1/3, return 2 bushes
 		local amount
-		if math.random(1,3) == 1 then
+		if can_harvest and math.random(1,3) == 1 then
 			amount = "2"
 		else
 			amount = "1"
@@ -167,6 +167,13 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		groups.not_in_creative_inventory = 1
 	end
 
+	local node_dig_prediction
+	local node_placement_prediction
+	if bush_name ~= "fruitless" then
+		node_dig_prediction = "bushes:fruitless_bush"
+		node_placement_prediction = "bushes:fruitless_bush"
+	end
+
 	minetest.register_node(":bushes:" .. bush_name .. "_bush", {
 		description = bushes_classic.bushes_descriptions[i][6],
 		drawtype = "mesh",
@@ -178,6 +185,8 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		groups = groups,
 		sounds = default.node_sound_leaves_defaults(),
 		drop = "",
+		node_dig_prediction = node_dig_prediction,
+		node_placement_prediction = node_placement_prediction,
 		after_dig_node = function( pos, oldnode, oldmetadata, digger )
 			return plantlife_bushes.after_dig_node(pos, oldnode, oldmetadata, digger);
 		end,

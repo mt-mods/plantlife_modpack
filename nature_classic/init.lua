@@ -6,8 +6,6 @@
 local current_mod_name = minetest.get_current_modname()
 
 nature = {}
--- support for i18n
-local S = minetest.get_translator("nature_classic")
 
 nature.blossomqueue = {}
 nature.blossomqueue_max = 1000
@@ -42,5 +40,3 @@ nature.blossom_duration = nature.blossom_delay
 dofile(minetest.get_modpath(current_mod_name) .. "/config.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/global_function.lua")
 dofile(minetest.get_modpath(current_mod_name) .. "/blossom.lua")
-
-minetest.log("info", S("[Nature Classic] loaded!"))

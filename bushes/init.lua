@@ -31,7 +31,6 @@ minetest.register_node("bushes:youngtree2_bottom", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			--{0.375000,-0.500000,-0.500000,0.500000,0.500000,-0.375000}, --NodeBox 1
 			{-0.0612,-0.500000,-0.500000,0.0612,0.500000,-0.375000}, --NodeBox 1
 		}
 	},
@@ -40,10 +39,10 @@ minetest.register_node("bushes:youngtree2_bottom", {
 	drop = 'default:stick'
 })
 
-local BushBranchCenter			= { {1,1}, {3,2} }
+local BushBranchCenter = { {1,1}, {3,2} }
 for i in pairs(BushBranchCenter) do
-	local Num		= BushBranchCenter[i][1]
-	local TexNum	= BushBranchCenter[i][2]
+	local Num = BushBranchCenter[i][1]
+	local TexNum = BushBranchCenter[i][2]
 	minetest.register_node("bushes:bushbranches"..Num, {
 		description = S("Bush Branches @1", Num),
 		drawtype = "nodebox",
@@ -51,6 +50,7 @@ for i in pairs(BushBranchCenter) do
 			"bushes_leaves_"..TexNum..".png",
 			"bushes_branches_center_"..TexNum..".png"
 		},
+		use_texture_alpha = "clip",
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -78,10 +78,10 @@ for i in pairs(BushBranchCenter) do
 	})
 end
 
-local BushBranchSide			= { {2,1}, {4,2} }
+local BushBranchSide = { {2,1}, {4,2} }
 for i in pairs(BushBranchSide) do
-	local Num		= BushBranchSide[i][1]
-	local TexNum	= BushBranchSide[i][2]
+	local Num = BushBranchSide[i][1]
+	local TexNum = BushBranchSide[i][2]
 	minetest.register_node("bushes:bushbranches"..Num, {
 		description = S("Bush Branches @1", Num),
 		drawtype = "nodebox",
@@ -93,6 +93,7 @@ for i in pairs(BushBranchSide) do
 --[[back]]	"bushes_branches_center_"..TexNum..".png",--		 unless U really want 'em 2 B different
 --[[front]]	"bushes_branches_right_"..TexNum..".png"
 		},
+		use_texture_alpha = "clip",
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -122,18 +123,20 @@ for i in pairs(BushBranchSide) do
 	})
 end
 
-local BushLeafNode			= { {1}, {2}}
+local BushLeafNode = { {1}, {2}}
 for i in pairs(BushLeafNode) do
 	local Num = BushLeafNode[i][1]
 	minetest.register_node("bushes:BushLeaves"..Num, {
 		description = S("Bush Leaves @1", Num),
 		drawtype = "allfaces_optional",
 		tiles = {"bushes_leaves_"..Num..".png"},
+		use_texture_alpha = "clip",
 		paramtype = "light",
 		groups = {	-- MM: Should we add leafdecay?
 			snappy=3,
 			flammable=2,
-			attached_node=1
+			attached_node=1,
+			leaves=1
 		},
 		sounds = default.node_sound_leaves_defaults(),
 	})

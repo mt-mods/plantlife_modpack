@@ -31,6 +31,7 @@ minetest.register_node("youngtrees:youngtree2_middle",{
 	description = S("Young Tree 2 (middle)"),
 	drawtype="nodebox",
 	tiles = {"youngtree2branch.png"},
+	use_texture_alpha = "clip",
 	inventory_image = "youngtree2branch.png",
 	wield_image = "youngtree2branch.png",
 	paramtype = "light",

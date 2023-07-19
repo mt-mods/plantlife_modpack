@@ -24,6 +24,7 @@ for i in pairs(NoDe) do
 			"trunks_twig_"..NR..".png^[transformFY", -- mirror
 			"trunks_twig_6.png" -- empty
 		},
+		use_texture_alpha = "clip",
 		paramtype = "light",
 		paramtype2 = "facedir",
 		walkable = false,
@@ -88,6 +89,7 @@ for r = 0, 3 do
 		description = S("Moss"),
 		drawtype = "nodebox",
 		tiles = {"trunks_moss.png"..xform},
+		use_texture_alpha = "clip",
 		inventory_image = "trunks_moss.png",
 		wield_image = "trunks_moss.png",
 		paramtype = "light",
@@ -110,6 +112,7 @@ for r = 0, 3 do
 		tiles = {"trunks_moss_fungus.png"..xform},
 		inventory_image = "trunks_moss_fungus.png",
 		wield_image = "trunks_moss_fungus.png",
+		use_texture_alpha = "clip",
 		paramtype = "light",
 		paramtype2 = "wallmounted",
 		sunlight_propagates = true,
@@ -122,7 +125,7 @@ for r = 0, 3 do
 	})
 end
 
-minetest.register_alias("trunks:moss_plain",       "trunks:moss_plain_0")
+minetest.register_alias("trunks:moss_plain", "trunks:moss_plain_0")
 minetest.register_alias("trunks:moss_with_fungus", "trunks:moss_with_fungus_0")
 
 -----------------------------------------------------------------------------------------------
@@ -183,7 +186,7 @@ minetest.register_node("trunks:twigs_roof", {
 -----------------------------------------------------------------------------------------------
 -- TWiGS RooF CoRNeR
 -----------------------------------------------------------------------------------------------
-minetest.register_alias("woodstuff:twigs_roof_corner",	"trunks:twigs_roof_corner")
+minetest.register_alias("woodstuff:twigs_roof_corner", "trunks:twigs_roof_corner")
 
 minetest.register_node("trunks:twigs_roof_corner", {
 	description = S("Twigs Roof Corner 1"),
@@ -211,7 +214,7 @@ minetest.register_node("trunks:twigs_roof_corner", {
 -----------------------------------------------------------------------------------------------
 -- TWiGS RooF CoRNeR 2
 -----------------------------------------------------------------------------------------------
-minetest.register_alias("woodstuff:twigs_roof_corner_2",	"trunks:twigs_roof_corner_2")
+minetest.register_alias("woodstuff:twigs_roof_corner_2", "trunks:twigs_roof_corner_2")
 
 minetest.register_node("trunks:twigs_roof_corner_2", {
 	description = S("Twigs Roof Corner 2"),
@@ -376,6 +379,7 @@ for i in pairs(TRuNKS) do
 --[[back]]			MoD.."_"..TRuNK..".png",
 --[[front]]			MoD.."_"..TRuNK..".png"
 				},
+				use_texture_alpha = "clip",
 				drawtype = "nodebox",
 				selection_box = {type = "fixed", fixed = roots_cube},
 				node_box = {type = "fixed", fixed = roots_sheet},

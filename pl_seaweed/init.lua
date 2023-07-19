@@ -25,6 +25,7 @@ for i in ipairs(algae_list) do
 			"flowers_seaweed"..num..".png",
 			"flowers_seaweed"..num..".png^[transformFY"
 		},
+		use_texture_alpha = "clip",
 		inventory_image = "flowers_seaweed_2.png",
 		wield_image	= "flowers_seaweed_2.png",
 		sunlight_propagates = true,
@@ -46,7 +47,11 @@ for i in ipairs(algae_list) do
 		liquids_pointable = true,
 		drop = "flowers:seaweed",
 		on_place = function(itemstack, placer, pointed_thing)
-			local keys=placer:get_player_control()
+			if not itemstack or not placer or not pointed_thing then
+				return
+			end
+
+			local keys = placer:get_player_control()
 			local pt = pointed_thing
 
 			local place_pos = nil
@@ -160,9 +165,9 @@ biome_lib.register_on_generate({
 	pl_seaweed.grow_seaweed
 )
 
-minetest.register_alias( "flowers:flower_seaweed" , "flowers:seaweed"	 )
-minetest.register_alias( "along_shore:pondscum_1" ,	"flowers:seaweed"	 )
-minetest.register_alias( "along_shore:seaweed_1"	,	"flowers:seaweed"	 )
-minetest.register_alias( "along_shore:seaweed_2"	,	"flowers:seaweed_2" )
-minetest.register_alias( "along_shore:seaweed_3"	,	"flowers:seaweed_3" )
-minetest.register_alias( "along_shore:seaweed_4"	,	"flowers:seaweed_4" )
+minetest.register_alias("flowers:flower_seaweed", "flowers:seaweed")
+minetest.register_alias("along_shore:pondscum_1", "flowers:seaweed")
+minetest.register_alias("along_shore:seaweed_1", "flowers:seaweed")
+minetest.register_alias("along_shore:seaweed_2", "flowers:seaweed_2")
+minetest.register_alias("along_shore:seaweed_3", "flowers:seaweed_3")
+minetest.register_alias("along_shore:seaweed_4", "flowers:seaweed_4")
