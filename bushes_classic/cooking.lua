@@ -33,7 +33,7 @@ end
 
 -- override farming_plus strawberry and add food_ group
 if minetest.get_modpath("farming_plus") then
-	local groups = table.copy(minetest.registered_items["farming_plus:strawberry_item"])
+	local groups = table.copy(minetest.registered_items["farming_plus:strawberry_item"].groups)
 	groups["food_strawberry"] = 1
 	groups["food_berry"] = 1
 
