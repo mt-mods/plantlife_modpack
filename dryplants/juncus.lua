@@ -105,8 +105,8 @@ biome_lib.register_on_generate({
 		"sumpf:peat",
 		"sumpf:sumpf"
 	},
-    max_count = JUNCUS_NEAR_WATER_PER_MAPBLOCK,
-    rarity = 101 - JUNCUS_NEAR_WATER_RARITY,
+    max_count = 70,
+    rarity = 101 - 75,
     min_elevation = 1, -- above sea level
 	near_nodes = {"default:water_source","sumpf:dirtywater_source","sumpf:sumpf"},
 	near_nodes_size = 2,
@@ -126,8 +126,8 @@ biome_lib.register_on_generate({
 		--"sumpf:peat",
 		--"sumpf:sumpf"
 	},
-    max_count = JUNCUS_AT_BEACH_PER_MAPBLOCK,
-    rarity = 101 - JUNCUS_AT_BEACH_RARITY,
+    max_count = 70,
+    rarity = 101 - 75,
     min_elevation = 1, -- above sea level
 	near_nodes = {"default:dirt_with_grass"},
 	near_nodes_size = 2,
