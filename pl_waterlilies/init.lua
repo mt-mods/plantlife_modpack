@@ -6,6 +6,9 @@ pl_waterlilies = {}
 local lilies_max_count = tonumber(minetest.settings:get("pl_waterlilies_max_count")) or 320
 local lilies_rarity = tonumber(minetest.settings:get("pl_waterlilies_rarity")) or 33
 
+local function get_ndef(name)
+	return minetest.registered_nodes[name] or {}
+end
 
 local lilies_list = {
 	{ nil	, nil			 , 1	},
@@ -72,20 +75,20 @@ for i in ipairs(lilies_list) do
 			local above_node = minetest.get_node(pt.above)
 			local top_node	 = minetest.get_node(top_pos)
 
-			if biome_lib.get_nodedef_field(under_node.name, "buildable_to") then
+			if get_ndef(under_node.name)["buildable_to"] then
 				if under_node.name ~= "default:water_source" then
 					place_pos = pt.under
-				elseif top_node.name ~= "default:water_source"
-							 and biome_lib.get_nodedef_field(top_node.name, "buildable_to") then
+				elseif top_node.name ~= "default:water_source" and get_ndef(top_node.name)["buildable_to"] then
 					place_pos = top_pos
 				else
 					return
 				end
-			elseif biome_lib.get_nodedef_field(above_node.name, "buildable_to") then
+			elseif get_ndef(above_node.name)["buildable_to"] then
 				place_pos = pt.above
 			end
 
-			if place_pos and not minetest.is_protected(place_pos, placer:get_player_name()) then
+			local pname = placer:get_player_name()
+			if place_pos and not minetest.is_protected(place_pos, pname) then
 
 			local nodename = "default:cobble" -- if this block appears, something went....wrong :-)
 
@@ -114,7 +117,7 @@ for i in ipairs(lilies_list) do
 					minetest.swap_node(place_pos, {name = "flowers:waterlily", param2 = fdir})
 				end
 
-				if not biome_lib.expect_infinite_stacks then
+				if not minetest.is_creative_enabled(pname) then
 					itemstack:take_item()
 				end
 				return itemstack
