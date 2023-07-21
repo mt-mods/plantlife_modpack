@@ -29,8 +29,6 @@ abstract_trunks.place_twig = function(pos)
 	if twig_size <= 16 then
 		minetest.swap_node(right_here, {name="trunks:twig_"..math.random(1,4), param2=math.random(0,3)})
 	end
---	big twigs
-	if Big_Twigs == true then
 --	big twig 1
 	if twig_size == 17 then
 		if not (check_node_buildable_to({x=pos.x+1,y=pos.y,z=pos.z+1})
@@ -148,14 +146,12 @@ abstract_trunks.place_twig = function(pos)
 	elseif twig_size <= 25 then
 		minetest.swap_node(right_here, {name="trunks:twig_"..math.random(12,13), param2=math.random(0,3)})
 	end
-	end
 end
 
-if Twigs_on_ground == true then
 biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
-    max_count = Twigs_on_ground_Max_Count,
-    rarity = Twigs_on_ground_Rarity,
+    max_count = 640,
+    rarity = 66,
     min_elevation = 1,
 	max_elevation = 40,
 	near_nodes = {"group:tree","ferns:fern_03","ferns:fern_02","ferns:fern_01"},
@@ -166,13 +162,11 @@ biome_lib.register_on_generate({
   },
   abstract_trunks.place_twig
 )
-end
 
-if Twigs_on_water == true then
 biome_lib.register_on_generate({
     surface = {"default:water_source"},
-    max_count = Twigs_on_water_Max_Count,
-    rarity = Twigs_on_water_Rarity,
+    max_count = 320,
+    rarity = 33,
     min_elevation = 1,
 	max_elevation = 40,
 	near_nodes = {"group:tree"},
@@ -183,7 +177,6 @@ biome_lib.register_on_generate({
   },
   abstract_trunks.place_twig
 )
-end
 
 -----------------------------------------------------------------------------------------------
 -- TRuNKS
@@ -211,7 +204,6 @@ local TRuNKS = {
 	{"moretrees",				"willow_trunk",				17},
 }
 
-if Horizontal_Trunks == true then -- see settings.txt
 for i in pairs(TRuNKS) do
 	local	MoD =	TRuNKS[i][1]
 	local	TRuNK = TRuNKS[i][2]
@@ -224,7 +216,6 @@ for i in pairs(TRuNKS) do
 			temptrunk.paramtype2 = "facedir"
 			minetest.register_node(":"..trunkname, temptrunk)
 	end
-end
 end
 
 abstract_trunks.place_trunk = function(pos)
@@ -254,7 +245,7 @@ abstract_trunks.place_trunk = function(pos)
 					else
 						minetest.swap_node(right_here, {name="default:tree"})
 					end
-				elseif trunk_type == 2 and Horizontal_Trunks == true then
+				elseif trunk_type == 2 then
 					if minetest.get_modpath(MoD) ~= nil then
 						if check_node_buildable_to(north) then
 							minetest.swap_node(north, {name=MoD..":"..TRuNK, param2=4})
@@ -286,7 +277,7 @@ abstract_trunks.place_trunk = function(pos)
 							minetest.swap_node(south2, {name="default:tree", param2=4})
 						end
 					end
-				elseif trunk_type == 3 and Horizontal_Trunks == true then
+				elseif trunk_type == 3 then
 					if minetest.get_modpath(MoD) ~= nil then
 						if check_node_buildable_to(west) then
 							minetest.swap_node(west, {name=MoD..":"..TRuNK, param2=12})
@@ -324,8 +315,8 @@ end
 
 biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
-    max_count = Trunks_Max_Count, -- 320,
-    rarity = Trunks_Rarity, -- 99,
+    max_count = 320, -- 320,
+    rarity = 99, -- 99,
     min_elevation = 1,
 	max_elevation = 40,
 	avoid_nodes = {"group:tree"},
@@ -342,7 +333,6 @@ biome_lib.register_on_generate({
 -----------------------------------------------------------------------------------------------
 -- MoSS & FuNGuS -- on ground
 -----------------------------------------------------------------------------------------------
-if Moss_on_ground == true then
 abstract_trunks.grow_moss_on_ground = function(pos)
 	local on_ground = {x=pos.x, y=pos.y+1, z=pos.z}
 	local moss_type = math.random(1,21)
@@ -358,8 +348,8 @@ end
 
 biome_lib.register_on_generate({
     surface = {"default:dirt_with_grass"},
-    max_count = Moss_on_ground_Max_Count,
-    rarity = Moss_on_ground_Rarity,
+    max_count = 400,
+    rarity = 79,
     min_elevation = 1,
 	max_elevation = 40,
 	near_nodes = {
@@ -375,12 +365,10 @@ biome_lib.register_on_generate({
   },
   abstract_trunks.grow_moss_on_ground
 )
-end
 
 -----------------------------------------------------------------------------------------------
 -- MoSS & FuNGuS -- on trunks
 -----------------------------------------------------------------------------------------------
-if Moss_on_trunk == true then
 abstract_trunks.grow_moss_on_trunk = function(pos)
 	local on_ground = {x=pos.x, y=pos.y+1, z=pos.z}
 	local at_side_n = {x=pos.x, y=pos.y, z=pos.z+1}
@@ -458,8 +446,8 @@ biome_lib.register_on_generate({
 		"moretrees:willow_trunk",
 		"default:mossycobble"
 	},
-    max_count = Moss_on_trunk_Max_Count,
-    rarity = Moss_on_trunk_Rarity,
+    max_count = 640,
+    rarity = 24,
     min_elevation = 1,
 	max_elevation = 40,
     plantlife_limit = -0.9,
@@ -467,13 +455,10 @@ biome_lib.register_on_generate({
   },
   "abstract_trunks.grow_moss_on_trunk"
 )
-end
 
 -----------------------------------------------------------------------------------------------
 -- RooTS
 -----------------------------------------------------------------------------------------------
-if Roots == true then -- see settings.txt
-
 abstract_trunks.grow_roots = function(pos)
 	local right_here	= {x=pos.x  , y=pos.y  , z=pos.z  }
 	local below		= {x=pos.x  , y=pos.y-1, z=pos.z  }
@@ -523,5 +508,3 @@ biome_lib.register_on_generate({
   },
   "abstract_trunks.grow_roots"
 )
-
-end

@@ -239,98 +239,93 @@ minetest.register_node("trunks:twigs_roof_corner_2", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
-if Auto_Roof_Corner == true then
+local roof = "trunks:twigs_roof"
+local corner = "trunks:twigs_roof_corner"
+local corner_2 = "trunks:twigs_roof_corner_2"
 
-	local roof = "trunks:twigs_roof"
-	local corner = "trunks:twigs_roof_corner"
-	local corner_2 = "trunks:twigs_roof_corner_2"
+minetest.register_abm({
+	nodenames = {roof},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
 
-	minetest.register_abm({
-		nodenames = {roof},
-		interval = 1,
-		chance = 1,
-		action = function(pos)
+		local node_east =			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
+		local node_west =			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
+		local node_north =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
+		local node_south =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
+	-- corner 1
+		if ((node_west.name == roof and node_west.param2 == 0)
+		or (node_west.name == corner and node_west.param2 == 1))
+		and ((node_north.name == roof and node_north.param2 == 3)
+		or (node_north.name == corner and node_north.param2 == 3))
+		then
+			minetest.swap_node(pos, {name=corner, param2=0})
+		end
 
-			local node_east =			minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z  })
-			local node_west =			minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z  })
-			local node_north =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
-			local node_south =			minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
-		-- corner 1
-			if ((node_west.name == roof and node_west.param2 == 0)
-			or (node_west.name == corner and node_west.param2 == 1))
-			and ((node_north.name == roof and node_north.param2 == 3)
-			or (node_north.name == corner and node_north.param2 == 3))
-			then
-				minetest.swap_node(pos, {name=corner, param2=0})
-			end
+		if ((node_north.name == roof and node_north.param2 == 1)
+		or (node_north.name == corner and node_north.param2 == 2))
+		and ((node_east.name == roof and node_east.param2 == 0)
+		or (node_east.name == corner and node_east.param2 == 0))
+		then
+			minetest.swap_node(pos, {name=corner, param2=1})
+		end
 
-			if ((node_north.name == roof and node_north.param2 == 1)
-			or (node_north.name == corner and node_north.param2 == 2))
-			and ((node_east.name == roof and node_east.param2 == 0)
-			or (node_east.name == corner and node_east.param2 == 0))
-			then
-				minetest.swap_node(pos, {name=corner, param2=1})
-			end
+		if ((node_east.name == roof and node_east.param2 == 2)
+		or (node_east.name == corner and node_east.param2 == 3))
+		and ((node_south.name == roof and node_south.param2 == 1)
+		or (node_south.name == corner and node_south.param2 == 1))
+		then
+			minetest.swap_node(pos, {name=corner, param2=2})
+		end
 
-			if ((node_east.name == roof and node_east.param2 == 2)
-			or (node_east.name == corner and node_east.param2 == 3))
-			and ((node_south.name == roof and node_south.param2 == 1)
-			or (node_south.name == corner and node_south.param2 == 1))
-			then
-				minetest.swap_node(pos, {name=corner, param2=2})
-			end
+		if ((node_south.name == roof and node_south.param2 == 3)
+		or (node_south.name == corner and node_south.param2 == 0))
+		and ((node_west.name == roof and node_west.param2 == 2)
+		or (node_west.name == corner and node_west.param2 == 2))
+		then
+			minetest.swap_node(pos, {name=corner, param2=3})
+		end
+	-- corner 2
+		if ((node_west.name == roof and node_west.param2 == 2)
+		or (node_west.name == corner_2 and node_west.param2 == 1))
+		and ((node_north.name == roof and node_north.param2 == 1)
+		or (node_north.name == corner_2 and node_north.param2 == 3))
+		then
+			minetest.swap_node(pos, {name=corner_2, param2=0})
+		end
 
-			if ((node_south.name == roof and node_south.param2 == 3)
-			or (node_south.name == corner and node_south.param2 == 0))
-			and ((node_west.name == roof and node_west.param2 == 2)
-			or (node_west.name == corner and node_west.param2 == 2))
-			then
-				minetest.swap_node(pos, {name=corner, param2=3})
-			end
-		-- corner 2
-			if ((node_west.name == roof and node_west.param2 == 2)
-			or (node_west.name == corner_2 and node_west.param2 == 1))
-			and ((node_north.name == roof and node_north.param2 == 1)
-			or (node_north.name == corner_2 and node_north.param2 == 3))
-			then
-				minetest.swap_node(pos, {name=corner_2, param2=0})
-			end
+		if ((node_north.name == roof and node_north.param2 == 3)
+		or (node_north.name == corner_2 and node_north.param2 == 2))
+		and ((node_east.name == roof and node_east.param2 == 2)
+		or (node_east.name == corner_2 and node_east.param2 == 0))
+		then
+			minetest.swap_node(pos, {name=corner_2, param2=1})
+		end
 
-			if ((node_north.name == roof and node_north.param2 == 3)
-			or (node_north.name == corner_2 and node_north.param2 == 2))
-			and ((node_east.name == roof and node_east.param2 == 2)
-			or (node_east.name == corner_2 and node_east.param2 == 0))
-			then
-				minetest.swap_node(pos, {name=corner_2, param2=1})
-			end
+		if ((node_east.name == roof and node_east.param2 == 0)
+		or (node_east.name == corner_2 and node_east.param2 == 3))
+		and ((node_south.name == roof and node_south.param2 == 3)
+		or (node_south.name == corner_2 and node_south.param2 == 1))
+		then
+			minetest.swap_node(pos, {name=corner_2, param2=2})
+		end
 
-			if ((node_east.name == roof and node_east.param2 == 0)
-			or (node_east.name == corner_2 and node_east.param2 == 3))
-			and ((node_south.name == roof and node_south.param2 == 3)
-			or (node_south.name == corner_2 and node_south.param2 == 1))
-			then
-				minetest.swap_node(pos, {name=corner_2, param2=2})
-			end
+		if ((node_south.name == roof and node_south.param2 == 1)
+		or (node_south.name == corner_2 and node_south.param2 == 0))
+		and ((node_west.name == roof and node_west.param2 == 0)
+		or (node_west.name == corner_2 and node_west.param2 == 2))
+		then
+			minetest.swap_node(pos, {name=corner_2, param2=3})
+		end
 
-			if ((node_south.name == roof and node_south.param2 == 1)
-			or (node_south.name == corner_2 and node_south.param2 == 0))
-			and ((node_west.name == roof and node_west.param2 == 0)
-			or (node_west.name == corner_2 and node_west.param2 == 2))
-			then
-				minetest.swap_node(pos, {name=corner_2, param2=3})
-			end
-
-		end,
-	})
-end
+	end,
+})
 
 -- MM: The following stuff is just for testing purposes for now; no generating of roots.
 --     I'm not satisfied with this; they should be either bigger or a different drawtype.
 -----------------------------------------------------------------------------------------------
 -- RooTS
 -----------------------------------------------------------------------------------------------
-if Roots == true then -- see settings.txt
-
 local roots_cube =	{-2/16, -1/2, -3/16, 2/16, 1/16, 1/2}
 
 local roots_sheet = {0, -1/2, -1/2, 0, 1/16, 1/2}
@@ -400,7 +395,6 @@ for i in pairs(TRuNKS) do
 			minetest.log("error", string.format("[Trunks] warning: tree type '%s:%s' not found", MoD, TRuNK))
 		end
 	end
-end
 end
 
 minetest.register_alias("trunks:pine_trunkroot", "trunks:pine_treeroot")
