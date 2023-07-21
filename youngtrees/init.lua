@@ -1,11 +1,5 @@
 -- support for i18n
 local S = minetest.get_translator("youngtrees")
-abstract_youngtrees = {}
-
-local youngtrees_youngtrees_rarity = tonumber(minetest.settings:get("youngtrees_youngtrees_rarity")) or 100
-local youngtrees_youngtrees_rarity_fertility = tonumber(minetest.settings:get("youngtrees_youngtrees_rarity_fertility")) or 0.5
-local youngtrees_youngtrees_fertility = tonumber(minetest.settings:get("youngtrees_youngtrees_fertility")) or -0.3
-
 
 minetest.register_node("youngtrees:bamboo", {
 	description = S("Young Bamboo Tree"),
@@ -99,52 +93,75 @@ minetest.register_node("youngtrees:youngtree_bottom", {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
 	},
+	on_timer = function(pos, elapsed)
+		local function validateNode(node)
+			if not minetest.registered_nodes[node.name] or minetest.registered_nodes[node.name].drawtype ~= "airlike" then
+				return false
+			end
+			return true
+		end
+
+		local onePos, twoPos = vector.new(pos.x, pos.y+1, pos.z), vector.new(pos.x, pos.y+2, pos.z)
+		local oneAbove, twoAbove = minetest.get_node_or_nil(onePos), minetest.get_node_or_nil(twoPos)
+        if not oneAbove or not twoAbove or not validateNode(oneAbove) or not validateNode(twoAbove) then
+			minetest.swap_node(pos, {name="air"})
+            return
+		end
+
+		if math.random() > 0.5 then
+			minetest.set_node(onePos, {name="youngtrees:youngtree_top"})
+		else
+			minetest.set_node(onePos, {name="youngtrees:youngtree_middle"})
+			minetest.set_node(twoPos, {name="youngtrees:youngtree_top"})
+		end
+	end,
 	groups = {snappy=3,flammable=2,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	drop = 'trunks:twig_1'
 })
 
-
-abstract_youngtrees.grow_youngtree = function(pos)
-	local height = math.random(1,3)
-	abstract_youngtrees.grow_youngtree_node(pos,height)
-end
-
-
-abstract_youngtrees.grow_youngtree_node = function(pos, height)
-	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
-
-	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
-	or minetest.get_node(right_here).name == "default:junglegrass" then
-		if height == 1 then
-			minetest.swap_node(right_here, {name="youngtrees:youngtree_top"})
-		end
-		if height == 2 then
-			minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
-			minetest.swap_node(above_right_here, {name="youngtrees:youngtree_top"})
-		end
-		if height == 3 then
-			local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
-			minetest.swap_node(right_here, {name="youngtrees:youngtree_bottom"})
-			minetest.swap_node(above_right_here, {name="youngtrees:youngtree_middle"})
-			minetest.swap_node(two_above_right_here, {name="youngtrees:youngtree_top"})
-		end
-	end
-end
-
-
-biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"stoneage:grass_with_silex",
-			"sumpf:peat",
-			"sumpf:sumpf"
-		},
-		rarity = youngtrees_youngtrees_rarity,
-		rarity_fertility = youngtrees_youngtrees_rarity_fertility,
-		plantlife_limit = youngtrees_youngtrees_fertility,
-		min_elevation = 1, -- above sea level
+minetest.register_decoration({
+	name = "youngtrees:youngtree",
+	decoration = {
+		"youngtrees:youngtree_bottom"
 	},
-	abstract_youngtrees.grow_youngtree
-)
+	fill_ratio = 0.0005,
+	y_min = 1,
+	y_max = 40,
+	param2 = 0,
+	param2_max = 3,
+	place_on = {
+		"default:dirt_with_grass",
+		"stoneage:grass_with_silex",
+		"sumpf:peat",
+		"sumpf:sumpf"
+	},
+	deco_type = "simple",
+	flags = "all_floors",
+})
+
+--[[
+	this is purposefully wrapped in a on mods loaded callback to that it gets the proper ids
+	if other mods clear the registered decorations
+]]
+local did
+minetest.register_on_mods_loaded(function()
+	did = minetest.get_decoration_id("youngtrees:youngtree")
+	minetest.set_gen_notify("decoration", {did})
+end)
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+    local g = minetest.get_mapgen_object("gennotify")
+    local locations = {}
+
+	local deco_locations = g["decoration#" .. did] or {}
+	for _, pos in pairs(deco_locations) do
+		locations[#locations+1] = pos
+	end
+
+    if #locations == 0 then return end
+    for _, pos in ipairs(locations) do
+        local timer = minetest.get_node_timer({x=pos.x, y=pos.y+1, z=pos.z})
+        timer:start(0)
+    end
+end)
