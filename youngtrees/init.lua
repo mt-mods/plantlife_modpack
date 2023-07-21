@@ -21,28 +21,8 @@ minetest.register_node("youngtrees:bamboo", {
 	drop = 'trunks:twig_1'
 })
 
-minetest.register_node("youngtrees:youngtree2_middle",{
-	description = S("Young Tree 2 (middle)"),
-	drawtype="nodebox",
-	tiles = {"youngtree2branch.png"},
-	use_texture_alpha = "clip",
-	inventory_image = "youngtree2branch.png",
-	wield_image = "youngtree2branch.png",
-	paramtype = "light",
-	walkable = false,
-	is_ground_content = true,
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{0.125000,-0.500000,-0.500000,0.500000,-0.187500,-0.125000}, --NodeBox 1
-			{-0.187500,-0.187500,-0.500000,0.500000,0.125000,0.250000}, --NodeBox 2
-			{-0.500000,0.125000,-0.500000,0.500000,0.500000,0.500000}, --NodeBox 3
-		}
-	},
-	groups = {snappy=3,flammable=2,attached_node=1},
-	sounds = default.node_sound_leaves_defaults(),
-	drop = 'trunks:twig_1'
-})
+
+minetest.register_alias("youngtrees:youngtree2_middle", "default:bush_stem")
 
 minetest.register_node("youngtrees:youngtree_top", {
 	description = S("Young Tree (top)"),
