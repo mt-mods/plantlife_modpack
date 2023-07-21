@@ -15,8 +15,8 @@ biome_lib.register_on_generate(
 			"sumpf:peat",
 			"sumpf:sumpf"
 		},
-		max_count = TALL_GRASS_PER_MAPBLOCK,
-		rarity = 101 - TALL_GRASS_RARITY,
+		max_count = 4800,
+		rarity = 101 - 75,
 		min_elevation = 1, -- above sea level
 		plantlife_limit = -0.9,
 		check_air = true,

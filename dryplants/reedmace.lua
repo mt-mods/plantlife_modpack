@@ -276,8 +276,8 @@ minetest.register_node("dryplants:reedmace_sapling", {
 -- abm
 minetest.register_abm({
 	nodenames = "dryplants:reedmace_sapling",
-	interval = REEDMACE_GROWING_TIME,
-	chance = 100/REEDMACE_GROWING_CHANCE,
+	interval = 600,
+	chance = 100/5,
 	action = function(pos, node, _, _)
 		if string.find(minetest.get_node({x = pos.x + 1, y = pos.y, z = pos.z	 }).name, "default:water")
 		or string.find(minetest.get_node({x = pos.x,	 y = pos.y, z = pos.z + 1}).name, "default:water")
@@ -357,8 +357,8 @@ biome_lib.register_on_generate({
 		"sumpf:peat",
 		"sumpf:sumpf"
 	},
-    max_count = REEDMACE_NEAR_WATER_PER_MAPBLOCK,
-    rarity = 101 - REEDMACE_NEAR_WATER_RARITY,
+    max_count = 35,
+    rarity = 101 - 40,
 	--rarity = 60,
     min_elevation = 1, -- above sea level
 	near_nodes = {"default:water_source","sumpf:dirtywater_source","sumpf:sumpf"},
@@ -380,8 +380,8 @@ biome_lib.register_on_generate({
 		"sumpf:peat",
 		"sumpf:sumpf"
 	},
-    max_count = REEDMACE_IN_WATER_PER_MAPBLOCK,
-	rarity = 101 - REEDMACE_IN_WATER_RARITY,
+    max_count = 35,
+	rarity = 101 - 65,
     --rarity = 35,
     min_elevation = 0, -- a bit below sea level
 	max_elevation = 0, -- ""
@@ -398,8 +398,8 @@ biome_lib.register_on_generate({
 		"default:sand",
 		"sumpf:sumpf"
 	},
-    max_count = REEDMACE_FOR_OASES_PER_MAPBLOCK,
-    rarity = 101 - REEDMACE_FOR_OASES_RARITY,
+    max_count = 35,
+    rarity = 101 - 90,
 	--rarity = 10,
     neighbors = {"default:water_source","sumpf:dirtywater_source","sumpf:sumpf"},
 	ncount = 1,

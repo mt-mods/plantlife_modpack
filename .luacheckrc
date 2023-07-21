@@ -1,14 +1,21 @@
 unused_args = false
 allow_defined_top = true
+max_line_length = 185
 
-read_globals = {
-	"biome_lib",
-	"DIR_DELIM",
-	"minetest", "core",
-	"dump",
-	"vector", "nodeupdate",
-	"VoxelManip", "VoxelArea",
-	"PseudoRandom", "ItemStack",
-	"default",
+exclude_files = {".luacheckrc"}
+
+globals = {
+	"biome_lib", "abstract_dryplants",
+	"bushes_classic", "abstract_trunks",
 }
 
+read_globals = {
+	table = {fields = {"copy"}},
+
+	"minetest", "ItemStack",
+	"vector",
+
+	"default",
+	"moretrees",
+	"dump",
+}

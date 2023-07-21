@@ -12,17 +12,12 @@ abstract_dryplants = {}
 local S = minetest.get_translator("dryplants")
 
 dofile(minetest.get_modpath("dryplants").."/crafting.lua")
-dofile(minetest.get_modpath("dryplants").."/settings.txt")
 dofile(minetest.get_modpath("dryplants").."/reed.lua")
-if REEDMACE_GENERATES == true then
-	dofile(minetest.get_modpath("dryplants").."/reedmace.lua")
-end
-if SMALL_JUNCUS_GENERATES == true then
-	dofile(minetest.get_modpath("dryplants").."/juncus.lua")
-end
-if EXTRA_TALL_GRASS_GENERATES == true then
-	dofile(minetest.get_modpath("dryplants").."/moregrass.lua")
-end
+
+dofile(minetest.get_modpath("dryplants").."/reedmace.lua")
+dofile(minetest.get_modpath("dryplants").."/juncus.lua")
+dofile(minetest.get_modpath("dryplants").."/moregrass.lua")
+
 --dofile(minetest.get_modpath("dryplants").."/meadowvariation.lua")
 
 -----------------------------------------------------------------------------------------------
@@ -140,7 +135,7 @@ minetest.register_node("dryplants:grass", {
 -----------------------------------------------------------------------------------------------
 minetest.register_abm({
 	nodenames = {"dryplants:grass"},
-	interval = HAY_DRYING_TIME, --1200, -- 20 minutes: a minetest-day/night-cycle
+	interval = 3600, --1200, -- 20 minutes: a minetest-day/night-cycle
 	chance = 1,
 	action = function(pos)
 		minetest.swap_node(pos, {name="dryplants:hay"})
@@ -186,8 +181,8 @@ minetest.register_node("dryplants:grass_short", {
 -----------------------------------------------------------------------------------------------
 minetest.register_abm({
 	nodenames = {"dryplants:grass_short"},
-	interval = GRASS_REGROWING_TIME, --1200, -- 20 minutes: a minetest-day/night-cycle
-	chance = 100/GRASS_REGROWING_CHANCE,
+	interval = 1200, --1200, -- 20 minutes: a minetest-day/night-cycle
+	chance = 100/1200,
 	action = function(pos)
 		-- Only become dirt with grass if no cut grass or hay lies on top
 		local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
@@ -196,3 +191,5 @@ minetest.register_abm({
 		end
 	end,
 })
+
+abstract_dryplants.loaded = true
