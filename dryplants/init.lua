@@ -12,7 +12,6 @@ abstract_dryplants = {}
 local S = minetest.get_translator("dryplants")
 
 dofile(minetest.get_modpath("dryplants").."/crafting.lua")
-dofile(minetest.get_modpath("dryplants").."/settings.txt")
 dofile(minetest.get_modpath("dryplants").."/reed.lua")
 
 dofile(minetest.get_modpath("dryplants").."/reedmace.lua")
