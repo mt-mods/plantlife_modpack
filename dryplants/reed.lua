@@ -168,10 +168,10 @@ for i in pairs(CoRNeR) do
 end
 
 -----------------------------------------------------------------------------------------------
--- Wet Reed Roof Corner
+-- Wet Reed Roof Corner 1
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:wetreed_roof_corner", {
-	description = S("Wet Reed Roof Corner"),
+	description = S("Wet Reed Roof Corner 1"),
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -316,10 +316,10 @@ minetest.register_node("dryplants:reed_roof", {
 })
 
 -----------------------------------------------------------------------------------------------
--- Reed Roof Corner
+-- Reed Roof Corner 1
 -----------------------------------------------------------------------------------------------
 minetest.register_node("dryplants:reed_roof_corner", {
-	description = S("Reed Roof Corner"),
+	description = S("Reed Roof Corner 1"),
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
