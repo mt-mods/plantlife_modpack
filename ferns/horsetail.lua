@@ -34,7 +34,7 @@ local function create_nodes()
 		local node_drop = "ferns:horsetail_04"
 
 		if i == 1 then
-			node_desc = S("Young Horsetail (Equisetum) 1")
+			node_desc = S("Young Horsetail (Equisetum) @1", 1)
 			node_on_use = minetest.item_eat(1) -- young ones edible https://en.wikipedia.org/wiki/Equisetum
 			node_drop = node_name
 		elseif i == 4 then
