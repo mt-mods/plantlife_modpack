@@ -37,6 +37,9 @@ end
 -- FUNCTIONS
 
 local function on_dig(pos, node, player)
+	if not player or minetest.is_protected(pos, player:get_player_name()) then
+		return
+	end
 	local vine_name_end = node.name:gsub("_middle", "_end")
 	local drop_item = "vines:vines"
 	if enable_vines == false then
