@@ -54,7 +54,7 @@ for i in pairs(NoDe) do
 			local direction = minetest.dir_to_facedir(placer:get_look_dir())
 			if minetest.get_node(pt.above).name=="air" then
 				minetest.swap_node(pt.above, {name="trunks:twig_"..math.random(1,4), param2=direction})
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.is_creative_enabled(playername) then
 					itemstack:take_item()
 				end
 				return itemstack

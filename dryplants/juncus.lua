@@ -64,7 +64,7 @@ minetest.register_node("dryplants:juncus", {
 		else
 			minetest.swap_node(right_here, {name="dryplants:juncus"})
 		end
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.is_creative_enabled(playername) then
 			itemstack:take_item()
 		end
 		return itemstack

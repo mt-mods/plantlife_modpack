@@ -112,7 +112,7 @@ minetest.register_node("cavestuff:stalactite_1",{
 				name = "cavestuff:stalactite_"..math.random(1,3),
 				param2 = minetest.dir_to_wallmounted(vector.multiply(dir, -1))
 			})
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.is_creative_enabled(playername) then
 				itemstack:take_item()
 			end
 		end
