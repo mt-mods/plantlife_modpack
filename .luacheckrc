@@ -6,7 +6,7 @@ exclude_files = {".luacheckrc"}
 
 globals = {
 	"biome_lib", "abstract_dryplants",
-	"bushes_classic", "abstract_trunks",
+	"bushes_classic",
 }
 
 read_globals = {
