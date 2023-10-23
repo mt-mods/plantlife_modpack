@@ -229,18 +229,18 @@ minetest.register_on_mods_loaded(function()
 end)
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
-    local g = minetest.get_mapgen_object("gennotify")
-    local locations = {}
+	local g = minetest.get_mapgen_object("gennotify")
+	local locations = {}
 
 	local deco_locations = g["decoration#" .. did] or {}
 	for _, pos in pairs(deco_locations) do
 		locations[#locations+1] = pos
 	end
 
-    if #locations == 0 then return end
-    for _, pos in ipairs(locations) do
+	if #locations == 0 then return end
+	for _, pos in ipairs(locations) do
 		grow_bush(pos)
-    end
+	end
 end)
 
 local function grow_youngtree_node2(pos, height)
@@ -299,16 +299,16 @@ minetest.register_on_mods_loaded(function()
 end)
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
-    local g = minetest.get_mapgen_object("gennotify")
-    local locations = {}
+	local g = minetest.get_mapgen_object("gennotify")
+	local locations = {}
 
 	local deco_locations = g["decoration#" .. did2] or {}
 	for _, pos in pairs(deco_locations) do
 		locations[#locations+1] = pos
 	end
 
-    if #locations == 0 then return end
-    for _, pos in ipairs(locations) do
+	if #locations == 0 then return end
+	for _, pos in ipairs(locations) do
 		grow_youngtree2(pos)
-    end
+	end
 end)
