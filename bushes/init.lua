@@ -8,16 +8,9 @@
 
 -- support for i18n
 local S = minetest.get_translator("bushes")
-abstract_bushes = {}
 
-local bushes_bush_rarity = tonumber(minetest.settings:get("bushes_bush_rarity")) or 99.9
-local bushes_bush_rarity_fertility = tonumber(minetest.settings:get("bushes_bush_rarity_fertility")) or 1.5
-local bushes_bush_fertility = tonumber(minetest.settings:get("bushes_bush_fertility")) or -1
-
-local bushes_youngtrees_rarity = tonumber(minetest.settings:get("bushes_youngtrees_rarity")) or 100
-local bushes_youngtrees_rarity_fertility = tonumber(minetest.settings:get("bushes_youngtrees_rarity_fertility")) or 0.6
-local bushes_youngtrees_fertility = tonumber(minetest.settings:get("bushes_youngtrees_fertility")) or -0.5
-
+local bush_rarity = minetest.settings:get("bushes.bush_rarity") or 0.008
+local youngtree_rarity = minetest.settings:get("youngtree.bush_rarity") or 0.006
 
 minetest.register_node("bushes:youngtree2_bottom", {
 	description = S("Young Tree 2 (bottom)"),
@@ -142,44 +135,12 @@ for i in pairs(BushLeafNode) do
 	})
 end
 
-abstract_bushes.grow_bush = function(pos)
-	local leaf_type = math.random(1,2)
-	local bush_side_height = math.random(0,1)
-		local chance_of_bush_node_right = math.random(1,10)
-		if chance_of_bush_node_right> 5 then
-			local right_pos = {x=pos.x+1, y=pos.y+bush_side_height, z=pos.z}
-			abstract_bushes.grow_bush_node(right_pos,3,leaf_type)
-		end
-		local chance_of_bush_node_left = math.random(1,10)
-		if chance_of_bush_node_left> 5 then
-			bush_side_height = math.random(0,1)
-			local left_pos = {x=pos.x-1, y=pos.y+bush_side_height, z=pos.z}
-			abstract_bushes.grow_bush_node(left_pos,1,leaf_type)
-		end
-		local chance_of_bush_node_front = math.random(1,10)
-		if chance_of_bush_node_front> 5 then
-			bush_side_height = math.random(0,1)
-			local front_pos = {x=pos.x, y=pos.y+bush_side_height, z=pos.z+1}
-			abstract_bushes.grow_bush_node(front_pos,2,leaf_type)
-		end
-		local chance_of_bush_node_back = math.random(1,10)
-		if chance_of_bush_node_back> 5 then
-			bush_side_height = math.random(0,1)
-			local back_pos = {x=pos.x, y=pos.y+bush_side_height, z=pos.z-1}
-			abstract_bushes.grow_bush_node(back_pos,0,leaf_type)
-		end
-
-abstract_bushes.grow_bush_node(pos,5,leaf_type)
-end
-
-
-abstract_bushes.grow_bush_node = function(pos,dir, leaf_type)
+local function grow_bush_node(pos, dir, leaf_type)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
 
 	local bush_branch_type = 2
 
-	-- MM: I'm not sure if it's slower now than before...
 	if dir ~= 5 and leaf_type == 1 then
 		bush_branch_type = 2
 	end
@@ -195,53 +156,108 @@ abstract_bushes.grow_bush_node = function(pos,dir, leaf_type)
 		dir = 1
 	end
 
-	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
-	or minetest.get_node(right_here).name == "default:junglegrass" then
+	local nodename = minetest.get_node(right_here).name
+	if nodename == "air" or nodename == "default:junglegrass" then -- instead of check_air = true,
 		minetest.swap_node(right_here, {name="bushes:bushbranches"..bush_branch_type , param2=dir})
-						--minetest.chat_send_all("leaf_type: (" .. leaf_type .. ")")
 		minetest.swap_node(above_right_here, {name="bushes:BushLeaves"..leaf_type})
+
 		local chance_of_high_leaves = math.random(1,10)
-		if chance_of_high_leaves> 5 then
+		if chance_of_high_leaves > 5 then
 			local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
-							--minetest.chat_send_all("leaf_type: (" .. leaf_type .. ")")
 			minetest.swap_node(two_above_right_here, {name="bushes:BushLeaves"..leaf_type})
 		end
 	end
 end
 
+local function grow_bush(pos)
+	-- replace possible grass nodes
+	minetest.swap_node({x=pos.x, y=pos.y+1, z=pos.z}, {name="air"})
 
-biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"stoneage:grass_with_silex",
-			"sumpf:peat",
-			"sumpf:sumpf"
-		},
-		rarity = bushes_bush_rarity,
-		rarity_fertility = bushes_bush_rarity_fertility,
-		plantlife_limit = bushes_bush_fertility,
-		min_elevation = 1, -- above sea level
-	},
-	abstract_bushes.grow_bush
-)
+	local leaf_type = math.random(1,2)
+	local bush_side_height = math.random(0,1)
 
-abstract_bushes.grow_youngtree2 = function(pos)
-	local height = math.random(4,5)
-	abstract_bushes.grow_youngtree_node2(pos,height)
+	local chance_of_bush_node_right = math.random(1,10)
+	if chance_of_bush_node_right > 5 then
+		local right_pos = {x=pos.x+1, y=pos.y+bush_side_height, z=pos.z}
+		grow_bush_node(right_pos,3,leaf_type)
+	end
+
+	local chance_of_bush_node_left = math.random(1,10)
+	if chance_of_bush_node_left > 5 then
+		local left_pos = {x=pos.x-1, y=pos.y+bush_side_height, z=pos.z}
+		grow_bush_node(left_pos,1,leaf_type)
+	end
+
+	local chance_of_bush_node_front = math.random(1,10)
+	if chance_of_bush_node_front > 5 then
+		local front_pos = {x=pos.x, y=pos.y+bush_side_height, z=pos.z+1}
+		grow_bush_node(front_pos,2,leaf_type)
+	end
+
+	local chance_of_bush_node_back = math.random(1,10)
+	if chance_of_bush_node_back > 5 then
+		local back_pos = {x=pos.x, y=pos.y+bush_side_height, z=pos.z-1}
+		grow_bush_node(back_pos,0,leaf_type)
+	end
+
+	grow_bush_node(pos,5,leaf_type)
 end
 
+minetest.register_decoration({
+	name = "bushes:bush",
+	decoration = {
+		"air"
+	},
+	fill_ratio = bush_rarity,
+	y_min = 1,
+	y_max = 40,
+	place_on = {
+		"default:dirt_with_grass",
+		"stoneage:grass_with_silex",
+		"sumpf:peat",
+		"sumpf:sumpf"
+	},
+	deco_type = "simple",
+	flags = "all_floors",
+})
 
-abstract_bushes.grow_youngtree_node2 = function(pos, height)
+--[[
+	this is purposefully wrapped in a on mods loaded callback to that it gets the proper ids
+	if other mods clear the registered decorations
+]]
+local did
+minetest.register_on_mods_loaded(function()
+	did = minetest.get_decoration_id("bushes:bush")
+	minetest.set_gen_notify("decoration", {did})
+end)
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	local g = minetest.get_mapgen_object("gennotify")
+	local locations = {}
+
+	local deco_locations = g["decoration#" .. did] or {}
+	for _, pos in pairs(deco_locations) do
+		locations[#locations+1] = pos
+	end
+
+	if #locations == 0 then return end
+	for _, pos in ipairs(locations) do
+		grow_bush(pos)
+	end
+end)
+
+local function grow_youngtree_node2(pos, height)
 	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
 	local above_right_here = {x=pos.x, y=pos.y+2, z=pos.z}
 	local two_above_right_here = {x=pos.x, y=pos.y+3, z=pos.z}
 	local three_above_right_here = {x=pos.x, y=pos.y+4, z=pos.z}
 
-	if minetest.get_node(right_here).name == "air"	-- instead of check_air = true,
-	or minetest.get_node(right_here).name == "default:junglegrass" then
+	local nodename = minetest.get_node(right_here).name
+	if nodename == "air" or nodename == "default:junglegrass" then -- instead of check_air = true,
 		if height == 4 then
 			local two_above_right_here_south = {x=pos.x, y=pos.y+3, z=pos.z-1}
 			local three_above_right_here_south = {x=pos.x, y=pos.y+4, z=pos.z-1}
+
 			minetest.swap_node(right_here, {name="bushes:youngtree2_bottom"})
 			minetest.swap_node(above_right_here, {name="bushes:youngtree2_bottom"})
 			minetest.swap_node(two_above_right_here, {name="bushes:bushbranches2"	, param2=2})
@@ -252,18 +268,50 @@ abstract_bushes.grow_youngtree_node2 = function(pos, height)
 	end
 end
 
+local function grow_youngtree2(pos)
+	local height = math.random(4,5)
+	grow_youngtree_node2(pos,height)
+end
 
-biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"stoneage:grass_with_silex",
-			"sumpf:peat",
-			"sumpf:sumpf"
-		},
-		rarity = bushes_youngtrees_rarity,
-		rarity_fertility = bushes_youngtrees_rarity_fertility,
-		plantlife_limit = bushes_youngtrees_fertility,
-		min_elevation = 1, -- above sea level
+minetest.register_decoration({
+	name = "bushes:youngtree",
+	decoration = {
+		"air"
 	},
-	abstract_bushes.grow_youngtree2
-)
+	fill_ratio = youngtree_rarity,
+	y_min = 1,
+	y_max = 40,
+	place_on = {
+		"default:dirt_with_grass",
+		"stoneage:grass_with_silex",
+		"sumpf:peat",
+		"sumpf:sumpf"
+	},
+	deco_type = "simple",
+	flags = "all_floors",
+})
+
+--[[
+	this is purposefully wrapped in a on mods loaded callback to that it gets the proper ids
+	if other mods clear the registered decorations
+]]
+local did2
+minetest.register_on_mods_loaded(function()
+	did2 = minetest.get_decoration_id("bushes:youngtree")
+	minetest.set_gen_notify("decoration", {did2})
+end)
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	local g = minetest.get_mapgen_object("gennotify")
+	local locations = {}
+
+	local deco_locations = g["decoration#" .. did2] or {}
+	for _, pos in pairs(deco_locations) do
+		locations[#locations+1] = pos
+	end
+
+	if #locations == 0 then return end
+	for _, pos in ipairs(locations) do
+		grow_youngtree2(pos)
+	end
+end)
