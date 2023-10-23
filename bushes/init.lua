@@ -9,6 +9,9 @@
 -- support for i18n
 local S = minetest.get_translator("bushes")
 
+local bush_rarity = minetest.settings:get("bushes.bush_rarity") or 0.008
+local youngtree_rarity = minetest.settings:get("youngtree.bush_rarity") or 0.006
+
 minetest.register_node("bushes:youngtree2_bottom", {
 	description = S("Young Tree 2 (bottom)"),
 	drawtype="nodebox",
@@ -205,7 +208,7 @@ minetest.register_decoration({
 	decoration = {
 		"air"
 	},
-	fill_ratio = 0.008,
+	fill_ratio = bush_rarity,
 	y_min = 1,
 	y_max = 40,
 	place_on = {
@@ -275,7 +278,7 @@ minetest.register_decoration({
 	decoration = {
 		"air"
 	},
-	fill_ratio = 0.006,
+	fill_ratio = youngtree_rarity,
 	y_min = 1,
 	y_max = 40,
 	place_on = {
