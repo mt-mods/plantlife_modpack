@@ -4,6 +4,8 @@
 -- support for i18n
 local S = minetest.get_translator("molehills")
 
+local molehill_rarity = minetest.settings:get("molehills.molehill_rarity") or 0.002
+
 -- Node
 local mh_cbox = {
 	type = "fixed",
@@ -38,7 +40,7 @@ minetest.register_decoration({
 	decoration = {
 		"molehills:molehill"
 	},
-	fill_ratio = 0.002,
+	fill_ratio = molehill_rarity,
 	y_min = 1,
 	y_max = 40,
 	place_on = {

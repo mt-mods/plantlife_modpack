@@ -1,5 +1,2 @@
-#Sunflowers maximum count
-pl_sunflowers_max_count (Sunflowers maximum count) int 10 1 1000
-
-#Sunflowers rarity
-pl_sunflowers_rarity (Sunflowers rarity) int 25 0 100
+# Sunflower rarity (higher number -> higher probability)
+pl_sunflowers.sunflower_rarity (Sunflower rarity) float 0.005 0.0001 1

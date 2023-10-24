@@ -1,6 +1,8 @@
 -- support for i18n
 local S = minetest.get_translator("pl_sunflowers")
 
+local sunflower_rarity = minetest.settings:get("pl_sunflowers.sunflower_rarity") or 0.005
+
 local box = {
 	type="fixed",
 	fixed = { { -0.2, -0.5, -0.2, 0.2, 0.5, 0.2 } },
@@ -40,7 +42,7 @@ minetest.register_decoration({
 	decoration = {
 		"flowers:sunflower"
 	},
-	fill_ratio = 0.005,
+	fill_ratio = sunflower_rarity,
 	y_min = 1,
 	y_max = 40,
 	param2 = 0,
