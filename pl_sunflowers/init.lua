@@ -1,7 +1,7 @@
 -- support for i18n
 local S = minetest.get_translator("pl_sunflowers")
 
-local sunflower_rarity = minetest.settings:get("sunflowers.sunflower_rarity") or 0.005
+local sunflower_rarity = minetest.settings:get("pl_sunflowers.sunflower_rarity") or 0.005
 
 local box = {
 	type="fixed",
