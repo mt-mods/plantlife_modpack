@@ -1,6 +1,8 @@
 -- support for i18n
 local S = minetest.get_translator("youngtrees")
 
+local youngtree_rarity = minetest.settings:get("youngtrees.youngtree_rarity") or 0.0005
+
 minetest.register_node("youngtrees:bamboo", {
 	description = S("Young Bamboo Tree"),
 	drawtype="nodebox",
@@ -105,7 +107,7 @@ minetest.register_decoration({
 	decoration = {
 		"youngtrees:youngtree_bottom"
 	},
-	fill_ratio = 0.0005,
+	fill_ratio = youngtree_rarity,
 	y_min = 1,
 	y_max = 40,
 	param2 = 0,
