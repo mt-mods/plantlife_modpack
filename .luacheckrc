@@ -5,7 +5,7 @@ max_line_length = 185
 exclude_files = {".luacheckrc"}
 
 globals = {
-	"biome_lib", "abstract_dryplants",
+	"biome_lib",
 	"bushes_classic",
 }
 
