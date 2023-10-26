@@ -2,9 +2,21 @@
 local S = minetest.get_translator("pl_seaweed")
 
 local seaweed_rarity = minetest.settings:get("pl_seaweed.seaweed_rarity") or 0.1
+local temp_min = -0.22
+local temp_max = -0.64
 
 local function get_ndef(name)
 	return minetest.registered_nodes[name] or {}
+end
+
+local function check_heat(pos)
+	local data = minetest.get_biome_data(pos)
+	local temp = 1 - (data.heat / 100 * 2)
+
+	if temp <= temp_min and temp >= temp_max then
+		return true
+	end
+	return false -- wrong heat
 end
 
 local algae_list = { {nil}, {2}, {3}, {4} }
@@ -120,6 +132,39 @@ local function grow_seaweed(pos)
 	minetest.swap_node(right_here, {name=node_name, param2=math.random(1,3)})
 end
 
+local function grow_seaweed_1(pos)
+	if #minetest.find_nodes_in_area(
+		{x = pos.x-4, y = pos.y-1, z = pos.z-4},
+		{x = pos.x+4, y = pos.y+1, z = pos.z+4},
+		{"default:dirt_with_grass"}
+	) < 1 then return end
+	grow_seaweed(pos)
+end
+
+local function grow_seaweed_2(pos)
+	if #minetest.find_nodes_in_area(
+		{x = pos.x-1, y = pos.y+1, z = pos.z-1},
+		{x = pos.x+1, y = pos.y+1, z = pos.z+1},
+		{"default:sand"}
+	) < 3 then return end
+	if not check_heat(pos) then
+		return
+	end
+	grow_seaweed(pos)
+end
+
+local function grow_seaweed_3(pos)
+	if #minetest.find_nodes_in_area(
+		{x = pos.x-1, y = pos.y, z = pos.z-1},
+		{x = pos.x+1, y = pos.y, z = pos.z+1},
+		{"default:water_source"}
+	) < 3 then return end
+	if not check_heat(pos) then
+		return
+	end
+	grow_seaweed(pos)
+end
+
 minetest.register_decoration({
 	name = "pl_seaweed:seaweed_water",
 	decoration = {
@@ -132,7 +177,7 @@ minetest.register_decoration({
 		"default:water_source"
 	},
 	deco_type = "simple",
-	flags = "all_floors, liquid_surface",
+	flags = "all_floors",
 	spawn_by = {
 		"default:dirt_with_grass",
 	},
@@ -153,7 +198,7 @@ minetest.register_decoration({
 		"default:water_source"
 	},
 	deco_type = "simple",
-	flags = "all_floors, liquid_surface",
+	flags = "all_floors",
 	spawn_by = {
 		"default:sand",
 	},
@@ -198,24 +243,20 @@ end)
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local g = minetest.get_mapgen_object("gennotify")
-	local locations = {}
 
 	local deco_locations_1 = g["decoration#" .. did] or {}
 	local deco_locations_2 = g["decoration#" .. did2] or {}
 	local deco_locations_3 = g["decoration#" .. did3] or {}
 
 	for _, pos in pairs(deco_locations_1) do
-		locations[#locations+1] = pos
-	end
-	for _, pos in pairs(deco_locations_2) do
-		locations[#locations+1] = pos
-	end
-	for _, pos in pairs(deco_locations_3) do
-		locations[#locations+1] = pos
+		grow_seaweed_1(pos)
 	end
 
-	if #locations == 0 then return end
-	for _, pos in ipairs(locations) do
-		grow_seaweed(pos)
+	for _, pos in pairs(deco_locations_2) do
+		grow_seaweed_2(pos)
+	end
+
+	for _, pos in pairs(deco_locations_3) do
+		grow_seaweed_3(pos)
 	end
 end)
