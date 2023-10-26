@@ -1,13 +1,3 @@
--- by Mossmanikin
--- textures & ideas partly by Neuromancer
-
--- Contains code from:		default, farming
--- Looked at code from:		darkage, sickle, stairs
--- Dependencies:			default, farming, biome_lib
--- Supports:
------------------------------------------------------------------------------------------------
-abstract_dryplants = {}
-
 -- support for i18n
 local S = minetest.get_translator("dryplants")
 
@@ -191,5 +181,3 @@ minetest.register_abm({
 		end
 	end,
 })
-
-abstract_dryplants.loaded = true
