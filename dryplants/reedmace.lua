@@ -326,7 +326,7 @@ minetest.register_entity("dryplants:reedmace_water_entity",{
 minetest.register_decoration({
 	name = "dryplants:reedmace_swamp",
 	decoration = {"air"},
-	fill_ratio = "0.1",
+	fill_ratio = "0.05",
 	y_min = 1,
 	y_max = 40,
 	place_on = {
@@ -375,7 +375,7 @@ minetest.register_decoration({
 minetest.register_decoration({
 	name = "dryplants:reedmace_beach",
 	decoration = {"air"},
-	fill_ratio = "0.1",
+	fill_ratio = "0.05",
 	y_min = 1,
 	y_max = 40,
 	place_on = {
