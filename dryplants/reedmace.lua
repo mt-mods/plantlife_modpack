@@ -418,7 +418,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 	if #locations == 0 then return end
 	for _, pos in ipairs(locations) do
-		print(minetest.pos_to_string(pos))
 		grow_reedmace(pos)
 	end
 end)
