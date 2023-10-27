@@ -1,7 +1,7 @@
 -- support for i18n
 local S = minetest.get_translator("pl_waterlilies")
 
-local fill_ratio = 0.03
+local fill_ratio = minetest.settings:get("pl_waterlilies.waterlily_rarity") or 0.03
 
 local function get_ndef(name)
 	return minetest.registered_nodes[name] or {}
