@@ -1,22 +1,10 @@
 -- support for i18n
 local S = minetest.get_translator("pl_seaweed")
 
-local seaweed_rarity = minetest.settings:get("pl_seaweed.seaweed_rarity") or 0.1
-local temp_min = -0.22
-local temp_max = -0.64
+local seaweed_rarity = minetest.settings:get("pl_seaweed.seaweed_rarity") or 0.06
 
 local function get_ndef(name)
 	return minetest.registered_nodes[name] or {}
-end
-
-local function check_heat(pos)
-	local data = minetest.get_biome_data(pos)
-	local temp = 1 - (data.heat / 100 * 2)
-
-	if temp <= temp_min and temp >= temp_max then
-		return true
-	end
-	return false -- wrong heat
 end
 
 local algae_list = { {nil}, {2}, {3}, {4} }
@@ -55,6 +43,7 @@ for i in ipairs(algae_list) do
 			fixed = { -0.5, -0.49, -0.5, 0.5, -0.49, 0.5 },
 		},
 		buildable_to = true,
+
 		liquids_pointable = true,
 		drop = "flowers:seaweed",
 		on_place = function(itemstack, placer, pointed_thing)
@@ -85,9 +74,11 @@ for i in ipairs(algae_list) do
 
 			local pname = placer:get_player_name()
 			if not minetest.is_protected(place_pos, pname) then
-				local nodename
+
+			local nodename = "default:cobble" -- :D
 
 				if not keys["sneak"] then
+					--local node = minetest.get_node(pt.under)
 					local seaweed = math.random(1,4)
 					if seaweed == 1 then
 						nodename = "flowers:seaweed"
@@ -111,120 +102,35 @@ for i in ipairs(algae_list) do
 			end
 		end,
 	})
+
+	minetest.register_decoration({
+		name = "flowers:seaweed"..num,
+		decoration = {"flowers:seaweed"..num},
+		place_on = {"default:water_source"},
+		deco_type = "simple",
+		flags = "liquid_surface",
+		spawn_by = {"default:dirt_with_grass", "default:sand"},
+		num_spawn_by = 1,
+		fill_ratio = seaweed_rarity,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
+
+	minetest.register_decoration({
+		name = "flowers:seaweed"..num .."_sand",
+		decoration = {"flowers:seaweed"..num},
+		place_on = {"default:sand"},
+		deco_type = "simple",
+		flags = "all_floors",
+		spawn_by = "default:water_source",
+		num_spawn_by = 1,
+		fill_ratio = seaweed_rarity*1.2,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
 end
-
-local function grow_seaweed(pos)
-	local right_here
-	local plus_one = {x=pos.x, y=pos.y+1, z=pos.z}
-
-	local nodename = minetest.get_node(plus_one).name
-	if nodename == "default:water_source" then
-		right_here = {x=pos.x, y=pos.y+2, z=pos.z}
-	else
-		right_here = plus_one
-	end
-
-	local seaweed = math.random(1,4)
-	local node_name = "flowers:seaweed"
-	if seaweed > 1 then
-		node_name = node_name .. "_" .. seaweed
-	end
-	minetest.swap_node(right_here, {name=node_name, param2=math.random(1,3)})
-end
-
-local function grow_seaweed_1(pos)
-	if #minetest.find_nodes_in_area(
-		{x = pos.x-4, y = pos.y-1, z = pos.z-4},
-		{x = pos.x+4, y = pos.y+1, z = pos.z+4},
-		{"default:dirt_with_grass"}
-	) < 1 then return end
-	grow_seaweed(pos)
-end
-
-local function grow_seaweed_2(pos)
-	if #minetest.find_nodes_in_area(
-		{x = pos.x-1, y = pos.y+1, z = pos.z-1},
-		{x = pos.x+1, y = pos.y+1, z = pos.z+1},
-		{"default:sand"}
-	) < 3 then return end
-	if not check_heat(pos) then
-		return
-	end
-	grow_seaweed(pos)
-end
-
-local function grow_seaweed_3(pos)
-	if #minetest.find_nodes_in_area(
-		{x = pos.x-1, y = pos.y, z = pos.z-1},
-		{x = pos.x+1, y = pos.y, z = pos.z+1},
-		{"default:water_source"}
-	) < 3 then return end
-	if not check_heat(pos) then
-		return
-	end
-	grow_seaweed(pos)
-end
-
-minetest.register_decoration({
-	name = "pl_seaweed:seaweed_water",
-	decoration = {
-		"air"
-	},
-	fill_ratio = seaweed_rarity,
-	y_min = 0,
-	y_max = 40,
-	place_on = {
-		"default:water_source"
-	},
-	deco_type = "simple",
-	flags = "all_floors",
-	spawn_by = {
-		"default:dirt_with_grass",
-	},
-	check_offset = 1,
-	num_spawn_by = 1
-})
-
--- pl_seaweed at beaches
-minetest.register_decoration({
-	name = "pl_seaweed:seaweed_beach",
-	decoration = {
-		"air"
-	},
-	fill_ratio = seaweed_rarity,
-	y_min = 0,
-	y_max = 40,
-	place_on = {
-		"default:water_source"
-	},
-	deco_type = "simple",
-	flags = "all_floors",
-	spawn_by = {
-		"default:sand",
-	},
-	check_offset = 1,
-	num_spawn_by = 3
-})
-
-minetest.register_decoration({
-	name = "pl_seaweed:seaweed_beach_2",
-	decoration = {
-		"air"
-	},
-	fill_ratio = seaweed_rarity * 4,
-	y_min = 0,
-	y_max = 40,
-	place_on = {
-		"default:sand"
-	},
-	deco_type = "simple",
-	flags = "all_floors",
-	spawn_by = {
-		"default:water_source",
-	},
-	check_offset = -1,
-	num_spawn_by = 3
-})
 
 minetest.register_alias("flowers:flower_seaweed", "flowers:seaweed")
 minetest.register_alias("along_shore:pondscum_1", "flowers:seaweed")
@@ -232,31 +138,3 @@ minetest.register_alias("along_shore:seaweed_1", "flowers:seaweed")
 minetest.register_alias("along_shore:seaweed_2", "flowers:seaweed_2")
 minetest.register_alias("along_shore:seaweed_3", "flowers:seaweed_3")
 minetest.register_alias("along_shore:seaweed_4", "flowers:seaweed_4")
-
-local did, did2, did3
-minetest.register_on_mods_loaded(function()
-	did = minetest.get_decoration_id("pl_seaweed:seaweed_water")
-	did2 = minetest.get_decoration_id("pl_seaweed:seaweed_beach")
-	did3 = minetest.get_decoration_id("pl_seaweed:seaweed_beach_2")
-	minetest.set_gen_notify("decoration", {did, did2, did3})
-end)
-
-minetest.register_on_generated(function(minp, maxp, blockseed)
-	local g = minetest.get_mapgen_object("gennotify")
-
-	local deco_locations_1 = g["decoration#" .. did] or {}
-	local deco_locations_2 = g["decoration#" .. did2] or {}
-	local deco_locations_3 = g["decoration#" .. did3] or {}
-
-	for _, pos in pairs(deco_locations_1) do
-		grow_seaweed_1(pos)
-	end
-
-	for _, pos in pairs(deco_locations_2) do
-		grow_seaweed_2(pos)
-	end
-
-	for _, pos in pairs(deco_locations_3) do
-		grow_seaweed_3(pos)
-	end
-end)
