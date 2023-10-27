@@ -1,10 +1,7 @@
 -- support for i18n
 local S = minetest.get_translator("pl_waterlilies")
 
-pl_waterlilies = {}
-
-local lilies_max_count = tonumber(minetest.settings:get("pl_waterlilies_max_count")) or 320
-local lilies_rarity = tonumber(minetest.settings:get("pl_waterlilies_rarity")) or 33
+local fill_ratio = 0.03
 
 local function get_ndef(name)
 	return minetest.registered_nodes[name] or {}
@@ -20,6 +17,15 @@ local lilies_list = {
 	{ "s3" , "small_3" , 7	},
 	{ "s4" , "small_4" , 8	},
 }
+
+local lilynames_list = {}
+for i in ipairs(lilies_list) do
+	local deg1 = ""
+	if lilies_list[i][1] ~= nil then
+		deg1 = "_"..lilies_list[i][1]
+	end
+	table.insert(lilynames_list, "flowers:waterlily"..deg1)
+end
 
 for i in ipairs(lilies_list) do
 	local deg1 = ""
@@ -124,41 +130,49 @@ for i in ipairs(lilies_list) do
 			end
 		end,
 	})
+
+	minetest.register_decoration({
+		name = "flowers:waterlily"..deg1,
+		decoration = {"flowers:waterlily"..deg1},
+		place_on = {"default:water_source"},
+		deco_type = "simple",
+		flags = "liquid_surface",
+		spawn_by = "default:sand",
+		num_spawn_by = 1,
+		fill_ratio = fill_ratio,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
+
+	minetest.register_decoration({
+		name = "flowers:waterlily"..deg1 .."_relative",
+		decoration = {"flowers:waterlily"..deg1},
+		place_on = {"default:water_source"},
+		deco_type = "simple",
+		flags = "liquid_surface",
+		spawn_by = lilynames_list,
+		num_spawn_by = 1,
+		fill_ratio = fill_ratio*1.25,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
+
+	minetest.register_decoration({
+		name = "flowers:waterlily"..deg1 .."_relative",
+		decoration = {"flowers:waterlily"..deg1},
+		place_on = {"default:water_source"},
+		deco_type = "simple",
+		flags = "liquid_surface",
+		spawn_by = lilynames_list,
+		num_spawn_by = 1,
+		fill_ratio = fill_ratio*1.5,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
 end
-
-pl_waterlilies.grow_waterlily = function(pos)
-	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	for i in ipairs(lilies_list) do
-		local chance = math.random(1,8)
-		local ext = ""
-		local num = lilies_list[i][3]
-
-		if lilies_list[i][1] ~= nil then
-			ext = "_"..lilies_list[i][1]
-		end
-
-		if chance == num then
-			minetest.swap_node(right_here, {name="flowers:waterlily"..ext, param2=math.random(0,3)})
-		end
-	end
-end
-
-biome_lib.register_on_generate({
-		surface = {"default:water_source"},
-		max_count = lilies_max_count,
-		rarity = lilies_rarity,
-		min_elevation = 1,
-		max_elevation = 40,
-		near_nodes = {"default:dirt_with_grass"},
-		near_nodes_size = 4,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		temp_max = -0.22,
-		temp_min = 0.22,
-	},
-	pl_waterlilies.grow_waterlily
-)
 
 minetest.register_alias( "flowers:flower_waterlily", "flowers:waterlily")
 minetest.register_alias( "flowers:flower_waterlily_225", "flowers:waterlily_225")
