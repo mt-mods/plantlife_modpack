@@ -1,10 +1,7 @@
 -- support for i18n
 local S = minetest.get_translator("pl_seaweed")
 
-pl_seaweed = {}
-
-local seaweed_max_count = tonumber(minetest.settings:get("pl_seaweed_max_count")) or 320
-local seaweed_rarity = tonumber(minetest.settings:get("pl_seaweed_rarity")) or 33
+local seaweed_rarity = minetest.settings:get("pl_seaweed.seaweed_rarity") or 0.06
 
 local function get_ndef(name)
 	return minetest.registered_nodes[name] or {}
@@ -105,67 +102,35 @@ for i in ipairs(algae_list) do
 			end
 		end,
 	})
+
+	minetest.register_decoration({
+		name = "flowers:seaweed"..num,
+		decoration = {"flowers:seaweed"..num},
+		place_on = {"default:water_source"},
+		deco_type = "simple",
+		flags = "liquid_surface",
+		spawn_by = {"default:dirt_with_grass", "default:sand"},
+		num_spawn_by = 1,
+		fill_ratio = seaweed_rarity,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
+
+	minetest.register_decoration({
+		name = "flowers:seaweed"..num .."_sand",
+		decoration = {"flowers:seaweed"..num},
+		place_on = {"default:sand"},
+		deco_type = "simple",
+		flags = "all_floors",
+		spawn_by = "default:water_source",
+		num_spawn_by = 1,
+		fill_ratio = seaweed_rarity*1.2,
+		check_offset = -1,
+		y_min = 1,
+		y_max = 1,
+	})
 end
-
-pl_seaweed.grow_seaweed = function(pos)
-	local right_here = {x=pos.x, y=pos.y+1, z=pos.z}
-	local seaweed = math.random(1,4)
-	local node_name = "flowers:seaweed"
-	if seaweed > 1 then
-		node_name = node_name .. "_" .. seaweed
-	end
-	minetest.swap_node(right_here, {name=node_name, param2=math.random(1,3)})
-end
-
-biome_lib.register_on_generate({
-		surface = {"default:water_source"},
-		max_count = seaweed_max_count,
-		rarity = seaweed_rarity,
-		min_elevation = 1,
-		max_elevation = 40,
-		near_nodes = {"default:dirt_with_grass"},
-		near_nodes_size = 4,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-	},
-	pl_seaweed.grow_seaweed
-)
-
--- pl_seaweed at beaches
--- MM: not satisfied with it, but IMHO some beaches should have some algae
-biome_lib.register_on_generate({
-		surface = {"default:water_source"},
-		max_count = seaweed_max_count,
-		rarity = seaweed_rarity,
-		min_elevation = 1,
-		max_elevation = 40,
-		near_nodes = {"default:sand"},
-		near_nodes_size = 1,
-		near_nodes_vertical = 0,
-		near_nodes_count = 3,
-		plantlife_limit = -0.9,
-		temp_max = -0.64, -- MM: more or less random values, just to make sure it's not everywhere
-		temp_min = -0.22, -- MM: more or less random values, just to make sure it's not everywhere
-	},
-	pl_seaweed.grow_seaweed
-)
-biome_lib.register_on_generate({
-		surface = {"default:sand"},
-		max_count = seaweed_max_count*2,
-		rarity = seaweed_rarity/2,
-		min_elevation = 1,
-		max_elevation = 40,
-		near_nodes = {"default:water_source"},
-		near_nodes_size = 1,
-		near_nodes_vertical = 0,
-		near_nodes_count = 3,
-		plantlife_limit = -0.9,
-		temp_max = -0.64, -- MM: more or less random values, just to make sure it's not everywhere
-		temp_min = -0.22, -- MM: more or less random values, just to make sure it's not everywhere
-	},
-	pl_seaweed.grow_seaweed
-)
 
 minetest.register_alias("flowers:flower_seaweed", "flowers:seaweed")
 minetest.register_alias("along_shore:pondscum_1", "flowers:seaweed")

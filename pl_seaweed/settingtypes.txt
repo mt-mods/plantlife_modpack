@@ -1,5 +1,2 @@
-#Seaweed maximum count
-pl_seaweed_max_count (Seaweed maximum count) int 320 1 1000
-
-#Seaweed rarity
-pl_seaweed_rarity (Seaweed rarity) int 33 0 100
+# Seaweed rarity (higher number -> higher probability)
+pl_seaweed.seaweed_rarity (Seaweed rarity) float 0.06 0.0001 1
