@@ -71,6 +71,8 @@ local function grow_reedmace_water(pos)
 	end
 end
 
+abstract_dryplants.grow_reedmace = grow_reedmace -- compatibility
+
 -----------------------------------------------------------------------------------------------
 -- REEDMACE SPIKES
 -----------------------------------------------------------------------------------------------

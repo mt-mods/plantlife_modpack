@@ -1,6 +1,8 @@
 -- support for i18n
 local S = minetest.get_translator("dryplants")
 
+abstract_dryplants = {}
+
 dofile(minetest.get_modpath("dryplants").."/crafting.lua")
 dofile(minetest.get_modpath("dryplants").."/reed.lua")
 
