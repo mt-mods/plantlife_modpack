@@ -88,6 +88,7 @@ minetest.register_node("dryplants:reedmace_spikes", {
 		flammable=2,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -110,6 +111,7 @@ minetest.register_node("dryplants:reedmace_top", {
 		flammable=2,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -133,6 +135,7 @@ minetest.register_node("dryplants:reedmace_height_2", {
 		flammable=2--,
 		--not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -156,6 +159,7 @@ minetest.register_node("dryplants:reedmace_height_3", {
 		flammable=2--,
 		--not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -179,6 +183,7 @@ minetest.register_node("dryplants:reedmace_height_3_spikes", {
 		flammable=2--,
 		--not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -201,6 +206,7 @@ minetest.register_node("dryplants:reedmace", {
 		flammable=2,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
@@ -231,6 +237,7 @@ minetest.register_node("dryplants:reedmace_bottom", {
 		flammable=2,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = 'dryplants:reedmace_sapling',
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {

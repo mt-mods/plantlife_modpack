@@ -38,6 +38,7 @@ for i in pairs(NoDe) do
 			attached_node=1,
 			not_in_creative_inventory=iNV
 		},
+		is_ground_content = false,
 		drop = "trunks:twig_1",
 		sounds = default.node_sound_leaves_defaults(),
 		liquids_pointable = true,
@@ -138,6 +139,7 @@ minetest.register_node("trunks:twigs", {
 	paramtype2 = "facedir",
 	tiles = {"trunks_twigs.png"},
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -157,6 +159,7 @@ minetest.register_node("trunks:twigs_slab", {
 		fixed = {-1/2, -1/2, -1/2, 1/2, 0, 1/2},
 	},
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -180,6 +183,7 @@ minetest.register_node("trunks:twigs_roof", {
 		}
 	},
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -208,6 +212,7 @@ minetest.register_node("trunks:twigs_roof_corner", {
 		}
 	},
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -236,6 +241,7 @@ minetest.register_node("trunks:twigs_roof_corner_2", {
 		}
 	},
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -387,6 +393,7 @@ for i in pairs(TRuNKS) do
 					attached_node = 1
 					--not_in_creative_inventory=1 -- atm in inv for testing
 				},
+				is_ground_content = false,
 				--drop = "trunks:twig_1", -- not sure about this yet
 				sounds = default.node_sound_wood_defaults(),
 			})

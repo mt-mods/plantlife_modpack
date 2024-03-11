@@ -44,6 +44,7 @@ minetest.register_node("dryplants:wetreed_slab", {
 		fixed = {-1/2, -1/2, -1/2, 1/2, 0, 1/2},
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -72,6 +73,7 @@ minetest.register_node("dryplants:wetreed_roof", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -194,6 +196,7 @@ minetest.register_node("dryplants:wetreed_roof_corner", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -224,6 +227,7 @@ minetest.register_node("dryplants:wetreed_roof_corner_2", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -263,6 +267,7 @@ minetest.register_node("dryplants:reed", {
 	paramtype2 = "facedir",
 	tiles = {"dryplants_reed.png"},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -284,6 +289,7 @@ minetest.register_node("dryplants:reed_slab", {
 		fixed = {-1/2, -1/2, -1/2, 1/2, 0, 1/2},
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -312,6 +318,7 @@ minetest.register_node("dryplants:reed_roof", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -342,6 +349,7 @@ minetest.register_node("dryplants:reed_roof_corner", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -372,5 +380,6 @@ minetest.register_node("dryplants:reed_roof_corner_2", {
 		}
 	},
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
