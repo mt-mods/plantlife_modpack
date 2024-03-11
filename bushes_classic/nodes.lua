@@ -159,6 +159,7 @@ for i, bush_name in ipairs(bushes_classic.bushes) do
 		paramtype2 = "facedir",
 		on_use = minetest.item_eat(18),
 		groups = { dig_immediate = 3 },
+		is_ground_content = false,
 	})
 
 
@@ -210,4 +211,5 @@ minetest.register_node(":bushes:basket_empty", {
 	paramtype = "light",
 	paramtype2 = "facedir",
     groups = { dig_immediate = 3 },
+	is_ground_content = false,
 })
