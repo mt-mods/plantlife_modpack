@@ -138,6 +138,7 @@ minetest.register_node("ferns:tree_fern_leaves_giant", {
 		attached_node=1,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = {
 		max_items = 2,
 		items = {
@@ -179,6 +180,7 @@ minetest.register_node("ferns:tree_fern_leave_big", {
 		attached_node=1,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = "",
 	sounds = default.node_sound_leaves_defaults(),
 	after_destruct = function(pos,oldnode)
@@ -217,6 +219,7 @@ minetest.register_node("ferns:tree_fern_leave_big_end", {
 		attached_node=1,
 		not_in_creative_inventory=1
 	},
+	is_ground_content = false,
 	drop = "",
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -255,6 +258,7 @@ minetest.register_node("ferns:fern_trunk_big_top", {
 		not_in_creative_inventory=1,
 		leafdecay=3 -- to support vines
 	},
+	is_ground_content = false,
 	drop = "ferns:fern_trunk_big",
 	sounds = default.node_sound_wood_defaults(),
 })
@@ -281,6 +285,7 @@ minetest.register_node("ferns:fern_trunk_big", {
 		fixed = {-1/4, -1/2, -1/4, 1/4, 1/2, 1/4},
 	},
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	after_destruct = function(pos,oldnode)
         local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})

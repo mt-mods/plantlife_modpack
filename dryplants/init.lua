@@ -119,6 +119,7 @@ minetest.register_node("dryplants:grass", {
         fixed = {-0.5   , -0.5   , -0.5   ,   0.5   , -0.4375,  0.5   },
     },
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -151,6 +152,7 @@ minetest.register_node("dryplants:hay", {
         fixed = {-0.5   , -0.5   , -0.5   ,   0.5   , -0.4375,  0.5   },
     },
 	groups = {snappy=3, flammable=2},
+	is_ground_content = false,
 	sounds = default.node_sound_leaves_defaults(),
 })
 

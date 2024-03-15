@@ -80,6 +80,7 @@ minetest.register_node("ferns:tree_fern_leaves", {
 	inventory_image = "ferns_fern_tree_inv.png",
 	walkable = false,
 	groups = {snappy=3,flammable=2,attached_node=1},
+	is_ground_content = false,
 	drop = {
 		max_items = 2,
 		items = {
@@ -111,6 +112,7 @@ minetest.register_node("ferns:tree_fern_leaves_02", {
 	tiles = {"ferns_fern_big.png"},
 	walkable = false,
 	groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
+	is_ground_content = false,
 	drop = {
 		max_items = 2,
 		items = {
@@ -157,6 +159,7 @@ minetest.register_node("ferns:fern_trunk", {
 		fixed = {-1/7, -1/2, -1/7, 1/7, 1/2, 1/7},
 	},
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	after_destruct = function(pos,oldnode)
         local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})

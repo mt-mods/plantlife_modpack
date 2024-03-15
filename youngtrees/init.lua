@@ -9,7 +9,7 @@ minetest.register_node("youngtrees:bamboo", {
 	tiles = {"bamboo.png"},
 	paramtype = "light",
 	walkable = false,
-	is_ground_content = true,
+	is_ground_content = false,
 	node_box = {
 	type = "fixed",
 	fixed = {
@@ -34,7 +34,7 @@ minetest.register_node("youngtrees:youngtree_top", {
 	wield_image = "youngtree16xa.png",
 	paramtype = "light",
 	walkable = false,
-	is_ground_content = true,
+	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
@@ -52,7 +52,7 @@ minetest.register_node("youngtrees:youngtree_middle", {
 	wield_image = "youngtree16xb.png",
 	paramtype = "light",
 	walkable = false,
-	is_ground_content = true,
+	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
@@ -70,7 +70,7 @@ minetest.register_node("youngtrees:youngtree_bottom", {
 	wield_image = "youngtree16xc.png",
 	paramtype = "light",
 	walkable = false,
-	is_ground_content = true,
+	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
