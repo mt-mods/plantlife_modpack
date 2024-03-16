@@ -24,6 +24,25 @@ local growth_max = tonumber(minetest.settings:get("vines_growth_max")) or 360
 -- support for i18n
 local S = minetest.get_translator("vines")
 
+local dids = {}
+local spawn_funcs = {}
+
+local function find_open_side(pos) -- copied from biome_lib
+	if minetest.get_node({ x=pos.x-1, y=pos.y, z=pos.z }).name == "air" then
+		return {newpos = { x=pos.x-1, y=pos.y, z=pos.z }, facedir = 2}
+	end
+	if minetest.get_node({ x=pos.x+1, y=pos.y, z=pos.z }).name == "air" then
+		return {newpos = { x=pos.x+1, y=pos.y, z=pos.z }, facedir = 3}
+	end
+	if minetest.get_node({ x=pos.x, y=pos.y, z=pos.z-1 }).name == "air" then
+		return {newpos = { x=pos.x, y=pos.y, z=pos.z-1 }, facedir = 4}
+	end
+	if minetest.get_node({ x=pos.x, y=pos.y, z=pos.z+1 }).name == "air" then
+		return {newpos = { x=pos.x, y=pos.y, z=pos.z+1 }, facedir = 5}
+	end
+	return nil
+end
+
 -- ITEMS
 
 if enable_vines ~= false then
@@ -93,16 +112,36 @@ vines.register_vine = function( name, defs, biome )
 	local vine_image_end = "vines_" .. name .. "_end.png"
 	local vine_image_middle = "vines_" .. name .. "_middle.png"
 
-	local spawn_plants = function(pos, fdir)
+	local spawn_plants = function(pos)
+		local p2 = 0
+		local p_top = { x = pos.x, y = pos.y + 1, z = pos.z }
+		if biome.spawn_on_side then
+			local onside = find_open_side(pos)
+			if onside then
+				p2 = onside.facedir
+			else
+				return
+			end
+		else
+			local p_node = minetest.get_node(p_top)
+			if p_node.name == "air" then
+				return
+			end
+		end
+
+		if minetest.find_node_near(p_top, biome.avoid_radius + math.random(-1.5,2), biome.avoid_nodes) then
+			return -- Nodes to avoid are nearby
+		end
+
 		local max_length = math.random(defs.average_length)
 		local current_length = 1
 		if minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' then
 			while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
-				minetest.swap_node(pos, { name = vine_name_middle, param2 = fdir })
+				minetest.swap_node(pos, { name = vine_name_middle, param2 = p2 })
 				pos.y = pos.y - 1
 				current_length = current_length + 1
 			end
-			minetest.set_node(pos, { name = vine_name_end, param2 = fdir })
+			minetest.set_node(pos, { name = vine_name_end, param2 = p2 })
 		end
 	end
 
@@ -195,8 +234,47 @@ vines.register_vine = function( name, defs, biome )
 		end,
 	})
 
-	biome_lib.register_on_generate(biome, spawn_plants)
+	minetest.register_decoration({
+		name = "vines:" .. name,
+		decoration = {
+			"air"
+		},
+		fill_ratio = 0.1,
+		y_min = 1,
+		y_max = 40,
+		place_on = biome.surface,
+		deco_type = "simple",
+		flags = "all_floors, all_ceilings"
+	})
+
+	table.insert(dids, {name = name, func = spawn_plants})
 end
+
+minetest.register_on_mods_loaded(function()
+	for i, t in ipairs(dids) do
+		local did = minetest.get_decoration_id("vines:" .. t.name)
+		dids[i] = did
+		spawn_funcs[did] = t.func
+	end
+
+	minetest.set_gen_notify("decoration", dids)
+end)
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	local g = minetest.get_mapgen_object("gennotify")
+
+	for _, did in ipairs(dids) do
+		local deco_locations = g["decoration#" .. did]
+
+		if deco_locations then
+			local func = spawn_funcs[did]
+			for _, pos in pairs(deco_locations) do
+				func(pos)
+				print(minetest.pos_to_string(pos))
+			end
+		end
+	end
+end)
 
 -- ALIASES
 
@@ -377,12 +455,7 @@ if enable_roots ~= false then
 			"default:dirt_with_grass",
 			"default:dirt"
 		},
-		spawn_on_bottom = true,
-		plantlife_limit = -0.6,
 		rarity = rarity_roots,
-		tries = 3,
-		humidity_min = 0.4,
-		temp_min = 0.4,
 	})
 else
 	minetest.register_alias('vines:root_middle', 'air')
@@ -403,12 +476,7 @@ if enable_standard ~= false then
 			"moretrees:jungletree_leaves_yellow",
 			"moretrees:jungletree_leaves_green"
 		},
-		spawn_on_bottom = true,
-		plantlife_limit = -0.9,
 		rarity = rarity_standard,
-		tries = 1,
-		humidity_min = 0.7,
-		temp_min = 0.4,
 	})
 else
 	minetest.register_alias('vines:vine_middle', 'air')
@@ -429,12 +497,7 @@ if enable_side ~= false then
 			"moretrees:jungletree_leaves_yellow",
 			"moretrees:jungletree_leaves_green"
 		},
-		spawn_on_side = true,
-		plantlife_limit = -0.9,
-		rarity = rarity_side,
-		tries = 1,
-		humidity_min = 0.4,
-		temp_min = 0.4,
+		rarity = rarity_side
 	})
 else
 	minetest.register_alias('vines:side_middle', 'air')
@@ -463,12 +526,7 @@ if enable_jungle ~= false then
 			"default:jungletree",
 			"moretrees:jungletree_trunk"
 		},
-		spawn_on_side = true,
-		plantlife_limit = -0.9,
-		rarity = rarity_jungle,
-		tries = 1,
-		humidity_min = 0.2,
-		temp_min = 0.3,
+		rarity = rarity_jungle
 	})
 else
 	minetest.register_alias('vines:jungle_middle', 'air')
@@ -486,13 +544,8 @@ if enable_willow ~= false then
 		near_nodes_size = 1,
 		near_nodes_count = 1,
 		near_nodes_vertical = 7,
-		plantlife_limit = -0.8,
-		spawn_on_side = true,
 		surface = {"moretrees:willow_leaves"},
-		rarity = rarity_willow,
-		tries = 1,
-		humidity_min = 0.5,
-		temp_min = 0.5,
+		rarity = rarity_willow
 	})
 else
 	minetest.register_alias('vines:willow_middle', 'air')
