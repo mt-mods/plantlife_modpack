@@ -73,16 +73,17 @@ create_nodes()
 -- Generating
 -----------------------------------------------------------------------------------------------
 
-biome_lib.register_on_generate({
-	surface = {
+minetest.register_decoration({ -- near trees (woodlands)
+	decoration = node_names,
+	deco_type = "simple",
+	flags = "all_floors",
+	place_on = {
 		"default:dirt_with_grass",
-		"default:dirt_with_coniferous_litter", -- minetest >= 0.5
+		"default:dirt_with_coniferous_litter",
 		"sumpf:sumpf"
 	},
-	max_count = 35,
-	rarity = 40,
-	min_elevation = 1, -- above sea level
-	near_nodes = {
+	y_min = 1, -- above sea level
+	spawn_by = {
 		"group:water", -- likes water (of course)
 		"default:gravel", -- near those on gravel
 		"default:sand", -- some like sand
@@ -92,34 +93,21 @@ biome_lib.register_on_generate({
 		"default:cobble",
 		"sumpf:sumpf"
 	},
-	near_nodes_size = 3,
-	near_nodes_vertical = 2,--3,
-	near_nodes_count = 1,
-	plantlife_limit = -0.9,
-	humidity_min = 0.4,
-	temp_max = -0.5, -- 55 °C
-	temp_min = 0.53, -- 0 °C, dies back in winter
-	--random_facedir = { 0, 179 },
-},
-node_names
-)
+	num_spawn_by = 1,
+	fill_ratio = 0.1,
+})
 
-biome_lib.register_on_generate({
-	surface = {
+minetest.register_decoration({ -- near trees (woodlands)
+	decoration = node_names,
+	deco_type = "simple",
+	flags = "all_floors",
+	place_on = {
 		"default:gravel", -- roots go deep
 		"default:mossycobble",
 		"stoneage:dirt_with_silex",
 		"stoneage:grass_with_silex",
 		"stoneage:sand_with_silex", -- roots go deep
 	},
-	max_count = 35,
-	rarity = 20,
-	min_elevation = 1, -- above sea level
-	plantlife_limit = -0.9,
-	humidity_min = 0.4,
-	temp_max = -0.5, -- 55 °C
-	temp_min = 0.53, -- 0 °C, dies back in winter
-	--random_facedir = { 0, 179 },
-},
-node_names
-)
+	y_min = 1, -- above sea level
+	fill_ratio = 0.1,
+})
