@@ -15,14 +15,10 @@
 -- support for i18n
 local S = minetest.get_translator("ferns")
 
--- Maintain backward compatibilty
--- minetest-0.5: Begin
-local default_ferns = minetest.registered_items["default:fern_1"] or false
-if default_ferns then
-	minetest.register_alias("ferns:fern_03", "default:fern_3")
-	minetest.register_alias("ferns:fern_02", "default:fern_2")
-	minetest.register_alias("ferns:fern_01", "default:fern_1")
-end
+minetest.register_alias("ferns:fern_03", "default:fern_3")
+minetest.register_alias("ferns:fern_02", "default:fern_2")
+minetest.register_alias("ferns:fern_01", "default:fern_1")
+
 -- minetest-0.5: End
 minetest.register_alias("archaeplantae:fern",		"ferns:fern_03")
 minetest.register_alias("archaeplantae:fern_mid",	"ferns:fern_02")
@@ -31,53 +27,12 @@ minetest.register_alias("ferns:fern_04",		"ferns:fern_02") -- for placing
 
 local nodenames = {}
 
-local function create_nodes()
-	local images	= { "ferns_fern.png", "ferns_fern_mid.png", "ferns_fern_big.png" }
-	local vscales	= { 1, math.sqrt(8), math.sqrt(11) }
-	local descs		= { S("Lady-fern (Athyrium)"), nil, nil }
-
-	for i = 1, 3 do
-		local node_on_place = nil
-		if i == 1 then
-			node_on_place = function(itemstack, placer, pointed_thing)
-				-- place a random fern
-				local stack = ItemStack("ferns:fern_0"..math.random(1,4))
-				local ret = minetest.item_place(stack, placer, pointed_thing)
-				return ItemStack("ferns:fern_01 "..itemstack:get_count()-(1-ret:get_count()))	-- TODO FIXME?
-			end
-		end
-		nodenames[i] = "ferns:fern_"..string.format("%02d", i)
-		minetest.register_node(nodenames[i], {
-			description = descs[i] or (S("Lady-fern (Athyrium)").." " .. string.format("%02d", i)),
-			inventory_image = "ferns_fern.png",
-			drawtype = "plantlike",
-			visual_scale = vscales[i],
-			paramtype = "light",
-			tiles = { images[i] },
-			walkable = false,
-			buildable_to = true,
-			groups = {snappy=3,flammable=2,attached_node=1,not_in_creative_inventory=1},
-			sounds = default.node_sound_leaves_defaults(),
-			selection_box = {
-				type = "fixed",
-				fixed = {-7/16, -1/2, -7/16, 7/16, 0, 7/16},
-			},
-			drop = "ferns:fern_01",
-			on_place = node_on_place
-		})
-	end
-end
-
 -----------------------------------------------------------------------------------------------
 -- Init
 -----------------------------------------------------------------------------------------------
 
-if default_ferns then
-	for i = 1, 3 do
-		nodenames[i] = "ferns:fern_"..string.format("%02d", i)
-	end
-else
-	create_nodes()
+for i = 1, 3 do
+	nodenames[i] = "ferns:fern_"..string.format("%02d", i)
 end
 
 -----------------------------------------------------------------------------------------------
