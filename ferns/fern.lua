@@ -12,8 +12,6 @@
 -- http://www.mygarden.net.au/gardening/athyrium-yokoscense/3900/1
 -----------------------------------------------------------------------------------------------
 
-assert(abstract_ferns.config.enable_lady_fern == true)
-
 -- support for i18n
 local S = minetest.get_translator("ferns")
 
@@ -86,130 +84,92 @@ end
 -- Spawning
 -----------------------------------------------------------------------------------------------
 
-if abstract_ferns.config.lady_ferns_near_tree == true then
-	biome_lib.register_on_generate({ -- near trees (woodlands)
-		surface = {
-			"default:dirt_with_grass",
-			"default:mossycobble",
-			"default:desert_sand",
-			"default:sand",
-			"default:jungletree",
-			"stoneage:grass_with_silex",
-			"sumpf:sumpf"
-		},
-		max_count = 30,
-		rarity = 62,--63,
-		min_elevation = 1, -- above sea level
-		near_nodes = {"group:tree"},
-		near_nodes_size = 3,--4,
-		near_nodes_vertical = 2,--3,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 °C (too hot?)
-		temp_min = 0.75, -- -12 °C
-		random_facedir = { 0, 179 },
+biome_lib.register_on_generate({ -- near trees (woodlands)
+	surface = {
+		"default:dirt_with_grass",
+		"default:mossycobble",
+		"default:desert_sand",
+		"default:sand",
+		"default:jungletree",
+		"stoneage:grass_with_silex",
+		"sumpf:sumpf"
 	},
-	nodenames
-	)
-end
+	max_count = 30,
+	rarity = 62,--63,
+	min_elevation = 1, -- above sea level
+	near_nodes = {"group:tree"},
+	near_nodes_size = 3,--4,
+	near_nodes_vertical = 2,--3,
+	near_nodes_count = 1,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 0.4,
+	temp_max = -0.5, -- 55 °C (too hot?)
+	temp_min = 0.75, -- -12 °C
+	random_facedir = { 0, 179 },
+},
+nodenames
+)
 
-if abstract_ferns.config.lady_ferns_near_rock == true then
-	biome_lib.register_on_generate({ -- near stone (mountains)
-		surface = {
-			"default:dirt_with_grass",
-			"default:mossycobble",
-			"group:falling_node",
-			--"default:jungletree",
-			"stoneage:grass_with_silex",
-			"sumpf:sumpf"
-		},
-		max_count = 35,
-		rarity = 40,
-		min_elevation = 1, -- above sea level
-		near_nodes = {"group:stone"},
-		near_nodes_size = 1,
-		near_nodes_count = 16,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 °C (too hot?)
-		temp_min = 0.75, -- -12 °C
-		random_facedir = { 0, 179 },
+biome_lib.register_on_generate({ -- near stone (mountains)
+	surface = {
+		"default:dirt_with_grass",
+		"default:mossycobble",
+		"group:falling_node",
+		--"default:jungletree",
+		"stoneage:grass_with_silex",
+		"sumpf:sumpf"
 	},
-	nodenames
-	)
-end
+	max_count = 35,
+	rarity = 40,
+	min_elevation = 1, -- above sea level
+	near_nodes = {"group:stone"},
+	near_nodes_size = 1,
+	near_nodes_count = 16,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 0.4,
+	temp_max = -0.5, -- 55 °C (too hot?)
+	temp_min = 0.75, -- -12 °C
+	random_facedir = { 0, 179 },
+},
+nodenames
+)
 
-if abstract_ferns.config.lady_ferns_near_ores == true then -- this one causes a huge fps drop
-	biome_lib.register_on_generate({ -- near ores (potential mining sites)
-		surface = {
-			"default:dirt_with_grass",
-			"default:mossycobble",
-			"default:stone_with_coal",
-			"default:stone_with_iron",
-			"default:stone_with_tin", -- minetest >= 0.4.16
-			"moreores:mineral_tin",
-			"moreores:mineral_silver",
-			"sumpf:sumpf"
-		},
-		max_count = 1200,--1600, -- maybe too much? :D
-		rarity = 25,--15,
-		min_elevation = 1, -- above sea level
-		near_nodes = {
-			"default:stone_with_iron",
-			--"default:stone_with_copper",
-			--"default:stone_with_mese",
-			--"default:stone_with_gold",
-			--"default:stone_with_diamond",
-			"default:stone_with_tin", -- minetest >= 0.4.16
-			"moreores:mineral_tin",
-			"moreores:mineral_silver"
-			--"moreores:mineral_mithril"
-		},
-		near_nodes_size = 2,
-		near_nodes_vertical = 4,--5,--6,
-		near_nodes_count = 2,--3,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 °C (too hot?)
-		temp_min = 0.75, -- -12 °C
-		random_facedir = { 0, 179 },
+biome_lib.register_on_generate({ -- near ores (potential mining sites)
+	surface = {
+		"default:dirt_with_grass",
+		"default:mossycobble",
+		"default:stone_with_coal",
+		"default:stone_with_iron",
+		"default:stone_with_tin", -- minetest >= 0.4.16
+		"moreores:mineral_tin",
+		"moreores:mineral_silver",
+		"sumpf:sumpf"
 	},
-	nodenames
-	)
-end
-
-if abstract_ferns.config.lady_ferns_in_groups == true then -- this one is meant as a replacement of Ferns_near_Ores
-	biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"default:mossycobble",
-			"default:stone_with_coal",
-			"default:stone_with_iron",
-			"default:stone_with_tin", -- minetest >= 0.4.16
-			"moreores:mineral_tin",
-			"moreores:mineral_silver",
-			"sumpf:sumpf"
-		},
-		max_count = 70,
-		rarity = 25,--15,
-		min_elevation = 1, -- above sea level
-		near_nodes = {
-			"default:stone"
-		},
-		near_nodes_size = 2,
-		near_nodes_vertical = 2,--6,
-		near_nodes_count = 3,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5, -- 55 °C (too hot?)
-		temp_min = 0.75, -- -12 °C
-		random_facedir = { 0, 179 },
+	max_count = 1200,--1600, -- maybe too much? :D
+	rarity = 25,--15,
+	min_elevation = 1, -- above sea level
+	near_nodes = {
+		"default:stone_with_iron",
+		--"default:stone_with_copper",
+		--"default:stone_with_mese",
+		--"default:stone_with_gold",
+		--"default:stone_with_diamond",
+		"default:stone_with_tin", -- minetest >= 0.4.16
+		"moreores:mineral_tin",
+		"moreores:mineral_silver"
+		--"moreores:mineral_mithril"
 	},
-	nodenames
-	)
-end
+	near_nodes_size = 2,
+	near_nodes_vertical = 4,--5,--6,
+	near_nodes_count = 2,--3,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 0.4,
+	temp_max = -0.5, -- 55 °C (too hot?)
+	temp_min = 0.75, -- -12 °C
+	random_facedir = { 0, 179 },
+},
+nodenames
+)
