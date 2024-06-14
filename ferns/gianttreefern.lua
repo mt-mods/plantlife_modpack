@@ -7,8 +7,6 @@
 -- Supports:				vines
 -----------------------------------------------------------------------------------------------
 
-assert(abstract_ferns.config.enable_giant_treefern == true)
-
 -- support for i18n
 local S = minetest.get_translator("ferns")
 -- lot of code, lot to load
@@ -331,54 +329,50 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 
 -- in jungles
-if abstract_ferns.config.enable_giant_treeferns_in_jungle == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
-			"default:sand",
-			"default:desert_sand"--,
-			--"dryplants:grass_short"
-		},
-		max_count = 12,--27,
-		avoid_nodes = {"group:tree"},
-		avoid_radius = 3,--4,
-		rarity = 85,
-		seed_diff = 329,
-		min_elevation = 1,
-		near_nodes = {"default:jungletree"},
-		near_nodes_size = 6,
-		near_nodes_vertical = 2,--4,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
+biome_lib.register_on_generate({
+	surface = {
+		"default:dirt_with_grass",
+		"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
+		"default:sand",
+		"default:desert_sand"--,
+		--"dryplants:grass_short"
 	},
-	abstract_ferns.grow_giant_tree_fern
-	)
-end
+	max_count = 12,--27,
+	avoid_nodes = {"group:tree"},
+	avoid_radius = 3,--4,
+	rarity = 85,
+	seed_diff = 329,
+	min_elevation = 1,
+	near_nodes = {"default:jungletree"},
+	near_nodes_size = 6,
+	near_nodes_vertical = 2,--4,
+	near_nodes_count = 1,
+	plantlife_limit = -0.9,
+},
+abstract_ferns.grow_giant_tree_fern
+)
 
 -- for oases & tropical beaches
-if abstract_ferns.config.enable_giant_treeferns_in_oases == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:sand"--,
-			--"default:desert_sand"
-		},
-		max_count = 10,--27,
-		rarity = 90,
-		seed_diff = 329,
-		neighbors = {"default:desert_sand"},
-		ncount = 1,
-		min_elevation = 1,
-		near_nodes = {"default:water_source", "default:river_water_source"},
-		near_nodes_size = 2,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 1.0,
-		temp_max = -1.0,
-		temp_min = 1.0,
+biome_lib.register_on_generate({
+	surface = {
+		"default:sand"--,
+		--"default:desert_sand"
 	},
-	abstract_ferns.grow_giant_tree_fern
-	)
-end
+	max_count = 10,--27,
+	rarity = 90,
+	seed_diff = 329,
+	neighbors = {"default:desert_sand"},
+	ncount = 1,
+	min_elevation = 1,
+	near_nodes = {"default:water_source", "default:river_water_source"},
+	near_nodes_size = 2,
+	near_nodes_vertical = 1,
+	near_nodes_count = 1,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 1.0,
+	temp_max = -1.0,
+	temp_min = 1.0,
+},
+abstract_ferns.grow_giant_tree_fern
+)

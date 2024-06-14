@@ -79,31 +79,3 @@ minetest.register_craft({
 	output = "dye:green",
 	recipe = {"group:horsetail"},
 })
------------------------------------------------------------------------------------------------
--- GLUE WOODEN TOOLS with RESIN & POLISH them with HORSETAIL (planned)
------------------------------------------------------------------------------------------------
---[[minetest.register_craft({
-	type = "shapeless",
-	output = "default:pick_wood",
-	recipe = {"default:pick_wood","group:horsetail","farming:string","default:stick"},
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "default:shovel_wood",
-	recipe = {"default:shovel_wood","group:horsetail","farming:string","default:stick"},
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "default:axe_wood",
-	recipe = {"default:axe_wood","group:horsetail","farming:string","default:stick"},
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "default:sword_wood",
-	recipe = {"default:sword_wood","group:horsetail","farming:string","default:stick"},
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "farming:hoe_wood",
-	recipe = {"farming:hoe_wood","group:horsetail","farming:string","default:stick"},
-})]]

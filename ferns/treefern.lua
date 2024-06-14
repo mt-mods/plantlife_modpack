@@ -9,8 +9,6 @@
 -- support for i18n
 local S = minetest.get_translator("ferns")
 
-assert(abstract_ferns.config.enable_treefern == true)
-
 function abstract_ferns.can_grow_tree_fern(pos)
 	local node_name = minetest.get_node(pos).name
 	if node_name ~= "air" and node_name ~= "ferns:sapling_tree_fern" and node_name ~= "default:junglegrass" then
@@ -205,57 +203,53 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 
 -- in jungles
-if abstract_ferns.config.enable_treeferns_in_jungle == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
-			"default:sand",
-			"default:desert_sand",
-		},
-		max_count = 35,--27,
-		avoid_nodes = {"default:tree"},
-		avoid_radius = 4,
-		rarity = 50,
-		seed_diff = 329,
-		min_elevation = -10,
-		near_nodes = {"default:jungletree"},
-		near_nodes_size = 6,
-		near_nodes_vertical = 2,--4,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5,
-		temp_min = 0.13,
+biome_lib.register_on_generate({
+	surface = {
+		"default:dirt_with_grass",
+		"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
+		"default:sand",
+		"default:desert_sand",
 	},
-	abstract_ferns.grow_tree_fern
-	)
-end
+	max_count = 35,--27,
+	avoid_nodes = {"default:tree"},
+	avoid_radius = 4,
+	rarity = 50,
+	seed_diff = 329,
+	min_elevation = -10,
+	near_nodes = {"default:jungletree"},
+	near_nodes_size = 6,
+	near_nodes_vertical = 2,--4,
+	near_nodes_count = 1,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 0.4,
+	temp_max = -0.5,
+	temp_min = 0.13,
+},
+abstract_ferns.grow_tree_fern
+)
 
 -- for oases & tropical beaches
-if abstract_ferns.config.enable_treeferns_in_oases == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:sand"--,
-			--"default:desert_sand"
-		},
-		max_count = 35,
-		rarity = 50,
-		seed_diff = 329,
-		neighbors = {"default:desert_sand"},
-		ncount = 1,
-		min_elevation = 1,
-		near_nodes = {"default:water_source","default:river_water_source"},
-		near_nodes_size = 2,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 1.0,
-		temp_max = -1.0,
-		temp_min = 1.0,
+biome_lib.register_on_generate({
+	surface = {
+		"default:sand"--,
+		--"default:desert_sand"
 	},
-	abstract_ferns.grow_tree_fern
+	max_count = 35,
+	rarity = 50,
+	seed_diff = 329,
+	neighbors = {"default:desert_sand"},
+	ncount = 1,
+	min_elevation = 1,
+	near_nodes = {"default:water_source","default:river_water_source"},
+	near_nodes_size = 2,
+	near_nodes_vertical = 1,
+	near_nodes_count = 1,
+	plantlife_limit = -0.9,
+	humidity_max = -1.0,
+	humidity_min = 1.0,
+	temp_max = -1.0,
+	temp_min = 1.0,
+},
+abstract_ferns.grow_tree_fern
 )
-end
