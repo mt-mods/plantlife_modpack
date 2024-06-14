@@ -11,9 +11,9 @@ local enable_side = minetest.settings:get_bool("vines_enable_side", true)
 local enable_jungle = minetest.settings:get_bool("vines_enable_jungle", true)
 local enable_willow = minetest.settings:get_bool("vines_enable_willow", true)
 
-local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or 0.3
-local default_rarity = 0.05
-local rarity_standard =tonumber(minetest.settings:get("vines_rarity_standard")) or default_rarity
+local rarity_roots = tonumber(minetest.settings:get("vines_rarity_roots")) or 0.5
+local default_rarity = 0.2
+local rarity_standard = tonumber(minetest.settings:get("vines_rarity_standard")) or default_rarity
 local rarity_side = tonumber(minetest.settings:get("vines_rarity_side")) or default_rarity
 local rarity_jungle = tonumber(minetest.settings:get("vines_rarity_jungle")) or default_rarity
 local rarity_willow = tonumber(minetest.settings:get("vines_rarity_willow")) or default_rarity
@@ -117,8 +117,8 @@ vines.register_vine = function( name, defs, def )
 
 		if def.spawn_on_bottom then -- spawn under e.g. leaves
 			local newpos = vector.new(pos.x, pos.y - 1, pos.z)
-			if minetest.get_node(newpos).name == "air" then
-				-- checking for minetest.get_node(pos).name ~= "air" seems to break generation :\
+			if minetest.get_node(pos).name ~= "air" and minetest.get_node(newpos).name == "air" then
+				-- (1) prevent floating vines; (2) is there even space?
 				pos = newpos
 			else
 				return
@@ -135,7 +135,7 @@ vines.register_vine = function( name, defs, def )
 
 		local max_length = math.random(defs.average_length)
 		local current_length = 1
-		print("Generate " .. name .. " at " .. minetest.pos_to_string(pos))
+		-- print("Generate " .. name .. " at " .. minetest.pos_to_string(pos))
 		if minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' then
 			while minetest.get_node({ x=pos.x, y=pos.y - 1, z=pos.z }).name == 'air' and current_length < max_length do
 				minetest.set_node(pos, { name = vine_name_middle, param2 = param2 })
@@ -235,7 +235,6 @@ vines.register_vine = function( name, defs, def )
 		end,
 	})
 
-	--biome_lib.register_on_generate(biome, spawn_plants)
 	minetest.register_decoration({
 		name = "vines:" .. name,
 		decoration = {"air"},
