@@ -42,8 +42,6 @@ abstract_woodsoils.place_soil = function(pos)
 			local radius_2b = {x=pos.x+WE2,y=pos.y-2,z=pos.z+NS2}
 			local radius_3a = {x=pos.x+WE3,y=pos.y-1,z=pos.z+NS3}
 			local radius_3b = {x=pos.x+WE3,y=pos.y-2,z=pos.z+NS3}
-			--local node_1a = minetest.get_node(radius_1a)
-			--local node_1b = minetest.get_node(radius_1b)
 			local node_2a = minetest.get_node(radius_2a)
 			local node_2b = minetest.get_node(radius_2b)
 			local node_3a = minetest.get_node(radius_3a)
@@ -73,29 +71,31 @@ abstract_woodsoils.place_soil = function(pos)
 	end
 end
 
-biome_lib.register_on_generate({
-    surface = {
+minetest.register_decoration({
+	name = "woodsoils:trees",
+	decoration = {"air"},
+	fill_ratio = 1,
+	y_min = 1,
+	y_max = 40,
+	place_on = {
 		"group:tree",
 		"ferns:fern_03",
 		"ferns:fern_02",
 		"ferns:fern_01"
 	},
-    max_count = 1000,
-    rarity = 1,
-    min_elevation = 1,
-	max_elevation = 40,
-	near_nodes = {"group:tree","ferns:fern_03","ferns:fern_02","ferns:fern_01"},
-	near_nodes_size = 5,
-	near_nodes_vertical = 1,
-	near_nodes_count = 4,
-    plantlife_limit = -1,
-    check_air = false,
-  },
-  "abstract_woodsoils.place_soil"
-)
+	deco_type = "simple",
+	flags = "all_floors",
+	place_offset_y = -1,
+	check_offset = -1,
+})
 
-biome_lib.register_on_generate({
-    surface = {
+minetest.register_decoration({
+	name = "woodsoils:moretrees",
+	decoration = {"air"},
+	fill_ratio = 1,
+	y_min = 1,
+	y_max = 40,
+	place_on = {
 		"moretrees:apple_tree_sapling_ongen",
 		"moretrees:beech_sapling_ongen",
 		"moretrees:birch_sapling_ongen",
@@ -108,16 +108,31 @@ biome_lib.register_on_generate({
 		"moretrees:spruce_sapling_ongen",
 		"moretrees:willow_sapling_ongen"
 	},
-    max_count = 1000,
-    rarity = 2,
-    min_elevation = 1,
-	max_elevation = 40,
-	plantlife_limit = -0.9,
-    check_air = false,
-  },
-  "abstract_woodsoils.place_soil"
-)
+	deco_type = "simple",
+	flags = "all_floors",
+	place_offset_y = -1,
+	check_offset = -1,
+})
 
+local did, did2
+minetest.register_on_mods_loaded(function()
+	did = minetest.get_decoration_id("woodsoils:trees")
+	did2 = minetest.get_decoration_id("woodsoils:moretrees")
+	minetest.set_gen_notify("decoration", {did, did2})
+end)
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+	local g = minetest.get_mapgen_object("gennotify")
+	local deco_locations_1 = g["decoration#" .. did] or {}
+	local deco_locations_2 = g["decoration#" .. did2] or {}
+
+	for _, pos in pairs(deco_locations_1) do
+		abstract_woodsoils.place_soil(pos)
+	end
+	for _, pos in pairs(deco_locations_2) do
+		abstract_woodsoils.place_soil(pos)
+	end
+end)
 minetest.register_abm({
 	nodenames = {"default:papyrus"},
 	neighbors = {
