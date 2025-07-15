@@ -126,8 +126,8 @@ for r = 0, 3 do
 	})
 end
 
-minetest.register_alias("trunks:moss_plain", "trunks:moss_plain_0")
-minetest.register_alias("trunks:moss_with_fungus", "trunks:moss_with_fungus_0")
+minetest.register_alias("trunks:moss", "trunks:moss_plain_0")
+minetest.register_alias("trunks:moss_fungus", "trunks:moss_with_fungus_0")
 
 -----------------------------------------------------------------------------------------------
 -- TWiGS BLoCK
