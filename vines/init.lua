@@ -197,7 +197,7 @@ vines.register_vine = function( name, defs, def )
 					minetest.set_node(bottom, {
 							name = node.name, param2 = node.param2})
 
-					local timer = minetest.get_node_timer(bottom_node)
+					local timer = minetest.get_node_timer(bottom)
 
 					timer:start(math.random(growth_min, growth_max))
 				end
