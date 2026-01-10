@@ -9,8 +9,6 @@
 -- support for i18n
 local S = minetest.get_translator("ferns")
 
-assert(abstract_ferns.config.enable_treefern == true)
-
 function abstract_ferns.can_grow_tree_fern(pos)
 	local node_name = minetest.get_node(pos).name
 	if node_name ~= "air" and node_name ~= "ferns:sapling_tree_fern" and node_name ~= "default:junglegrass" then
@@ -205,57 +203,35 @@ minetest.register_abm({
 -----------------------------------------------------------------------------------------------
 
 -- in jungles
-if abstract_ferns.config.enable_treeferns_in_jungle == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:dirt_with_grass",
-			"default:dirt_with_rainforest_litter", -- minetest >= 0.4.16
-			"default:sand",
-			"default:desert_sand",
-		},
-		max_count = 35,--27,
-		avoid_nodes = {"default:tree"},
-		avoid_radius = 4,
-		rarity = 50,
-		seed_diff = 329,
-		min_elevation = -10,
-		near_nodes = {"default:jungletree"},
-		near_nodes_size = 6,
-		near_nodes_vertical = 2,--4,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 0.4,
-		temp_max = -0.5,
-		temp_min = 0.13,
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {
+		"default:dirt_with_grass",
+		"default:dirt_with_rainforest_litter",
+		"default:sand",
+		"default:desert_sand",
 	},
-	abstract_ferns.grow_tree_fern
-	)
-end
+	sidelen = 16,
+	fill_ratio = 0.002,
+	biomes = {"rainforest", "rainforest_swamp"},
+	y_min = -10,
+	y_max = 31000,
+	spawn_by = "default:jungletree",
+	num_spawn_by = 1,
+	decoration = "ferns:sapling_tree_fern",
+	flags = "force_placement",
+})
 
 -- for oases & tropical beaches
-if abstract_ferns.config.enable_treeferns_in_oases == true then
-	biome_lib.register_on_generate({
-		surface = {
-			"default:sand"--,
-			--"default:desert_sand"
-		},
-		max_count = 35,
-		rarity = 50,
-		seed_diff = 329,
-		neighbors = {"default:desert_sand"},
-		ncount = 1,
-		min_elevation = 1,
-		near_nodes = {"default:water_source","default:river_water_source"},
-		near_nodes_size = 2,
-		near_nodes_vertical = 1,
-		near_nodes_count = 1,
-		plantlife_limit = -0.9,
-		humidity_max = -1.0,
-		humidity_min = 1.0,
-		temp_max = -1.0,
-		temp_min = 1.0,
-	},
-	abstract_ferns.grow_tree_fern
-)
-end
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = {"default:sand"},
+	sidelen = 16,
+	fill_ratio = 0.002,
+	y_min = 1,
+	y_max = 31000,
+	spawn_by = {"default:water_source", "default:river_water_source"},
+	num_spawn_by = 1,
+	decoration = "ferns:sapling_tree_fern",
+	flags = "force_placement",
+})
