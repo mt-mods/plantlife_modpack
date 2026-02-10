@@ -14,6 +14,7 @@ nature.blossom_decay = 2
 nature.blossom_trunk = "default:tree"
 nature.blossom_node = "nature:blossom"
 nature.blossom_leaves = "default:leaves"
+nature.blossom_fruit = "default:apple"
 nature.blossom_textures = { "default_leaves.png^nature_blossom.png" }
 nature.blossom_groups = { snappy = 3, leafdecay = 1, leaves = 1, flammable = 2 }
 

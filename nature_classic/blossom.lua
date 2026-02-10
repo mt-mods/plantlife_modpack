@@ -26,7 +26,7 @@ minetest.register_node(":"..nature.blossom_node, {
 
 default.register_leafdecay({
 	trunks = { nature.blossom_trunk },
-	leaves = { nature.blossom_node, nature.blossom_leaves },
+	leaves = { nature.blossom_node, nature.blossom_leaves, nature.blossom_fruit },
 	radius = nature.blossom_decay,
 })
 
