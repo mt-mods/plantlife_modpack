@@ -314,11 +314,13 @@ minetest.register_node("dryplants:reedmace_water", {
 -- REEDMACE WATER ENTITY
 -----------------------------------------------------------------------------------------------
 minetest.register_entity("dryplants:reedmace_water_entity",{
-	visual = "mesh",
-	mesh = "plantlike.obj",
-	visual_size = {x=10, y=10},
-	textures = {"dryplants_reedmace_water.png"},
-	collisionbox = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3},
+	initial_properties = {
+		visual = "mesh",
+		mesh = "plantlike.obj",
+		visual_size = {x=10, y=10},
+		textures = {"dryplants_reedmace_water.png"},
+		collisionbox = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3},
+	},
 	on_punch = function(self, puncher)
 		if puncher:is_player() and puncher:get_inventory() then
 			if not minetest.is_creative_enabled(puncher:get_player_name()) then
