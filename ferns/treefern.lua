@@ -30,7 +30,7 @@ end
 
 abstract_ferns.grow_tree_fern = function(pos)
 
-	local pos_aux = {x = pos.x, y = pos.y + 1, z = pos.z}
+	local pos_aux = vector.offset(pos, 0,1,0)
 	local name = minetest.get_node(pos_aux).name
 	if name ~= "air" and name ~= "ferns:sapling_tree_fern"
 			and name ~= "default:junglegrass" then
@@ -53,11 +53,11 @@ abstract_ferns.grow_tree_fern = function(pos)
 			brk = true
 			break
 		end
-		minetest.swap_node({x = pos.x, y = pos.y + i, z = pos.z}, { name = "ferns:fern_trunk" })
+		minetest.swap_node(vector.offset(pos, 0,i,0), { name = "ferns:fern_trunk" })
 		i = i + 1
 	end
 	if not brk then
-		minetest.swap_node({x = pos.x, y = pos.y + i - 1, z = pos.z}, { name = crown })
+		minetest.swap_node(vector.offset(pos, 0,i-1,0), { name = crown })
 	end
 end
 
@@ -160,9 +160,9 @@ minetest.register_node("ferns:fern_trunk", {
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	after_destruct = function(pos,oldnode)
-        local node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
+        local node = minetest.get_node(vector.offset(pos, 0,1,0))
         if node.name == "ferns:fern_trunk" then
-            minetest.dig_node({x=pos.x,y=pos.y+1,z=pos.z})
+            minetest.dig_node(vector.offset(pos, 0,1,0))
             minetest.add_item(pos,"ferns:fern_trunk")
         end
     end,
@@ -193,7 +193,7 @@ minetest.register_abm({
 	chance = 4,
 	action = function(pos, node, _, _)
 		if abstract_ferns.can_grow_tree_fern(pos) then
-			abstract_ferns.grow_tree_fern({x = pos.x, y = pos.y-1, z = pos.z})
+			abstract_ferns.grow_tree_fern(vector.offset(pos, 0,-1,0))
 		end
     end
 })
